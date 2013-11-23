@@ -1,0 +1,148 @@
+@cMainBlue: #00a2ff;
+@cMainGreen: #72ff00;
+@cMainPink: #ff0084;
+@cMainYellow: #ffc600;
+ 
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000000
+}
+* {
+    color: #ffffff;
+}
+*:hover {
+    -box-shadow: 0 0 20px 20px red;
+}
+
+#container {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    position: fixed;    
+    background-color: #000000;
+    
+    #scene {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        
+        .layer {
+            position: absolute;
+            height: 100%;
+            -background-color:rgba(255, 255, 255, 0.2);
+            .sprite-wrapper {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                
+                .sprite {
+                    position: absolute;
+                }
+            }
+        }
+        .foreground {
+            position: relative;
+            height: 100%;
+            height: 100%;
+            
+            .player {
+                position: absolute;
+                background: url("assets/mock/scene/player/stand.gif") no-repeat;
+                &.walking {
+                    background-image: url("assets/mock/scene/player/walk-forward.gif");
+                    &.backwards {
+                        background-image: url("assets/mock/scene/player/walk-backwards.gif");
+                    }
+                }
+            }
+            .powerup {
+                position: absolute;
+                color: black;
+                width: 50px;
+                height: 50px;
+                background-color: #FFFF00;
+            }
+        }
+    }
+    #hud {
+        z-index: 10;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #000000;
+        position: absolute;
+        
+        .skill() {
+            margin: 2px;
+            display: block;
+            padding: 0 0 0 13px; 
+            transition: font-size 500ms;
+            background: url("assets/mock/hud/skills/levels/beginner.gif") 0px 50% no-repeat;
+            
+            &.unknown { font-size: 0; height: 0; width: 0; display: none }
+            &.beginner {
+                font-size: 10px;
+                color: @cMainGreen;
+            }
+            &.intermediate {
+                font-size: 20px;
+                background-image: url("assets/mock/hud/skills/levels/intermediate.gif");
+                padding-left: 20px;
+                color: @cMainBlue;
+            }
+            &.expert {
+                font-size: 30px;
+                background-image: url("assets/mock/hud/skills/levels/expert.gif");
+                padding-left: 34px;
+                color: @cMainYellow;
+            }
+            &.master {
+                font-size: 40px;
+                background-image: url("assets/mock/hud/skills/levels/master.gif");
+                padding-left: 46px;
+                color: @cMainPink;
+            }
+            
+        }
+        
+        .skill-basket {
+            display: block;
+            position: absolute;
+            left: 500px;
+            top: 0;
+            width: 320px;
+            
+            li {
+                .skill();
+                float: left;
+            }
+        }
+        .skill-basket-info {
+            position: absolute;
+            left: 230px;
+            top: 0;
+            li {
+                .skill();                
+            }
+        }
+        #year {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 100px;
+            font-weight: bold;
+        }
+    }
+}
+
+.tag-cloud {
+    li {
+        display: block;
+        float: left;
+        
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "name": "alexthiel/cv",
+    "authors": [
+        {
+            "name": "Alexander Thiel",
+            "email": "me@alexthiel.de"
+        }
+    ],
+    "config": {
+        "vendor-dir": "public/vendor/"
+    },
+    "require": {
+        "components/jquery": "2.0.*",
+        "leafo/lessphp": "0.4.*",
+        "twbs/bootstrap": "3.0.*"
+    }
+}

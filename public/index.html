@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+    <head>
+        <title>CV Test</title>
+        <script src="vendor/components/jquery/jquery.min.js"></script>
+        <script src="js/vendor/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="js/Core/Core.js"></script>
+        <script src="js/View/ViewportManager.js"></script>
+        <script src="js/Utils.js"></script>
+        <script src="js/Game/Scene.js"></script>
+        <script src="js/Game/Layer.js"></script>
+        <script src="js/Game/Sprite.js"></script>
+        <script src="js/Game/Player.js"></script>
+        <script src="js/Game/Foreground.js"></script>
+        <script src="js/Game/Powerup.js"></script>
+        <script src="js/HUD/HUD.js"></script>
+        <script src="js/HUD/Skill.js"></script>
+        <script src="js/HUD/SkillBasket.js"></script>
+        <script src="js/HUD/Year.js"></script>
+        <script src="js/App.js"></script>
+        <script src="data.js"></script>
+        <link href="styleCompiler.inc.php" type="text/css" rel="stylesheet">
+        <script defer="defer" type="text/javascript">
+            $(function()
+            {
+                var app = new ACV.App();
+                app.init(data);
+                $('#button').on('click', function()
+                {
+
+                });
+            });
+        </script>
+    </head>
+    <body >
+        <div id="container">
+            <div id="scene"></div>
+            <div id="hud">
+                <ul>
+                    <li id="button">
+                        Click me
+                    </li>
+                    <li>
+                        Ratio: <span id="scrollpos">N/A</span>
+                    </li>
+                    <li>
+                        sceneX: <span id="sceneX">N/A</span>
+                    </li>
+                    <li>
+                        playerX: <span id="playerX">N/A</span>
+                    </li>
+                </ul>
+                <ul class="skill-basket-info">
+                    <li class="beginner">
+                        beginner
+                    </li>
+                    <li class="intermediate">
+                        intermediate
+                    </li>
+                    <li class="expert">
+                        expert
+                    </li>
+                    <li class="master">
+                        master
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

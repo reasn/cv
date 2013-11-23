@@ -1,0 +1,1 @@
+Not managed by composer because no appropriate packages available
