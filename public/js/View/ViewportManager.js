@@ -54,7 +54,7 @@ ACV.ViewportManager.prototype.init = function()
             if (vpm.touch.lastY !== null && y > 0)
             {
                 vpm.touch.virtualPosition = Math.max(0, vpm.touch.virtualPosition - (y - vpm.touch.lastY));
-                vpm.trigger(vpm.touch.virtualPosition);
+                vpm._trigger(vpm.touch.virtualPosition);
             }
             vpm.touch.lastY = y;
         });
@@ -67,26 +67,32 @@ ACV.ViewportManager.prototype.init = function()
         body.css('height', this.scrollableDistance + 'px');
         $(document).on('scroll', function()
         {
-            vpm.trigger($(document).scrollTop());
+            vpm._trigger($(document).scrollTop());
         });
 
     }
 
     w.on('resize', function()
     {
-        var w = $(this);
-        vpm.viewportDimensions.width = w.width();
-        vpm.viewportDimensions.height = w.height();
-        vpm.viewportDimensions.changed = true;
-        vpm.trigger($(document).scrollTop());
+        vpm.triggerAll();
     });
     vpm.viewportDimensions.width = w.width();
     vpm.viewportDimensions.height = w.height();
 
     ACV.Utils.log('ViewportManager initialized');
 };
-
-ACV.ViewportManager.prototype.trigger = function(distance)
+ACV.ViewportManager.prototype.triggerAll = function()
+{
+    var w = $(window);
+    this.viewportDimensions.width = w.width();
+    this.viewportDimensions.height = w.height();
+    this.viewportDimensions.changed = true;
+    if (this.moveByDrag)
+        this._trigger(this.touch.virtualPosition);
+    else
+        this._trigger($(document).scrollTop());
+};
+ACV.ViewportManager.prototype._trigger = function(distance)
 {
     var now, interval, ratioBefore;
     now = new Date().getTime();

@@ -26,6 +26,8 @@ ACV.Game.Player.prototype = ACV.Core.createPrototype('ACV.Game.Player',
     element: null,
     x: 0,
     y: 0,
+    width: 0,
+    height: 0,
     movementListener: null
 });
 
@@ -37,42 +39,79 @@ ACV.Game.Player.prototype.init = function(foregroundElement, movementListener)
     this.movementListener = movementListener;
 
     this.element = $('<div class="player" />');
+
     this.element.css(
     {
-        width: this.prefs.box.width,
-        height: this.prefs.box.height,
         bottom: this.y
     });
+    this.setAge(Object.keys(this.prefs.ages).shift());
     foregroundElement.append(this.element);
     this.log('Player initialized', 'd');
 };
 /**
- *
- * @param int x Set to null or leave out to not update it
- * @param int y Set to null or leave out to not update it
+ * @param string age
+ * @since 2013-11-24
  */
-ACV.Game.Player.prototype.setPosition = function(x, y)
+ACV.Game.Player.prototype.setAge = function(age)
+{
+    this.width = this.prefs.ages[age].width;
+    this.height = this.prefs.ages[age].height;
+    this.element.css(
+    {
+        width: this.width,
+        height: this.height
+    });
+    this.element.removeClass(Object.keys(this.prefs.ages).join(' '));
+    this.element.addClass(age);
+    this.log('Player\'s age set to ' + age + '.', 'd');
+};
+/**
+ *
+ * @param int x
+ */
+ACV.Game.Player.prototype.setPosition = function(x)
 {
     this.element.stop();
 
-    var newStyle = new Object();
     if (x > 0 || x < 0)
-        newStyle.left = this.x = x;
+        this.element.css('left', this.x = x);
 
-    if (y > 0 || y < 0)
-        newStyle.top = this.y = y;
+};
 
-    this.element.css(newStyle);
+ACV.Game.Player.prototype.jump = function()
+{
+    this.log('Jumping');
+    var p = this;
+    p.element.animate(
+    {
+        bottom: [this.y + 100, 'easeOutQuart']
+    },
+    {
+        queue: false,
+        duration: 200,
+        complete: function()
+        {
+            p.log(p.y);
+            p.element.animate(
+            {
+                'bottom': [p.y, 'easeInQuart']
+            },
+            {
+                queue: false,
+                duration: 200
+            });
 
+        }
+    });
 };
 
 ACV.Game.Player.prototype.updatePosition = function(sceneX, viewportDimensions)
 {
-    var targetX, classesToAdd, classesToRemove, vieportPositionRatio, speed = 1;
+    var targetX, classesToAdd, classesToRemove, vieportPositionRatio, speed = 1, player = this;
 
     //Player is out of sight to the right. Set him right outside the left viewport boundary
-    if (this.x < sceneX - this.prefs.box.width)
-        this.setPosition(sceneX - this.prefs.box.width);
+    if (this.x < sceneX - this.width)
+        this.setPosition(sceneX - this.width);
 
     //Player is out of sight to the right. Set him right outside the right hand viewport boundary
     if (this.x > sceneX + viewportDimensions.width)
@@ -86,7 +125,6 @@ ACV.Game.Player.prototype.updatePosition = function(sceneX, viewportDimensions)
         speed = Math.abs(this.prefs.position.target - vieportPositionRatio);
 
         targetX = sceneX + this.prefs.position.target * viewportDimensions.width;
-        var player = this;
 
         //Make player run faster if he was already moving
         if (this.element.is(':animated'))
@@ -102,12 +140,13 @@ ACV.Game.Player.prototype.updatePosition = function(sceneX, viewportDimensions)
             classesToRemove = 'forward';
             classesToAdd = 'walking backwards';
         }
-        this.element.stop().removeClass(classesToRemove).addClass(classesToAdd).animate(
+        this.element.stop('walk').removeClass(classesToRemove).addClass(classesToAdd).animate(
         {
             left: targetX
         },
         {
             duration: Math.abs(this.x - targetX) / speed,
+            queue: 'walk',
             step: function(now)
             {
                 var coarseX = Math.round(now / player.prefs.movemenTriggerCoarsity);
@@ -124,8 +163,5 @@ ACV.Game.Player.prototype.updatePosition = function(sceneX, viewportDimensions)
                 player.element.removeClass('walking');
             }
         });
-
-        this.log('Moving player to ' + targetX + '     ( is: ' + vieportPositionRatio + ')', 'd');
-        //this.element.css('left', targetX + 'px');
     }
 };

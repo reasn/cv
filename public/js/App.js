@@ -24,6 +24,7 @@ ACV.App.config =
 
 ACV.App.prototype.init = function(data)
 {
+    var sceneElement;
     var app = this;
 
     this.prefs = data.app;
@@ -41,12 +42,16 @@ ACV.App.prototype.init = function(data)
     this.hud.init('#hud', this.viewportManager);
 
     //Initialize scene
-    this.scene = ACV.Game.Scene.createFromData('#scene', data.scene);
+    sceneElement = $('<div id="scene"/>');
+    this.scene = ACV.Game.Scene.createFromData(sceneElement, data.scene);
+    this.scene.foreground.skillBasket = this.hud.skillBasket;
     this.scene.init(
     {
         width: this.viewportManager.viewportDimensions.width,
         height: this.viewportManager.viewportDimensions.height - this.hud.height
     });
+
+    $('#container').prepend(sceneElement);
 
     //Sink events
     this.viewportManager.listen(function(ratio, ratioBefore, interval, viewportDimensions)
@@ -62,15 +67,9 @@ ACV.App.prototype.init = function(data)
         app.scene.updatePositions(ratio, ratioBefore, sceneDimensions);
     });
 
-    //Sink callbacks
-    this.scene.foreground.setSkillImprovementCallback(function(skillType)
-    {
-        app.hud.skillBasket.improve(skillType);
-    });
-
     //Scroll to beginning
     $(window).scrollTop(0);
-    this.viewportManager.trigger();
+    this.viewportManager.triggerAll();
 
     //debug stuff
     this.viewportManager.listen(function(ratio, lastRatio, interval)

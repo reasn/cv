@@ -2,6 +2,9 @@
 @cMainGreen: #72ff00;
 @cMainPink: #ff0084;
 @cMainYellow: #ffc600;
+
+@zHud: 90;
+@zGithub: 100;
  
 body {
     margin: 0;
@@ -14,7 +17,13 @@ body {
 *:hover {
     -box-shadow: 0 0 20px 20px red;
 }
-
+#github-ribbon {
+    position: fixed;
+    top: 0;
+    right: 0;
+    border: 0;
+    z-index: @zGithub;
+}
 #container {
     top: 0;
     right: 0;
@@ -33,7 +42,6 @@ body {
         .layer {
             position: absolute;
             height: 100%;
-            -background-color:rgba(255, 255, 255, 0.2);
             .sprite-wrapper {
                 position: relative;
                 width: 100%;
@@ -47,17 +55,35 @@ body {
         .foreground {
             position: relative;
             height: 100%;
-            height: 100%;
             
             .player {
                 position: absolute;
-                background: url("assets/mock/scene/player/stand.gif") no-repeat;
-                &.walking {
-                    background-image: url("assets/mock/scene/player/walk-forward.gif");
-                    &.backwards {
-                        background-image: url("assets/mock/scene/player/walk-backwards.gif");
+                background-repeat: no-repeat;
+                .statefulAge(@theme, @state) {
+                    background: url("assets/mock/scene/player/@{theme}/@{state}.gif");
+                }
+                .age(@name) {
+                    .statefulAge(@name, "stand");
+                    &.walking {
+                        .statefulAge(@name, "walk-forward");
+                    }
+                    &.walking.backwards {
+                        .statefulAge(@name, "walk-backwards");
                     }
                 }
+                &.baby {
+                    .age("baby");
+                }
+                &.child{
+                    .age("child");
+                }
+                &.teen {
+                    .age("teen");
+                }
+                &.adult{
+                    .age("adult");
+                }
+                
             }
             .powerup {
                 position: absolute;
@@ -69,11 +95,11 @@ body {
         }
     }
     #hud {
-        z-index: 10;
+        z-index: @zedHud;
         right: 0;
         bottom: 0;
         left: 0;
-        background-color: #000000;
+        background: #000099;
         position: absolute;
         
         .skill() {

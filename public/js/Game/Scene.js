@@ -14,12 +14,14 @@ ACV.Game = ACV.Game ? ACV.Game : new Object();
  * @param {ACV.Game.Foreground} Foreground
  * @param ACV.Game.Layer[] layers
  */
-ACV.Game.Scene = function(element, prefs, foreground, layers)
+ACV.Game.Scene = function(element, prefs, foreground, layers, triggerManager)
 {
     this.element = $(element);
     this.prefs = prefs;
     this.foreground = foreground;
     this.layers = layers;
+    this.triggerManager = triggerManager;
+    this.triggerManager.scene = this;
 };
 
 ACV.Game.Scene.prototype = ACV.Core.createPrototype('ACV.Game.Scene',
@@ -34,19 +36,21 @@ ACV.Game.Scene.prototype = ACV.Core.createPrototype('ACV.Game.Scene',
         }
     },
     foreground: null,
-    layers: []
+    layers: [],
+    triggerManager: null
 });
 
 ACV.Game.Scene.createFromData = function(element, data)
 {
-    var foreground, layers = [];
+    var foreground, layers = [], triggerManager;
     foreground = new ACV.Game.Foreground.createFromData(data.foreground);
 
     for (var i in data.layers)
     {
         layers.push(new ACV.Game.Layer.createFromPrefs(data.layers[i]));
     }
-    return new ACV.Game.Scene(element, data.prefs, foreground, layers);
+    triggerManager = ACV.Game.TriggerManager.createFromData(data.triggers);
+    return new ACV.Game.Scene(element, data.prefs, foreground, layers, triggerManager);
 };
 
 ACV.Game.Scene.prototype.init = function(sceneDimensions)
@@ -61,9 +65,9 @@ ACV.Game.Scene.prototype.init = function(sceneDimensions)
     for (var i in this.layers)
     {
         this.layers[i].init(this.element, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight);
+        if (this.layers[i].prefs.justBehindPlayerLayer === true)
+            this.foreground.init(this.layers[i].element, this.prefs.width, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight, this);
     }
-
-    this.foreground.init(this.element, this.prefs.width, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight);
 
 };
 
@@ -80,7 +84,6 @@ ACV.Game.Scene.prototype.updatePositions = function(ratio, ratioBefore, sceneDim
 
     for (var i in this.layers)
     {
-
         this.layers[i].updatePositions(sceneX, sceneXBefore, sceneDimensions.width);
     }
 
@@ -90,6 +93,11 @@ ACV.Game.Scene.prototype.updatePositions = function(ratio, ratioBefore, sceneDim
     }
     this.foreground.updatePositions(sceneX, sceneDimensions);
     $('#sceneX').text(sceneX);
+};
+
+ACV.Game.Scene.prototype.handleTriggers = function(playerX, sceneX)
+{
+    this.triggerManager.check(playerX, sceneX);
 };
 
 ACV.Game.Scene.prototype._handleViewportChange = function(sceneDimensions)

@@ -26,17 +26,17 @@ ACV.Game.Foreground.createFromData = function(data)
     return new ACV.Game.Foreground(data.prefs, player, powerups);
 };
 
-ACV.Game.Foreground.prototype = ACV.Core.createPrototype('ACV.Game.Layer',
+ACV.Game.Foreground.prototype = ACV.Core.createPrototype('ACV.Game.Foreground',
 {
     prefs: null,
     element: null,
     player: null,
     powerups: [],
     lastCollisionDetection: 0,
-    skillImprovementCallback: null
+    foreground: null
 });
 
-ACV.Game.Foreground.prototype.init = function(sceneElement, width, minHeight, maxHeight)
+ACV.Game.Foreground.prototype.init = function(layerBefore, width, minHeight, maxHeight, scene)
 {
     this.element = $('<div class="foreground" />');
     this.element.css(
@@ -57,14 +57,10 @@ ACV.Game.Foreground.prototype.init = function(sceneElement, width, minHeight, ma
     {
         $('#playerX').text(playerX);
         foreground._detectCollisions(playerX, sceneX, viewportDimensions);
+        scene.handleTriggers(playerX, sceneX);
     });
     //Add to DOM at last to reduce draw calls
-    sceneElement.append(this.element);
-};
-
-ACV.Game.Foreground.prototype.setSkillImprovementCallback = function(skillImprovementCallback)
-{
-    this.skillImprovementCallback = skillImprovementCallback;
+    layerBefore.after(this.element);
 };
 
 /**
@@ -83,7 +79,7 @@ ACV.Game.Foreground.prototype.updatePositions = function(sceneX, viewportDimensi
 };
 ACV.Game.Foreground.prototype._detectCollisions = function(playerX, sceneX, viewportDimensions)
 {
-    var testX = playerX + this.prefs.hitBox + .5 * this.player.prefs.box.width;
+    var testX = playerX + this.prefs.hitBox + .5 * this.player.width;
     for (var i in this.powerups)
     {
         if (this.powerups[i].hasJustBeenCollected(testX))
@@ -116,16 +112,17 @@ ACV.Game.Foreground.prototype._collectPowerup = function(powerupIndex, sceneX, v
         duration: 200,
         complete: function()
         {
+            var targetPosition = foreground.skillBasket.getPowerupAnimationTarget();
             powerup.element.animate(
             {
-                left: [300, 'easeInQuad'],
-                bottom: [100, 'easeInQuad']
+                left: [targetPosition.left, 'easeInQuad'],
+                bottom: [targetPosition.bottom, 'easeInQuad']
             },
             {
                 duration: 800,
                 complete: function()
                 {
-                    foreground.skillImprovementCallback(powerup.skillType);
+                    foreground.skillBasket.improve(powerup.skillType);
                     powerup.element.remove();
                 }
             });

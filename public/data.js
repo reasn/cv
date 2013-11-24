@@ -22,11 +22,6 @@ var data =
         {
             "player":
             {
-                "box":
-                {
-                    "width": 108,
-                    "height": 190
-                },
                 "position":
                 {
                     "min": 0.2,
@@ -34,7 +29,30 @@ var data =
                     "target": 0.38,
                     "y": 150
                 },
-                "movemenTriggerCoarsity": 20
+                "movemenTriggerCoarsity": 20,
+                "ages":
+                {
+                    "baby":
+                    {
+                        "width": 1,
+                        "height": 1
+                    },
+                    "child":
+                    {
+                        "width": 48,
+                        "height": 80
+                    },
+                    "teen":
+                    {
+                        "width": 84,
+                        "height": 140
+                    },
+                    "adult":
+                    {
+                        "width": 108,
+                        "height": 180
+                    }
+                }
             },
             "prefs":
             {
@@ -188,7 +206,8 @@ var data =
             {
                 "width": 10000,
                 "offset": 0,
-                "speed": 1
+                "speed": 1,
+                "justBehindPlayerLayer": true
             },
             "sprites": [
             {
@@ -235,6 +254,52 @@ var data =
                     "y": 10
                 }
             }]
+        },
+        {
+            "prefs":
+            {
+                "width": 340,
+                "offset": 500,
+                "speed": 0.5
+            },
+            "sprites": [
+            {
+                "x": "0px",
+                "y": "80px",
+                "topAligned": false,
+                "width": "340px",
+                "height": "289px",
+                "source": "mock/scene/world/baby-cradle.png"
+            }]
+        }],
+        "triggers": [
+        {
+            "playerX": '>1000',
+            "type": "player.setAge",
+            "data": "child"
+        },
+        {
+            "playerX": '<1000',
+            "type": "player.setAge",
+            "data": "baby"
+        },
+        {
+            "playerX": '> 1200',
+            "type": "player.jump"
+        },
+        {
+            "playerX": '> 1400',
+            "type": "player.jump"
+        },
+        {
+            "playerX": '>2000',
+            "type": "player.setAge",
+            "data": "teen"
+        },
+        {
+            "playerX": '>3000',
+            "type": "player.setAge",
+            "data": "adult"
         }]
     },
     "hud":
@@ -251,6 +316,9 @@ var data =
         {
             "0.1":
             {
+                "title": "",
+                "image": "",
+                "text": ""
             }
         },
         "year":

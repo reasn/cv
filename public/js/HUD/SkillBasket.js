@@ -23,6 +23,8 @@ ACV.HUD.SkillBasket.createFromData = function(data)
 };
 ACV.HUD.SkillBasket.prototype = ACV.Core.createPrototype('ACV.HUD.SkillBasket',
 {
+    hud: null,
+    element: null,
     skills: []
 });
 
@@ -48,4 +50,13 @@ ACV.HUD.SkillBasket.prototype.improve = function(skillType)
             return;
         }
     }
+};
+
+ACV.HUD.SkillBasket.prototype.getPowerupAnimationTarget = function()
+{
+    return (
+        {
+            left: this.element.position().left + .5 * this.element.width(),
+            bottom: this.hud.height - 50
+        });
 };

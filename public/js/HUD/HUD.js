@@ -12,6 +12,7 @@ ACV.HUD = function(prefs, skillBasket, year)
     this.prefs = prefs;
     this.height = this.prefs.height;
     this.skillBasket = skillBasket;
+    this.skillBasket.hud = this;
     this.year = year;
 };
 ACV.HUD.createFromData = function(data)
