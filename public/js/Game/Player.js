@@ -3,36 +3,32 @@
 /**
  * @since 2013-11-03
  */
-var ACV = ACV ? ACV : new Object();
+var ACV = ACV ? ACV : {};
 
-ACV.Game = ACV.Game ? ACV.Game : new Object();
+ACV.Game = ACV.Game ? ACV.Game : {};
 
 /**
  *
- * @param {Array} positions
- * @param {int} width
- * @param {int} height
- * @param {bool} topAligned
+ * @param prefs
+ * @constructor
  */
-ACV.Game.Player = function(prefs)
-{
+ACV.Game.Player = function (prefs) {
     this.prefs = prefs;
     this.y = prefs.position.y;
 };
 
 ACV.Game.Player.prototype = ACV.Core.createPrototype('ACV.Game.Player',
-{
-    prefs: null,
-    element: null,
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-    movementListener: null
-});
+    {
+        prefs: null,
+        element: null,
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        movementListener: null
+    });
 
-ACV.Game.Player.prototype.init = function(foregroundElement, movementListener)
-{
+ACV.Game.Player.prototype.init = function (foregroundElement, movementListener) {
 
     this.log('Initializing player', 'd');
 
@@ -41,36 +37,34 @@ ACV.Game.Player.prototype.init = function(foregroundElement, movementListener)
     this.element = $('<div class="player" />');
 
     this.element.css(
-    {
-        bottom: this.y
-    });
+        {
+            bottom: this.y
+        });
     this.setAge(Object.keys(this.prefs.ages).shift());
     foregroundElement.append(this.element);
     this.log('Player initialized', 'd');
 };
 /**
- * @param string age
+ * @param age
  * @since 2013-11-24
  */
-ACV.Game.Player.prototype.setAge = function(age)
-{
+ACV.Game.Player.prototype.setAge = function (age) {
     this.width = this.prefs.ages[age].width;
     this.height = this.prefs.ages[age].height;
     this.element.css(
-    {
-        width: this.width,
-        height: this.height
-    });
+        {
+            width: this.width,
+            height: this.height
+        });
     this.element.removeClass(Object.keys(this.prefs.ages).join(' '));
     this.element.addClass(age);
     this.log('Player\'s age set to ' + age + '.', 'd');
 };
 /**
  *
- * @param int x
+ * @param x
  */
-ACV.Game.Player.prototype.setPosition = function(x)
-{
+ACV.Game.Player.prototype.setPosition = function (x) {
     this.element.stop();
 
     if (x > 0 || x < 0)
@@ -78,35 +72,36 @@ ACV.Game.Player.prototype.setPosition = function(x)
 
 };
 
-ACV.Game.Player.prototype.jump = function()
-{
+ACV.Game.Player.prototype.jump = function () {
     this.log('Jumping');
     var p = this;
     p.element.animate(
-    {
-        bottom: [this.y + 100, 'easeOutQuart']
-    },
-    {
-        queue: false,
-        duration: 200,
-        complete: function()
         {
-            p.log(p.y);
-            p.element.animate(
-            {
-                'bottom': [p.y, 'easeInQuart']
-            },
-            {
-                queue: false,
-                duration: 200
-            });
+            bottom: [this.y + 100, 'easeOutQuart']
+        },
+        {
+            queue: false,
+            duration: 200,
+            complete: function () {
+                p.log(p.y);
+                p.element.animate(
+                    {
+                        'bottom': [p.y, 'easeInQuart']
+                    },
+                    {
+                        queue: false,
+                        duration: 200
+                    });
 
-        }
-    });
+            }
+        });
 };
-
-ACV.Game.Player.prototype.updatePosition = function(sceneX, viewportDimensions)
-{
+/**
+ *
+ * @param sceneX
+ * @param viewportDimensions
+ */
+ACV.Game.Player.prototype.updatePosition = function (sceneX, viewportDimensions) {
     var targetX, classesToAdd, classesToRemove, vieportPositionRatio, speed = 1, player = this;
 
     //Player is out of sight to the right. Set him right outside the left viewport boundary
@@ -120,8 +115,7 @@ ACV.Game.Player.prototype.updatePosition = function(sceneX, viewportDimensions)
     //Map player's position to a ratio from 0 (left) to 1 (right) to dynamically adapt walking speed
     vieportPositionRatio = (this.x - sceneX) / viewportDimensions.width;
 
-    if (vieportPositionRatio < this.prefs.position.min || vieportPositionRatio > this.prefs.position.max)
-    {
+    if (vieportPositionRatio < this.prefs.position.min || vieportPositionRatio > this.prefs.position.max) {
         speed = Math.abs(this.prefs.position.target - vieportPositionRatio);
 
         targetX = sceneX + this.prefs.position.target * viewportDimensions.width;
@@ -131,37 +125,32 @@ ACV.Game.Player.prototype.updatePosition = function(sceneX, viewportDimensions)
             speed *= 2;
 
         //Reduce redraws by adding/removing as many classes at a time as possible
-        if (targetX > this.x)
-        {
+        if (targetX > this.x) {
             classesToRemove = 'backwards';
             classesToAdd = 'walking forward';
-        } else
-        {
+        } else {
             classesToRemove = 'forward';
             classesToAdd = 'walking backwards';
         }
         this.element.stop('walk').removeClass(classesToRemove).addClass(classesToAdd).animate(
-        {
-            left: targetX
-        },
-        {
-            duration: Math.abs(this.x - targetX) / speed,
-            queue: 'walk',
-            step: function(now)
             {
-                var coarseX = Math.round(now / player.prefs.movemenTriggerCoarsity);
-                player.x = now;
-
-                if (coarseX !== player.lastCoarseX)
-                {
-                    player.lastCoarseX = coarseX;
-                    player.movementListener.call(player, player.x, sceneX, viewportDimensions);
-                }
+                left: targetX
             },
-            complete: function()
             {
-                player.element.removeClass('walking');
-            }
-        });
+                duration: Math.abs(this.x - targetX) / speed,
+                queue: 'walk',
+                step: function (now) {
+                    var coarseX = Math.round(now / player.prefs.movementTriggerCoarsity);
+                    player.x = now;
+
+                    if (coarseX !== player.lastCoarseX) {
+                        player.lastCoarseX = coarseX;
+                        player.movementListener.call(player, player.x, sceneX, viewportDimensions);
+                    }
+                },
+                complete: function () {
+                    player.element.removeClass('walking');
+                }
+            });
     }
 };

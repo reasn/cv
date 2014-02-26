@@ -49,6 +49,17 @@ body {
                 
                 .sprite {
                     position: absolute;
+					&.colored {
+						.bg(@color) {
+							background-image: url("assets/graphics/scene/world/matte/@{color}.jpg");	
+						}
+						&.white { .bg(white) }
+						&.yellow{ .bg(yellow) }
+						&.pink  { .bg(pink) }
+						&.green { .bg(green) }
+						&.orange{ .bg(orange) }
+						&.blue  { .bg(blue) }
+					}
                 }
             }
         }
@@ -60,7 +71,7 @@ body {
                 position: absolute;
                 background-repeat: no-repeat;
                 .statefulAge(@theme, @state) {
-                    background: url("assets/mock/scene/player/@{theme}/@{state}.gif");
+                    background: url("assets/graphics/scene/player/@{theme}/@{state}.gif");
                 }
                 .age(@name) {
                     .statefulAge(@name, "stand");
@@ -107,7 +118,7 @@ body {
             display: block;
             padding: 0 0 0 13px; 
             transition: font-size 500ms;
-            background: url("assets/mock/hud/skills/levels/beginner.gif") 0px 50% no-repeat;
+            background: url("assets/graphics/hud/skills/levels/beginner.gif") 0px 50% no-repeat;
             
             &.unknown { font-size: 0; height: 0; width: 0; display: none }
             &.beginner {
@@ -116,19 +127,19 @@ body {
             }
             &.intermediate {
                 font-size: 20px;
-                background-image: url("assets/mock/hud/skills/levels/intermediate.gif");
+                background-image: url("assets/graphics/hud/skills/levels/intermediate.gif");
                 padding-left: 20px;
                 color: @cMainBlue;
             }
             &.expert {
                 font-size: 30px;
-                background-image: url("assets/mock/hud/skills/levels/expert.gif");
+                background-image: url("assets/graphics/hud/skills/levels/expert.gif");
                 padding-left: 34px;
                 color: @cMainYellow;
             }
             &.master {
                 font-size: 40px;
-                background-image: url("assets/mock/hud/skills/levels/master.gif");
+                background-image: url("assets/graphics/hud/skills/levels/master.gif");
                 padding-left: 46px;
                 color: @cMainPink;
             }
@@ -161,7 +172,17 @@ body {
             left: 10px;
             font-size: 100px;
             font-weight: bold;
-        }
+        }        
+        #height {
+            position: fixed;
+            top: 150px;
+            left: 10px;
+            font-size: 100px;
+            font-weight: bold;
+        	&:after {
+				content: 'cm'
+        	}
+        }        
     }
 }
 

@@ -1,0 +1,114 @@
+[
+    {
+        "comment": "cradle - foreground",
+        "prefs": {
+            "width": 3000,
+            "offset": 0,
+            "speed": 2
+        },
+        "sprites": [
+            {
+                "x": "0px",
+                "y": "0px",
+                "topAligned": true,
+                "width": "1000px",
+                "height": "2000px",
+                "color": "yellow"
+            },
+            {
+                "x": "600px",
+                "y": "200px",
+                "topAligned": false,
+                "width": "50px",
+                "height": "50px",
+                "source": {
+                    "x": 10,
+                    "y": 10
+                }
+            }
+        ]
+    },
+    {
+        "prefs": {
+            "width": 10000,
+            "offset": 0,
+            "speed": 1,
+            "justBehindPlayerLayer": true
+        },
+        "sprites": [
+            {
+                "x": "0px",
+                "y": "0",
+                "topAligned": false,
+                "width": "15284000px",
+                "height": "200px",
+                "source": "graphics/scene/world/sand.png"
+            },
+            {
+                "x": "800px",
+                "y": "150px",
+                "width": "180px",
+                "topAligned": true,
+                "height": "100px",
+                "color": "blue"
+
+            },
+            {
+                "x": "1800px",
+                "y": "180px",
+                "topAligned": true,
+                "width": "180px",
+                "height": "100px",
+                "source": {
+                    "x": 10,
+                    "y": 10
+                }
+            },
+            {
+                "x": "3300px",
+                "y": "130px",
+                "topAligned": true,
+                "width": "180px",
+                "height": "100px",
+                "source": {
+                    "x": 10,
+                    "y": 10
+                }
+            }
+        ]
+    },
+    {
+        "prefs": {
+            "width": 340,
+            "offset": 1500,
+            "speed": 1
+        },
+        "sprites": [
+            {
+                "x": "0px",
+                "y": "80px",
+                "topAligned": false,
+                "width": "340px",
+                "height": "289px",
+                "source": "graphics/scene/world/baby-cradle.png"
+            }
+        ]
+    },
+    {
+        "prefs": {
+            "width": 2000,
+            "offset": 2000,
+            "speed": 3
+        },
+        "sprites": [
+            {
+                "x": "0px",
+                "y": "-70px",
+                "topAligned": false,
+                "width": "1257px",
+                "height": "500px",
+                "source": "graphics/scene/world/dresser.png"
+            }
+        ]
+    }
+]

@@ -14,7 +14,7 @@ ACV.Game = ACV.Game ? ACV.Game : new Object();
  * @param {int} height
  * @param {bool} topAligned
  */
-ACV.Game.Sprite = function(positions, width, height, topAligned, source)
+ACV.Game.Sprite = function(positions, width, height, topAligned, source, color)
 {
     this.x = positions['0'].x;
     this.y = positions['0'].y;
@@ -23,6 +23,7 @@ ACV.Game.Sprite = function(positions, width, height, topAligned, source)
     this.width = width;
     this.height = height;
     this.source = source;
+    this.color = color;
 };
 ACV.Game.Sprite.createFromPrefs = function(data)
 {
@@ -35,7 +36,7 @@ ACV.Game.Sprite.createFromPrefs = function(data)
         }
     };
 
-    return new ACV.Game.Sprite(positions, data.width, data.height, data.topAligned, data.source);
+    return new ACV.Game.Sprite(positions, data.width, data.height, data.topAligned, data.source, data.color);
 };
 ACV.Game.Sprite.mockColors = ['#9932CC', '#8B0000', '#E9967A', '#8FBC8F', '#483D8B', '#2F4F4F', '#00CED1', '#9400D3', '#FF1493', '#00BFFF', '#696969', '#1E90FF', '#B22222', '#FFFAF0', '#228B22', '#FF00FF', '#DCDCDC', '#F8F8FF', '#FFD700', '#DAA520', '#808080', '#008000', '#ADFF2F', '#F0FFF0', '#FF69B4'];
 ACV.Game.Sprite.mockColorIndex = 0;
@@ -45,8 +46,10 @@ ACV.Game.Sprite.prototype = ACV.Core.createPrototype('ACV.Game.Sprite',
     y: 0,
     width: 0,
     height: 0,
-    /** @var object|string */
-    source: null
+    /** @var string|string */
+    source: null,
+    /** @var string|string */
+    color: null
 });
 
 ACV.Game.Sprite.prototype.init = function(layerElement)
@@ -60,6 +63,8 @@ ACV.Game.Sprite.prototype.init = function(layerElement)
     });
     if ( typeof (this.source) === 'string')
         this.element.css('backgroundImage', 'url("' + ACV.App.config.assetPath + '/' + this.source + '")');
+    else if(typeof(this.color) === 'string')
+    	this.element.addClass('colored').addClass(this.color);
     else//TODO implement combined asset files
         this.element.css('backgroundColor', ACV.Game.Sprite.mockColors[ACV.Game.Sprite.mockColorIndex++]);
 

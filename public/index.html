@@ -4,7 +4,9 @@
         <title>CV Test</title>
         <script src="vendor/components/jquery/jquery.min.js"></script>
         <script src="js/vendor/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="js/vendor/jquery.transform2d.js"></script>
         <script src="js/Core/Core.js"></script>
+        <script src="js/Core/PrefLoader.js"></script>
         <script src="js/View/ViewportManager.js"></script>
         <script src="js/Utils.js"></script>
         <script src="js/Game/Scene.js"></script>
@@ -18,15 +20,17 @@
         <script src="js/HUD/HUD.js"></script>
         <script src="js/HUD/Skill.js"></script>
         <script src="js/HUD/SkillBasket.js"></script>
-        <script src="js/HUD/Year.js"></script>
+        <script src="js/HUD/YearDisplay.js"></script>
+        <script src="js/HUD/HeightDisplay.js"></script>
         <script src="js/App.js"></script>
-        <script src="data.js"></script>
         <link href="styleCompiler.inc.php" type="text/css" rel="stylesheet">
         <script defer="defer" type="text/javascript">
             $(function()
             {
                 var app = new ACV.App();
-                app.init(data);
+                ACV.Core.PrefLoader.load(function(gameData) {
+                    app.init(gameData);
+                });
                 $('#button').on('click', function()
                 {
 

@@ -1,0 +1,50 @@
+[
+    {
+        "playerX": ">1500",
+        "type": "player.setAge",
+        "data": "child"
+    },
+    {
+        "playerX": "<1500",
+        "type": "player.setAge",
+        "data": "baby"
+    },
+    {
+        "playerX": ">1400",
+        "type": "player.jump"
+    },
+    {
+        "playerX": ">1800",
+        "type": "player.jump"
+    },
+    {
+        "playerX": ">2000",
+        "type": "player.setAge",
+        "data": "teen"
+    },
+    {
+        "playerX": ">3000",
+        "type": "player.setAge",
+        "data": "adult"
+    },
+    {
+        "playerX": ">2500",
+        "type": "scene.zoom",
+        "data": "0.8|2000"
+    },
+    {
+        "playerX": "<2500",
+        "type": "scene.zoom",
+        "data": "1|2000"
+    },
+    {
+        "playerX": ">5500",
+        "type": "scene.zoom",
+        "data": "1|2000"
+    },
+    {
+        "playerX": "<5500",
+        "type": "scene.zoom",
+        "data": "0.8|2000"
+    }
+]

@@ -14,7 +14,7 @@ ACV.Game.Foreground = function(prefs, player, powerups)
     this.powerups = powerups;
 };
 
-ACV.Game.Foreground.createFromData = function(data)
+ACV.Game.Foreground.createFromData = function(data, performanceSettings)
 {
     var player, powerups = [];
 

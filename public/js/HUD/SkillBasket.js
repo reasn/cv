@@ -11,7 +11,7 @@ ACV.HUD.SkillBasket = function(skills)
 {
     this.skills = skills;
 };
-ACV.HUD.SkillBasket.createFromData = function(data)
+ACV.HUD.SkillBasket.createFromData = function(data, performanceSettings)
 {
 
     var skills = [];

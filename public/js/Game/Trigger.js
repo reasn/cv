@@ -22,7 +22,7 @@ ACV.Game.Trigger.prototype = ACV.Core.createPrototype('ACV.Game.Trigger',
     data: null
 });
 
-ACV.Game.Trigger.createFromData = function(data)
+ACV.Game.Trigger.createFromData = function(data, performanceSettings)
 {
     return new ACV.Game.Trigger(data.playerX.substr(0, 1), data.playerX.substr(1), data.type, data.data);
 };

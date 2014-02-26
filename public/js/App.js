@@ -38,12 +38,12 @@ ACV.App.prototype.init = function(data)
     this.viewportManager.init();
 
     //Initialize HUD
-    this.hud = ACV.HUD.createFromData(data.hud);
+    this.hud = ACV.HUD.createFromData(data.hud, data.app.performanceSettings);
     this.hud.init('#hud', this.viewportManager);
 
     //Initialize scene
     sceneElement = $('<div id="scene"/>');
-    this.scene = ACV.Game.Scene.createFromData(sceneElement, data.scene);
+    this.scene = ACV.Game.Scene.createFromData(sceneElement, data.scene, data.app.performanceSettings);
     this.scene.foreground.skillBasket = this.hud.skillBasket;
     this.scene.init(
     {

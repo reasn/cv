@@ -3,9 +3,9 @@
 /**
  * @since 2013-11-03
  */
-var ACV = ACV ? ACV : new Object();
+var ACV = ACV ? ACV : {};
 
-ACV.Core = ACV.Core ? ACV.Core : new Object();
+ACV.Core = ACV.Core ? ACV.Core : {};
 
 ACV.Core.createPrototype = function(className, properties)
 {
