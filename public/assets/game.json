@@ -18,7 +18,7 @@
                 "maxHeight": 1000
             }
         },
-        "foreground": {
+        "playerLayer": {
             "player": {
                 "position": {
                     "min": 0.2,
@@ -53,9 +53,23 @@
             "powerups": []
         },
         "levels": [
-            "cradle"
+            {
+                "handle": "01-cradle",
+                "offset": 0,
+                "fromSceneX": 0,
+                "toSceneX": 5000
+            },
+            {
+                "handle": "02-way-to-school",
+                "offset": 2000,
+                "fromSceneX": 3500,
+                "toSceneX": 7000
+            }
         ],
-        "layers": [],
+        "layers": {
+            "background": [],
+            "foreground": []
+        },
         "triggers": []
     },
     "hud": {

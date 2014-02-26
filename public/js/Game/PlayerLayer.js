@@ -7,14 +7,14 @@ var ACV = ACV ? ACV : new Object();
 
 ACV.Game = ACV.Game ? ACV.Game : new Object();
 
-ACV.Game.Foreground = function(prefs, player, powerups)
+ACV.Game.PlayerLayer = function(prefs, player, powerups)
 {
     this.prefs = prefs;
     this.player = player;
     this.powerups = powerups;
 };
 
-ACV.Game.Foreground.createFromData = function(data, performanceSettings)
+ACV.Game.PlayerLayer.createFromData = function(data, performanceSettings)
 {
     var player, powerups = [];
 
@@ -23,22 +23,22 @@ ACV.Game.Foreground.createFromData = function(data, performanceSettings)
     {
         powerups.push(new ACV.Game.Powerup(data.powerups[i].x, data.powerups[i].y, data.powerups[i].type));
     }
-    return new ACV.Game.Foreground(data.prefs, player, powerups);
+    return new ACV.Game.PlayerLayer(data.prefs, player, powerups);
 };
 
-ACV.Game.Foreground.prototype = ACV.Core.createPrototype('ACV.Game.Foreground',
+ACV.Game.PlayerLayer.prototype = ACV.Core.createPrototype('ACV.Game.PlayerLayer',
 {
     prefs: null,
     element: null,
     player: null,
     powerups: [],
     lastCollisionDetection: 0,
-    foreground: null
+    playerLayer: null
 });
 
-ACV.Game.Foreground.prototype.init = function(layerBefore, width, minHeight, maxHeight, scene)
+ACV.Game.PlayerLayer.prototype.init = function(wrapperElement, width, minHeight, maxHeight, scene)
 {
-    this.element = $('<div class="foreground" />');
+    this.element = $('<div class="player-layer" />');
     this.element.css(
     {
         width: width,
@@ -52,15 +52,15 @@ ACV.Game.Foreground.prototype.init = function(layerBefore, width, minHeight, max
     }
 
     //enclose variable here to reduce calls and improve performance
-    var foreground = this;
+    var playerLayer = this;
     this.player.init(this.element, function(playerX, sceneX, viewportDimensions)
     {
         $('#playerX').text(playerX);
-        foreground._detectCollisions(playerX, sceneX, viewportDimensions);
+        playerLayer._detectCollisions(playerX, sceneX, viewportDimensions);
         scene.handleTriggers(playerX, sceneX);
     });
     //Add to DOM at last to reduce draw calls
-    layerBefore.after(this.element);
+    wrapperElement.append(this.element);
 };
 
 /**
@@ -68,7 +68,7 @@ ACV.Game.Foreground.prototype.init = function(layerBefore, width, minHeight, max
  * @param int x The amount of pixels that already left the viewport on the left side. Positive integer
  * @param int width The width of the current viewport
  */
-ACV.Game.Foreground.prototype.updatePositions = function(sceneX, viewportDimensions)
+ACV.Game.PlayerLayer.prototype.updatePositions = function(sceneX, viewportDimensions)
 {
     var coarsedSceneX = Math.round(sceneX / this.prefs.collisionDetectionGridSize);
     //Set wrapper position to have the player stay at the same point of the scrolling scenery
@@ -77,7 +77,7 @@ ACV.Game.Foreground.prototype.updatePositions = function(sceneX, viewportDimensi
     this.player.updatePosition(sceneX, viewportDimensions);
 
 };
-ACV.Game.Foreground.prototype._detectCollisions = function(playerX, sceneX, viewportDimensions)
+ACV.Game.PlayerLayer.prototype._detectCollisions = function(playerX, sceneX, viewportDimensions)
 {
     var testX = playerX + this.prefs.hitBox + .5 * this.player.width;
     for (var i in this.powerups)
@@ -90,9 +90,9 @@ ACV.Game.Foreground.prototype._detectCollisions = function(playerX, sceneX, view
     }
 
 };
-ACV.Game.Foreground.prototype._collectPowerup = function(powerupIndex, sceneX, viewportDimensions)
+ACV.Game.PlayerLayer.prototype._collectPowerup = function(powerupIndex, sceneX, viewportDimensions)
 {
-    var foreground = this;
+    var playerLayer = this;
     var powerup = this.powerups[powerupIndex];
     var p = powerup.element.position();
 
@@ -112,7 +112,7 @@ ACV.Game.Foreground.prototype._collectPowerup = function(powerupIndex, sceneX, v
         duration: 200,
         complete: function()
         {
-            var targetPosition = foreground.skillBasket.getPowerupAnimationTarget();
+            var targetPosition = playerLayer.skillBasket.getPowerupAnimationTarget();
             powerup.element.animate(
             {
                 left: [targetPosition.left, 'easeInQuad'],
@@ -122,7 +122,7 @@ ACV.Game.Foreground.prototype._collectPowerup = function(powerupIndex, sceneX, v
                 duration: 800,
                 complete: function()
                 {
-                    foreground.skillBasket.improve(powerup.skillType);
+                    playerLayer.skillBasket.improve(powerup.skillType);
                     powerup.element.remove();
                 }
             });

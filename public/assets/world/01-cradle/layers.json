@@ -1,0 +1,308 @@
+{
+    "background": [
+        {
+            "comment": "background - outside",
+            "prefs": {
+                "width": 7000,
+                "offset": 0,
+                "speed": 0.3
+            },
+            "sprites": [
+                {
+                    "comment": "window",
+                    "x": "1170px",
+                    "y": "200px",
+                    "topAligned": true,
+                    "width": "740px",
+                    "height": "300px",
+                    "source": "graphics/scene/world/01-cradle/background.jpg"
+                }
+            ]
+        },
+        {
+            "comment": "background - wall",
+            "prefs": {
+                "width": 7000,
+                "offset": 0,
+                "speed": 0.5
+            },
+            "sprites": [
+                {
+                    "comment": "window",
+                    "x": "1500px",
+                    "y": "100px",
+                    "topAligned": true,
+                    "width": "535px",
+                    "height": "500px",
+                    "source": "graphics/scene/world/01-cradle/window.png"
+                },
+                {
+                    "comment": "top wall",
+                    "x": "1500px",
+                    "y": "0px",
+                    "topAligned": true,
+                    "width": "535px",
+                    "height": "100px",
+                    "color": "orange"
+                },
+                {
+                    "comment": "right wall",
+                    "x": "2035px",
+                    "y": "0px",
+                    "topAligned": true,
+                    "width": "800px",
+                    "height": "100%",
+                    "color": "orange"
+                },
+                {
+                    "comment": "bottom wall",
+                    "x": "1500px",
+                    "y": "600px",
+                    "topAligned": true,
+                    "width": "535px",
+                    "height": "500px",
+                    "color": "orange"
+                },
+                {
+                    "comment": "left wall",
+                    "x": "0px",
+                    "y": "0px",
+                    "topAligned": true,
+                    "width": "1500px",
+                    "height": "100%",
+                    "color": "orange"
+                }
+            ]
+        },
+        {
+            "comment": "floor and stuff fixed to the floor",
+            "prefs": {
+                "width": 10000,
+                "offset": 0,
+                "speed": 1
+            },
+            "sprites": [
+                {
+                    "comment": "floor",
+                    "x": "0px",
+                    "y": "0",
+                    "topAligned": false,
+                    "width": "15284000px",
+                    "height": "200px",
+                    "color": "blue"
+                },
+                {
+                    "comment": "book shelf",
+                    "x": "1000px",
+                    "y": "200px",
+                    "topAligned": false,
+                    "width": "600px",
+                    "height": "400px",
+                    "color": "pink"
+                },
+                {
+                    "comment": "green ball",
+                    "x": "1200px",
+                    "y": "120px",
+                    "topAligned": false,
+                    "width": "150px",
+                    "height": "149px",
+                    "source": "graphics/scene/world/01-cradle/ball01.png"
+                },
+                {
+                    "comment": "blue ball",
+                    "x": "1200px",
+                    "y": "100px",
+                    "topAligned": false,
+                    "width": "120px",
+                    "height": "118px",
+                    "source": "graphics/scene/world/01-cradle/ball02.png"
+                },
+                {
+                    "comment": "yellow box",
+                    "x": "2300px",
+                    "y": "180px",
+                    "topAligned": false,
+                    "width": "100px",
+                    "height": "100px",
+                    "source": "graphics/scene/world/01-cradle/box01.png"
+                }
+            ]
+        },
+        {
+            "comment": "cradle background and some stuff on the floor",
+            "prefs": {
+                "width": 340,
+                "offset": 0,
+                "speed": 1.05
+            },
+            "sprites": [
+                {
+                    "comment": "yellow ball",
+                    "x": "1150px",
+                    "y": "90px",
+                    "topAligned": false,
+                    "width": "100px",
+                    "height": "100px",
+                    "source": "graphics/scene/world/01-cradle/ball03.png"
+                },
+                {
+                    "comment": "01-cradle background",
+                    "x": "1500px",
+                    "y": "140px",
+                    "topAligned": false,
+                    "width": "416px",
+                    "height": "130px",
+                    "color": "green"
+                }
+            ]
+        }
+    ],
+    "foreground": [
+        {
+            "comment": "01-cradle - bars",
+            "prefs": {
+                "width": 340,
+                "offset": 0,
+                "speed": 1.05
+            },
+            "sprites": [
+                {
+                    "comment": "01-cradle",
+                    "x": "1500px",
+                    "y": "140px",
+                    "topAligned": false,
+                    "width": "416px",
+                    "height": "266px",
+                    "source": "graphics/scene/world/01-cradle/cradle-front.gif"
+                }
+            ]
+        },
+        {
+            "comment": "balls and boxes (closer than cradle)",
+            "prefs": {
+                "width": 340,
+                "offset": 0,
+                "speed": 1.1
+            },
+            "sprites": [
+
+                {
+                    "comment": "pink box",
+                    "x": "1400px",
+                    "y": "20px",
+                    "topAligned": false,
+                    "width": "74px",
+                    "height": "75px",
+                    "source": "graphics/scene/world/01-cradle/box04.png"
+                },
+                {
+                    "comment": "green box",
+                    "x": "2800px",
+                    "y": "60px",
+                    "topAligned": false,
+                    "width": "200px",
+                    "height": "204px",
+                    "source": "graphics/scene/world/01-cradle/box02.png"
+                },
+                {
+                    "comment": "blue box",
+                    "x": "2920px",
+                    "y": "28px",
+                    "topAligned": false,
+                    "width": "154px",
+                    "height": "150px",
+                    "source": "graphics/scene/world/01-cradle/box03.png"
+                }
+            ]
+        },
+        {
+            "comment": "foreground - lamp",
+            "prefs": {
+                "width": 7000,
+                "offset": 0,
+                "speed": 0.8
+            },
+            "sprites": [
+                {
+                    "comment": "lamp",
+                    "x": "1200px",
+                    "y": "50px",
+                    "topAligned": true,
+                    "width": "329px",
+                    "height": "363px",
+                    "source": "graphics/scene/world/01-cradle/lamp.png"
+                }
+            ]
+        },
+        {
+            "comment": "foreground - wardrobe",
+            "prefs": {
+                "width": 7000,
+                "offset": 0,
+                "speed": 1.5
+            },
+            "sprites": [
+                {
+                    "comment": "wardrobe",
+                    "x": "2000px",
+                    "y": "-80px",
+                    "topAligned": false,
+                    "width": "1000px",
+                    "height": "50px",
+                    "color": "yellow",
+                    "blurred": true
+                },
+                {
+                    "comment": "bottle",
+                    "x": "2700px",
+                    "y": "0px",
+                    "topAligned": false,
+                    "width": "157px",
+                    "height": "297px",
+                    "source": "graphics/scene/world/01-cradle/bottle.png"
+                }
+            ]
+        },
+        {
+            "comment": "foreground - wall",
+            "prefs": {
+                "width": 7000,
+                "offset": 0,
+                "speed": 1.6
+            },
+            "sprites": [
+                {
+                    "comment": "left wall",
+                    "x": "-80px",
+                    "y": "-80px",
+                    "topAligned": true,
+                    "width": "1000px",
+                    "height": "100%",
+                    "color": "yellow",
+                    "blurred": true
+                },
+                {
+                    "comment": "top wall",
+                    "x": "920px",
+                    "y": "-80px",
+                    "topAligned": true,
+                    "width": "3080px",
+                    "height": "50px",
+                    "color": "yellow",
+                    "blurred": true
+                },
+                {
+                    "comment": "right wall",
+                    "x": "4000px",
+                    "y": "-80px",
+                    "topAligned": true,
+                    "width": "1000px",
+                    "height": "100%",
+                    "color": "pink",
+                    "blurred": true
+                }
+            ]
+        }
+    ]
+}

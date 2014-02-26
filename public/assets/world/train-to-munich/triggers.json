@@ -28,16 +28,6 @@
         "data": "adult"
     },
     {
-        "playerX": ">2500",
-        "type": "scene.zoom",
-        "data": "0.8|2000"
-    },
-    {
-        "playerX": "<2500",
-        "type": "scene.zoom",
-        "data": "1|2000"
-    },
-    {
         "playerX": ">5500",
         "type": "scene.zoom",
         "data": "1|2000"

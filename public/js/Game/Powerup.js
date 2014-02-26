@@ -21,7 +21,7 @@ ACV.Game.Powerup.prototype = ACV.Core.createPrototype('ACV.Game.Powerup',
     element: null
 });
 
-ACV.Game.Powerup.prototype.init = function(foregroundElement)
+ACV.Game.Powerup.prototype.init = function(playerLayerElement)
 {
     this.element = $('<div class="powerup" />');
     this.element.css(
@@ -31,7 +31,7 @@ ACV.Game.Powerup.prototype.init = function(foregroundElement)
     });
     this.element.text(this.x);
 
-    foregroundElement.append(this.element);
+    playerLayerElement.append(this.element);
 
     this.log('Powerup initialized', 'd');
 };

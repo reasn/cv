@@ -44,7 +44,7 @@ ACV.App.prototype.init = function(data)
     //Initialize scene
     sceneElement = $('<div id="scene"/>');
     this.scene = ACV.Game.Scene.createFromData(sceneElement, data.scene, data.app.performanceSettings);
-    this.scene.foreground.skillBasket = this.hud.skillBasket;
+    this.scene.playerLayer.skillBasket = this.hud.skillBasket;
     this.scene.init(
     {
         width: this.viewportManager.viewportDimensions.width,

@@ -1,0 +1,257 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000000;
+}
+* {
+  color: #ffffff;
+}
+*:hover {
+  -box-shadow: 0 0 20px 20px red;
+}
+#github-ribbon {
+  position: fixed;
+  top: 0;
+  right: 0;
+  border: 0;
+  z-index: 100;
+}
+#container {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  background-color: #000000;
+}
+#container #scene {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+}
+#container #scene .layer {
+  position: absolute;
+  height: 100%;
+}
+#container #scene .layer .sprite-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+#container #scene .layer .sprite-wrapper .sprite {
+  position: absolute;
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.white {
+  background-image: url("../assets/graphics/scene/world/matte/patterns/white.jpg");
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.yellow {
+  background-image: url("../assets/graphics/scene/world/matte/patterns/yellow.jpg");
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.pink {
+  background-image: url("../assets/graphics/scene/world/matte/patterns/pink.jpg");
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.green {
+  background-image: url("../assets/graphics/scene/world/matte/patterns/green.jpg");
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.orange {
+  background-image: url("../assets/graphics/scene/world/matte/patterns/orange.jpg");
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.blue {
+  background-image: url("../assets/graphics/scene/world/matte/patterns/blue.jpg");
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.blurred {
+  border: 80px solid transparent;
+  -background-image: none;
+  -background-color: #f6c74b;
+  box-sizing: padding-box;
+  background-clip: padding-box;
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.blurred.white {
+  border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/white.png") 80 80 repeat;
+  background-color: #e7e7e5;
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.blurred.yellow {
+  border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/yellow.png") 80 80 repeat;
+  background-color: #f6c74b;
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.blurred.pink {
+  border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/pink.png") 80 80 repeat;
+  background-color: #c75093;
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.blurred.green {
+  border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/green.png") 80 80 repeat;
+  background-color: #8dc45c;
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.blurred.orange {
+  border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/orange.png") 80 80 repeat;
+  background-color: #f6943f;
+}
+#container #scene .layer .sprite-wrapper .sprite.colored.blurred.blue {
+  border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/blue.png") 80 80 repeat;
+  background-color: #15a2c1;
+}
+#container #scene .player-layer {
+  position: relative;
+  height: 100%;
+}
+#container #scene .player-layer .player {
+  position: absolute;
+  background-repeat: no-repeat;
+}
+#container #scene .player-layer .player.baby {
+  background: url("../assets/graphics/scene/player/baby/stand.gif");
+}
+#container #scene .player-layer .player.baby.walking {
+  background: url("../assets/graphics/scene/player/baby/walk-forward.gif");
+}
+#container #scene .player-layer .player.baby.walking.backwards {
+  background: url("../assets/graphics/scene/player/baby/walk-backwards.gif");
+}
+#container #scene .player-layer .player.child {
+  background: url("../assets/graphics/scene/player/child/stand.gif");
+}
+#container #scene .player-layer .player.child.walking {
+  background: url("../assets/graphics/scene/player/child/walk-forward.gif");
+}
+#container #scene .player-layer .player.child.walking.backwards {
+  background: url("../assets/graphics/scene/player/child/walk-backwards.gif");
+}
+#container #scene .player-layer .player.teen {
+  background: url("../assets/graphics/scene/player/teen/stand.gif");
+}
+#container #scene .player-layer .player.teen.walking {
+  background: url("../assets/graphics/scene/player/teen/walk-forward.gif");
+}
+#container #scene .player-layer .player.teen.walking.backwards {
+  background: url("../assets/graphics/scene/player/teen/walk-backwards.gif");
+}
+#container #scene .player-layer .player.adult {
+  background: url("../assets/graphics/scene/player/adult/stand.gif");
+}
+#container #scene .player-layer .player.adult.walking {
+  background: url("../assets/graphics/scene/player/adult/walk-forward.gif");
+}
+#container #scene .player-layer .player.adult.walking.backwards {
+  background: url("../assets/graphics/scene/player/adult/walk-backwards.gif");
+}
+#container #scene .player-layer .powerup {
+  position: absolute;
+  color: black;
+  width: 50px;
+  height: 50px;
+  background-color: #FFFF00;
+}
+#container #hud {
+  z-index: 90;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #000099;
+  position: absolute;
+}
+#container #hud .skill-basket {
+  display: block;
+  position: absolute;
+  left: 500px;
+  top: 0;
+  width: 320px;
+}
+#container #hud .skill-basket li {
+  margin: 2px;
+  display: block;
+  padding: 0 0 0 13px;
+  transition: font-size 500ms;
+  background: url("../assets/graphics/hud/skills/levels/beginner.gif") 0px 50% no-repeat;
+  float: left;
+}
+#container #hud .skill-basket li.unknown {
+  font-size: 0;
+  height: 0;
+  width: 0;
+  display: none;
+}
+#container #hud .skill-basket li.beginner {
+  font-size: 10px;
+  color: #72ff00;
+}
+#container #hud .skill-basket li.intermediate {
+  font-size: 20px;
+  background-image: url("../assets/graphics/hud/skills/levels/intermediate.gif");
+  padding-left: 20px;
+  color: #00a2ff;
+}
+#container #hud .skill-basket li.expert {
+  font-size: 30px;
+  background-image: url("../assets/graphics/hud/skills/levels/expert.gif");
+  padding-left: 34px;
+  color: #ffc600;
+}
+#container #hud .skill-basket li.master {
+  font-size: 40px;
+  background-image: url("../assets/graphics/hud/skills/levels/master.gif");
+  padding-left: 46px;
+  color: #ff0084;
+}
+#container #hud .skill-basket-info {
+  position: absolute;
+  left: 230px;
+  top: 0;
+}
+#container #hud .skill-basket-info li {
+  margin: 2px;
+  display: block;
+  padding: 0 0 0 13px;
+  transition: font-size 500ms;
+  background: url("../assets/graphics/hud/skills/levels/beginner.gif") 0px 50% no-repeat;
+}
+#container #hud .skill-basket-info li.unknown {
+  font-size: 0;
+  height: 0;
+  width: 0;
+  display: none;
+}
+#container #hud .skill-basket-info li.beginner {
+  font-size: 10px;
+  color: #72ff00;
+}
+#container #hud .skill-basket-info li.intermediate {
+  font-size: 20px;
+  background-image: url("../assets/graphics/hud/skills/levels/intermediate.gif");
+  padding-left: 20px;
+  color: #00a2ff;
+}
+#container #hud .skill-basket-info li.expert {
+  font-size: 30px;
+  background-image: url("../assets/graphics/hud/skills/levels/expert.gif");
+  padding-left: 34px;
+  color: #ffc600;
+}
+#container #hud .skill-basket-info li.master {
+  font-size: 40px;
+  background-image: url("../assets/graphics/hud/skills/levels/master.gif");
+  padding-left: 46px;
+  color: #ff0084;
+}
+#container #hud #year {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  font-size: 100px;
+  font-weight: bold;
+}
+#container #hud #height {
+  position: fixed;
+  top: 150px;
+  left: 10px;
+  font-size: 100px;
+  font-weight: bold;
+}
+#container #hud #height:after {
+  content: 'cm';
+}
+.tag-cloud li {
+  display: block;
+  float: left;
+}

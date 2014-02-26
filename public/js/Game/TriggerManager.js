@@ -55,9 +55,9 @@ ACV.Game.TriggerManager.prototype._execute = function(trigger)
     switch(trigger.type)
     {
         case 'player.setAge':
-            return this.scene.foreground.player.setAge(args[0]);
+            return this.scene.playerLayer.player.setAge(args[0]);
         case 'player.jump':
-            return this.scene.foreground.player.jump();
+            return this.scene.playerLayer.player.jump();
         case 'scene.zoom':
         	return this.scene.startZoom(args[0], parseInt(args[1]));
         default:

@@ -28,7 +28,7 @@ ACV.Game.Player.prototype = ACV.Core.createPrototype('ACV.Game.Player',
         movementListener: null
     });
 
-ACV.Game.Player.prototype.init = function (foregroundElement, movementListener) {
+ACV.Game.Player.prototype.init = function (playerLayerElement, movementListener) {
 
     this.log('Initializing player', 'd');
 
@@ -41,7 +41,7 @@ ACV.Game.Player.prototype.init = function (foregroundElement, movementListener) 
             bottom: this.y
         });
     this.setAge(Object.keys(this.prefs.ages).shift());
-    foregroundElement.append(this.element);
+    playerLayerElement.append(this.element);
     this.log('Player initialized', 'd');
 };
 /**
