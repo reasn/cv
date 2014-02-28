@@ -55,6 +55,9 @@ body {
 #container #scene .level-wrapper .level .layer .sprite-wrapper .sprite {
   position: absolute;
 }
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.image-background {
+  background-size: contain;
+}
 #container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.white {
   background-image: url("../assets/graphics/scene/world/matte/patterns/white.jpg");
 }

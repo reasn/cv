@@ -77,6 +77,10 @@ body {
 
                         .sprite {
                             position: absolute;
+
+                            &.image-background {
+                                background-size:contain
+                            }
                             &.colored {
                                 .bg(@colorName) {
                                     background-image: url("../assets/graphics/scene/world/matte/patterns/@{colorName}.jpg");

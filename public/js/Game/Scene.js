@@ -47,7 +47,9 @@ ACV.Game.Scene.createFromData = function (element, data, performanceSettings) {
     playerLayer = ACV.Game.PlayerLayer.createFromData(data.playerLayer, performanceSettings);
 
     for (i in data.levels) {
-        levels.push(ACV.Game.Level.createFromPrefs(data.levels[i]));
+        if (data.levels[i].enabled) {
+            levels.push(ACV.Game.Level.createFromPrefs(data.levels[i]));
+        }
     }
 
     triggerManager = ACV.Game.TriggerManager.createFromData(data.triggers, performanceSettings);

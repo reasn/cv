@@ -59,12 +59,17 @@ ACV.Game.Sprite.prototype.init = function (layerElement) {
             width: this.width,
             height: this.height
         });
-    if (typeof (this.source) === 'string')
+
+    //TODO implement combined asset files
+    if (typeof (this.source) === 'string') {
         this.element.css('backgroundImage', 'url("' + ACV.App.config.assetPath + '/' + this.source + '")');
-    else if (typeof(this.color) === 'string')
+        this.element.addClass('image-background')
+    } else if (typeof(this.color) === 'string') {
         this.element.addClass('colored').addClass(this.color);
-    else//TODO implement combined asset files
+    } else {
         this.element.css('backgroundColor', ACV.Game.Sprite.mockColors[ACV.Game.Sprite.mockColorIndex++]);
+    }
+
 
     if (this.blurred)
         this.element.addClass('blurred');
