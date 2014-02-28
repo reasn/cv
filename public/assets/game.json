@@ -55,15 +55,31 @@
         "levels": [
             {
                 "handle": "01-cradle",
-                "offset": 0,
-                "fromSceneX": 0,
-                "toSceneX": 5000
+                "prefs": {
+                    "offset": 0,
+                    "clip": {
+                        "x1": 0,
+                        "x2": 3400
+                    },
+                    "visibility": {
+                        "x1": 0,
+                        "x2": 3800
+                    }
+                }
             },
             {
                 "handle": "02-way-to-school",
-                "offset": 2000,
-                "fromSceneX": 3500,
-                "toSceneX": 7000
+                "prefs": {
+                    "offset": 500,
+                    "clip": {
+                        "x1": 0,
+                        "x2": 7400
+                    },
+                    "visibility": {
+                        "x1": -500,
+                        "x2": 7000
+                    }
+                }
             }
         ],
         "layers": {

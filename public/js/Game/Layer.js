@@ -34,7 +34,7 @@ ACV.Game.Layer.prototype.init = function(sceneElement, minHeight, maxHeight)
 {
     var spriteWrapper;
 
-    this.element = $('<div class="layer"><div class="sprite-wrapper" /></div>"');
+    this.element = $('<div class="layer"><div class="sprite-wrapper" /></div>');
     this.element.css(
     {
         width: this.prefs.width + 'px',
@@ -62,8 +62,11 @@ ACV.Game.Layer.prototype.updatePositions = function(sceneX, sceneXBefore, width)
 {
     var sprite, position = null, positionBefore = null;
 
-    var x = -this.prefs.speed * sceneX;
-    var xBefore = -this.prefs.speed * sceneXBefore;
+    var adjustedSceneX = sceneX - this.prefs.offset;
+    var adjustedSceneXBefore = sceneX - this.prefs.offset;
+
+    var x = -this.prefs.speed * adjustedSceneX;
+    var xBefore = -this.prefs.speed * adjustedSceneXBefore;
 
     //this.log('Layer : ' + (x - this.prefs.offset ));
     this.element.css('left', (x + this.prefs.offset ) + 'px');

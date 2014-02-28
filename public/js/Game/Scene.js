@@ -18,14 +18,13 @@ ACV.Game = ACV.Game ? ACV.Game : new Object();
  * @param ACV.Game.Layer[]
  *            layers
  */
-ACV.Game.Scene = function (element, prefs, playerLayer, backgroundLayers, foregroundLayers, triggerManager) {
+ACV.Game.Scene = function (element, prefs, levels, playerLayer, triggerManager) {
     this.element = $(element);
     this.prefs = prefs;
     this.playerLayer = playerLayer;
-    this.backgroundLayers = backgroundLayers;
-    this.foregroundLayers = foregroundLayers;
     this.triggerManager = triggerManager;
     this.triggerManager.scene = this;
+    this.levels = levels;
 };
 
 ACV.Game.Scene.prototype = ACV.Core.createPrototype('ACV.Game.Scene', {
@@ -36,65 +35,68 @@ ACV.Game.Scene.prototype = ACV.Core.createPrototype('ACV.Game.Scene', {
             maxHeight: 1000
         }
     },
+    backgroundElement: null,
+    foregroundElement: null,
     playerLayer: null,
-    backgroundLayers: [],
-    foregroundLayers: [],
-    triggerManager: null
+    triggerManager: null,
+    levels: []
 });
 
 ACV.Game.Scene.createFromData = function (element, data, performanceSettings) {
-    var playerLayer, backgroundLayers = [], foregroundLayers = [], triggerManager, i;
+    var levels = [], playerLayer, triggerManager, i;
     playerLayer = ACV.Game.PlayerLayer.createFromData(data.playerLayer, performanceSettings);
 
-    for (i in data.layers.background) {
-        backgroundLayers.push(new ACV.Game.Layer.createFromPrefs(data.layers.background[i]));
-    }
-    for (i in data.layers.foreground) {
-        foregroundLayers.push(new ACV.Game.Layer.createFromPrefs(data.layers.foreground[i]));
+    for (i in data.levels) {
+        levels.push(ACV.Game.Level.createFromPrefs(data.levels[i]));
     }
 
     triggerManager = ACV.Game.TriggerManager.createFromData(data.triggers, performanceSettings);
-    return new ACV.Game.Scene(element, data.prefs, playerLayer, backgroundLayers, foregroundLayers, triggerManager);
+    return new ACV.Game.Scene(element, data.prefs, levels, playerLayer, triggerManager);
 };
 
-ACV.Game.Scene.prototype.init = function (sceneDimensions) {
-    var instance = this;
+ACV.Game.Scene.prototype.init = function (viewportDimensions) {
+    var i;
 
     this.element.css({
         bottom: 'auto',
-        height: sceneDimensions.height
+        height: viewportDimensions.height
     });
-    for (var i in this.backgroundLayers) {
-        this.backgroundLayers[i].init(this.element, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight);
+
+    this.backgroundElement = $('<div class="level-wrapper background" />');
+    this.foregroundElement = $('<div class="level-wrapper foreground" />')
+
+    for (i in this.levels) {
+        this.levels[i].init(this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight);
     }
+
+    // Reduce draw calls by adding everything to the DOM at last
+    this.element.append(this.backgroundElement);
     this.playerLayer.init(this.element, this.prefs.width, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight, this);
-
-    for (var i in this.foregroundLayers) {
-        this.foregroundLayers[i].init(this.element, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight);
-    }
-
+    this.element.append(this.foregroundElement);
 };
 
-ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore, sceneDimensions) {
-    var offset, offsetBefore, layerRatio, layerRatioBefore, speed;
-    var sceneX = ratio * (this.prefs.width - sceneDimensions.width);
-    var sceneXBefore = ratio * (this.prefs.width - sceneDimensions.width);
-    if (sceneDimensions.changed) {
-        this.element.css('height', sceneDimensions.height);
-        this.log('new scene height: ' + sceneDimensions.height, 'd');
+ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore, viewportDimensions) {
+    var offset, offsetBefore, layerRatio, layerRatioBefore, speed, i;
+    var sceneX = ratio * (this.prefs.width - viewportDimensions.width);
+    var sceneXBefore = ratio * (this.prefs.width - viewportDimensions.width);
+    if (viewportDimensions.changed) {
+        this.element.css('height', viewportDimensions.height);
+        this.log('new scene height: ' + viewportDimensions.height, 'd');
     }
 
-    for (var i in this.backgroundLayers) {
-        this.backgroundLayers[i].updatePositions(sceneX, sceneXBefore, sceneDimensions.width);
-    }
-    for (var i in this.foregroundLayers) {
-        this.foregroundLayers[i].updatePositions(sceneX, sceneXBefore, sceneDimensions.width);
+    for (i in this.levels) {
+        this.levels[i].updatePositions(sceneX, sceneXBefore, viewportDimensions);
     }
 
-    if (sceneDimensions.changed) {
-        this._handleViewportChange(sceneDimensions);
+    if (viewportDimensions.changed) {
+        this._handleViewportChange(viewportDimensions);
     }
-    this.playerLayer.updatePositions(sceneX, sceneDimensions);
+    this.playerLayer.updatePositions(sceneX, viewportDimensions);
+
+    //Check levels and automatically show them in the DOM if necessary
+    //for(i in this.levels) {
+//        if()
+//    }
     $('#sceneX').text(sceneX);
 };
 
@@ -102,23 +104,29 @@ ACV.Game.Scene.prototype.handleTriggers = function (playerX, sceneX) {
     this.triggerManager.check(playerX, sceneX);
 };
 
-ACV.Game.Scene.prototype._handleViewportChange = function (sceneDimensions) {
+ACV.Game.Scene.prototype._handleViewportChange = function (viewportDimensions) {
+    var levelIndex, layerIndex;
     var elementsToAlter = this.playerLayer.element;
-    for (var i in this.backgroundLayers) {
-        elementsToAlter = elementsToAlter.add(this.backgroundLayers[i].element);
-    }
-    for (var i in this.foregroundLayers) {
-        elementsToAlter = elementsToAlter.add(this.foregroundLayers[i].element);
+
+    for (levelIndex in this.levels) {
+
+        for (layerIndex in this.levels[levelIndex].backgroundLayers) {
+            elementsToAlter = elementsToAlter.add(this.levels[levelIndex].backgroundLayers[layerIndex].element);
+        }
+        for (layerIndex in this.levels[levelIndex].foregroundLayers) {
+            elementsToAlter = elementsToAlter.add(this.levels[levelIndex].foregroundLayers[layerIndex].element);
+        }
     }
 
-    if (sceneDimensions.height < this.prefs.dynamicViewport.minHeight) {
+
+    if (viewportDimensions.height < this.prefs.dynamicViewport.minHeight) {
         elementsToAlter.css('top', Math.round(-.5
-            * (this.prefs.dynamicViewport.minHeight - sceneDimensions.height))
+            * (this.prefs.dynamicViewport.minHeight - viewportDimensions.height))
             + 'px');
 
-    } else if (sceneDimensions.height > this.prefs.dynamicViewport.maxHeight) {
+    } else if (viewportDimensions.height > this.prefs.dynamicViewport.maxHeight) {
         elementsToAlter.css('top', Math
-            .round(.5 * (sceneDimensions.height - this.prefs.dynamicViewport.maxHeight))
+            .round(.5 * (viewportDimensions.height - this.prefs.dynamicViewport.maxHeight))
             + 'px');
 
     } else {

@@ -31,64 +31,76 @@ body {
   left: 0;
   position: absolute;
 }
-#container #scene .layer {
+#container #scene .level-wrapper .level {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  display: none;
+  overflow: hidden;
+}
+#container #scene .level-wrapper .level.visible {
+  display: block;
+}
+#container #scene .level-wrapper .level .layer {
   position: absolute;
   height: 100%;
 }
-#container #scene .layer .sprite-wrapper {
+#container #scene .level-wrapper .level .layer .sprite-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
 }
-#container #scene .layer .sprite-wrapper .sprite {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite {
   position: absolute;
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.white {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.white {
   background-image: url("../assets/graphics/scene/world/matte/patterns/white.jpg");
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.yellow {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.yellow {
   background-image: url("../assets/graphics/scene/world/matte/patterns/yellow.jpg");
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.pink {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.pink {
   background-image: url("../assets/graphics/scene/world/matte/patterns/pink.jpg");
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.green {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.green {
   background-image: url("../assets/graphics/scene/world/matte/patterns/green.jpg");
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.orange {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.orange {
   background-image: url("../assets/graphics/scene/world/matte/patterns/orange.jpg");
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.blue {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blue {
   background-image: url("../assets/graphics/scene/world/matte/patterns/blue.jpg");
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.blurred {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred {
   border: 80px solid transparent;
   -background-image: none;
   -background-color: #f6c74b;
   box-sizing: padding-box;
   background-clip: padding-box;
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.blurred.white {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred.white {
   border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/white.png") 80 80 repeat;
   background-color: #e7e7e5;
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.blurred.yellow {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred.yellow {
   border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/yellow.png") 80 80 repeat;
   background-color: #f6c74b;
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.blurred.pink {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred.pink {
   border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/pink.png") 80 80 repeat;
   background-color: #c75093;
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.blurred.green {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred.green {
   border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/green.png") 80 80 repeat;
   background-color: #8dc45c;
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.blurred.orange {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred.orange {
   border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/orange.png") 80 80 repeat;
   background-color: #f6943f;
 }
-#container #scene .layer .sprite-wrapper .sprite.colored.blurred.blue {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred.blue {
   border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/blue.png") 80 80 repeat;
   background-color: #15a2c1;
 }

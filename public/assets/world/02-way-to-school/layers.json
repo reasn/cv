@@ -3,7 +3,7 @@
         {
             "comment": "background",
             "prefs": {
-                "width": 7000,
+                "width": 1000,
                 "offset": 0,
                 "speed": 0.3
             },
@@ -13,10 +13,11 @@
                     "x": "0px",
                     "y": "0",
                     "topAligned": true,
-                    "width": "5000",
+                    "width": "5000px",
                     "height": "100%",
                     "color": "blue"
-                },{
+                },
+                {
                     "comment": "street",
                     "x": "0px",
                     "y": "0px",
@@ -29,6 +30,25 @@
         }
     ],
     "foreground": [
-
+        {
+            "comment": "foreground - left wall",
+            "prefs": {
+                "width": 100,
+                "offset": 1150,
+                "speed": 1
+            },
+            "sprites": [
+                {
+                    "comment": "right wall",
+                    "x": "0px",
+                    "y": "-80px",
+                    "topAligned": true,
+                    "width": "100px",
+                    "height": "100%",
+                    "color": "pink",
+                    "blurred": true
+                }
+            ]
+        }
     ]
 }

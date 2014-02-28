@@ -18,12 +18,15 @@ body {
     padding: 0;
     background-color: #000000
 }
+
 * {
     color: #ffffff;
 }
+
 *:hover {
     -box-shadow: 0 0 20px 20px red;
 }
+
 #github-ribbon {
     position: fixed;
     top: 0;
@@ -31,6 +34,7 @@ body {
     border: 0;
     z-index: @zGithub;
 }
+
 #container {
     top: 0;
     right: 0;
@@ -46,47 +50,90 @@ body {
         left: 0;
         position: absolute;
 
-        .layer {
-            position: absolute;
-            height: 100%;
-            .sprite-wrapper {
-                position: relative;
-                width: 100%;
-                height: 100%;
+        .level-wrapper {
 
-                .sprite {
+            .level {
+
+
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                position: absolute;
+                display: none;
+                overflow: hidden;
+
+                &.visible {
+                    display: block
+                }
+
+                .layer {
                     position: absolute;
-					&.colored {
-						.bg(@colorName) {
-							background-image: url("../assets/graphics/scene/world/matte/patterns/@{colorName}.jpg");
-						}
-                        .bgBlurred(@color, @colorName) {
-                          border-image:url("../assets/graphics/scene/world/matte/blurred-patterns/@{colorName}.png") 80 80 repeat;
-                          background-color: @color;
+                    height: 100%;
+                    .sprite-wrapper {
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
 
+                        .sprite {
+                            position: absolute;
+                            &.colored {
+                                .bg(@colorName) {
+                                    background-image: url("../assets/graphics/scene/world/matte/patterns/@{colorName}.jpg");
+                                }
+                                .bgBlurred(@color, @colorName) {
+                                    border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/@{colorName}.png") 80 80 repeat;
+                                    background-color: @color;
+
+                                }
+                                &.white {
+                                    .bg('white')
+                                }
+                                &.yellow {
+                                    .bg('yellow')
+                                }
+                                &.pink {
+                                    .bg('pink')
+                                }
+                                &.green {
+                                    .bg('green')
+                                }
+                                &.orange {
+                                    .bg('orange')
+                                }
+                                &.blue {
+                                    .bg('blue')
+                                }
+
+                                &.blurred {
+                                    border: 80px solid transparent;
+                                    -background-image: none;
+                                    -background-color: @cMatteYellow;
+                                    box-sizing: padding-box;
+                                    background-clip: padding-box;
+
+                                    &.white {
+                                        .bgBlurred(@cMatteWhite, 'white')
+                                    }
+                                    &.yellow {
+                                        .bgBlurred(@cMatteYellow, 'yellow')
+                                    }
+                                    &.pink {
+                                        .bgBlurred(@cMattePink, 'pink')
+                                    }
+                                    &.green {
+                                        .bgBlurred(@cMatteGreen, 'green')
+                                    }
+                                    &.orange {
+                                        .bgBlurred(@cMatteOrange, 'orange')
+                                    }
+                                    &.blue {
+                                        .bgBlurred(@cMatteBlue, 'blue')
+                                    }
+                                }
+                            }
                         }
-						&.white { .bg('white') }
-						&.yellow{ .bg('yellow') }
-						&.pink  { .bg('pink') }
-						&.green { .bg('green') }
-						&.orange{ .bg('orange') }
-						&.blue  { .bg('blue') }
-
-                      &.blurred {
-                        border: 80px solid transparent;
-                        -background-image: none;
-                        -background-color: @cMatteYellow;
-                        box-sizing: padding-box;
-                        background-clip: padding-box;
-
-                        &.white { .bgBlurred(@cMatteWhite, 'white') }
-                        &.yellow { .bgBlurred(@cMatteYellow, 'yellow') }
-                        &.pink { .bgBlurred(@cMattePink, 'pink') }
-                        &.green { .bgBlurred(@cMatteGreen, 'green') }
-                        &.orange { .bgBlurred(@cMatteOrange, 'orange') }
-                        &.blue { .bgBlurred(@cMatteBlue, 'blue') }
-                      }
-					}
+                    }
                 }
             }
         }
@@ -112,13 +159,13 @@ body {
                 &.baby {
                     .age("baby");
                 }
-                &.child{
+                &.child {
                     .age("child");
                 }
                 &.teen {
                     .age("teen");
                 }
-                &.adult{
+                &.adult {
                     .age("adult");
                 }
 
@@ -147,7 +194,12 @@ body {
             transition: font-size 500ms;
             background: url("../assets/graphics/hud/skills/levels/beginner.gif") 0px 50% no-repeat;
 
-            &.unknown { font-size: 0; height: 0; width: 0; display: none }
+            &.unknown {
+                font-size: 0;
+                height: 0;
+                width: 0;
+                display: none
+            }
             &.beginner {
                 font-size: 10px;
                 color: @cMainGreen;
@@ -206,9 +258,9 @@ body {
             left: 10px;
             font-size: 100px;
             font-weight: bold;
-        	&:after {
-				content: 'cm'
-        	}
+            &:after {
+                content: 'cm'
+            }
         }
     }
 }

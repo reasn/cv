@@ -36,22 +36,26 @@ ACV.Core.PrefLoader.prototype.load = function (qFx) {
  */
 ACV.Core.PrefLoader.prototype._loadLevels = function (levels, qFx) {
     var pl = this, loadNextLevel;
+    var levelIndex = 0;
+    this.log('Loading ' + levels.length + ' levels.');
 
     loadNextLevel = function () {
-        pl._loadLevel(levels.shift(), function () {
-            if (levels.length > 0) {
+
+        pl._loadLevel(levels[levelIndex], function () {
+
+            if (++levelIndex < levels.length) {
                 loadNextLevel();
-            }
-            else {
+            } else {
                 qFx.apply(this, [pl.gameData]);
             }
         });
     };
     loadNextLevel();
 };
-ACV.Core.PrefLoader.prototype._loadLevel = function (levelDescriptor, qFx) {
+ACV.Core.PrefLoader.prototype._loadLevel = function (level, qFx) {
     var pl = this, filesToLoad = 3;
-    this.log('Loading level ' + levelDescriptor.handle);
+
+    this.log('Loading level ' + level.handle, 'i');
 
     var wrappedQfx = function () {
         if (--filesToLoad === 0) {
@@ -59,31 +63,17 @@ ACV.Core.PrefLoader.prototype._loadLevel = function (levelDescriptor, qFx) {
         }
     };
 
-    $.getJSON('assets/world/' + levelDescriptor.handle + '/layers.json', function (layers) {
-        pl._loadLayers(levelDescriptor.offset, layers, wrappedQfx);
+    $.getJSON('assets/world/' + level.handle + '/layers.json', function (layers) {
+        level.layers = layers;
+        wrappedQfx.apply(pl);
     });
-    $.getJSON('assets/world/' + levelDescriptor.handle + '/triggers.json', function (triggers) {
-        pl._loadTriggers(levelDescriptor.offset, triggers, wrappedQfx);
-    });
-    $.getJSON('assets/world/' + levelDescriptor.handle + '/powerUps.json', function (powerUps) {
-        pl._loadPowerUps(levelDescriptor.offset, powerUps, wrappedQfx);
-    });
-};
 
-ACV.Core.PrefLoader.prototype._loadLayers = function (levelOffset, layers, qFx) {
-
-    var layer, layerIndex;
-    for (layerIndex in layers.background) {
-        layer = layers.background[layerIndex];
-        layer.prefs.offset += levelOffset;
-        this.gameData.scene.layers.background.push(layer);
-    }
-    for (layerIndex in layers.foreground) {
-        layer = layers.foreground[layerIndex];
-        layer.prefs.offset += levelOffset;
-        this.gameData.scene.layers.foreground.push(layer);
-    }
-    qFx.apply(this);
+    $.getJSON('assets/world/' + level.handle + '/triggers.json', function (triggers) {
+        pl._loadTriggers(level.offset, triggers, wrappedQfx);
+    });
+    $.getJSON('assets/world/' + level.handle + '/powerUps.json', function (powerUps) {
+        pl._loadPowerUps(level.offset, powerUps, wrappedQfx);
+    });
 };
 
 ACV.Core.PrefLoader.prototype._loadTriggers = function (levelOffset, triggers, qFx) {

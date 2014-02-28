@@ -1,3 +1,22 @@
 [
-
+    {
+        "playerX": ">1500",
+        "type": "player.setAge",
+        "data": "child"
+    },
+    {
+        "playerX": "<1500",
+        "type": "player.setAge",
+        "data": "baby"
+    },
+    {
+        "playerX": ">2000",
+        "type": "player.setAge",
+        "data": "teen"
+    },
+    {
+        "playerX": ">3000",
+        "type": "player.setAge",
+        "data": "adult"
+    }
 ]
