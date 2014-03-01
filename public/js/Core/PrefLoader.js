@@ -69,15 +69,15 @@ ACV.Core.PrefLoader.prototype._loadLevel = function (level, qFx) {
         }
     };
 
-    $.getJSON('assets/world/' + level.handle + '/layers.json', function (layers) {
+    $.getJSON('assets/map/' + level.handle + '/layers.json', function (layers) {
         level.layers = layers;
         wrappedQfx.apply(pl);
     });
 
-    $.getJSON('assets/world/' + level.handle + '/triggers.json', function (triggers) {
+    $.getJSON('assets/map/' + level.handle + '/triggers.json', function (triggers) {
         pl._loadTriggers(level.prefs.offset, triggers, wrappedQfx);
     });
-    $.getJSON('assets/world/' + level.handle + '/powerUps.json', function (powerUps) {
+    $.getJSON('assets/map/' + level.handle + '/powerUps.json', function (powerUps) {
         pl._loadPowerUps(level.prefs.offset, powerUps, wrappedQfx);
     });
 };
