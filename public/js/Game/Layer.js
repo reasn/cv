@@ -55,20 +55,20 @@ ACV.Game.Layer.prototype.init = function (sceneElement, minHeight, maxHeight) {
  * @param int x The amount of pixels that already left the viewport on the left side. Positive integer
  * @param int width The width of the current viewport
  */
-ACV.Game.Layer.prototype.updatePositions = function (sceneX, sceneXBefore, width) {
-    var sprite, position = null, positionBefore = null;
+ACV.Game.Layer.prototype.updatePositions = function (sceneX, sceneXBefore, levelClipOffset, width) {
+    var i, sprite, position = null, positionBefore = null;
 
     var adjustedSceneX = sceneX - this.prefs.offset;
-    var adjustedSceneXBefore = sceneX - this.prefs.offset;
+    var adjustedSceneXBefore = sceneXBefore - this.prefs.offset;
 
-    var x = -this.prefs.speed * adjustedSceneX;
-    var xBefore = -this.prefs.speed * adjustedSceneXBefore;
+    var x = -this.prefs.speed * adjustedSceneX - levelClipOffset;
+    var xBefore = -this.prefs.speed * adjustedSceneXBefore - levelClipOffset;
 
     //this.info('Layer : ' + (x - this.prefs.offset ));
-    this.element.css('left', (x + this.prefs.offset ) + 'px');
+    this.element.css('left', x + 'px');
 
     //Trigger sprite animations
-    for (var i in this.sprites) {
+    for (i in this.sprites) {
         sprite = this.sprites[i];
         for (var leftThreshold in sprite.positions) {
             if (x > leftThreshold && position === null)

@@ -46,18 +46,22 @@ ACV.Game.Level.prototype = ACV.Core.createPrototype('ACV.Game.Level',
 ACV.Game.Level.prototype.init = function (backgroundWrapper, foregroundWrapper, minHeight, maxHeight) {
     var i;
 
-    this.foregroundElement = $('<div class="level" />');
-    this.backgroundElement = $('<div class="level" />');
+    this.foregroundElement = $('<div class="level" data-handle="' + this.handle + '" />');
+    this.foregroundElement.css('max-width', this.prefs.clip.x2, 0);
+
+
+    this.backgroundElement = $('<div class="level" data-handle="' + this.handle + '" />');
+    this.backgroundElement.css('max-width', this.prefs.clip.x2, 0);
 
     for (i in this.backgroundLayers) {
-        this.backgroundLayers[i].init(this.foregroundElement, minHeight, maxHeight);
+        this.backgroundLayers[i].init(this.backgroundElement, minHeight, maxHeight);
     }
     for (i in this.foregroundLayers) {
-        this.foregroundLayers[i].init(this.backgroundElement, minHeight, maxHeight);
+        this.foregroundLayers[i].init(this.foregroundElement, minHeight, maxHeight);
     }
     //Add to DOM at last to reduce draw calls
-    backgroundWrapper.prepend(this.foregroundElement);
-    foregroundWrapper.append(this.backgroundElement);
+    backgroundWrapper.append(this.backgroundElement);
+    foregroundWrapper.append(this.foregroundElement);
     this.info('Level initialized with ' + this.foregroundLayers.length + ' foreground layers and ' + this.backgroundLayers.length + ' background layers', 'd');
 };
 
@@ -67,30 +71,21 @@ ACV.Game.Level.prototype.init = function (backgroundWrapper, foregroundWrapper, 
  * @param int width The width of the current viewport
  */
 ACV.Game.Level.prototype.updatePositions = function (sceneX, sceneXBefore, viewportDimensions) {
-    var i;
-
+    var i, distanceBetweenLeftViewportMarginAndLevelBegin;
     var vX1 = this.prefs.offset + this.prefs.visibility.x1;
     var vX2 = this.prefs.offset + this.prefs.visibility.x2;
 
     if (this.visible && (sceneX < vX1 || sceneX > vX2)) {
-        this.info('Hidding level ' + this.handle, 'i');
+        this.info('Hiding level ' + this.handle, 'i');
         this.visible = false;
         this.foregroundElement.removeClass('visible');
         this.backgroundElement.removeClass('visible');
     }
 
+    distanceBetweenLeftViewportMarginAndLevelBegin = this.prefs.offset - sceneX + this.prefs.clip.x1;
 
-    var visibleLeft, visibleWidth;
-
-    visibleLeft = this.prefs.offset + this.prefs.clip.x1 - sceneX;
-    visibleWidth = this.prefs.offset + this.prefs.clip.x2 - sceneX;
-
-    //if (visibleLeft >= 0) {
-    if (visibleWidth > viewportDimensions.width)
-        this.foregroundElement.css('width', '100%');
-    else
-        this.foregroundElement.css('width', Math.max(visibleWidth, 0));
-    //}
+    this.backgroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
+    this.foregroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
 
     if (!this.visible && (sceneX >= vX1 && sceneX <= vX2)) {
         this.info('Showing level ' + this.handle, 'i');
@@ -100,9 +95,9 @@ ACV.Game.Level.prototype.updatePositions = function (sceneX, sceneXBefore, viewp
     }
 
     for (i in this.backgroundLayers) {
-        this.backgroundLayers[i].updatePositions(sceneX, sceneXBefore, viewportDimensions.width);
+        this.backgroundLayers[i].updatePositions(sceneX, sceneXBefore, distanceBetweenLeftViewportMarginAndLevelBegin, viewportDimensions.width);
     }
     for (i in this.foregroundLayers) {
-        this.foregroundLayers[i].updatePositions(sceneX, sceneXBefore, viewportDimensions.width);
+        this.foregroundLayers[i].updatePositions(sceneX, sceneXBefore, distanceBetweenLeftViewportMarginAndLevelBegin, viewportDimensions.width);
     }
 };

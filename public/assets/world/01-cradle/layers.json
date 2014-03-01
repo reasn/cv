@@ -303,6 +303,26 @@
                     "blurred": true
                 }
             ]
+        },
+        {
+            "caption": "foreground - wall",
+            "prefs": {
+                "width": 7000,
+                "offset": 0,
+                "speed": 1
+            },
+            "sprites": [
+                {
+                    "caption": "right wall",
+                    "x": "3250px",
+                    "y": "-80px",
+                    "topAligned": true,
+                    "width": "100px",
+                    "height": "100%",
+                    "color": "pink",
+                    "blurred": true
+                }
+            ]
         }
     ]
 }

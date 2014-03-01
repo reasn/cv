@@ -22,6 +22,7 @@ ACV.Log.info = function () {
 ACV.Log.warn = function () {
     ACV.Log._add(Array.prototype.slice.call(arguments), 'w');
 };
+
 /**
  * @param className
  * @param mixed message
@@ -41,8 +42,8 @@ ACV.Log.error = function () {
 ACV.Log._add = function (args, logLevel) {
 
     var message, replacementIndex;
-    var className = args.shift();
     var len = ACV.Log.NAMESPACE_WIDTH;
+    var className = args.shift();
 
     if (className.indexOf('ACV.') === -1) {
         //No class name present, supposed class name is message
@@ -68,13 +69,13 @@ ACV.Log._add = function (args, logLevel) {
         }
     }
     else if (typeof message === 'boolean') {
-        message = className + ( message ? '[true]' : '[false]');
+        message = message ? '[true]' : '[false]';
     }
     else if (typeof message === 'string' || typeof (message) === 'number') {
-        message = className + message;
+        message = message;
     }
     else if (typeof message === 'undefined') {
-        message = className + '[undefined]';
+        message = '[undefined]';
     }
     else if (typeof message === 'object') {
         message = 'Object:\n' + JSON.stringify(message, null, '  ');

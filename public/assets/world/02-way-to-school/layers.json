@@ -246,7 +246,7 @@
             "sprites": [
                 {
                     "caption": "hedge 1",
-                    "x": "0px",
+                    "x": "-1000px",
                     "y": "-100px",
                     "topAligned": false,
                     "width": "5500px",
@@ -255,16 +255,16 @@
                 },
                 {
                     "caption": "hedge 2",
-                    "x": "180px",
+                    "x": "-820px",
                     "y": "-100px",
                     "topAligned": false,
                     "width": "5550px",
                     "height": "274px",
-                    "source": "graphics/scene/world/common/hedge-blurred-02.png"
+                    "source": "graphics/scene/world/common/hedge-blurred-01.png"
                 },
                 {
                     "caption": "tree",
-                    "x": "2800px",
+                    "x": "2200px",
                     "y": "-100px",
                     "topAligned": false,
                     "width": "581px",
@@ -290,6 +290,14 @@
                     "height": "100%",
                     "color": "pink",
                     "blurred": true
+                },{
+                    "caption": "hedge 1",
+                    "x": "180px",
+                    "y": "-100px",
+                    "topAligned": false,
+                    "width": "550px",
+                    "height": "269px",
+                    "source": "graphics/scene/world/common/hedge-blurred-01.png"
                 }
             ]
         }
