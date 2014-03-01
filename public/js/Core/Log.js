@@ -22,7 +22,12 @@ ACV.Log.info = function () {
 ACV.Log.warn = function () {
     ACV.Log._add(Array.prototype.slice.call(arguments), 'w');
 };
-
+/**
+ * @param className
+ * @param mixed message
+ * @param string replacement1
+ * @param string replacement2 (and so on)
+ */
 ACV.Log.error = function () {
     ACV.Log._add(Array.prototype.slice.call(arguments), 'e');
 };
