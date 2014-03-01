@@ -24,7 +24,7 @@ ACV.Core.PrefLoader.prototype.load = function (qFx) {
         pl.gameData = gameData;
 
         pl._loadLevels(gameData.scene.levels, function () {
-            this.log('Preferences and levels loaded.');
+            this.info('Preferences and levels loaded.');
             qFx(this.gameData);
         });
     });
@@ -37,7 +37,7 @@ ACV.Core.PrefLoader.prototype.load = function (qFx) {
 ACV.Core.PrefLoader.prototype._loadLevels = function (levels, qFx) {
     var pl = this, loadNextLevel;
     var levelIndex = 0;
-    this.log('Loading ' + levels.length + ' levels.');
+    this.info('Loading ' + levels.length + ' levels.');
 
     loadNextLevel = function () {
 
@@ -55,7 +55,11 @@ ACV.Core.PrefLoader.prototype._loadLevels = function (levels, qFx) {
 ACV.Core.PrefLoader.prototype._loadLevel = function (level, qFx) {
     var pl = this, filesToLoad = 3;
 
-    this.log('Loading level ' + level.handle, 'i');
+    if (!level.enabled) {
+        this.info('Loading level ' + level.handle + ' because it is disabled.', 'i');
+    }
+
+    this.info('Loading level ' + level.handle, 'i');
 
     var wrappedQfx = function () {
         if (--filesToLoad === 0) {

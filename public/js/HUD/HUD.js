@@ -45,7 +45,7 @@ ACV.HUD.prototype.init = function(element, viewportManager) {
 	if (this.heightDisplay !== null)
 		this.heightDisplay.init(this.element);
 
-	this.log('HUD initialized', 'd');
+	this.debug('HUD initialized');
 };
 
 ACV.HUD.prototype.updateGameRatio = function(ratio, ratioBefore, viewportDimensions) {

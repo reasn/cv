@@ -24,7 +24,7 @@ ACV.HUD.HeightDisplay.prototype.init = function(hudElement) {
 	this.element = $('<div id="height">' + this.year + '</div>');
 	hudElement.append(this.element);
 
-	this.log('HeightDisplay initialized', 'd');
+	this.debug('HeightDisplay initialized');
 };
 
 ACV.HUD.HeightDisplay.prototype.update = function(ratio) {

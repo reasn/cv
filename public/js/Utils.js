@@ -8,11 +8,6 @@ var ACV = ACV ? ACV : new Object();
 ACV.Utils =
 {
 };
-ACV.Utils.log = function(what)
-{
-    if (console !== undefined)
-        console.log(what);
-};
 
 ACV.Utils.isIE = function()
 {

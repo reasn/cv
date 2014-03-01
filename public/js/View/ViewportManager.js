@@ -79,8 +79,9 @@ ACV.ViewportManager.prototype.init = function()
     vpm.viewportDimensions.width = w.width();
     vpm.viewportDimensions.height = w.height();
 
-    ACV.Utils.log('ViewportManager initialized');
+    this.info('ViewportManager initialized');
 };
+
 ACV.ViewportManager.prototype.triggerAll = function()
 {
     var w = $(window);

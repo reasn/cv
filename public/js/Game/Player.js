@@ -30,7 +30,7 @@ ACV.Game.Player.prototype = ACV.Core.createPrototype('ACV.Game.Player',
 
 ACV.Game.Player.prototype.init = function (playerLayerElement, movementListener) {
 
-    this.log('Initializing player', 'd');
+    this.debug('Initializing player');
 
     this.movementListener = movementListener;
 
@@ -42,7 +42,7 @@ ACV.Game.Player.prototype.init = function (playerLayerElement, movementListener)
         });
     this.setAge(Object.keys(this.prefs.ages).shift());
     playerLayerElement.append(this.element);
-    this.log('Player initialized', 'd');
+    this.debug('Player initialized');
 };
 /**
  * @param age
@@ -58,7 +58,7 @@ ACV.Game.Player.prototype.setAge = function (age) {
         });
     this.element.removeClass(Object.keys(this.prefs.ages).join(' '));
     this.element.addClass(age);
-    this.log('Player\'s age set to ' + age + '.', 'd');
+    this.debug('Player\'s age set to %s.', age);
 };
 /**
  *
@@ -73,9 +73,9 @@ ACV.Game.Player.prototype.setPosition = function (x) {
 };
 
 ACV.Game.Player.prototype.jump = function () {
-    this.log('Jumping');
-    var p = this;
-    p.element.animate(
+    this.debug('Jumping');
+    var player = this;
+    player.element.animate(
         {
             bottom: [this.y + 100, 'easeOutQuart']
         },
@@ -83,10 +83,10 @@ ACV.Game.Player.prototype.jump = function () {
             queue: false,
             duration: 200,
             complete: function () {
-                p.log(p.y);
-                p.element.animate(
+                player.debug('player.y = %s', player.y);
+                player.element.animate(
                     {
-                        'bottom': [p.y, 'easeInQuart']
+                        'bottom': [player.y, 'easeInQuart']
                     },
                     {
                         queue: false,

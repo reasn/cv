@@ -20,7 +20,7 @@
             ]
         },
         {
-            "comment": "background - wall",
+            "caption": "background - wall",
             "prefs": {
                 "width": 7000,
                 "offset": 0,
@@ -28,7 +28,7 @@
             },
             "sprites": [
                 {
-                    "comment": "window",
+                    "caption": "window",
                     "x": "1500px",
                     "y": "100px",
                     "topAligned": true,
@@ -37,7 +37,7 @@
                     "source": "graphics/scene/world/01-cradle/window.png"
                 },
                 {
-                    "comment": "top wall",
+                    "caption": "top wall",
                     "x": "1500px",
                     "y": "0px",
                     "topAligned": true,
@@ -46,7 +46,7 @@
                     "color": "orange"
                 },
                 {
-                    "comment": "right wall",
+                    "caption": "right wall",
                     "x": "2035px",
                     "y": "0px",
                     "topAligned": true,
@@ -55,7 +55,7 @@
                     "color": "orange"
                 },
                 {
-                    "comment": "bottom wall",
+                    "caption": "bottom wall",
                     "x": "1500px",
                     "y": "600px",
                     "topAligned": true,
@@ -64,7 +64,7 @@
                     "color": "orange"
                 },
                 {
-                    "comment": "left wall",
+                    "caption": "left wall",
                     "x": "0px",
                     "y": "0px",
                     "topAligned": true,
@@ -75,7 +75,7 @@
             ]
         },
         {
-            "comment": "floor and stuff fixed to the floor",
+            "caption": "floor and stuff fixed to the floor",
             "prefs": {
                 "width": 10000,
                 "offset": 0,
@@ -83,7 +83,7 @@
             },
             "sprites": [
                 {
-                    "comment": "floor",
+                    "caption": "floor",
                     "x": "0px",
                     "y": "0",
                     "topAligned": false,
@@ -92,7 +92,7 @@
                     "color": "blue"
                 },
                 {
-                    "comment": "book shelf",
+                    "caption": "book shelf",
                     "x": "1000px",
                     "y": "200px",
                     "topAligned": false,
@@ -101,7 +101,7 @@
                     "color": "pink"
                 },
                 {
-                    "comment": "green ball",
+                    "caption": "green ball",
                     "x": "1200px",
                     "y": "120px",
                     "topAligned": false,
@@ -110,7 +110,7 @@
                     "source": "graphics/scene/world/01-cradle/ball01.png"
                 },
                 {
-                    "comment": "blue ball",
+                    "caption": "blue ball",
                     "x": "1200px",
                     "y": "100px",
                     "topAligned": false,
@@ -119,18 +119,18 @@
                     "source": "graphics/scene/world/01-cradle/ball02.png"
                 },
                 {
-                    "comment": "yellow box",
+                    "caption": "yellow box",
                     "x": "2300px",
                     "y": "180px",
                     "topAligned": false,
                     "width": "100px",
-                    "height": "100px",
+                    "height": "88px",
                     "source": "graphics/scene/world/01-cradle/box01.png"
                 }
             ]
         },
         {
-            "comment": "cradle background and some stuff on the floor",
+            "caption": "cradle background and some stuff on the floor",
             "prefs": {
                 "width": 340,
                 "offset": 0,
@@ -138,7 +138,7 @@
             },
             "sprites": [
                 {
-                    "comment": "yellow ball",
+                    "caption": "yellow ball",
                     "x": "1150px",
                     "y": "90px",
                     "topAligned": false,
@@ -147,7 +147,7 @@
                     "source": "graphics/scene/world/01-cradle/ball03.png"
                 },
                 {
-                    "comment": "01-cradle background",
+                    "caption": "01-cradle background",
                     "x": "1500px",
                     "y": "140px",
                     "topAligned": false,
@@ -156,7 +156,7 @@
                     "color": "green"
                 },
                 {
-                    "comment": "green box",
+                    "caption": "green box",
                     "x": "2800px",
                     "y": "160px",
                     "topAligned": false,
@@ -169,7 +169,7 @@
     ],
     "foreground": [
         {
-            "comment": "01-cradle - bars",
+            "caption": "01-cradle - bars",
             "prefs": {
                 "width": 340,
                 "offset": 0,
@@ -177,7 +177,7 @@
             },
             "sprites": [
                 {
-                    "comment": "01-cradle",
+                    "caption": "01-cradle",
                     "x": "1500px",
                     "y": "140px",
                     "topAligned": false,
@@ -188,7 +188,7 @@
             ]
         },
         {
-            "comment": "balls and boxes (closer than cradle)",
+            "caption": "balls and boxes (closer than cradle)",
             "prefs": {
                 "width": 340,
                 "offset": 0,
@@ -197,7 +197,7 @@
             "sprites": [
 
                 {
-                    "comment": "pink box",
+                    "caption": "pink box",
                     "x": "1400px",
                     "y": "20px",
                     "topAligned": false,
@@ -206,7 +206,7 @@
                     "source": "graphics/scene/world/01-cradle/box04.png"
                 },
                 {
-                    "comment": "blue box",
+                    "caption": "blue box",
                     "x": "3050px",
                     "y": "68px",
                     "topAligned": false,
@@ -217,7 +217,7 @@
             ]
         },
         {
-            "comment": "foreground - lamp",
+            "caption": "foreground - lamp",
             "prefs": {
                 "width": 7000,
                 "offset": 0,
@@ -225,7 +225,7 @@
             },
             "sprites": [
                 {
-                    "comment": "lamp",
+                    "caption": "lamp",
                     "x": "1200px",
                     "y": "50px",
                     "topAligned": true,
@@ -236,7 +236,7 @@
             ]
         },
         {
-            "comment": "foreground - wardrobe",
+            "caption": "foreground - wardrobe",
             "prefs": {
                 "width": 7000,
                 "offset": 0,
@@ -244,7 +244,7 @@
             },
             "sprites": [
                 {
-                    "comment": "wardrobe",
+                    "caption": "wardrobe",
                     "x": "2000px",
                     "y": "-80px",
                     "topAligned": false,
@@ -254,7 +254,7 @@
                     "blurred": true
                 },
                 {
-                    "comment": "bottle",
+                    "caption": "bottle",
                     "x": "2700px",
                     "y": "0px",
                     "topAligned": false,
@@ -265,7 +265,7 @@
             ]
         },
         {
-            "comment": "foreground - wall",
+            "caption": "foreground - wall",
             "prefs": {
                 "width": 7000,
                 "offset": 0,
@@ -273,7 +273,7 @@
             },
             "sprites": [
                 {
-                    "comment": "left wall",
+                    "caption": "left wall",
                     "x": "-80px",
                     "y": "-80px",
                     "topAligned": true,
@@ -283,7 +283,7 @@
                     "blurred": true
                 },
                 {
-                    "comment": "top wall",
+                    "caption": "top wall",
                     "x": "920px",
                     "y": "-80px",
                     "topAligned": true,

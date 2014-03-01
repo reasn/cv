@@ -83,7 +83,7 @@ ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore, viewpor
     var sceneXBefore = ratio * (this.prefs.width - viewportDimensions.width);
     if (viewportDimensions.changed) {
         this.element.css('height', viewportDimensions.height);
-        this.log('new scene height: ' + viewportDimensions.height, 'd');
+        this.debug('New scene height: %s' , viewportDimensions.height);
     }
 
     for (i in this.levels) {
@@ -137,7 +137,7 @@ ACV.Game.Scene.prototype._handleViewportChange = function (viewportDimensions) {
 };
 
 ACV.Game.Scene.prototype.startZoom = function (targetScale, duration) {
-    this.log('Zooming to ' + targetScale + ' within ' + duration + 'ms');
+    this.debug('Zooming to %s whithin %sms', targetScale, duration);
 
     this.element.stop('zoom', true).animate({
         transform: 'scale(' + targetScale + ')'

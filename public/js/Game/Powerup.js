@@ -33,7 +33,7 @@ ACV.Game.Powerup.prototype.init = function(playerLayerElement)
 
     playerLayerElement.append(this.element);
 
-    this.log('Powerup initialized', 'd');
+    this.debug('Powerup initialized');
 };
 ACV.Game.Powerup.prototype.hasJustBeenCollected = function(playerX)
 {

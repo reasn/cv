@@ -58,7 +58,7 @@ ACV.Game.Level.prototype.init = function (backgroundWrapper, foregroundWrapper, 
     //Add to DOM at last to reduce draw calls
     backgroundWrapper.prepend(this.foregroundElement);
     foregroundWrapper.append(this.backgroundElement);
-    this.log('Level initialized with ' + this.foregroundLayers.length + ' foreground layers and ' + this.backgroundLayers.length + ' background layers', 'd');
+    this.info('Level initialized with ' + this.foregroundLayers.length + ' foreground layers and ' + this.backgroundLayers.length + ' background layers', 'd');
 };
 
 /**
@@ -73,7 +73,7 @@ ACV.Game.Level.prototype.updatePositions = function (sceneX, sceneXBefore, viewp
     var vX2 = this.prefs.offset + this.prefs.visibility.x2;
 
     if (this.visible && (sceneX < vX1 || sceneX > vX2)) {
-        this.log('Hidding level ' + this.handle, 'i');
+        this.info('Hidding level ' + this.handle, 'i');
         this.visible = false;
         this.foregroundElement.removeClass('visible');
         this.backgroundElement.removeClass('visible');
@@ -91,11 +91,9 @@ ACV.Game.Level.prototype.updatePositions = function (sceneX, sceneXBefore, viewp
     else
         this.foregroundElement.css('width', Math.max(visibleWidth, 0));
     //}
-    console.log(visibleLeft);
-
 
     if (!this.visible && (sceneX >= vX1 && sceneX <= vX2)) {
-        this.log('Showing level ' + this.handle, 'i');
+        this.info('Showing level ' + this.handle, 'i');
         this.visible = true;
         this.foregroundElement.addClass('visible');
         this.backgroundElement.addClass('visible');

@@ -3,9 +3,9 @@
 /**
  * @since 2013-11-19
  */
-var ACV = ACV ? ACV : new Object();
+var ACV = ACV ? ACV : {};
 
-ACV.HUD = ACV.HUD ? ACV.HUD : new Object();
+ACV.HUD = ACV.HUD ? ACV.HUD : {};
 
 ACV.HUD.SkillBasket = function(skills)
 {
@@ -38,7 +38,7 @@ ACV.HUD.SkillBasket.prototype.init = function(hudElement)
     }
     hudElement.append(this.element);
 
-    this.log('Skill basket initialized', 'd');
+    this.info('Skill basket initialized', 'd');
 };
 ACV.HUD.SkillBasket.prototype.improve = function(skillType)
 {

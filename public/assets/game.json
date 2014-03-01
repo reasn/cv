@@ -55,7 +55,7 @@
         "levels": [
             {
                 "handle": "01-cradle",
-                "enabled": true,
+                "enabled": false,
                 "prefs": {
                     "offset": 0,
                     "clip": {
@@ -72,8 +72,8 @@
                 "handle": "02-way-to-school",
                 "enabled": true,
                 "prefs": {
-                    "_offset": 0,
-                    "offset": 1700,
+                    "offset": 0,
+                    "_offset": 1700,
                     "clip": {
                         "x1": 0,
                         "x2": 7400

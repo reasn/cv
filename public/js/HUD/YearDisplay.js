@@ -3,9 +3,9 @@
 /**
  * @since 2013-11-19
  */
-var ACV = ACV ? ACV : new Object();
+var ACV = ACV ? ACV : {};
 
-ACV.HUD = ACV.HUD ? ACV.HUD : new Object();
+ACV.HUD = ACV.HUD ? ACV.HUD : {};
 
 ACV.HUD.YearDisplay = function(triggers)
 {
@@ -29,7 +29,7 @@ ACV.HUD.YearDisplay.prototype.init = function(hudElement)
     this.element = $('<div id="year">' + this.year + '</div>');
     hudElement.append(this.element);
 
-    this.log('YearDisplay initialized', 'd');
+    this.info('YearDisplay initialized', 'd');
 };
 
 ACV.HUD.YearDisplay.prototype.update = function(ratio)
@@ -48,5 +48,4 @@ ACV.HUD.YearDisplay.prototype.setYearDisplay = function(year)
 {
     this.element.text(this.year);
     this.year = year;
-    return;
 };

@@ -17,7 +17,7 @@ ACV.Game.TriggerManager = function(triggers)
     		return 1;
     	return b.value - a.value;
     });
-    console.log(this.triggers);*/
+    this.debug(this.triggers);*/
 };
 ACV.Game.TriggerManager.prototype = ACV.Core.createPrototype('ACV.Game.TriggerManager',
 {
@@ -61,6 +61,6 @@ ACV.Game.TriggerManager.prototype._execute = function(trigger)
         case 'scene.zoom':
         	return this.scene.startZoom(args[0], parseInt(args[1]));
         default:
-            return this.log('unknown trigger "' + trigger.type + '"');
+            return this.error('Unknown trigger "%s"', trigger.type);
     }
 };
