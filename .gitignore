@@ -4,4 +4,6 @@
 
 .settings
 .idea
-.idea/buildpath
+.idea/workspace.xml
+.buildpath
+_.idea

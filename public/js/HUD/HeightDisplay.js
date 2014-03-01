@@ -3,16 +3,16 @@
 /**
  * @since 2013-11-19
  */
-var ACV = ACV ? ACV : new Object();
+var ACV = ACV ? ACV : {};
 
-ACV.HUD = ACV.HUD ? ACV.HUD : new Object();
+ACV.HUD = ACV.HUD ? ACV.HUD : {};
 
-ACV.HUD.HeightDisplay = function(keyframes) {
-	this.keyframes = keyframes;
+ACV.HUD.HeightDisplay = function(keyFrames) {
+	this.keyFrames = keyFrames;
 };
 
 ACV.HUD.HeightDisplay.createFromData = function(data, performanceSettings) {
-	return new ACV.HUD.HeightDisplay(data.keyframes);
+	return new ACV.HUD.HeightDisplay(data.keyFrames);
 };
 
 ACV.HUD.HeightDisplay.prototype = ACV.Core.createPrototype('ACV.HUD.HeightDisplay', {
@@ -29,7 +29,7 @@ ACV.HUD.HeightDisplay.prototype.init = function(hudElement) {
 
 ACV.HUD.HeightDisplay.prototype.update = function(ratio) {
 	var i, factor, height;
-	var keys = Object.keys(this.keyframes);
+	var keys = Object.keys(this.keyFrames);
 
 	// Automatically hide DOM-element when it's no longer needed
 	if (ratio > keys[keys.length - 1] && this.elementVisible) {
@@ -46,7 +46,7 @@ ACV.HUD.HeightDisplay.prototype.update = function(ratio) {
 			// a:= keys[i], b:=ratio, c:= keys[i+1] => factor = (b-a) / (c-a)
 			factor = (ratio - keys[i]) / (keys[i + 1] - keys[i]);
 			// h = (1-factor) * a + factor * b
-			height = (1 - factor) * this.keyframes[keys[i]] + factor * this.keyframes[keys[i + 1]];
+			height = (1 - factor) * this.keyFrames[keys[i]] + factor * this.keyFrames[keys[i + 1]];
 
 			break;
 		}
