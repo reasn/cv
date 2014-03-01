@@ -61,6 +61,15 @@
                     "width": "22px",
                     "height": "20px",
                     "source": "graphics/scene/world/02-way-to-school/star-02.png"
+                },
+                {
+                    "caption": "sun",
+                    "x": "2400px",
+                    "y": "70%",
+                    "topAligned": false,
+                    "width": "300px",
+                    "height": "300px",
+                    "source": "graphics/scene/world/02-way-to-school/sun.png"
                 }
             ]
         },
@@ -92,7 +101,7 @@
                 },
                 {
                     "caption": "house 2",
-                    "x": "1900px",
+                    "x": "2300px",
                     "y": "360px",
                     "topAligned": false,
                     "width": "433px",
@@ -121,7 +130,7 @@
             ]
         },
         {
-            "caption": "hedges and tree",
+            "caption": "hedges, tree and lantern",
             "prefs": {
                 "width": 100,
                 "offset": -150,
@@ -145,6 +154,15 @@
                     "width": "290px",
                     "height": "501px",
                     "source": "graphics/scene/world/common/tree-01.png"
+                },
+                {
+                    "caption": "lantern",
+                    "x": "2500px",
+                    "y": "330px",
+                    "topAligned": false,
+                    "width": "84px",
+                    "height": "390px",
+                    "source": "graphics/scene/world/02-way-to-school/lantern.png"
                 }
             ]
         },
@@ -258,8 +276,8 @@
         {
             "caption": "foreground - left wall",
             "prefs": {
-                "width": 100,
-                "offset": -50,
+                "width": 300,
+                "offset": -150,
                 "speed": 1
             },
             "sprites": [
@@ -268,7 +286,7 @@
                     "x": "0px",
                     "y": "-80px",
                     "topAligned": true,
-                    "width": "100px",
+                    "width": "300px",
                     "height": "100%",
                     "color": "pink",
                     "blurred": true

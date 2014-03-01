@@ -3,7 +3,7 @@
 /**
  * @since 2013-11-03
  */
-var ACV = ACV ? ACV : new Object();
+var ACV = ACV ? ACV : {};
 
 ACV.ViewportManager = function(staticContainer, scrollableDistance, moveByDrag)
 {

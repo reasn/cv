@@ -14,7 +14,8 @@ ACV.Game = ACV.Game ? ACV.Game : new Object();
  * @param {int} height
  * @param {bool} topAligned
  */
-ACV.Game.Sprite = function (caption, positions, width, height, topAligned, source, color, blurred) {
+ACV.Game.Sprite = function (id, caption, positions, width, height, topAligned, source, color, blurred) {
+    this.id = id;
     this.caption = caption;
     this.x = positions['0'].x;
     this.y = positions['0'].y;
@@ -36,12 +37,13 @@ ACV.Game.Sprite.createFromPrefs = function (data) {
         }
     };
 
-    return new ACV.Game.Sprite(data.caption, positions, data.width, data.height, data.topAligned, data.source, data.color, data.blurred);
+    return new ACV.Game.Sprite(data.id, data.caption, positions, data.width, data.height, data.topAligned, data.source, data.color, data.blurred);
 };
 ACV.Game.Sprite.mockColors = ['#9932CC', '#8B0000', '#E9967A', '#8FBC8F', '#483D8B', '#2F4F4F', '#00CED1', '#9400D3', '#FF1493', '#00BFFF', '#696969', '#1E90FF', '#B22222', '#FFFAF0', '#228B22', '#FF00FF', '#DCDCDC', '#F8F8FF', '#FFD700', '#DAA520', '#808080', '#008000', '#ADFF2F', '#F0FFF0', '#FF69B4'];
 ACV.Game.Sprite.mockColorIndex = 0;
 ACV.Game.Sprite.prototype = ACV.Core.createPrototype('ACV.Game.Sprite',
     {
+        id: null,
         x: 0,
         y: 0,
         width: 0,
@@ -55,6 +57,9 @@ ACV.Game.Sprite.prototype = ACV.Core.createPrototype('ACV.Game.Sprite',
 
 ACV.Game.Sprite.prototype.init = function (layerElement) {
     this.element = $('<div class="sprite" data-caption="' + this.caption + '" />');
+    if(this.id){
+        this.element.attr('id', this.id);
+    }
     this.element.css(
         {
             left: this.x,

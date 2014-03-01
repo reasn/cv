@@ -1,34 +1,43 @@
 "use strict";
 
 /**
- * @since 2013-11-03
+ * @since 2014-03-01
  */
 var ACV = ACV ? ACV : {};
 
 ACV.Log = ACV.Log ? ACV.Log : {};
 
+ACV.Log.enabled = true;
+ACV.Log.NAMESPACE_WIDTH = 15;
 ACV.Log._indent = 0;
 
 ACV.Log.debug = function () {
-    ACV.Log._add(Array.slice(arguments), console.debug);
+    ACV.Log._add(Array.prototype.slice.call(arguments), 'd');
 };
 
 ACV.Log.info = function () {
-    ACV.Log._add(Array.slice(arguments), console.info);
+    ACV.Log._add(Array.prototype.slice.call(arguments), 'i');
 };
 
 ACV.Log.warn = function () {
-    ACV.Log._add(Array.slice(arguments), console.warn);
+    ACV.Log._add(Array.prototype.slice.call(arguments), 'w');
 };
 
 ACV.Log.error = function () {
-    ACV.Log._add(Array.slice(arguments), console.error);
+    ACV.Log._add(Array.prototype.slice.call(arguments), 'e');
 };
 
-ACV.Log._add = function (args, logMethod) {
+/**
+ * We could directly use the log method (e.g. console.error) as second argument which would be more elegant. But Chrome doesn't allow it -.-
+ * @param args
+ * @param logLevel
+ * @private
+ */
+ACV.Log._add = function (args, logLevel) {
 
     var message, replacementIndex;
-    var className = args.shift(), len = ACV.Core.config.logClassNameSpace;
+    var className = args.shift();
+    var len = ACV.Log.NAMESPACE_WIDTH;
 
     if (className.indexOf('ACV.') === -1) {
         //No class name present, supposed class name is message
@@ -43,7 +52,6 @@ ACV.Log._add = function (args, logMethod) {
     while (className.length < len) {
         className = ' ' + className;
     }
-    className += ': ';
 
     //retrieve actual message from arguments
     message = args.shift();
@@ -69,27 +77,20 @@ ACV.Log._add = function (args, logMethod) {
     else {
         message = 'Unknown log argument: ' + typeof message;
     }
-    logMethod(className + message);
-};
 
-ACV.Core._addToConsole = function (what, level) {
-    switch (level) {
+    //Add the message to the console
+    switch (logLevel) {
         case 'e':
-            window.console.error(what);
-            break;
+            window.console.error(className + ': ' + message);
+            return;
         case 'w':
-            window.console.warn(what);
-            break;
+            window.console.warn(className + ': ' + message);
+            return;
         case 'd':
-            window.console.debug(what);
-            break;
+            //TODO only add '  ' when using firefox (or even only firebug?)
+            window.console.debug('  ' + className + ': ' + message);
+            return;
         default:
-            window.console.info(what);
+            window.console.info(className + ': ' + message);
     }
-};
-
-ACV.Core.config =
-{
-    logEnabled: true,
-    logClassNameSpace: 20
 };

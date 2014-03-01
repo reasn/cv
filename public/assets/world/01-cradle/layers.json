@@ -1,7 +1,7 @@
 {
     "background": [
         {
-            "comment": "background - outside",
+            "caption": "background - outside",
             "prefs": {
                 "width": 7000,
                 "offset": 0,
@@ -147,7 +147,17 @@
                     "source": "graphics/scene/world/01-cradle/ball03.png"
                 },
                 {
-                    "caption": "01-cradle background",
+                    "id": "baby-in-cradle",
+                    "caption": "sleeping baby",
+                    "x": "1556px",
+                    "y": "270px",
+                    "topAligned": false,
+                    "width": "48px",
+                    "height": "80px",
+                    "source": "graphics/scene/player/child/stand.gif"
+                },
+                {
+                    "caption": "cradle background",
                     "x": "1500px",
                     "y": "140px",
                     "topAligned": false,

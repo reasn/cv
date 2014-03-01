@@ -1,22 +1,47 @@
 [
     {
-        "playerX": ">1500",
-        "type": "player.setAge",
-        "data": "child"
+        "playerX": ">500",
+        "type": "player.jumpAndStay",
+        "data": "270"
     },
     {
-        "playerX": "<1500",
+        "playerX": "<1556",
+        "type": "sprite.show",
+        "data": "baby-in-cradle"
+    },
+    {
+        "playerX": ">1556",
+        "type": "sprite.hide",
+        "data": "baby-in-cradle"
+    },
+    {
+        "playerX": "<1556",
         "type": "player.setAge",
         "data": "baby"
     },
     {
-        "playerX": ">2000",
+        "playerX": ">1556",
         "type": "player.setAge",
-        "data": "teen"
+        "data": "child"
     },
     {
-        "playerX": ">3000",
-        "type": "player.setAge",
-        "data": "adult"
+        "playerX": "<2000",
+        "type": "player.jumpAndStay",
+        "data": "270"
+    },
+    {
+        "playerX": ">1800",
+        "type": "player.jumpAndStay",
+        "data": "150"
+    },
+    {
+        "playerX": "<3300",
+        "type": "player.jumpAndStay",
+        "data": "150"
+    },
+    {
+        "playerX": ">3300",
+        "type": "player.jumpAndStay",
+        "data": "250"
     }
 ]

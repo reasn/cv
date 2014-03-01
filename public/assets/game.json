@@ -27,6 +27,7 @@
                     "y": 150
                 },
                 "movementTriggerCoarsity": 20,
+                "initialAge": "baby",
                 "ages": {
                     "baby": {
                         "width": 1,
@@ -55,7 +56,7 @@
         "levels": [
             {
                 "handle": "01-cradle",
-                "enabled": false,
+                "enabled": true,
                 "prefs": {
                     "offset": 0,
                     "clip": {
@@ -72,8 +73,8 @@
                 "handle": "02-way-to-school",
                 "enabled": true,
                 "prefs": {
-                    "offset": 0,
-                    "_offset": 1700,
+                    "_offset": 0,
+                    "offset": 1700,
                     "clip": {
                         "x1": 0,
                         "x2": 7400

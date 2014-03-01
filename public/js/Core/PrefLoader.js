@@ -57,6 +57,8 @@ ACV.Core.PrefLoader.prototype._loadLevel = function (level, qFx) {
 
     if (!level.enabled) {
         this.info('Loading level ' + level.handle + ' because it is disabled.', 'i');
+        qFx.apply(this);
+        return;
     }
 
     this.info('Loading level ' + level.handle, 'i');
@@ -73,17 +75,20 @@ ACV.Core.PrefLoader.prototype._loadLevel = function (level, qFx) {
     });
 
     $.getJSON('assets/world/' + level.handle + '/triggers.json', function (triggers) {
-        pl._loadTriggers(level.offset, triggers, wrappedQfx);
+        pl._loadTriggers(level.prefs.offset, triggers, wrappedQfx);
     });
     $.getJSON('assets/world/' + level.handle + '/powerUps.json', function (powerUps) {
-        pl._loadPowerUps(level.offset, powerUps, wrappedQfx);
+        pl._loadPowerUps(level.prefs.offset, powerUps, wrappedQfx);
     });
 };
 
 ACV.Core.PrefLoader.prototype._loadTriggers = function (levelOffset, triggers, qFx) {
-    var triggerIndex;
+    var triggerIndex, trigger;
     for (triggerIndex in triggers) {
-        this.gameData.scene.triggers.push(triggers[triggerIndex]);
+        trigger = triggers[triggerIndex];
+        //TODO make cleaner
+        trigger.playerX = trigger.playerX.substr(0, 1) + (levelOffset + parseInt(trigger.playerX.substr(1)));
+        this.gameData.scene.triggers.push(trigger);
     }
     qFx.apply(this);
 };
