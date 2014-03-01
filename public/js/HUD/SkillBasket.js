@@ -52,7 +52,7 @@ ACV.HUD.SkillBasket.prototype.improve = function(skillType)
     }
 };
 
-ACV.HUD.SkillBasket.prototype.getPowerupAnimationTarget = function()
+ACV.HUD.SkillBasket.prototype.getPowerUpAnimationTarget = function()
 {
     return (
         {

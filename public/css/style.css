@@ -151,7 +151,7 @@ body {
 #container #scene .player-layer .player.adult.walking.backwards {
   background: url("../assets/graphics/scene/player/adult/walk-backwards.gif");
 }
-#container #scene .player-layer .powerup {
+#container #scene .player-layer .powerUp {
   position: absolute;
   color: black;
   width: 50px;

@@ -3,27 +3,27 @@
 /**
  * @since 2013-11-19
  */
-var ACV = ACV ? ACV : new Object();
+var ACV = ACV ? ACV : {};
 
-ACV.Game = ACV.Game ? ACV.Game : new Object();
+ACV.Game = ACV.Game ? ACV.Game : {};
 
-ACV.Game.PlayerLayer = function(prefs, player, powerups)
+ACV.Game.PlayerLayer = function(prefs, player, powerUps)
 {
     this.prefs = prefs;
     this.player = player;
-    this.powerups = powerups;
+    this.powerUps = powerUps;
 };
 
 ACV.Game.PlayerLayer.createFromData = function(data, performanceSettings)
 {
-    var player, powerups = [];
+    var player, powerUpIndex, powerUps = [];
 
     player = new ACV.Game.Player(data.player);
-    for (var i in data.powerups)
+    for (powerUpIndex in data.powerUps)
     {
-        powerups.push(new ACV.Game.Powerup(data.powerups[i].x, data.powerups[i].y, data.powerups[i].type));
+        powerUps.push(new ACV.Game.PowerUp(data.powerUps[powerUpIndex].x, data.powerUps[powerUpIndex].y, data.powerUps[powerUpIndex].type));
     }
-    return new ACV.Game.PlayerLayer(data.prefs, player, powerups);
+    return new ACV.Game.PlayerLayer(data.prefs, player, powerUps);
 };
 
 ACV.Game.PlayerLayer.prototype = ACV.Core.createPrototype('ACV.Game.PlayerLayer',
@@ -31,13 +31,15 @@ ACV.Game.PlayerLayer.prototype = ACV.Core.createPrototype('ACV.Game.PlayerLayer'
     prefs: null,
     element: null,
     player: null,
-    powerups: [],
+    powerUps: [],
     lastCollisionDetection: 0,
     playerLayer: null
 });
 
 ACV.Game.PlayerLayer.prototype.init = function(wrapperElement, width, minHeight, maxHeight, scene)
 {
+    var powerUpIndex, playerLayer = this;
+
     this.element = $('<div class="player-layer" />');
     this.element.css(
     {
@@ -46,13 +48,13 @@ ACV.Game.PlayerLayer.prototype.init = function(wrapperElement, width, minHeight,
         maxHeight: maxHeight
     });
 
-    for (var i in this.powerups)
+    for (powerUpIndex in this.powerUps)
     {
-        this.powerups[i].init(this.element);
+        this.powerUps[powerUpIndex].init(this.element);
     }
 
     //enclose variable here to reduce calls and improve performance
-    var playerLayer = this;
+
     this.player.init(this.element, function(playerX, sceneX, viewportDimensions)
     {
         $('#playerX').text(playerX);
@@ -71,6 +73,7 @@ ACV.Game.PlayerLayer.prototype.init = function(wrapperElement, width, minHeight,
 ACV.Game.PlayerLayer.prototype.updatePositions = function(sceneX, viewportDimensions)
 {
     var coarsedSceneX = Math.round(sceneX / this.prefs.collisionDetectionGridSize);
+
     //Set wrapper position to have the player stay at the same point of the scrolling scenery
     this.element.css('left', -sceneX);
 
@@ -79,32 +82,33 @@ ACV.Game.PlayerLayer.prototype.updatePositions = function(sceneX, viewportDimens
 };
 ACV.Game.PlayerLayer.prototype._detectCollisions = function(playerX, sceneX, viewportDimensions)
 {
+    var powerUpIndex;
     var testX = playerX + this.prefs.hitBox + .5 * this.player.width;
-    for (var i in this.powerups)
+    for (powerUpIndex in this.powerUps)
     {
-        if (this.powerups[i].hasJustBeenCollected(testX))
+        if (this.powerUps[powerUpIndex].hasJustBeenCollected(testX))
         {
-            this._collectPowerup(i, sceneX, viewportDimensions);
-            i--;
+            this._collectPowerUp(powerUpIndex, sceneX, viewportDimensions);
+            powerUpIndex--;
         }
     }
 
 };
-ACV.Game.PlayerLayer.prototype._collectPowerup = function(powerupIndex, sceneX, viewportDimensions)
+ACV.Game.PlayerLayer.prototype._collectPowerUp = function(powerUpIndex, sceneX, viewportDimensions)
 {
     var playerLayer = this;
-    var powerup = this.powerups[powerupIndex];
-    var p = powerup.element.position();
+    var powerUp = this.powerUps[powerUpIndex];
+    var p = powerUp.element.position();
 
-    this.powerups.splice(powerupIndex, 1);
+    this.powerUps.splice(powerUpIndex, 1);
 
-    powerup.element.css(
+    powerUp.element.css(
     {
         position: 'fixed',
         left: p.left - sceneX,
         bottom: viewportDimensions.height - p.top
     });
-    powerup.element.animate(
+    powerUp.element.animate(
     {
         bottom: [viewportDimensions.height - p.top + 100, 'easeOutQuad'],
     },
@@ -112,8 +116,8 @@ ACV.Game.PlayerLayer.prototype._collectPowerup = function(powerupIndex, sceneX, 
         duration: 200,
         complete: function()
         {
-            var targetPosition = playerLayer.skillBasket.getPowerupAnimationTarget();
-            powerup.element.animate(
+            var targetPosition = playerLayer.skillBasket.getPowerUpAnimationTarget();
+            powerUp.element.animate(
             {
                 left: [targetPosition.left, 'easeInQuad'],
                 bottom: [targetPosition.bottom, 'easeInQuad']
@@ -122,15 +126,15 @@ ACV.Game.PlayerLayer.prototype._collectPowerup = function(powerupIndex, sceneX, 
                 duration: 800,
                 complete: function()
                 {
-                    playerLayer.skillBasket.improve(powerup.skillType);
-                    powerup.element.remove();
+                    playerLayer.skillBasket.improve(powerUp.skillType);
+                    powerUp.element.remove();
                 }
             });
         }
     });
 
-    //this.powerups[powerupIndex].element.remove();
-    //powerup.element.animate({
+    //this.powerUps[powerUpIndex].element.remove();
+    //powerUp.element.animate({
     //left:
     //})
 };

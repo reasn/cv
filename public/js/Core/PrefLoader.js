@@ -18,9 +18,11 @@ ACV.Core.PrefLoader.prototype = ACV.Core.createPrototype('ACV.Core.PrefLoader',
         gameData: null
     });
 
+ACV.Core.PrefLoader.FORCE_UNCACHED_DATA = true;
+
 ACV.Core.PrefLoader.prototype.load = function (qFx) {
     var pl = this;
-    $.getJSON('assets/game.json', function (gameData) {
+    $.getJSON(this._createUrl('game.json'), function (gameData) {
         pl.gameData = gameData;
 
         pl._loadLevels(gameData.scene.levels, function () {
@@ -29,6 +31,14 @@ ACV.Core.PrefLoader.prototype.load = function (qFx) {
         });
     });
 };
+
+ACV.Core.PrefLoader.prototype._createUrl = function (url) {
+    url = 'assets/' + url;
+    if (ACV.Core.PrefLoader.FORCE_UNCACHED_DATA)
+        url += '?timestamp=' + (new Date()).getTime();
+    return url;
+};
+
 /**
  * @param levels
  * @param qFx
@@ -69,15 +79,15 @@ ACV.Core.PrefLoader.prototype._loadLevel = function (level, qFx) {
         }
     };
 
-    $.getJSON('assets/map/' + level.handle + '/layers.json', function (layers) {
+    $.getJSON(this._createUrl('map/' + level.handle + '/layers.json'), function (layers) {
         level.layers = layers;
         wrappedQfx.apply(pl);
     });
 
-    $.getJSON('assets/map/' + level.handle + '/triggers.json', function (triggers) {
+    $.getJSON(this._createUrl('map/' + level.handle + '/triggers.json'), function (triggers) {
         pl._loadTriggers(level.prefs.offset, triggers, wrappedQfx);
     });
-    $.getJSON('assets/map/' + level.handle + '/powerUps.json', function (powerUps) {
+    $.getJSON(this._createUrl('map/' + level.handle + '/powerUps.json'), function (powerUps) {
         pl._loadPowerUps(level.prefs.offset, powerUps, wrappedQfx);
     });
 };
@@ -96,7 +106,7 @@ ACV.Core.PrefLoader.prototype._loadTriggers = function (levelOffset, triggers, q
 ACV.Core.PrefLoader.prototype._loadPowerUps = function (levelOffset, powerUps, qFx) {
     var powerUpIndex;
     for (powerUpIndex in powerUps) {
-        this.gameData.scene.playerLayer.powerups.push(powerUps[powerUpIndex]);
+        this.gameData.scene.playerLayer.powerUps.push(powerUps[powerUpIndex]);
     }
     qFx.apply(this);
 };

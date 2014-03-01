@@ -51,7 +51,7 @@
                 "collisionDetectionGridSize": 10,
                 "hitBox": 50
             },
-            "powerups": []
+            "powerUps": []
         },
         "levels": [
             {

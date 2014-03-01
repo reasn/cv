@@ -26,19 +26,21 @@ ACV.Game.TriggerManager.prototype = ACV.Core.createPrototype('ACV.Game.TriggerMa
     });
 
 ACV.Game.TriggerManager.createFromData = function (triggerData, performanceSettings) {
-    var triggers = [];
-    for (var i in triggerData) {
-        triggers.push(new ACV.Game.Trigger.createFromData(triggerData[i], performanceSettings));
+    var triggerIndex, triggers = [];
+
+    for (triggerIndex in triggerData) {
+        triggers.push(new ACV.Game.Trigger.createFromData(triggerData[triggerIndex], performanceSettings));
     }
     return new ACV.Game.TriggerManager(triggers);
 };
 
 ACV.Game.TriggerManager.prototype.check = function (playerX, sceneX) {
-    var t;
-    for (var i in this.triggers) {
-        t = this.triggers[i];
-        if ((t.comparison === '>' && this.lastPlayerX < t.value && playerX > t.value) || (t.comparison === '<' && this.lastPlayerX > t.value && playerX < t.value))
-            this._execute(t);
+    var triggerIndex, trigger;
+
+    for (triggerIndex in this.triggers) {
+        trigger = this.triggers[triggerIndex];
+        if ((trigger.comparison === '>' && this.lastPlayerX < trigger.value && playerX > trigger.value) || (trigger.comparison === '<' && this.lastPlayerX > trigger.value && playerX < trigger.value))
+            this._execute(trigger);
     }
     this.lastPlayerX = playerX;
 };

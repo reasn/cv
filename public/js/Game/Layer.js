@@ -3,9 +3,9 @@
 /**
  * @since 2013-11-03
  */
-var ACV = ACV ? ACV : new Object();
+var ACV = ACV ? ACV : {};
 
-ACV.Game = ACV.Game ? ACV.Game : new Object();
+ACV.Game = ACV.Game ? ACV.Game : {};
 
 ACV.Game.Layer = function (caption, prefs, sprites) {
     this.caption = caption;
@@ -14,9 +14,9 @@ ACV.Game.Layer = function (caption, prefs, sprites) {
 };
 
 ACV.Game.Layer.createFromPrefs = function (data) {
-    var sprites = [];
-    for (var i in data.sprites) {
-        sprites.push(new ACV.Game.Sprite.createFromPrefs(data.sprites[i]));
+    var spriteIndex, sprites = [];
+    for (spriteIndex in data.sprites) {
+        sprites.push(new ACV.Game.Sprite.createFromPrefs(data.sprites[spriteIndex]));
     }
     return new ACV.Game.Layer(data.caption, data.prefs, sprites);
 };
@@ -29,7 +29,7 @@ ACV.Game.Layer.prototype = ACV.Core.createPrototype('ACV.Game.Layer',
     });
 
 ACV.Game.Layer.prototype.init = function (sceneElement, minHeight, maxHeight) {
-    var spriteWrapper;
+    var spriteIndex, spriteWrapper;
 
     //TODO remove captions in productive environment
     this.element = $('<div class="layer" data-caption="' + this.caption + '"><div class="sprite-wrapper" /></div>');
@@ -42,8 +42,8 @@ ACV.Game.Layer.prototype.init = function (sceneElement, minHeight, maxHeight) {
 
     spriteWrapper = this.element.children('.sprite-wrapper');
 
-    for (var i in this.sprites) {
-        this.sprites[i].init(spriteWrapper);
+    for (spriteIndex in this.sprites) {
+        this.sprites[spriteIndex].init(spriteWrapper);
     }
     //Add to DOM at last to reduce draw calls
     sceneElement.append(this.element);
@@ -56,7 +56,7 @@ ACV.Game.Layer.prototype.init = function (sceneElement, minHeight, maxHeight) {
  * @param int width The width of the current viewport
  */
 ACV.Game.Layer.prototype.updatePositions = function (sceneX, sceneXBefore, levelClipOffset, width) {
-    var i, sprite, position = null, positionBefore = null;
+    var spriteIndex, sprite, position = null, positionBefore = null;
 
     var adjustedSceneX = sceneX - this.prefs.offset;
     var adjustedSceneXBefore = sceneXBefore - this.prefs.offset;
@@ -68,8 +68,8 @@ ACV.Game.Layer.prototype.updatePositions = function (sceneX, sceneXBefore, level
     this.element.css('left', x + 'px');
 
     //Trigger sprite animations
-    for (i in this.sprites) {
-        sprite = this.sprites[i];
+    for (spriteIndex in this.sprites) {
+        sprite = this.sprites[spriteIndex];
         for (var leftThreshold in sprite.positions) {
             if (x > leftThreshold && position === null)
                 position = sprite.positions[leftThreshold];
@@ -79,10 +79,9 @@ ACV.Game.Layer.prototype.updatePositions = function (sceneX, sceneXBefore, level
         if (xBefore !== x)
             sprite.startAnimation(position);
     }
-    return;
 
     //TODO dynamic sprite toggling
-    for (var i in this.sprites) {
-        sprite = this.sprites[i];
-    }
+    /*for (spriteIndex in this.sprites) {
+     sprite = this.sprites[spriteIndex];
+     }*/
 };

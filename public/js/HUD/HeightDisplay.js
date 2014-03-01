@@ -28,7 +28,7 @@ ACV.HUD.HeightDisplay.prototype.init = function(hudElement) {
 };
 
 ACV.HUD.HeightDisplay.prototype.update = function(ratio) {
-	var i, factor, height;
+	var frameIndex, factor, height;
 	var keys = Object.keys(this.keyFrames);
 
 	// Automatically hide DOM-element when it's no longer needed
@@ -41,12 +41,12 @@ ACV.HUD.HeightDisplay.prototype.update = function(ratio) {
 		this.elementVisible = true;
 	}
 
-	for (i = 0; i < keys.length - 1; i++) {
-		if (keys[i] <= ratio && ratio <= keys[i + 1]) {
+	for (frameIndex = 0; frameIndex < keys.length - 1; frameIndex++) {
+		if (keys[frameIndex] <= ratio && ratio <= keys[frameIndex + 1]) {
 			// a:= keys[i], b:=ratio, c:= keys[i+1] => factor = (b-a) / (c-a)
-			factor = (ratio - keys[i]) / (keys[i + 1] - keys[i]);
+			factor = (ratio - keys[frameIndex]) / (keys[frameIndex + 1] - keys[frameIndex]);
 			// h = (1-factor) * a + factor * b
-			height = (1 - factor) * this.keyFrames[keys[i]] + factor * this.keyFrames[keys[i + 1]];
+			height = (1 - factor) * this.keyFrames[keys[frameIndex]] + factor * this.keyFrames[keys[frameIndex + 1]];
 
 			break;
 		}

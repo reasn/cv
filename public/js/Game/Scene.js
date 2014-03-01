@@ -43,12 +43,12 @@ ACV.Game.Scene.prototype = ACV.Core.createPrototype('ACV.Game.Scene', {
 });
 
 ACV.Game.Scene.createFromData = function (element, data, performanceSettings) {
-    var levels = [], playerLayer, triggerManager, i;
+    var levels = [], playerLayer, triggerManager, levelIndex;
     playerLayer = ACV.Game.PlayerLayer.createFromData(data.playerLayer, performanceSettings);
 
-    for (i in data.levels) {
-        if (data.levels[i].enabled) {
-            levels.push(ACV.Game.Level.createFromPrefs(data.levels[i]));
+    for (levelIndex in data.levels) {
+        if (data.levels[levelIndex].enabled) {
+            levels.push(ACV.Game.Level.createFromPrefs(data.levels[levelIndex]));
         }
     }
 
@@ -57,7 +57,7 @@ ACV.Game.Scene.createFromData = function (element, data, performanceSettings) {
 };
 
 ACV.Game.Scene.prototype.init = function (viewportDimensions) {
-    var i;
+    var levelIndex;
 
     this.element.css({
         bottom: 'auto',
@@ -67,8 +67,8 @@ ACV.Game.Scene.prototype.init = function (viewportDimensions) {
     this.backgroundElement = $('<div class="level-wrapper background" />');
     this.foregroundElement = $('<div class="level-wrapper foreground" />')
 
-    for (i in this.levels) {
-        this.levels[i].init(this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight);
+    for (levelIndex in this.levels) {
+        this.levels[levelIndex].init(this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight);
     }
 
     // Reduce draw calls by adding everything to the DOM at last
@@ -78,16 +78,17 @@ ACV.Game.Scene.prototype.init = function (viewportDimensions) {
 };
 
 ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore, viewportDimensions) {
-    var offset, offsetBefore, layerRatio, layerRatioBefore, speed, i;
+    var offset, offsetBefore, layerRatio, layerRatioBefore, speed, levelIndex;
     var sceneX = ratio * (this.prefs.width - viewportDimensions.width);
     var sceneXBefore = ratio * (this.prefs.width - viewportDimensions.width);
+
     if (viewportDimensions.changed) {
         this.element.css('height', viewportDimensions.height);
         this.debug('New scene height: %s' , viewportDimensions.height);
     }
 
-    for (i in this.levels) {
-        this.levels[i].updatePositions(sceneX, sceneXBefore, viewportDimensions);
+    for (levelIndex in this.levels) {
+        this.levels[levelIndex].updatePositions(sceneX, sceneXBefore, viewportDimensions);
     }
 
     if (viewportDimensions.changed) {
