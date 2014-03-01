@@ -3,9 +3,9 @@
 /**
  * @since 2013-11-19
  */
-var ACV = ACV ? ACV : new Object();
+var ACV = ACV ? ACV : {};
 
-ACV.HUD = ACV.HUD ? ACV.HUD : new Object();
+ACV.HUD = ACV.HUD ? ACV.HUD : {};
 
 ACV.HUD = function(prefs, skillBasket, year, heightDisplay) {
 	this.prefs = prefs;
@@ -20,7 +20,7 @@ ACV.HUD.createFromData = function(data, performanceSettings) {
 
 	skillBasket = ACV.HUD.SkillBasket.createFromData(data.skillBasket, performanceSettings);
 	if (performanceSettings.yearDisplay)
-		year = ACV.HUD.YearDisplay.createFromData(data.year, performanceSettings);
+        yearDisplay = ACV.HUD.YearDisplay.createFromData(data.year, performanceSettings);
 	if (performanceSettings.heightDisplay)
 		heightDisplay = ACV.HUD.HeightDisplay.createFromData(data.height, performanceSettings);
 	return new ACV.HUD(data.prefs, skillBasket, yearDisplay, heightDisplay);
