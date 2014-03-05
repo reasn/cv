@@ -7,6 +7,17 @@ var ACV = ACV ? ACV : {};
 
 ACV.Game = ACV.Game ? ACV.Game : {};
 
+/**
+ * @type {{
+ *   level: ACV.Game.Level
+ *   levelX: number
+ *   levelXBefore: number
+ *   viewportDimensions: ViewportDimensions
+ *   firstInvocation: boolean
+ * }}
+ * @param {ACV.Game.Level} level
+ * @constructor
+ */
 ACV.Game.AnimationScope = function (level) {
     this.level = level;
 };

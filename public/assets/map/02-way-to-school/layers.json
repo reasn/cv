@@ -3,7 +3,6 @@
         {
             "caption": "sky",
             "prefs": {
-                "width": 1000,
                 "offset": 0,
                 "speed": 0.6
             },
@@ -23,7 +22,6 @@
         {
             "caption": "celestial bodies",
             "prefs": {
-                "width": 1000,
                 "offset": 0,
                 "speed": 0.6
             },
@@ -88,7 +86,6 @@
         {
             "caption": "houses",
             "prefs": {
-                "width": 1000,
                 "offset": 0,
                 "speed": 0.7
             },
@@ -125,7 +122,6 @@
         {
             "caption": "sidewalk",
             "prefs": {
-                "width": 1000,
                 "offset": 0,
                 "speed": 0.8
             },
@@ -144,7 +140,6 @@
         {
             "caption": "hedges, tree and lantern",
             "prefs": {
-                "width": 100,
                 "offset": -150,
                 "speed": 0.8
             },
@@ -169,7 +164,7 @@
                 },
                 {
                     "caption": "lantern",
-                    "x": 2500,
+                    "x": 3100,
                     "y": "330px",
                     "topAligned": false,
                     "width": 84,
@@ -181,7 +176,6 @@
         {
             "caption": "hedges on sidewalk",
             "prefs": {
-                "width": 100,
                 "offset": -100,
                 "speed": 0.9
             },
@@ -200,7 +194,6 @@
         {
             "caption": "street",
             "prefs": {
-                "width": 1000,
                 "offset": 0,
                 "speed": 1
             },
@@ -221,7 +214,6 @@
         {
             "caption": "foreground - blurred - lanterns",
             "prefs": {
-                "width": 100,
                 "offset": 500,
                 "speed": 1.8
             },
@@ -251,7 +243,6 @@
         {
             "caption": "foreground - blurred hedges and tree",
             "prefs": {
-                "width": 100,
                 "offset": 0,
                 "speed": 2
             },
@@ -288,7 +279,6 @@
         {
             "caption": "foreground - left wall",
             "prefs": {
-                "width": 300,
                 "offset": -150,
                 "speed": 1
             },

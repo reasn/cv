@@ -1,9 +1,3 @@
 [
 
-    {
-        "comment": "only for testing",
-        "playerX": ">100",
-        "type": "player.setAge",
-        "data": "child"
-    }
 ]

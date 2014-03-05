@@ -22,7 +22,7 @@ ACV.Core.createPrototype = function (className, properties) {
             ACV.Log.warn.apply(window, [className].concat(Array.prototype.slice.call(arguments)));
         };
         properties.error = function () {
-            ACV.Log.error([className].concat(Array.splice(arguments)));
+            ACV.Log.error.apply(window, [className].concat(Array.prototype.slice.call(arguments)));
         };
     }
     return properties;

@@ -1,47 +1,27 @@
 [
     {
-        "playerX": ">100",
-        "type": "player.jumpAndStay",
-        "data": "270"
+        "playerX": 100,
+        "after": "player.jumpAndStay(270)"
     },
     {
-        "playerX": "<1156",
-        "type": "sprite.show",
-        "data": "baby-in-cradle"
+        "playerX": 1156,
+        "before": "sprite.show(01-baby-in-cradle)",
+        "after": "sprite.hide(01-baby-in-cradle)"
     },
     {
-        "playerX": ">1156",
-        "type": "sprite.hide",
-        "data": "baby-in-cradle"
+        "playerX": 1156,
+        "before": "player.setAge(baby)",
+        "after": "player.setAge(child)"
     },
     {
-        "playerX": "<1156",
-        "type": "player.setAge",
-        "data": "baby"
+        "playerX": [1400, 1600],
+        "before": "player.jumpAndStay(270)",
+        "after": "player.jumpAndStay(150)",
+        "fireOnEnter": true
     },
     {
-        "playerX": ">1156",
-        "type": "player.setAge",
-        "data": "child"
-    },
-    {
-        "playerX": "<1600",
-        "type": "player.jumpAndStay",
-        "data": "270"
-    },
-    {
-        "playerX": ">1400",
-        "type": "player.jumpAndStay",
-        "data": "150"
-    },
-    {
-        "playerX": "<3300",
-        "type": "player.jumpAndStay",
-        "data": "150"
-    },
-    {
-        "playerX": ">3300",
-        "type": "player.jumpAndStay",
-        "data": "250"
+        "playerX": 3300,
+        "before": "player.jumpAndStay(150)",
+        "after": "player.jumpAndStay(250)"
     }
 ]

@@ -3,10 +3,19 @@
 /**
  * @since 2013-11-24
  */
-var ACV = ACV ? ACV : new Object();
+var ACV = ACV ? ACV : {};
 
-ACV.Game = ACV.Game ? ACV.Game : new Object();
+ACV.Game = ACV.Game ? ACV.Game : {};
 
+/**
+ * @type {{
+ *   scene: ACV.Game.Scene
+ *   triggers: Array.<ACV.Game.Trigger>
+ *   lastPlayerX: number
+ * }}
+ * @param triggers
+ * @constructor
+ */
 ACV.Game.TriggerManager = function (triggers) {
     this.triggers = triggers;
     /*  this.triggers.sort(function(a, b) {
@@ -35,12 +44,17 @@ ACV.Game.TriggerManager.createFromData = function (triggerData, performanceSetti
 };
 
 ACV.Game.TriggerManager.prototype.check = function (playerX, sceneX) {
-    var triggerIndex, trigger;
+    var triggerIndex, trigger, action;
 
+    //this.debug('PlayerX always: %s    %s', playerX, this.lastPlayerX);
     for (triggerIndex in this.triggers) {
         trigger = this.triggers[triggerIndex];
-        if ((trigger.comparison === '>' && this.lastPlayerX < trigger.value && playerX > trigger.value) || (trigger.comparison === '<' && this.lastPlayerX > trigger.value && playerX < trigger.value))
-            this._execute(trigger);
+
+        if (trigger.relativeTo === 'player') {
+            action = trigger.determineActionToBeExecuted(playerX, this.lastPlayerX);
+        }
+        if (action !== null)
+            this._execute(action);
     }
     this.lastPlayerX = playerX;
 };
@@ -49,37 +63,37 @@ ACV.Game.TriggerManager.prototype.check = function (playerX, sceneX) {
  *
  * History:
  * 2014-03-01 Added player.jumpAndStay, sprite.show and sprite.hide
- * @param trigger
+ * @param {Object} action
  * @returns {*}
  * @private
  * @version 2014-03-01
  * @since 2013-11-24
  * @author Alexander Thiel
  */
-ACV.Game.TriggerManager.prototype._execute = function (trigger) {
-    var args = trigger.data ? trigger.data.split('|') : null;
+ACV.Game.TriggerManager.prototype._execute = function (action) {
 
-    switch (trigger.type) {
+    switch (action.action) {
         case 'sprite.show':
-            $('#' + args[0]).show();
+            $('#' + action.args[0]).show();
             return;
         case 'sprite.hide':
-            $('#' + args[0]).hide();
+            $('#' + action.args[0]).hide();
             return;
         case 'player.setAge':
-            this.scene.playerLayer.player.setAge(args[0]);
+            this.scene.playerLayer.player.setAge(action.args[0]);
             return;
         case 'player.jumpUpAndDown':
             this.scene.playerLayer.player.jumpUpAndDown();
             return;
         case 'player.jumpAndStay':
-            this.scene.playerLayer.player.jumpAndStay(parseInt(args[0]));
+            this.scene.playerLayer.player.jumpAndStay(parseInt(action.args[0]));
             return;
         case 'scene.zoom':
-            this.scene.startZoom(args[0], parseInt(args[1]));
+            this.scene.startZoom(action.args[0], parseInt(action.args[1]));
             return;
         default:
-            return this.error('Unknown trigger "%s"', trigger.type);
+            this.warn('Unknown trigger action:');
+            this.warn(action);
             return;
     }
 };

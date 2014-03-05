@@ -3,20 +3,29 @@
 /**
  * @since 2013-11-03
  */
-var ACV = ACV ? ACV : new Object();
+var ACV = ACV ? ACV : {};
 
-ACV.Game = ACV.Game ? ACV.Game : new Object();
+ACV.Game = ACV.Game ? ACV.Game : {};
 
 /**
  *
- * @param {Object}
- *            element
- * @param {Object}
- *            prefs
- * @param {ACV.Game.PlayerLayer}
- *            PlayerLayer
- * @param ACV.Game.Layer[]
- *            layers
+ * @type {{
+ *   prefs: Object
+ *   backgroundElement: jQuery,
+ *   foregroundElement: jQuery,
+ *   playerLayer: ACV.Game.PlayerLayer,
+ *   triggerManager: ACV.Game.TriggerManager
+ *   levels: Array.<ACV.Game.Level>,
+ *   _viewportDimensions: ViewportDimensions
+ *   _x: number
+ *   _xBefore: number
+ * }}
+ *
+ * @param {jQuery} element
+ * @param {Object} prefs
+ * @param {Array.<ACV.Game.Level>} levels
+ * @param {ACV.Game.PlayerLayer} playerLayer
+ * @param {ACV.Game.TriggerManager} triggerManager
  */
 ACV.Game.Scene = function (element, prefs, levels, playerLayer, triggerManager) {
     this.element = $(element);
@@ -39,7 +48,10 @@ ACV.Game.Scene.prototype = ACV.Core.createPrototype('ACV.Game.Scene', {
     foregroundElement: null,
     playerLayer: null,
     triggerManager: null,
-    levels: []
+    levels: [],
+    _viewportDimensions: null,
+    _x: 0,
+    _xBefore: 0
 });
 
 ACV.Game.Scene.createFromData = function (element, data, performanceSettings) {
@@ -58,6 +70,7 @@ ACV.Game.Scene.createFromData = function (element, data, performanceSettings) {
 
 ACV.Game.Scene.prototype.init = function (viewportDimensions) {
     var levelIndex;
+    var scene = this;
 
     this.element.css({
         bottom: 'auto',
@@ -65,7 +78,11 @@ ACV.Game.Scene.prototype.init = function (viewportDimensions) {
     });
 
     this.backgroundElement = $('<div class="level-wrapper background" />');
-    this.foregroundElement = $('<div class="level-wrapper foreground" />')
+    this.foregroundElement = $('<div class="level-wrapper foreground" />');
+
+    this.foregroundElement.on('click', function (event) {
+        scene._handleClick(event.clientX);
+    });
 
     for (levelIndex in this.levels) {
         this.levels[levelIndex].init(this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight);
@@ -77,30 +94,33 @@ ACV.Game.Scene.prototype.init = function (viewportDimensions) {
     this.element.append(this.foregroundElement);
 };
 
+ACV.Game.Scene.prototype._handleClick = function (clientX) {
+    var targetX = this._x + clientX;
+    this.info('User clicked, player will walk to %s', targetX);
+    this.playerLayer.player.moveTo(targetX, this._x, 0.5, this._viewportDimensions);
+};
+
 ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore, viewportDimensions) {
-    var offset, offsetBefore, layerRatio, layerRatioBefore, speed, levelIndex;
-    var sceneX = ratio * (this.prefs.width - viewportDimensions.width);
-    var sceneXBefore = ratio * (this.prefs.width - viewportDimensions.width);
+    var levelIndex;
+    this._x = ratio * (this.prefs.width - viewportDimensions.width);
+    this._xBefore = ratio * (this.prefs.width - viewportDimensions.width);
 
     if (viewportDimensions.changed) {
         this.element.css('height', viewportDimensions.height);
-        this.debug('New scene height: %s' , viewportDimensions.height);
+        this.debug('New scene height: %s', viewportDimensions.height);
     }
 
     for (levelIndex in this.levels) {
-        this.levels[levelIndex].updatePositions(sceneX, sceneXBefore, viewportDimensions);
+        this.levels[levelIndex].updatePositions(this._x, this._xBefore, viewportDimensions);
     }
 
     if (viewportDimensions.changed) {
         this._handleViewportChange(viewportDimensions);
     }
-    this.playerLayer.updatePositions(sceneX, viewportDimensions);
+    this.playerLayer.updatePositions(this._x, viewportDimensions);
 
-    //Check levels and automatically show them in the DOM if necessary
-    //for(i in this.levels) {
-//        if()
-//    }
-    $('#sceneX').text(sceneX);
+    //TODO remove:
+    $('#sceneX').text(this._x);
 };
 
 ACV.Game.Scene.prototype.handleTriggers = function (playerX, sceneX) {
@@ -110,6 +130,8 @@ ACV.Game.Scene.prototype.handleTriggers = function (playerX, sceneX) {
 ACV.Game.Scene.prototype._handleViewportChange = function (viewportDimensions) {
     var levelIndex, layerIndex;
     var elementsToAlter = this.playerLayer.element;
+
+    this._viewportDimensions = viewportDimensions;
 
     for (levelIndex in this.levels) {
 
@@ -138,7 +160,7 @@ ACV.Game.Scene.prototype._handleViewportChange = function (viewportDimensions) {
 };
 
 ACV.Game.Scene.prototype.startZoom = function (targetScale, duration) {
-    this.debug('Zooming to %s whithin %sms', targetScale, duration);
+    this.debug('Zooming to %s within %sms', targetScale, duration);
 
     this.element.stop('zoom', true).animate({
         transform: 'scale(' + targetScale + ')'

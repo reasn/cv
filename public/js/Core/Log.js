@@ -8,7 +8,7 @@ var ACV = ACV ? ACV : {};
 ACV.Log = ACV.Log ? ACV.Log : {};
 
 ACV.Log.enabled = true;
-ACV.Log.NAMESPACE_WIDTH = 15;
+ACV.Log.NAMESPACE_WIDTH = 25;
 ACV.Log._indent = 0;
 
 ACV.Log.debug = function () {
@@ -23,12 +23,6 @@ ACV.Log.warn = function () {
     ACV.Log._add(Array.prototype.slice.call(arguments), 'w');
 };
 
-/**
- * @param className
- * @param mixed message
- * @param string replacement1
- * @param string replacement2 (and so on)
- */
 ACV.Log.error = function () {
     ACV.Log._add(Array.prototype.slice.call(arguments), 'e');
 };
@@ -65,6 +59,9 @@ ACV.Log._add = function (args, logLevel) {
     //Serialize all types of arguments into a string
     if (typeof message === 'string') {
         for (replacementIndex in args) {
+            if (typeof args[replacementIndex] === 'object') {
+                args[replacementIndex] = JSON.stringify(args[replacementIndex], null, '  ');
+            }
             message = message.replace('%s', args[replacementIndex]);
         }
     }

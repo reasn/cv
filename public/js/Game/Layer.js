@@ -7,6 +7,18 @@ var ACV = ACV ? ACV : {};
 
 ACV.Game = ACV.Game ? ACV.Game : {};
 
+/**
+ * @type {{
+ *   caption: string
+ *   prefs: Object
+ *   sprites: Array.<ACV.Game.Sprite>
+ *   element: jQuery
+ * }}
+ * @param {string} caption
+ * @param {Object} prefs
+ * @param {Array.<ACV.Game.Sprite>} sprites
+ * @constructor
+ */
 ACV.Game.Layer = function (caption, prefs, sprites) {
     this.caption = caption;
     this.prefs = prefs;
@@ -23,9 +35,10 @@ ACV.Game.Layer.createFromPrefs = function (data) {
 
 ACV.Game.Layer.prototype = ACV.Core.createPrototype('ACV.Game.Layer',
     {
-        element: null,
+        caption: '',
         prefs: null,
-        sprites: []
+        sprites: [],
+        element: null
     });
 
 ACV.Game.Layer.prototype.init = function (sceneElement, minHeight, maxHeight) {
@@ -35,7 +48,6 @@ ACV.Game.Layer.prototype.init = function (sceneElement, minHeight, maxHeight) {
     this.element = $('<div class="layer" data-caption="' + this.caption + '"><div class="sprite-wrapper" /></div>');
     this.element.css(
         {
-            width: this.prefs.width + 'px',
             minHeight: minHeight,
             maxHeight: maxHeight
         });
@@ -55,18 +67,14 @@ ACV.Game.Layer.prototype.init = function (sceneElement, minHeight, maxHeight) {
  * History:
  * 2014-03-05 Improved variable naming to clearly indicate levelX and levelXBefore
  *
- * @param {number} sceneX The amount of pixels that already left the viewport on the left side. Positive integer
- * @param {number} sceneXBefore
+ * @param {number} levelOffset
+ * @param {number} levelX The amount of pixels that already left the viewport on the left side. Positive integer
+ * @param {number} levelXBefore
  * @param {number} levelClipOffset
  * @version 2014-03-05
  */
-ACV.Game.Layer.prototype.updatePositions = function (sceneX, sceneXBefore, levelClipOffset) {
-    var spriteIndex, sprite, position = null, positionBefore = null;
-    var levelX = sceneX - this.prefs.offset;
-    var levelXBefore = sceneXBefore - this.prefs.offset;
+ACV.Game.Layer.prototype.updatePositions = function (levelOffset, levelX, levelXBefore, levelClipOffset) {
 
-    var x = -levelClipOffset - this.prefs.speed * levelX;
-    var xBefore = -levelClipOffset - this.prefs.speed * levelXBefore;
-
-    this.element.css('left', x + 'px');
+    var x = levelOffset + levelClipOffset + this.prefs.speed * levelX - this.prefs.offset;
+    this.element.css('left', (-x) + 'px');
 };

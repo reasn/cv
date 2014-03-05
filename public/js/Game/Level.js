@@ -17,12 +17,31 @@ var ACV = ACV ? ACV : {};
 
 ACV.Game = ACV.Game ? ACV.Game : {};
 
-ACV.Game.Level = function (handle, prefs, animations, backgroundLayers, foregreoundLayers) {
+/**
+ * @type {{
+ *   handle: string
+ *   prefs: Object
+ *   animations: Array.<Object>
+ *   visible: boolean
+ *   backgroundLayers: Array.<ACV.Game.Layer>
+ *   foregroundLayers: Array.<ACV.Game.Layer>
+ *   _foregroundElement: jQuery
+ *   _backgroundElement: jQuery
+ *   _animationScope: ACV.Game.AnimationScope
+ * }}
+ * @param handle
+ * @param prefs
+ * @param {Array.<Object>} animations
+ * @param {Array.<ACV.Game.Layer>} backgroundLayers
+ * @param {Array.<ACV.Game.Layer>} foregroundLayers
+ * @constructor
+ */
+ACV.Game.Level = function (handle, prefs, animations, backgroundLayers, foregroundLayers) {
     this.handle = handle;
     this.prefs = prefs;
     this.animations = animations;
     this.backgroundLayers = backgroundLayers;
-    this.foregroundLayers = foregreoundLayers;
+    this.foregroundLayers = foregroundLayers;
     this._animationScope = new ACV.Game.AnimationScope(this);
 };
 
@@ -51,14 +70,14 @@ ACV.Game.Level.prototype = ACV.Core.createPrototype('ACV.Game.Level',
         backgroundLayers: [],
         foregroundLayers: [],
         visible: false,
-        foregroundElement: null,
-        backgroundElement: null,
+        _foregroundElement: null,
+        _backgroundElement: null,
         _animationScope: null
     });
 /**
  *
- * @param {HTMLElement} backgroundWrapper
- * @param {HTMLElement} foregroundWrapper
+ * @param {jQuery} backgroundWrapper
+ * @param {jQuery} foregroundWrapper
  * @param {!number} minHeight
  * @param {!number} maxHeight
  * @returns void
@@ -66,22 +85,22 @@ ACV.Game.Level.prototype = ACV.Core.createPrototype('ACV.Game.Level',
 ACV.Game.Level.prototype.init = function (backgroundWrapper, foregroundWrapper, minHeight, maxHeight) {
     var layerIndex;
 
-    this.foregroundElement = $('<div class="level" data-handle="' + this.handle + '" />');
-    this.foregroundElement.css('max-width', this.prefs.clip.x2, 0);
+    this._foregroundElement = $('<div class="level" data-handle="' + this.handle + '" />');
+    this._foregroundElement.css('max-width', this.prefs.clip.x2, 0);
 
 
-    this.backgroundElement = $('<div class="level" data-handle="' + this.handle + '" />');
-    this.backgroundElement.css('max-width', this.prefs.clip.x2, 0);
+    this._backgroundElement = $('<div class="level" data-handle="' + this.handle + '" />');
+    this._backgroundElement.css('max-width', this.prefs.clip.x2, 0);
 
     for (layerIndex in this.backgroundLayers) {
-        this.backgroundLayers[layerIndex].init(this.backgroundElement, minHeight, maxHeight);
+        this.backgroundLayers[layerIndex].init(this._backgroundElement, minHeight, maxHeight);
     }
     for (layerIndex in this.foregroundLayers) {
-        this.foregroundLayers[layerIndex].init(this.foregroundElement, minHeight, maxHeight);
+        this.foregroundLayers[layerIndex].init(this._foregroundElement, minHeight, maxHeight);
     }
     //Add to DOM at last to reduce draw calls
-    backgroundWrapper.append(this.backgroundElement);
-    foregroundWrapper.append(this.foregroundElement);
+    backgroundWrapper.append(this._backgroundElement);
+    foregroundWrapper.append(this._foregroundElement);
     this.info('Level initialized with ' + this.foregroundLayers.length + ' foreground layers and ' + this.backgroundLayers.length + ' background layers', 'd');
 };
 
@@ -95,7 +114,7 @@ ACV.Game.Level.prototype.init = function (backgroundWrapper, foregroundWrapper, 
 ACV.Game.Level.prototype.updatePositions = function (sceneX, sceneXBefore, viewportDimensions) {
 
     this._updateVisibility(sceneX);
-    this._applyClippingAndUpdateLayerPositions(sceneX, sceneXBefore, viewportDimensions);
+    this._applyClippingAndUpdateLayerPositions(sceneX, sceneXBefore);
     this._handleAnimations(sceneX, sceneXBefore, viewportDimensions);
 };
 
@@ -117,14 +136,14 @@ ACV.Game.Level.prototype._updateVisibility = function (sceneX) {
     if (this.visible && (sceneX < showLevelSceneX || sceneX > hideLevelSceneX)) {
         this.info('Hiding level ' + this.handle, 'i');
         this.visible = false;
-        this.foregroundElement.removeClass('visible');
-        this.backgroundElement.removeClass('visible');
+        this._foregroundElement.removeClass('visible');
+        this._backgroundElement.removeClass('visible');
 
     } else if (!this.visible && (sceneX >= showLevelSceneX && sceneX <= hideLevelSceneX)) {
         this.info('Showing level ' + this.handle, 'i');
         this.visible = true;
-        this.foregroundElement.addClass('visible');
-        this.backgroundElement.addClass('visible');
+        this._foregroundElement.addClass('visible');
+        this._backgroundElement.addClass('visible');
     }
 };
 
@@ -133,26 +152,28 @@ ACV.Game.Level.prototype._updateVisibility = function (sceneX) {
  * Apply clipping to the left and right
  * @param {!number} sceneX The amount of pixels that already left the viewport on the left side. Positive integer
  * @param {!number} sceneXBefore
- * @param {ViewportDimensions} viewportDimensions
  * @returns void
  * @private
  * @version 2014-03-05
  * @since 2014-03-05
  * @author Alexander Thiel
  */
-ACV.Game.Level.prototype._applyClippingAndUpdateLayerPositions = function (sceneX, sceneXBefore, viewportDimensions) {
+ACV.Game.Level.prototype._applyClippingAndUpdateLayerPositions = function (sceneX, sceneXBefore) {
     var layerIndex, distanceBetweenLeftViewportMarginAndLevelBegin;
 
     distanceBetweenLeftViewportMarginAndLevelBegin = this.prefs.offset - sceneX + this.prefs.clip.x1;
 
-    this.backgroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
-    this.foregroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
+    this._backgroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
+    this._foregroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
+
+    var levelX = sceneX - this.prefs.offset;
+    var levelXBefore = sceneXBefore - this.prefs.offset;
 
     for (layerIndex in this.backgroundLayers) {
-        this.backgroundLayers[layerIndex].updatePositions(sceneX, sceneXBefore, distanceBetweenLeftViewportMarginAndLevelBegin);
+        this.backgroundLayers[layerIndex].updatePositions(this.prefs.offset, levelX, levelXBefore, distanceBetweenLeftViewportMarginAndLevelBegin);
     }
     for (layerIndex in this.foregroundLayers) {
-        this.foregroundLayers[layerIndex].updatePositions(sceneX, sceneXBefore, distanceBetweenLeftViewportMarginAndLevelBegin);
+        this.foregroundLayers[layerIndex].updatePositions(this.prefs.offset, levelX, levelXBefore, distanceBetweenLeftViewportMarginAndLevelBegin);
     }
 };
 

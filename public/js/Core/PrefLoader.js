@@ -18,9 +18,9 @@ ACV.Core.PrefLoader = function () {
 
 
 ACV.Core.PrefLoader.prototype = ACV.Core.createPrototype('ACV.Core.PrefLoader',
-{
-    gameData: null
-});
+    {
+        gameData: null
+    });
 
 ACV.Core.PrefLoader.FORCE_UNCACHED_DATA = true;
 
@@ -149,12 +149,9 @@ ACV.Core.PrefLoader.prototype._loadLevel = function (level, qFx) {
  * @author Alexander Thiel
  */
 ACV.Core.PrefLoader.prototype._loadTriggers = function (levelOffset, triggers, qFx) {
-    var triggerIndex, trigger;
+    var triggerIndex;
     for (triggerIndex in triggers) {
-        trigger = triggers[triggerIndex];
-        //TODO make cleaner
-        trigger.playerX = trigger.playerX.substr(0, 1) + (levelOffset + parseInt(trigger.playerX.substr(1)));
-        this.gameData.scene.triggers.push(trigger);
+        this.gameData.scene.triggers.push(triggers[triggerIndex]);
     }
     qFx.apply(this);
 };
