@@ -27,15 +27,20 @@
         <script defer="defer" src="js/HUD/HeightDisplay.js"></script>
         <script defer="defer" src="js/App.js"></script>
         <script defer="defer" type="text/javascript">
-            $(function()
-            {
-                var app = new ACV.App();
-                (new ACV.Core.PrefLoader()).load(function(gameData) {
-                    app.init(gameData);
+            (function() {
+                $(function load() {
+                    if(typeof ACV.App === 'undefined'){
+                        window.setTimeout(load, 100);
+                        return;
+                    }
+                    var app = new ACV.App();
+                    (new ACV.Core.PrefLoader()).load(function(gameData) {
+                        app.init(gameData);
+                    });
+                    //TODO remove the next line
+                    window.testableApp = app;
                 });
-                //TODO remove the next line
-                window.testableApp = app;
-            });
+            })();
 
         </script>
         <link href="css/style.css" type="text/css" rel="stylesheet">
