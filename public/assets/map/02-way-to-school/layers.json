@@ -4,70 +4,82 @@
             "caption": "sky",
             "prefs": {
                 "width": 1000,
-                "offset": -500,
+                "offset": 0,
                 "speed": 0.6
             },
             "sprites": [
                 {
+                    "id": "02-sky",
                     "caption": "sky",
-                    "x": "0px",
+                    "x": 0,
                     "y": "0",
                     "topAligned": true,
-                    "width": "5000px",
+                    "width": 5000,
                     "height": "100%",
                     "color": "blue"
-                },
+                }
+            ]
+        },
+        {
+            "caption": "celestial bodies",
+            "prefs": {
+                "width": 1000,
+                "offset": 0,
+                "speed": 0.6
+            },
+            "sprites": [
                 {
                     "caption": "moon",
-                    "x": "500px",
+                    "x": 500,
                     "y": "5%",
                     "topAligned": true,
-                    "width": "91px",
+                    "width": 91,
                     "height": "180px",
                     "source": "graphics/scene/world/02-way-to-school/moon.png"
                 },
                 {
                     "caption": "star 01",
-                    "x": "700px",
+                    "x": 700,
                     "y": "5%",
                     "topAligned": true,
-                    "width": "34px",
+                    "width": 34,
                     "height": "30px",
                     "source": "graphics/scene/world/02-way-to-school/star-01.png"
                 },
                 {
                     "caption": "star 01",
-                    "x": "800px",
+                    "x": 800,
                     "y": "10%",
                     "topAligned": true,
-                    "width": "34px",
+                    "width": 34,
                     "height": "30px",
                     "source": "graphics/scene/world/02-way-to-school/star-01.png"
                 },
                 {
                     "caption": "star 02",
-                    "x": "880px",
+                    "x": 880,
                     "y": "150px",
                     "topAligned": true,
-                    "width": "22px",
+                    "width": 22,
                     "height": "20px",
                     "source": "graphics/scene/world/02-way-to-school/star-02.png"
                 },
                 {
                     "caption": "star 02",
-                    "x": "750px",
+                    "x": 750,
                     "y": "70%",
                     "topAligned": false,
-                    "width": "22px",
+                    "width": 22,
                     "height": "20px",
                     "source": "graphics/scene/world/02-way-to-school/star-02.png"
                 },
                 {
+                    "id": "02-sun",
                     "caption": "sun",
-                    "x": "2400px",
+                    "x": 2400,
                     "y": "70%",
-                    "topAligned": false,
-                    "width": "300px",
+                    "topAligned": true,
+                    "width": 300,
                     "height": "300px",
                     "source": "graphics/scene/world/02-way-to-school/sun.png"
                 }
@@ -83,28 +95,28 @@
             "sprites": [
                 {
                     "caption": "house 1 A",
-                    "x": "300px",
+                    "x": 300,
                     "y": "400px",
                     "topAligned": false,
-                    "width": "304px",
+                    "width": 304,
                     "height": "400px",
                     "source": "graphics/scene/world/02-way-to-school/house-01.png"
                 },
                 {
                     "caption": "house 1 B",
-                    "x": "1200px",
+                    "x": 1200,
                     "y": "400px",
                     "topAligned": false,
-                    "width": "304px",
+                    "width": 304,
                     "height": "400px",
                     "source": "graphics/scene/world/02-way-to-school/house-01.png"
                 },
                 {
                     "caption": "house 2",
-                    "x": "2300px",
+                    "x": 2100,
                     "y": "360px",
                     "topAligned": false,
-                    "width": "433px",
+                    "width": 433,
                     "height": "400px",
                     "source": "graphics/scene/world/02-way-to-school/house-02.png"
                 }
@@ -114,16 +126,16 @@
             "caption": "sidewalk",
             "prefs": {
                 "width": 1000,
-                "offset": -200,
+                "offset": 0,
                 "speed": 0.8
             },
             "sprites": [
                 {
                     "caption": "street",
-                    "x": "0px",
+                    "x": 0,
                     "y": "300px",
                     "topAligned": false,
-                    "width": "8000px",
+                    "width": 8000,
                     "height": "50px",
                     "color": "yellow"
                 }
@@ -139,28 +151,28 @@
             "sprites": [
                 {
                     "caption": "hedge 1",
-                    "x": "0px",
+                    "x": 0,
                     "y": "340px",
                     "topAligned": false,
-                    "width": "4000px",
+                    "width": 4000,
                     "height": "100px",
                     "source": "graphics/scene/world/common/hedge-03.png"
                 },
                 {
                     "caption": "tree",
-                    "x": "1100px",
+                    "x": 1100,
                     "y": "330px",
                     "topAligned": false,
-                    "width": "290px",
+                    "width": 290,
                     "height": "501px",
                     "source": "graphics/scene/world/common/tree-01.png"
                 },
                 {
                     "caption": "lantern",
-                    "x": "2500px",
+                    "x": 2500,
                     "y": "330px",
                     "topAligned": false,
-                    "width": "84px",
+                    "width": 84,
                     "height": "390px",
                     "source": "graphics/scene/world/02-way-to-school/lantern.png"
                 }
@@ -176,10 +188,10 @@
             "sprites": [
                 {
                     "caption": "hedge 3",
-                    "x": "0px",
+                    "x": 0,
                     "y": "330px",
                     "topAligned": false,
-                    "width": "5000px",
+                    "width": 5000,
                     "height": "80px",
                     "source": "graphics/scene/world/common/hedge-01.png"
                 }
@@ -195,10 +207,10 @@
             "sprites": [
                 {
                     "caption": "street",
-                    "x": "0px",
+                    "x": 0,
                     "y": "0px",
                     "topAligned": false,
-                    "width": "8000px",
+                    "width": 8000,
                     "height": "300px",
                     "color": "yellow"
                 }
@@ -216,20 +228,20 @@
             "sprites": [
                 {
                     "caption": "lantern 1",
-                    "x": "0px",
+                    "x": 0,
                     "y": "-25%",
                     "topAligned": false,
-                    "width": "222px",
+                    "width": 222,
                     "height": "1006px",
                     "color": "pink",
                     "source": "graphics/scene/world/02-way-to-school/lantern-blurred.png"
                 },
                 {
                     "caption": "lantern 2",
-                    "x": "2500px",
+                    "x": 2500,
                     "y": "-25%",
                     "topAligned": false,
-                    "width": "222px",
+                    "width": 222,
                     "height": "1006px",
                     "color": "pink",
                     "source": "graphics/scene/world/02-way-to-school/lantern-blurred.png"
@@ -246,28 +258,28 @@
             "sprites": [
                 {
                     "caption": "hedge 1",
-                    "x": "-1000px",
+                    "x": -3000,
                     "y": "-100px",
                     "topAligned": false,
-                    "width": "5500px",
+                    "width": 11000,
                     "height": "269px",
                     "source": "graphics/scene/world/common/hedge-blurred-01.png"
                 },
                 {
                     "caption": "hedge 2",
-                    "x": "-820px",
+                    "x": -2800,
                     "y": "-100px",
                     "topAligned": false,
-                    "width": "5550px",
+                    "width": 11000,
                     "height": "274px",
                     "source": "graphics/scene/world/common/hedge-blurred-01.png"
                 },
                 {
                     "caption": "tree",
-                    "x": "2200px",
+                    "x": 2200,
                     "y": "-100px",
                     "topAligned": false,
-                    "width": "581px",
+                    "width": 581,
                     "height": "1001px",
                     "source": "graphics/scene/world/common/tree-blurred-01.png"
                 }
@@ -283,19 +295,20 @@
             "sprites": [
                 {
                     "caption": "right wall of house from level 1",
-                    "x": "0px",
+                    "x": 0,
                     "y": "-80px",
                     "topAligned": true,
-                    "width": "300px",
+                    "width": 300,
                     "height": "120%",
                     "color": "pink",
                     "blurred": true
-                },{
+                },
+                {
                     "caption": "hedge 1",
-                    "x": "180px",
+                    "x": 180,
                     "y": "-100px",
                     "topAligned": false,
-                    "width": "550px",
+                    "width": 550,
                     "height": "269px",
                     "source": "graphics/scene/world/common/hedge-blurred-01.png"
                 }

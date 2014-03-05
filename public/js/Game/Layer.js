@@ -52,36 +52,21 @@ ACV.Game.Layer.prototype.init = function (sceneElement, minHeight, maxHeight) {
 
 /**
  *
- * @param int x The amount of pixels that already left the viewport on the left side. Positive integer
- * @param int width The width of the current viewport
+ * History:
+ * 2014-03-05 Improved variable naming to clearly indicate levelX and levelXBefore
+ *
+ * @param {number} sceneX The amount of pixels that already left the viewport on the left side. Positive integer
+ * @param {number} sceneXBefore
+ * @param {number} levelClipOffset
+ * @version 2014-03-05
  */
-ACV.Game.Layer.prototype.updatePositions = function (sceneX, sceneXBefore, levelClipOffset, width) {
+ACV.Game.Layer.prototype.updatePositions = function (sceneX, sceneXBefore, levelClipOffset) {
     var spriteIndex, sprite, position = null, positionBefore = null;
+    var levelX = sceneX - this.prefs.offset;
+    var levelXBefore = sceneXBefore - this.prefs.offset;
 
-    var adjustedSceneX = sceneX - this.prefs.offset;
-    var adjustedSceneXBefore = sceneXBefore - this.prefs.offset;
+    var x = -levelClipOffset - this.prefs.speed * levelX;
+    var xBefore = -levelClipOffset - this.prefs.speed * levelXBefore;
 
-    var x = -this.prefs.speed * adjustedSceneX - levelClipOffset;
-    var xBefore = -this.prefs.speed * adjustedSceneXBefore - levelClipOffset;
-
-    //this.info('Layer : ' + (x - this.prefs.offset ));
     this.element.css('left', x + 'px');
-
-    //Trigger sprite animations
-    for (spriteIndex in this.sprites) {
-        sprite = this.sprites[spriteIndex];
-        for (var leftThreshold in sprite.positions) {
-            if (x > leftThreshold && position === null)
-                position = sprite.positions[leftThreshold];
-            if (xBefore > leftThreshold && positionBefore === null)
-                positionBefore = sprite.positions[leftThreshold];
-        }
-        if (xBefore !== x)
-            sprite.startAnimation(position);
-    }
-
-    //TODO dynamic sprite toggling
-    /*for (spriteIndex in this.sprites) {
-     sprite = this.sprites[spriteIndex];
-     }*/
 };

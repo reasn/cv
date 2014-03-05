@@ -1,36 +1,36 @@
 [
     {
-        "playerX": ">500",
+        "playerX": ">100",
         "type": "player.jumpAndStay",
         "data": "270"
     },
     {
-        "playerX": "<1556",
+        "playerX": "<1156",
         "type": "sprite.show",
         "data": "baby-in-cradle"
     },
     {
-        "playerX": ">1556",
+        "playerX": ">1156",
         "type": "sprite.hide",
         "data": "baby-in-cradle"
     },
     {
-        "playerX": "<1556",
+        "playerX": "<1156",
         "type": "player.setAge",
         "data": "baby"
     },
     {
-        "playerX": ">1556",
+        "playerX": ">1156",
         "type": "player.setAge",
         "data": "child"
     },
     {
-        "playerX": "<2000",
+        "playerX": "<1600",
         "type": "player.jumpAndStay",
         "data": "270"
     },
     {
-        "playerX": ">1800",
+        "playerX": ">1400",
         "type": "player.jumpAndStay",
         "data": "150"
     },

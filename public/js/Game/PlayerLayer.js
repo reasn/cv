@@ -72,7 +72,7 @@ ACV.Game.PlayerLayer.prototype.init = function(wrapperElement, width, minHeight,
  */
 ACV.Game.PlayerLayer.prototype.updatePositions = function(sceneX, viewportDimensions)
 {
-    var coarsedSceneX = Math.round(sceneX / this.prefs.collisionDetectionGridSize);
+    var granularSceneX = Math.round(sceneX / this.prefs.collisionDetectionGridSize);
 
     //Set wrapper position to have the player stay at the same point of the scrolling scenery
     this.element.css('left', -sceneX);

@@ -185,7 +185,7 @@ ACV.Game.Player.prototype.updatePosition = function (sceneX, viewportDimensions)
                 duration: Math.abs(this.x - targetX) / speed,
                 queue: 'walk',
                 step: function (now) {
-                    var coarseX = Math.round(now / player.prefs.movementTriggerCoarsity);
+                    var coarseX = Math.round(now / player.prefs.movementTriggerGranularity);
                     player.x = now;
 
                     if (coarseX !== player.lastCoarseX) {

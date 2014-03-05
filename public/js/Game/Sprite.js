@@ -9,17 +9,22 @@ ACV.Game = ACV.Game ? ACV.Game : new Object();
 
 /**
  *
- * @param {Array} positions
- * @param {int} width
- * @param {int} height
+ * @param {string} id
+ * @param {string} caption
+ * @param {number} x
+ * @param {string} y
+ * @param {number} width
+ * @param {number} height
  * @param {bool} topAligned
+ * @param {string} source
+ * @param {string} color
+ * @param {boolean} blurred
  */
-ACV.Game.Sprite = function (id, caption, positions, width, height, topAligned, source, color, blurred) {
+ACV.Game.Sprite = function (id, caption, x, y, width, height, topAligned, source, color, blurred) {
     this.id = id;
     this.caption = caption;
-    this.x = positions['0'].x;
-    this.y = positions['0'].y;
-    this.positions = positions;
+    this.x = x;
+    this.y = y;
     this.topAligned = topAligned;
     this.width = width;
     this.height = height;
@@ -28,16 +33,7 @@ ACV.Game.Sprite = function (id, caption, positions, width, height, topAligned, s
     this.blurred = blurred;
 };
 ACV.Game.Sprite.createFromPrefs = function (data) {
-    //TODO currently never used. deprecated?
-    var positions = data.positions !== undefined ? data.positions :
-    {
-        "0": {
-            x: data.x,
-            y: data.y
-        }
-    };
-
-    return new ACV.Game.Sprite(data.id, data.caption, positions, data.width, data.height, data.topAligned, data.source, data.color, data.blurred);
+    return new ACV.Game.Sprite(data.id, data.caption, data.x, data.y, data.width, data.height, data.topAligned, data.source, data.color, data.blurred);
 };
 ACV.Game.Sprite.mockColors = ['#9932CC', '#8B0000', '#E9967A', '#8FBC8F', '#483D8B', '#2F4F4F', '#00CED1', '#9400D3', '#FF1493', '#00BFFF', '#696969', '#1E90FF', '#B22222', '#FFFAF0', '#228B22', '#FF00FF', '#DCDCDC', '#F8F8FF', '#FFD700', '#DAA520', '#808080', '#008000', '#ADFF2F', '#F0FFF0', '#FF69B4'];
 ACV.Game.Sprite.mockColorIndex = 0;
@@ -57,13 +53,13 @@ ACV.Game.Sprite.prototype = ACV.Core.createPrototype('ACV.Game.Sprite',
 
 ACV.Game.Sprite.prototype.init = function (layerElement) {
     this.element = $('<div class="sprite" data-caption="' + this.caption + '" />');
-    if(this.id){
+    if (this.id) {
         this.element.attr('id', this.id);
     }
     this.element.css(
         {
-            left: this.x,
-            width: this.width,
+            left: this.x + 'px',
+            width: this.width + 'px',
             height: this.height
         });
 
@@ -88,7 +84,4 @@ ACV.Game.Sprite.prototype.init = function (layerElement) {
     layerElement.append(this.element);
 
     this.debug('Sprite initialized');
-};
-ACV.Game.Sprite.prototype.startAnimation = function (target) {
-    //  this.info('animating towards %s', target);
 };

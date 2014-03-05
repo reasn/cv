@@ -26,7 +26,7 @@
                     "target": 0.38,
                     "y": 150
                 },
-                "movementTriggerCoarsity": 20,
+                "movementTriggerGranularity": 20,
                 "initialAge": "baby",
                 "ages": {
                     "baby": {
