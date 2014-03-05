@@ -17,8 +17,6 @@ ACV.Game = ACV.Game ? ACV.Game : {};
  *   width: number,
  *   height: number,
  *   movementListener: function
- *  _isJumping: boolean,
- *  _deferredMovement: Object
  * }}
  * @param {Object} prefs
  * @constructor
@@ -48,9 +46,7 @@ ACV.Game.Player.prototype = ACV.Core.createPrototype('ACV.Game.Player',
         y: 0,
         width: 0,
         height: 0,
-        movementListener: null,
-        _isJumping: false,
-        _deferredMovement: null
+        movementListener: null
     });
 /**
  *
@@ -130,8 +126,6 @@ ACV.Game.Player.prototype.jumpUpAndDown = function () {
  */
 ACV.Game.Player.prototype._jump = function (targetY) {
     var player = this;
-    this._isJumping = true;
-    this._deferredMovement = null;
 
     player.element.stop('jump', true).animate(
         {
@@ -151,10 +145,6 @@ ACV.Game.Player.prototype._jump = function (targetY) {
                         duration: ACV.Game.Player.JUMP_DURATION,
                         complete: function () {
                             player.y = targetY;
-                            player._isJumping = false;
-                            if (player._deferredMovement !== null) {
-                                player.moveTo(player._deferredMovement.targetX, player._deferredMovement.sceneX, player._deferredMovement.speed, player._deferredMovement.viewportDimensions);
-                            }
                         }
                     }).dequeue('jump');
 
@@ -201,20 +191,6 @@ ACV.Game.Player.prototype.moveTo = function (targetX, sceneX, speed, viewportDim
     var player = this;
     var classesToAdd, classesToRemove;
 
-
-    if (this._isJumping) {
-        this._deferredMovement = {
-            targetX: targetX,
-            sceneX: sceneX,
-            speed: speed,
-            viewportDimensions: viewportDimensions
-        };
-        return;
-    }
-
-    this.info('%s %s %s', targetX, sceneX, speed);
-
-
     /*
      * Make player run faster if he was already moving (Not checking the animation queue
      * is alright because this code wouldn't be reached while jumping.
@@ -244,7 +220,7 @@ ACV.Game.Player.prototype.moveTo = function (targetX, sceneX, speed, viewportDim
 
                 if (coarseX !== player.lastCoarseX) {
                     player.lastCoarseX = coarseX;
-                    player.movementListener.call(player, player.x, sceneX, viewportDimensions);
+                    player.movementListener.call(player, player.x, targetX, sceneX, viewportDimensions);
                 }
             },
             complete: function () {

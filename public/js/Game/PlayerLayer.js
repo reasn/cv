@@ -63,10 +63,10 @@ ACV.Game.PlayerLayer.prototype.init = function (wrapperElement, width, minHeight
 
     //enclose variable here to reduce calls and improve performance
 
-    this.player.init(this.element, function (playerX, sceneX, viewportDimensions) {
+    this.player.init(this.element, function (playerX, targetPlayerX, sceneX, viewportDimensions) {
         $('#playerX').text(playerX);
         playerLayer._detectCollisions(playerX, sceneX, viewportDimensions);
-        scene.handleTriggers(playerX, sceneX);
+        scene.handleTriggers(playerX, targetPlayerX, sceneX);
     });
     //Add to DOM at last to reduce draw calls
     wrapperElement.append(this.element);

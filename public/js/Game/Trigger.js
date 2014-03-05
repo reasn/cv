@@ -8,6 +8,14 @@ var ACV = ACV ? ACV : {};
 ACV.Game = ACV.Game ? ACV.Game : {};
 
 /**
+ *
+ * @name TriggerAction
+ * @type {Object}
+ * @property {string} action- The action to take (e.g. "player.setAge")
+ * @property {Array.<string>} args - The arguments to accompany the action
+ */
+
+/**
  * @type {{
  *   _range: Array.<number>
  *   _before: string
@@ -15,6 +23,9 @@ ACV.Game = ACV.Game ? ACV.Game : {};
  *   relativeTo: string
  *   _currentlyInsideRange: boolean
  *   _fireOnEnter: boolean
+ *   _stateBefore: boolean
+ *   _in: boolean
+ *   _wasIn: boolean
  * }}
  * @param {Array.<number>} range
  * @param {?string} before
@@ -40,60 +51,67 @@ ACV.Game.Trigger.prototype = ACV.Core.createPrototype('ACV.Game.Trigger',
         _after: null,
         relativeTo: 'player',
         _currentlyInsideRange: false,
-        _fireOnEnter: false
+        _fireOnEnter: false,
+        _stateBefore: true,
+        _in: false,
+        _wasIn: false
     });
-
+/**
+ *
+ * @param {Object} data
+ * @returns {ACV.Game.Trigger}
+ */
 ACV.Game.Trigger.createFromData = function (data) {
 
     if (typeof data.playerX === 'number') {
         return new ACV.Game.Trigger([data.playerX, data.playerX], data.before, data.after, 'player', false);
     } else if (typeof(data.playerX === 'object')) {
-        if (data.playerX.length !== 2) {
-            throw 'A trigger\'s value declaration must be a number or an array consisting of two numbers. But is ' + JSON.stringify(data.playerX);
+        if (data.playerX.length !== 2 && data.playerX.length !== 3) {
+            throw 'A trigger\'s value declaration must be a number or an array consisting of two or three numbers. But is ' + JSON.stringify(data.playerX);
         }
         return new ACV.Game.Trigger(data.playerX, data.before, data.after, 'player', data.fireOnEnter);
     } else {
         throw 'Not implemented yet';
         //  return new ACV.Game.Trigger(data.playerX, data.before, data.after, 'level');
     }
-}
-;
+};
 
-ACV.Game.Trigger.prototype.determineActionToBeExecuted = function (value, lastValue) {
-    var inFromLeft, inFromRight;
-    var outToLeft = value < this._range[0] && lastValue > this._range[0];
-    var outToRight = value > this._range[1] && lastValue < this._range[1];
+/**
+ *
+ * @param {number} value
+ * @param {number} targetValue This value is required for ranged trigger animations (e.g. jumps).
+ * @param {number} lastValue
+ * @returns {?TriggerAction}
+ */
+ACV.Game.Trigger.prototype.determineActionToBeExecuted = function (value, targetValue, lastValue) {
+    var a = this._range[0];
+    var b = this._range[this._range.length - 1];
+    var m = this._range.length === 3 ? this._range[1] : null;
 
-    /**
-     *
-     *  If this flag is set the trigger's actions are fired when entering and not when leaving the range.
-     *
-     *  Deprecated if not reused after 2014-03-20:
-     *  Some actions need to be triggered at both boundaries of a range. E.g. if the player jumps up:
-     *  The player should start to jump if playerX became larger than 1000 to stand on a higher plane
-     *  when playerX is 1200. When moving backwards the player should start to jump when playerX just
-     *  became lower than 1200 to be standing at the lower plane when playerX is 1000.
-     *  If now the player turns around during the jump the appropriate counter-action has to be triggered.
-     *  Example trigger:
-     *  {
-     *    "playerX": [1400, 1600],
-     *    "before": "player.jumpAndStay(270)",
-     *    "after": "player.jumpAndStay(150)",
-     *    "fireOnEnter": true
-     *  }
-     *  If the player now turns around while in the air (e.g. at playerX=1500) the appropriate action is
-     *  triggered to make sure that before and after always hold when the player is outside the specified
-     *  range (1400-1600).
-     */
+    var inFromLeft = value > a && lastValue < a;
+    var inFromRight = value < b && lastValue > b;
+    var outToLeft = value < a && lastValue > a;
+    var outToRight = value > b && lastValue < b;
+
     if (this._fireOnEnter) {
-        inFromLeft = value > this._range[0] && lastValue < this._range[0];
-        inFromRight = value < this._range[1] && lastValue > this._range[1];
+        /*
+         * These triggers can take into account targetValue to decide whether and which action
+         * should be taken. For that variable m is required. It allows to check in which state
+         * (before or after) the trigger should be and what action should be triggered.
+         */
+        this._in = (this._wasIn || inFromLeft || inFromRight) && !(outToRight || outToLeft);
+        this._wasIn = this._in;
 
-        if (inFromLeft && this._after) {
-            return this._unpack(this._after);
-        }
-        if (inFromRight && this._before) {
-            return this._unpack(this._before);
+        if (targetValue > b || (m !== null && targetValue > m)) {
+            if (inFromLeft || (this._in && this._stateBefore)) {
+                this._stateBefore = false;
+                return this._unpack(this._after);
+            }
+        } else if (targetValue < a || (m !== null && targetValue < m)) {
+            if (inFromRight || (this._in && !this._stateBefore)) {
+                this._stateBefore = true;
+                return this._unpack(this._before);
+            }
         }
     } else {
         if (outToLeft && this._before !== null) {
@@ -103,12 +121,15 @@ ACV.Game.Trigger.prototype.determineActionToBeExecuted = function (value, lastVa
             return this._unpack(this._after);
         }
     }
-
-
     return null;
-}
-;
+};
 
+/**
+ *
+ * @param {string} action
+ * @returns {?TriggerAction}
+ * @private
+ */
 ACV.Game.Trigger.prototype._unpack = function (action) {
 
     var matches = ACV.Game.Trigger.PATTERN.exec(action);

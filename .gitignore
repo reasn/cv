@@ -1,9 +1,5 @@
-#################
-## WebStorm
-#################
-
 .settings
 .idea
-.idea/workspace.xml
 .buildpath
 .project
+vendor

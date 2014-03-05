@@ -64,20 +64,17 @@ ACV.Log._add = function (args, logLevel) {
             }
             message = message.replace('%s', args[replacementIndex]);
         }
-    }
-    else if (typeof message === 'boolean') {
+
+    } else if (typeof message === 'boolean') {
         message = message ? '[true]' : '[false]';
-    }
-    else if (typeof message === 'string' || typeof (message) === 'number') {
-        message = message;
-    }
-    else if (typeof message === 'undefined') {
+
+    } else if (typeof message === 'undefined') {
         message = '[undefined]';
-    }
-    else if (typeof message === 'object') {
+
+    } else if (typeof message === 'object') {
         message = 'Object:\n' + JSON.stringify(message, null, '  ');
-    }
-    else {
+
+    } else if (typeof message !== 'string' && typeof message !== 'number') {
         message = 'Unknown log argument: ' + typeof message;
     }
 

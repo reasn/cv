@@ -123,8 +123,8 @@ ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore, viewpor
     $('#sceneX').text(this._x);
 };
 
-ACV.Game.Scene.prototype.handleTriggers = function (playerX, sceneX) {
-    this.triggerManager.check(playerX, sceneX);
+ACV.Game.Scene.prototype.handleTriggers = function (playerX, targetPlayerX, sceneX) {
+    this.triggerManager.check(playerX, targetPlayerX, sceneX);
 };
 
 ACV.Game.Scene.prototype._handleViewportChange = function (viewportDimensions) {

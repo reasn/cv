@@ -43,7 +43,7 @@ ACV.Game.TriggerManager.createFromData = function (triggerData, performanceSetti
     return new ACV.Game.TriggerManager(triggers);
 };
 
-ACV.Game.TriggerManager.prototype.check = function (playerX, sceneX) {
+ACV.Game.TriggerManager.prototype.check = function (playerX, targetPlayerX, sceneX) {
     var triggerIndex, trigger, action;
 
     //this.debug('PlayerX always: %s    %s', playerX, this.lastPlayerX);
@@ -51,7 +51,7 @@ ACV.Game.TriggerManager.prototype.check = function (playerX, sceneX) {
         trigger = this.triggers[triggerIndex];
 
         if (trigger.relativeTo === 'player') {
-            action = trigger.determineActionToBeExecuted(playerX, this.lastPlayerX);
+            action = trigger.determineActionToBeExecuted(playerX, targetPlayerX, this.lastPlayerX);
         }
         if (action !== null)
             this._execute(action);
