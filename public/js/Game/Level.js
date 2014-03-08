@@ -21,17 +21,18 @@ ACV.Game = ACV.Game ? ACV.Game : {};
  * @type {{
  *   handle: string
  *   prefs: Object
- *   animations: Array.<Object>
+ *   animations: Array.<ACV.Game.Animation>
  *   visible: boolean
  *   backgroundLayers: Array.<ACV.Game.Layer>
  *   foregroundLayers: Array.<ACV.Game.Layer>
  *   _foregroundElement: jQuery
  *   _backgroundElement: jQuery
- *   _animationScope: ACV.Game.AnimationScope
+ *   _currentZoom: number
+ *   _zoomWrappers: jQuery
  * }}
- * @param handle
- * @param prefs
- * @param {Array.<Object>} animations
+ * @param {string} handle
+ * @param {Object} prefs
+ * @param {Array.<Animation>} animations
  * @param {Array.<ACV.Game.Layer>} backgroundLayers
  * @param {Array.<ACV.Game.Layer>} foregroundLayers
  * @constructor
@@ -42,12 +43,16 @@ ACV.Game.Level = function (handle, prefs, animations, backgroundLayers, foregrou
     this.animations = animations;
     this.backgroundLayers = backgroundLayers;
     this.foregroundLayers = foregroundLayers;
-    this._animationScope = new ACV.Game.AnimationScope(this);
 };
 
+/**
+ *
+ * @param {Object} data
+ * @returns {ACV.Game.Level}
+ */
 ACV.Game.Level.createFromPrefs = function (data) {
 
-    var backgroundLayers = [], foregroundLayers = [], layerIndex, layer;
+    var backgroundLayers = [], foregroundLayers = [], layerIndex, layer, animationIndex, animations = [];
 
     for (layerIndex in data.layers.background) {
         layer = ACV.Game.Layer.createFromPrefs(data.layers.background[layerIndex]);
@@ -59,8 +64,11 @@ ACV.Game.Level.createFromPrefs = function (data) {
         layer.prefs.offset += data.prefs.offset;
         foregroundLayers.push(layer);
     }
+    for (animationIndex in data.animations) {
+        animations.push(ACV.Game.Animation.createFromPrefs(data.animations[animationIndex]));
+    }
 
-    return new ACV.Game.Level(data.handle, data.prefs, data.animations, backgroundLayers, foregroundLayers);
+    return new ACV.Game.Level(data.handle, data.prefs, animations, backgroundLayers, foregroundLayers);
 };
 
 ACV.Game.Level.prototype = ACV.Core.createPrototype('ACV.Game.Level',
@@ -72,36 +80,78 @@ ACV.Game.Level.prototype = ACV.Core.createPrototype('ACV.Game.Level',
         visible: false,
         _foregroundElement: null,
         _backgroundElement: null,
-        _animationScope: null
+        animations: [],
+        _currentZoom: 1,
+        _zoomWrappers: null
     });
 /**
  *
+ * @param {ACV.Game.Scene} scene
  * @param {jQuery} backgroundWrapper
  * @param {jQuery} foregroundWrapper
  * @param {!number} minHeight
  * @param {!number} maxHeight
  * @returns void
  */
-ACV.Game.Level.prototype.init = function (backgroundWrapper, foregroundWrapper, minHeight, maxHeight) {
-    var layerIndex;
+ACV.Game.Level.prototype.init = function (scene, backgroundWrapper, foregroundWrapper, minHeight, maxHeight) {
+    var layerIndex, animationIndex, backgroundZoomWrapper, foregroundZoomWrapper;
 
-    this._foregroundElement = $('<div class="level" data-handle="' + this.handle + '" />');
+    this._foregroundElement = $('<div class="level foreground level-' + this.handle.substr(0, this.handle.indexOf('-')) + '" data-handle="' + this.handle + '"><div class="zoom-wrapper" /></div>');
     this._foregroundElement.css('max-width', this.prefs.clip.x2, 0);
 
 
-    this._backgroundElement = $('<div class="level" data-handle="' + this.handle + '" />');
+    this._backgroundElement = $('<div class="level background level-' + this.handle.substr(0, this.handle.indexOf('-')) + '"data-handle="' + this.handle + '"><div class="zoom-wrapper" /></div>');
     this._backgroundElement.css('max-width', this.prefs.clip.x2, 0);
 
+    backgroundZoomWrapper = this._backgroundElement.children('.zoom-wrapper');
+    foregroundZoomWrapper = this._foregroundElement.children('.zoom-wrapper');
+
+    this._zoomWrappers = backgroundZoomWrapper.add(foregroundZoomWrapper);
+
     for (layerIndex in this.backgroundLayers) {
-        this.backgroundLayers[layerIndex].init(this._backgroundElement, minHeight, maxHeight);
+        //TODO remove children() from loop
+        this.backgroundLayers[layerIndex].init(backgroundZoomWrapper, minHeight, maxHeight);
     }
     for (layerIndex in this.foregroundLayers) {
-        this.foregroundLayers[layerIndex].init(this._foregroundElement, minHeight, maxHeight);
+        //TODO remove children() from loop
+        this.foregroundLayers[layerIndex].init(foregroundZoomWrapper, minHeight, maxHeight);
     }
+
+    for (animationIndex in this.animations) {
+        this.animations[animationIndex].init(scene, this);
+    }
+
     //Add to DOM at last to reduce draw calls
     backgroundWrapper.append(this._backgroundElement);
     foregroundWrapper.append(this._foregroundElement);
     this.info('Level initialized with ' + this.foregroundLayers.length + ' foreground layers and ' + this.backgroundLayers.length + ' background layers', 'd');
+};
+/**
+ *
+ * @param {number} target
+ * @param {number} speed
+ * @returns void
+ * @since 2014-03-08
+ */
+ACV.Game.Level.prototype.zoomTo = function (target, speed) {
+    var duration;
+    var level = this;
+    var start = this._currentZoom;
+
+    duration = ACV.Utils.calculateAnimationDuration(this._currentZoom, target, speed);
+    this.debug('Zooming to %s', target);
+    this._backgroundElement.stop('zoom', true).animate({
+        textIndent: target * 100
+    }, {
+        queue: 'zoom',
+        duration: duration,
+        easing: 'easeInOutSine',
+        step: function (now, tween) {
+            level._currentZoom = (1 - tween.pos ) * start + tween.pos * target;
+            level._zoomWrappers.css('transform', 'scale('+level._currentZoom+')');
+
+        }
+    }).dequeue('zoom');
 };
 
 /**
@@ -113,23 +163,25 @@ ACV.Game.Level.prototype.init = function (backgroundWrapper, foregroundWrapper, 
  */
 ACV.Game.Level.prototype.updatePositions = function (sceneX, sceneXBefore, viewportDimensions) {
 
-    this._updateVisibility(sceneX);
+    this._updateVisibility(sceneX, sceneXBefore, viewportDimensions);
     this._applyClippingAndUpdateLayerPositions(sceneX, sceneXBefore);
-    this._handleAnimations(sceneX, sceneXBefore, viewportDimensions);
+    this._handleAnimations(sceneX, sceneXBefore, viewportDimensions, false);
 };
 
 
 /**
  * Hides or shows the level if appropriate.
  *
- * @param {number} sceneX
+ * @param {!number} sceneX The amount of pixels that already left the viewport on the left side. Positive integer
+ * @param {!number} sceneXBefore
+ * @param {ViewportDimensions} viewportDimensions
  * @returns void
  * @private
  * @version 2014-03-05
  * @since 2014-03-05
  * @author Alexander Thiel
  */
-ACV.Game.Level.prototype._updateVisibility = function (sceneX) {
+ACV.Game.Level.prototype._updateVisibility = function (sceneX, sceneXBefore, viewportDimensions) {
     var showLevelSceneX = this.prefs.offset + this.prefs.visibility.x1;
     var hideLevelSceneX = this.prefs.offset + this.prefs.visibility.x2;
 
@@ -144,6 +196,8 @@ ACV.Game.Level.prototype._updateVisibility = function (sceneX) {
         this.visible = true;
         this._foregroundElement.addClass('visible');
         this._backgroundElement.addClass('visible');
+        //Makes sure that all animations are in the right state right after the level is added to the DOM
+        this._handleAnimations(sceneX, sceneXBefore, viewportDimensions, true)
     }
 };
 
@@ -180,32 +234,40 @@ ACV.Game.Level.prototype._applyClippingAndUpdateLayerPositions = function (scene
 
 /**
  * Handle animations.
+ *
  * @param {!number} sceneX The amount of pixels that already left the viewport on the left side. Positive integer
  * @param {!number} sceneXBefore
- * @param {ViewportDimensions} viewportDimensions
+ * @param {!ViewportDimensions} viewportDimensions
+ * @param {!boolean} executeOutOfRangeAnimation Set to true to suppress all animation's range checks (useful to have all animations triggered when the level is added to the DOM).
  * @returns void
  * @private
  * @version 2014-03-05
  * @since 2014-03-05
  * @author Alexander Thiel
  */
-ACV.Game.Level.prototype._handleAnimations = function (sceneX, sceneXBefore, viewportDimensions) {
+ACV.Game.Level.prototype._handleAnimations = function (sceneX, sceneXBefore, viewportDimensions, executeOutOfRangeAnimation) {
 
     var animationIndex, animation, coarseLevelX;
-    this._animationScope.levelX = sceneX - this.prefs.offset;
-    this._animationScope.levelXBefore = sceneXBefore - this.prefs.offset;
-    this._animationScope.viewportDimensions = viewportDimensions;
-
+    var levelX = sceneX - this.prefs.offset;
+    var levelXBefore = sceneXBefore - this.prefs.offset;
 
     //handle animations that are dependent on levelX
-    for (animationIndex in this.animations.levelDependent) {
-        animation = this.animations.levelDependent[animationIndex];
-        coarseLevelX = Math.round(this._animationScope.levelX / animation.granularity);
+    for (animationIndex in this.animations) {
 
-        if (animation.lastCoarseLevelX === undefined || coarseLevelX !== animation.lastCoarseLevelX) {
-            this._animationScope.firstInvocation = animation.lastCoarseLevelX === undefined;
-            animation.lastCoarseLevelX = coarseLevelX;
-            animation.action.apply(this._animationScope, []);
+        animation = this.animations[animationIndex];
+        if (animation.dependency === 'levelX') {
+            if (!executeOutOfRangeAnimation && (levelX < animation.enabledRange[0] || levelX > animation.enabledRange[1])) {
+                continue;
+            }
+            coarseLevelX = Math.round(levelX / animation.granularity);
+
+            if (coarseLevelX !== animation.lastCoarseLevelX) {
+                animation.lastCoarseLevelX = coarseLevelX;
+                animation.viewportDimensions = viewportDimensions;
+                animation.levelX = levelX;
+                animation.levelXBefore = levelXBefore;
+                animation.action.apply(animation);
+            }
         }
     }
 };

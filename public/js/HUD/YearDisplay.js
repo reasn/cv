@@ -7,45 +7,69 @@ var ACV = ACV ? ACV : {};
 
 ACV.HUD = ACV.HUD ? ACV.HUD : {};
 
-ACV.HUD.YearDisplay = function(triggers)
-{
+/**
+ * @type {{
+ *   triggers: Array.<Object>
+ *   year: number
+ * }}
+ * @param {Array.<Object>} triggers
+ * @constructor
+ */
+ACV.HUD.YearDisplay = function (triggers) {
     this.triggers = triggers;
     this.year = this.triggers[Object.keys(this.triggers)[0]];
 };
 
-ACV.HUD.YearDisplay.createFromData = function(data)
-{
+/**
+ *
+ * @param {Object} data
+ * @returns {ACV.HUD.YearDisplay}
+ */
+ACV.HUD.YearDisplay.createFromData = function (data) {
     return new ACV.HUD.YearDisplay(data.triggers);
 };
 
 ACV.HUD.YearDisplay.prototype = ACV.Core.createPrototype('ACV.HUD.YearDisplay',
-{
-    triggers: [],
-    year: 0
-});
+    {
+        triggers: [],
+        year: 0
+    });
 
-ACV.HUD.YearDisplay.prototype.init = function(hudElement)
-{
+/**
+ *
+ * @param {jQuery} hudElement
+ * @returns void
+ */
+ACV.HUD.YearDisplay.prototype.init = function (hudElement) {
     this.element = $('<div id="year">' + this.year + '</div>');
     hudElement.append(this.element);
 
-    this.info('YearDisplay initialized', 'd');
+    this.info('Year display initialized', 'd');
 };
 
-ACV.HUD.YearDisplay.prototype.update = function(ratio)
-{
-    for (var triggerRatio in this.triggers)
-    {
-        if (triggerRatio > ratio)
-        {
-            this.setYearDisplay(this.triggers[triggerRatio]);
+/**
+ *
+ * @param {number} ratio
+ * @returns void
+ */
+ACV.HUD.YearDisplay.prototype.update = function (ratio) {
+
+    for (var triggerRatio in this.triggers) {
+        if (parseFloat(triggerRatio) >= ratio) {
+            this.setYear(this.triggers[triggerRatio]);
             return;
         }
     }
 };
 
-ACV.HUD.YearDisplay.prototype.setYearDisplay = function(year)
-{
-    this.element.text(this.year);
-    this.year = year;
+/**
+ *
+ * @param {number} year
+ * @returns void
+ */
+ACV.HUD.YearDisplay.prototype.setYear = function (year) {
+    if (this.year !== year) {
+        this.year = year;
+        this.element.text(this.year);
+    }
 };

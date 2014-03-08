@@ -5,8 +5,8 @@
         "totalDistance": 10000,
         "ieFactor": 2,
         "performanceSettings": {
-            "year": true,
-            "height": true,
+            "yearDisplay": true,
+            "heightDisplay": true,
             "zoom": true
         }
     },
@@ -108,7 +108,7 @@
                 "text": ""
             }
         },
-        "year": {
+        "yearDisplay": {
             "triggers": {
                 "0.00": 1987,
                 "0.01": 1988,
@@ -140,7 +140,7 @@
                 "1.00": 2014
             }
         },
-        "height": {
+        "heightDisplay": {
             "keyFrames": {
                 "0.00": 50,
                 "0.02": 80,

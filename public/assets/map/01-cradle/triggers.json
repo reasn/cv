@@ -14,7 +14,7 @@
         "after": "player.setAge(child)"
     },
     {
-        "playerX": [1400, 1490, 1600],
+        "playerX": [1400, 1480, 1600],
         "before": "player.jumpAndStay(270)",
         "after": "player.jumpAndStay(150)",
         "fireOnEnter": true

@@ -5,38 +5,38 @@
  */
 var ACV = ACV ? ACV : {};
 
-ACV.Log = ACV.Log ? ACV.Log : {};
+ACV.Core.Log = ACV.Core.Log ? ACV.Core.Log : {};
 
-ACV.Log.enabled = true;
-ACV.Log.NAMESPACE_WIDTH = 25;
-ACV.Log._indent = 0;
+ACV.Core.Log.enabled = true;
+ACV.Core.Log.NAMESPACE_WIDTH = 25;
+ACV.Core.Log._indent = 0;
 
-ACV.Log.debug = function () {
-    ACV.Log._add(Array.prototype.slice.call(arguments), 'd');
+ACV.Core.Log.debug = function () {
+    ACV.Core.Log._add(Array.prototype.slice.call(arguments), 'd');
 };
 
-ACV.Log.info = function () {
-    ACV.Log._add(Array.prototype.slice.call(arguments), 'i');
+ACV.Core.Log.info = function () {
+    ACV.Core.Log._add(Array.prototype.slice.call(arguments), 'i');
 };
 
-ACV.Log.warn = function () {
-    ACV.Log._add(Array.prototype.slice.call(arguments), 'w');
+ACV.Core.Log.warn = function () {
+    ACV.Core.Log._add(Array.prototype.slice.call(arguments), 'w');
 };
 
-ACV.Log.error = function () {
-    ACV.Log._add(Array.prototype.slice.call(arguments), 'e');
+ACV.Core.Log.error = function () {
+    ACV.Core.Log._add(Array.prototype.slice.call(arguments), 'e');
 };
 
 /**
  * We could directly use the log method (e.g. console.error) as second argument which would be more elegant. But Chrome doesn't allow it -.-
- * @param args
- * @param logLevel
+ * @param {Array.<*>} args
+ * @param {string} logLevel
  * @private
  */
-ACV.Log._add = function (args, logLevel) {
+ACV.Core.Log._add = function (args, logLevel) {
 
     var message, replacementIndex;
-    var len = ACV.Log.NAMESPACE_WIDTH;
+    var len = ACV.Core.Log.NAMESPACE_WIDTH;
     var className = args.shift();
 
     if (className.indexOf('ACV.') === -1) {

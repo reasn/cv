@@ -85,7 +85,7 @@ ACV.Game.Scene.prototype.init = function (viewportDimensions) {
     });
 
     for (levelIndex in this.levels) {
-        this.levels[levelIndex].init(this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight);
+        this.levels[levelIndex].init(this, this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight);
     }
 
     // Reduce draw calls by adding everything to the DOM at last
@@ -142,7 +142,6 @@ ACV.Game.Scene.prototype._handleViewportChange = function (viewportDimensions) {
             elementsToAlter = elementsToAlter.add(this.levels[levelIndex].foregroundLayers[layerIndex].element);
         }
     }
-
 
     if (viewportDimensions.height < this.prefs.dynamicViewport.minHeight) {
         elementsToAlter.css('top', Math.round(-.5
