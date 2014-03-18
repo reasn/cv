@@ -1,0 +1,20 @@
+[
+
+    {
+        "playerX": 100,
+        "before": "player.setAge(child)",
+        "after": "player.setAge(child)"
+    },
+    {
+        "playerX": [1000, 1105, 1200],
+        "before": "player.jumpAndStay(150)",
+        "after": "player.jumpAndStay(170)",
+        "fireOnEnter": true
+    },
+    {
+        "playerX": [2750, 2800, 2850],
+        "before": "player.jumpAndStay(170)",
+        "after": "player.jumpAndStay(130)",
+        "fireOnEnter": true
+    }
+]

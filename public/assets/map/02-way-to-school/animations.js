@@ -32,21 +32,5 @@ var animations = [
                 duration: duration
             }).dequeue('sunrise');
         }
-    },
-    {
-        name: "zoom",
-        dependency: 'levelX',
-        enabledRange: [-500, 'auto'],
-        granularity: 500,
-        elements: null,
-        /** @type {function(this:ACV.Game.Animation)} */
-        action: function () {
-
-            if (this.levelX < 0) {
-                this.level.zoomTo(1, 1000);
-                return;
-            }
-            this.level.zoomTo(Math.min(1, Math.max(0.5, 1 - this.levelX / this.level.prefs.clip.x2 *.75)), 0.0002);
-        }
     }
 ];

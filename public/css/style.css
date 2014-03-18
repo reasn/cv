@@ -119,47 +119,54 @@ body {
   position: relative;
   height: 100%;
 }
-#container #scene .player-layer .player {
+#container #scene .player-layer .zoom-wrapper {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+}
+#container #scene .player-layer .zoom-wrapper .player {
   position: absolute;
   background-repeat: no-repeat;
 }
-#container #scene .player-layer .player.baby {
+#container #scene .player-layer .zoom-wrapper .player.baby {
   background: url("../assets/graphics/scene/player/baby/stand.gif");
 }
-#container #scene .player-layer .player.baby.walking {
+#container #scene .player-layer .zoom-wrapper .player.baby.walking {
   background: url("../assets/graphics/scene/player/baby/walk-forward.gif");
 }
-#container #scene .player-layer .player.baby.walking.backwards {
+#container #scene .player-layer .zoom-wrapper .player.baby.walking.backwards {
   background: url("../assets/graphics/scene/player/baby/walk-backwards.gif");
 }
-#container #scene .player-layer .player.child {
+#container #scene .player-layer .zoom-wrapper .player.child {
   background: url("../assets/graphics/scene/player/child/stand.gif");
 }
-#container #scene .player-layer .player.child.walking {
+#container #scene .player-layer .zoom-wrapper .player.child.walking {
   background: url("../assets/graphics/scene/player/child/walk-forward.gif");
 }
-#container #scene .player-layer .player.child.walking.backwards {
+#container #scene .player-layer .zoom-wrapper .player.child.walking.backwards {
   background: url("../assets/graphics/scene/player/child/walk-backwards.gif");
 }
-#container #scene .player-layer .player.teen {
+#container #scene .player-layer .zoom-wrapper .player.teen {
   background: url("../assets/graphics/scene/player/teen/stand.gif");
 }
-#container #scene .player-layer .player.teen.walking {
+#container #scene .player-layer .zoom-wrapper .player.teen.walking {
   background: url("../assets/graphics/scene/player/teen/walk-forward.gif");
 }
-#container #scene .player-layer .player.teen.walking.backwards {
+#container #scene .player-layer .zoom-wrapper .player.teen.walking.backwards {
   background: url("../assets/graphics/scene/player/teen/walk-backwards.gif");
 }
-#container #scene .player-layer .player.adult {
+#container #scene .player-layer .zoom-wrapper .player.adult {
   background: url("../assets/graphics/scene/player/adult/stand.gif");
 }
-#container #scene .player-layer .player.adult.walking {
+#container #scene .player-layer .zoom-wrapper .player.adult.walking {
   background: url("../assets/graphics/scene/player/adult/walk-forward.gif");
 }
-#container #scene .player-layer .player.adult.walking.backwards {
+#container #scene .player-layer .zoom-wrapper .player.adult.walking.backwards {
   background: url("../assets/graphics/scene/player/adult/walk-backwards.gif");
 }
-#container #scene .player-layer .powerUp {
+#container #scene .player-layer .zoom-wrapper .powerUp {
   position: absolute;
   color: black;
   width: 50px;

@@ -1,0 +1,249 @@
+{
+    "background": [
+        {
+            "caption": "background",
+            "prefs": {
+                "offset": -1300,
+                "speed": 0.7
+            },
+            "sprites": [
+                {
+                    "caption": "left shore",
+                    "x": 0,
+                    "y": "-70%",
+                    "topAligned": true,
+                    "width": 2740,
+                    "height": "240%",
+                    "color": "green"
+                },
+                {
+                    "caption": "sky",
+                    "x": 2400,
+                    "y": "-70%",
+                    "topAligned": true,
+                    "width": 6000,
+                    "height": "50%",
+                    "color": "white"
+                },
+                {
+                    "caption": "river top",
+                    "x": 2028,
+                    "y": "120%",
+                    "topAligned": false,
+                    "width": 463,
+                    "height": "450px",
+                    "color": "blue"
+                },
+                {
+                    "caption": "landscape",
+                    "x": 2000,
+                    "y": "-20%",
+                    "topAligned": true,
+                    "width": 4640,
+                    "height": "1200px",
+                    "source": "graphics/scene/world/03-heidelberg/background-landscape.jpg"
+                },
+                {
+                    "caption": "river bottom",
+                    "x": 2740,
+                    "y": "90%",
+                    "topAligned": true,
+                    "width": 4000,
+                    "height": "800px",
+                    "color": "blue"
+                }
+            ]
+        },
+        {
+            "caption": "path",
+            "prefs": {
+                "offset": -1300,
+                "speed": 1
+            },
+            "sprites": [
+                {
+                    "caption": "path left to the bridge",
+                    "x": 0,
+                    "y": "-180px",
+                    "topAligned": false,
+                    "width": 2600,
+                    "height": "300px",
+                    "color": "yellow"
+                },
+                {
+                    "caption": "path right to the bridge",
+                    "x": 5250,
+                    "y": "-300px",
+                    "topAligned": false,
+                    "width": 2600,
+                    "height": "700px",
+                    "color": "yellow"
+                },
+                {
+                    "caption": "broader path in town",
+                    "x": 7050,
+                    "y": "-20%",
+                    "topAligned": false,
+                    "width": 2600,
+                    "height": "1200px",
+                    "color": "yellow"
+                }
+            ]
+        },
+        {
+            "caption": "houses (back)",
+            "prefs": {
+                "offset": 4000,
+                "speed": 0.9
+            },
+            "sprites": [
+                {
+                    "caption": "first orange house",
+                    "x": 1150,
+                    "y": "260px",
+                    "topAligned": false,
+                    "width": 378,
+                    "height": "502px",
+                    "source": "graphics/scene/world/03-heidelberg/house-02.png"
+                },
+                {
+                    "caption": "row of white houses",
+                    "x": 0,
+                    "y": "250px",
+                    "topAligned": false,
+                    "width": 1755,
+                    "height": "407px",
+                    "source": "graphics/scene/world/03-heidelberg/house-01.png"
+                },
+                {
+                    "caption": "orange house",
+                    "x": 250,
+                    "y": "240px",
+                    "topAligned": false,
+                    "width": 378,
+                    "height": "502px",
+                    "source": "graphics/scene/world/03-heidelberg/house-02.png"
+                },
+                {
+                    "caption": "pink house",
+                    "x": 450,
+                    "y": "240px",
+                    "topAligned": false,
+                    "width": 351,
+                    "height": "407px",
+                    "source": "graphics/scene/world/03-heidelberg/house-03.png"
+                },
+                {
+                    "caption": "pink house",
+                    "x": 880,
+                    "y": "240px",
+                    "topAligned": false,
+                    "width": 281,
+                    "height": "326px",
+                    "source": "graphics/scene/world/03-heidelberg/house-03.png"
+                },
+                {
+                    "caption": "large white house",
+                    "x": 2550,
+                    "y": "720px",
+                    "topAligned": false,
+                    "width": 902,
+                    "height": "814px",
+                    "source": "graphics/scene/world/03-heidelberg/house-01.png"
+                },
+                {
+                    "caption": "second large pink house",
+                    "x": 1350,
+                    "y": "640px",
+                    "topAligned": false,
+                    "width": 1404,
+                    "height": "814px",
+                    "source": "graphics/scene/world/03-heidelberg/house-03.png"
+                },
+                {
+                    "caption": "large orange house",
+                    "x": 1450,
+                    "y": "320px",
+                    "topAligned": false,
+                    "width": 756,
+                    "height": "1004px",
+                    "source": "graphics/scene/world/03-heidelberg/house-02.png"
+                },
+                {
+                    "caption": "first large pink house",
+                    "x": 1250,
+                    "y": "240px",
+                    "topAligned": false,
+                    "width": 702,
+                    "height": "814px",
+                    "source": "graphics/scene/world/03-heidelberg/house-03.png"
+                }
+            ]
+        }
+    ],
+    "foreground": [
+        {
+            "caption": "bridge",
+            "prefs": {
+                "offset": 0,
+                "speed": 1
+            },
+            "sprites": [
+
+                {
+                    "caption": "bridge",
+                    "x": 1250,
+                    "y": "-180px",
+                    "topAligned": false,
+                    "width": 2733,
+                    "height": "900px",
+                    "source": "graphics/scene/world/03-heidelberg/bridge.png"
+                }
+            ]
+        },
+        {
+            "caption": "houses",
+            "prefs": {
+                "offset": 7200,
+                "speed": 1.2
+            },
+            "sprites": [
+                {
+                    "caption": "huge orange houses",
+                    "x": 0,
+                    "y": "-800px",
+                    "topAligned": false,
+                    "width": 3000,
+                    "height": "1000px",
+                    "source": "graphics/scene/world/03-heidelberg/house-02.png"
+                }
+            ]
+        },
+        {
+            "caption": "houses",
+            "prefs": {
+                "offset": 8200,
+                "speed": 1.5
+            },
+            "sprites": [
+                {
+                    "caption": "huge pink houses",
+                    "x": 0,
+                    "y": "-1900px",
+                    "topAligned": false,
+                    "width": 3000,
+                    "height": "2000px",
+                    "source": "graphics/scene/world/03-heidelberg/house-03.png"
+                },{
+                    "caption": "huge white house",
+                    "x": 2400,
+                    "y": "-500px",
+                    "topAligned": false,
+                    "width": 702,
+                    "height": "814px",
+                    "source": "graphics/scene/world/03-heidelberg/house-01.png"
+                }
+            ]
+        }
+    ]
+}

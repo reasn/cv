@@ -14,6 +14,7 @@ ACV.Game = ACV.Game ? ACV.Game : {};
  *   powerUps: Array.<ACV.Game.PowerUp>
  *   lastCollisionDetection: number
  *   playerLayer: ACV.Game.PlayerLayer
+ *   zoomWrapper: jQuery
  * }}
  * @param prefs
  * @param player
@@ -43,13 +44,15 @@ ACV.Game.PlayerLayer.prototype = ACV.Core.createPrototype('ACV.Game.PlayerLayer'
         player: null,
         powerUps: [],
         lastCollisionDetection: 0,
-        playerLayer: null
+        playerLayer: null,
+        zoomWrapper: null
     });
 
 ACV.Game.PlayerLayer.prototype.init = function (wrapperElement, width, minHeight, maxHeight, scene) {
     var powerUpIndex, playerLayer = this;
 
-    this.element = $('<div class="player-layer" />');
+    this.element = $('<div class="player-layer"><div class="zoom-wrapper"/></div>');
+    this.zoomWrapper = this.element.children('.zoom-wrapper');
     this.element.css(
         {
             width: width,
@@ -58,12 +61,12 @@ ACV.Game.PlayerLayer.prototype.init = function (wrapperElement, width, minHeight
         });
 
     for (powerUpIndex in this.powerUps) {
-        this.powerUps[powerUpIndex].init(this.element);
+        this.powerUps[powerUpIndex].init(this.zoomWrapper);
     }
 
     //enclose variable here to reduce calls and improve performance
 
-    this.player.init(this.element, function (playerX, targetPlayerX, sceneX, viewportDimensions) {
+    this.player.init(this.zoomWrapper, function (playerX, targetPlayerX, sceneX, viewportDimensions) {
         $('#playerX').text(playerX);
         playerLayer._detectCollisions(playerX, sceneX, viewportDimensions);
         scene.handleTriggers(playerX, targetPlayerX, sceneX);
