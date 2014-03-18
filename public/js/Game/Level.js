@@ -29,6 +29,8 @@ ACV.Game = ACV.Game ? ACV.Game : {};
  *   _backgroundElement: jQuery
  *   _currentZoom: number
  *   _zoomWrappers: jQuery
+ *   _x: number
+ *   _xBefore: number
  * }}
  * @param {string} handle
  * @param {Object} prefs
@@ -82,7 +84,9 @@ ACV.Game.Level.prototype = ACV.Core.createPrototype('ACV.Game.Level',
         _backgroundElement: null,
         animations: [],
         _currentZoom: 1,
-        _zoomWrappers: null
+        _zoomWrappers: null,
+        _x: 0,
+        _xBefore: 0
     });
 /**
  *
@@ -132,6 +136,7 @@ ACV.Game.Level.prototype.init = function (scene, backgroundWrapper, foregroundWr
  * @param {number} speed
  * @returns void
  * @since 2014-03-08
+ * @todo Change scroll top to smooth zooming
  */
 ACV.Game.Level.prototype.zoomTo = function (target, speed) {
     var duration;
@@ -140,6 +145,7 @@ ACV.Game.Level.prototype.zoomTo = function (target, speed) {
 
     duration = ACV.Utils.calculateAnimationDuration(this._currentZoom, target, speed);
     this.debug('Zooming to %s', target);
+
     this._backgroundElement.stop('zoom', true).animate({
         textIndent: target * 100
     }, {
@@ -148,8 +154,8 @@ ACV.Game.Level.prototype.zoomTo = function (target, speed) {
         easing: 'easeInOutSine',
         step: function (now, tween) {
             level._currentZoom = (1 - tween.pos ) * start + tween.pos * target;
-            level._zoomWrappers.css('transform', 'scale('+level._currentZoom+')');
-
+            level._zoomWrappers.css('transform', 'scale(' + level._currentZoom + ')');
+            level.scene.playerLayer.zoomWrapper.css('transform', 'scale(' + level._currentZoom + ')');
         }
     }).dequeue('zoom');
 };
@@ -162,6 +168,9 @@ ACV.Game.Level.prototype.zoomTo = function (target, speed) {
  * @returns void
  */
 ACV.Game.Level.prototype.updatePositions = function (sceneX, sceneXBefore, viewportDimensions) {
+
+    this._x = sceneX - this.prefs.offset;
+    this._XBefore = sceneXBefore - this.prefs.offset;
 
     this._updateVisibility(sceneX, sceneXBefore, viewportDimensions);
     this._applyClippingAndUpdateLayerPositions(sceneX, sceneXBefore);
@@ -220,14 +229,11 @@ ACV.Game.Level.prototype._applyClippingAndUpdateLayerPositions = function (scene
     this._backgroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
     this._foregroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
 
-    var levelX = sceneX - this.prefs.offset;
-    var levelXBefore = sceneXBefore - this.prefs.offset;
-
     for (layerIndex in this.backgroundLayers) {
-        this.backgroundLayers[layerIndex].updatePositions(this.prefs.offset, levelX, levelXBefore, distanceBetweenLeftViewportMarginAndLevelBegin);
+        this.backgroundLayers[layerIndex].updatePositions(this.prefs.offset, this._x, this._xBefore, distanceBetweenLeftViewportMarginAndLevelBegin);
     }
     for (layerIndex in this.foregroundLayers) {
-        this.foregroundLayers[layerIndex].updatePositions(this.prefs.offset, levelX, levelXBefore, distanceBetweenLeftViewportMarginAndLevelBegin);
+        this.foregroundLayers[layerIndex].updatePositions(this.prefs.offset, this._x, this._xBefore, distanceBetweenLeftViewportMarginAndLevelBegin);
     }
 };
 
@@ -248,24 +254,22 @@ ACV.Game.Level.prototype._applyClippingAndUpdateLayerPositions = function (scene
 ACV.Game.Level.prototype._handleAnimations = function (sceneX, sceneXBefore, viewportDimensions, executeOutOfRangeAnimation) {
 
     var animationIndex, animation, coarseLevelX;
-    var levelX = sceneX - this.prefs.offset;
-    var levelXBefore = sceneXBefore - this.prefs.offset;
 
     //handle animations that are dependent on levelX
     for (animationIndex in this.animations) {
 
         animation = this.animations[animationIndex];
         if (animation.dependency === 'levelX') {
-            if (!executeOutOfRangeAnimation && (levelX < animation.enabledRange[0] || levelX > animation.enabledRange[1])) {
+            if (!executeOutOfRangeAnimation && (this._x < animation.enabledRange[0] || this._x > animation.enabledRange[1])) {
                 continue;
             }
-            coarseLevelX = Math.round(levelX / animation.granularity);
+            coarseLevelX = Math.round(this._x / animation.granularity);
 
             if (coarseLevelX !== animation.lastCoarseLevelX) {
                 animation.lastCoarseLevelX = coarseLevelX;
                 animation.viewportDimensions = viewportDimensions;
-                animation.levelX = levelX;
-                animation.levelXBefore = levelXBefore;
+                animation.levelX = this._x;
+                animation.levelXBefore = this._XBefore;
                 animation.action.apply(animation);
             }
         }

@@ -13,7 +13,6 @@
 @zHud: 90;
 @zGithub: 100;
 
-
 body {
     margin: 0;
     padding: 0;
@@ -56,7 +55,6 @@ body {
 
             .level {
 
-
                 top: 0;
                 right: 0;
                 bottom: 0;
@@ -88,7 +86,7 @@ body {
                                 position: absolute;
 
                                 &.image-background {
-                                    background-size:contain
+                                    background-size: contain
                                 }
                                 &.colored {
                                     .bg(@colorName) {
@@ -154,42 +152,49 @@ body {
         .player-layer {
             position: relative;
             height: 100%;
-
-            .player {
+            .zoom-wrapper {
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
                 position: absolute;
-                background-repeat: no-repeat;
-                .statefulAge(@theme, @state) {
-                    background: url("../assets/graphics/scene/player/@{theme}/@{state}.gif");
-                }
-                .age(@name) {
-                    .statefulAge(@name, "stand");
-                    &.walking {
-                        .statefulAge(@name, "walk-forward");
-                    }
-                    &.walking.backwards {
-                        .statefulAge(@name, "walk-backwards");
-                    }
-                }
-                &.baby {
-                    .age("baby");
-                }
-                &.child {
-                    .age("child");
-                }
-                &.teen {
-                    .age("teen");
-                }
-                &.adult {
-                    .age("adult");
-                }
 
-            }
-            .powerUp {
-                position: absolute;
-                color: black;
-                width: 50px;
-                height: 50px;
-                background-color: #FFFF00;
+                .player {
+                    position: absolute;
+                    background-repeat: no-repeat;
+                    .statefulAge(@theme, @state) {
+                        background: url("../assets/graphics/scene/player/@{theme}/@{state}.gif");
+                    }
+                    .age(@name) {
+                        .statefulAge(@name, "stand");
+                        &.walking {
+                            .statefulAge(@name, "walk-forward");
+                        }
+                        &.walking.backwards {
+                            .statefulAge(@name, "walk-backwards");
+                        }
+                    }
+                    &.baby {
+                        .age("baby");
+                    }
+                    &.child {
+                        .age("child");
+                    }
+                    &.teen {
+                        .age("teen");
+                    }
+                    &.adult {
+                        .age("adult");
+                    }
+
+                }
+                .powerUp {
+                    position: absolute;
+                    color: black;
+                    width: 50px;
+                    height: 50px;
+                    background-color: #FFFF00;
+                }
             }
         }
     }
@@ -286,8 +291,6 @@ body {
 
     }
 }
-
-
 
 .level.background.level-02 {
     background-color: #000000;

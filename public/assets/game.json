@@ -56,7 +56,7 @@
         "levels": [
             {
                 "handle": "01-cradle",
-                "enabled": true,
+                "enabled": false,
                 "prefs": {
                     "offset": 0,
                     "clip": {
@@ -71,7 +71,7 @@
             },
             {
                 "handle": "02-way-to-school",
-                "enabled": true,
+                "enabled": false,
                 "prefs": {
                     "_offset": 0,
                     "offset": 3400,
@@ -82,6 +82,22 @@
                     "visibility": {
                         "x1": -3500,
                         "x2": 7000
+                    }
+                }
+            },
+            {
+                "handle": "03-heidelberg",
+                "enabled": true,
+                "prefs": {
+                    "offset": 0,
+                    "_offset": 7400,
+                    "clip": {
+                        "x1": 0,
+                        "x2": 10000
+                    },
+                    "visibility": {
+                        "x1": -3500,
+                        "x2": 12000
                     }
                 }
             }
