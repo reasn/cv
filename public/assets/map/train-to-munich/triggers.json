@@ -26,15 +26,5 @@
         "playerX": ">3000",
         "type": "player.setAge",
         "data": "adult"
-    },
-    {
-        "playerX": ">5500",
-        "type": "scene.zoom",
-        "data": "1|2000"
-    },
-    {
-        "playerX": "<5500",
-        "type": "scene.zoom",
-        "data": "0.8|2000"
     }
 ]

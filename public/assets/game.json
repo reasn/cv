@@ -1,18 +1,21 @@
 {
     "app": {
-        "assetPath": "assets",
         "scrollVertical": true,
         "totalDistance": 10000,
+        "prefs": {
+            "assetPath": "assets"
+        },
         "ieFactor": 2,
         "performanceSettings": {
             "yearDisplay": true,
             "heightDisplay": true,
-            "zoom": true
+            "lookAroundDistortion": true
         }
     },
     "scene": {
         "prefs": {
             "width": 15284,
+            "lookAroundDistortionIntensity": 50,
             "dynamicViewport": {
                 "minHeight": 500,
                 "maxHeight": 1000
@@ -26,6 +29,7 @@
                     "target": 0.38,
                     "y": 150
                 },
+                "fastWalkMultiplicator": 1.5,
                 "movementTriggerGranularity": 20,
                 "initialAge": "baby",
                 "ages": {
@@ -56,7 +60,7 @@
         "levels": [
             {
                 "handle": "01-cradle",
-                "enabled": false,
+                "enabled": true,
                 "prefs": {
                     "offset": 0,
                     "clip": {
@@ -71,7 +75,7 @@
             },
             {
                 "handle": "02-way-to-school",
-                "enabled": false,
+                "enabled": true,
                 "prefs": {
                     "_offset": 0,
                     "offset": 3400,
@@ -89,8 +93,8 @@
                 "handle": "03-heidelberg",
                 "enabled": true,
                 "prefs": {
-                    "offset": 0,
-                    "_offset": 7400,
+                    "_offset": 0,
+                    "offset": 7400,
                     "clip": {
                         "x1": 0,
                         "x2": 10000
@@ -116,13 +120,6 @@
             "skills": [ "HTML", "CSS", "Dreamweaver", "Word", "Excel", "Photoshop",
                 "InDesign", "Linux", "Windows", "QuickBasic", "C/C++", "Java", "Mercurial",
                 "Git", "Windows", "Powerpoint", "PHP" ]
-        },
-        "timeline": {
-            "0.1": {
-                "title": "",
-                "image": "",
-                "text": ""
-            }
         },
         "yearDisplay": {
             "triggers": {
@@ -170,6 +167,36 @@
                 "0.46": 178,
                 "0.47": 178
             }
+        },
+        "timeline": {
+            "prefs": {
+            },
+            "events": [
+                {
+                    "playerX": 1000,
+                    "timestamp": "1987-09-18",
+                    "type": "post",
+                    "data": {
+                        "message": "Yeah, alive finally!"
+                    }
+                },
+                {
+                    "playerX": 1500,
+                    "timestamp": "1989-11-09",
+                    "type": "post",
+                    "data": {
+                        "message": "no more wall"
+                    }
+                },
+                {
+                    "playerX": 2000,
+                    "timestamp": "1991-01-01",
+                    "type": "activity",
+                    "data": {
+                        "message": "[Alexander] learns to walk"
+                    }
+                }
+            ]
         }
     }
 }

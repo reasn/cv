@@ -19,6 +19,7 @@ ACV.Game = ACV.Game ? ACV.Game : {};
 
 /**
  * @type {{
+ *   _appContext: ACV.AppContext
  *   handle: string
  *   prefs: Object
  *   animations: Array.<ACV.Game.Animation>
@@ -27,11 +28,10 @@ ACV.Game = ACV.Game ? ACV.Game : {};
  *   foregroundLayers: Array.<ACV.Game.Layer>
  *   _foregroundElement: jQuery
  *   _backgroundElement: jQuery
- *   _currentZoom: number
- *   _zoomWrappers: jQuery
  *   _x: number
  *   _xBefore: number
  * }}
+ * @param {ACV.AppContext} appContext
  * @param {string} handle
  * @param {Object} prefs
  * @param {Array.<Animation>} animations
@@ -39,7 +39,8 @@ ACV.Game = ACV.Game ? ACV.Game : {};
  * @param {Array.<ACV.Game.Layer>} foregroundLayers
  * @constructor
  */
-ACV.Game.Level = function (handle, prefs, animations, backgroundLayers, foregroundLayers) {
+ACV.Game.Level = function (appContext, handle, prefs, animations, backgroundLayers, foregroundLayers) {
+    this._appContext = appContext;
     this.handle = handle;
     this.prefs = prefs;
     this.animations = animations;
@@ -49,20 +50,21 @@ ACV.Game.Level = function (handle, prefs, animations, backgroundLayers, foregrou
 
 /**
  *
+ * @param {ACV.AppContext} appContext
  * @param {Object} data
  * @returns {ACV.Game.Level}
  */
-ACV.Game.Level.createFromPrefs = function (data) {
+ACV.Game.Level.createFromPrefs = function (appContext, data) {
 
     var backgroundLayers = [], foregroundLayers = [], layerIndex, layer, animationIndex, animations = [];
 
     for (layerIndex in data.layers.background) {
-        layer = ACV.Game.Layer.createFromPrefs(data.layers.background[layerIndex]);
+        layer = ACV.Game.Layer.createFromPrefs(appContext, data.layers.background[layerIndex]);
         layer.prefs.offset += data.prefs.offset;
         backgroundLayers.push(layer);
     }
     for (layerIndex in data.layers.foreground) {
-        layer = ACV.Game.Layer.createFromPrefs(data.layers.foreground[layerIndex]);
+        layer = ACV.Game.Layer.createFromPrefs(appContext, data.layers.foreground[layerIndex]);
         layer.prefs.offset += data.prefs.offset;
         foregroundLayers.push(layer);
     }
@@ -70,7 +72,7 @@ ACV.Game.Level.createFromPrefs = function (data) {
         animations.push(ACV.Game.Animation.createFromPrefs(data.animations[animationIndex]));
     }
 
-    return new ACV.Game.Level(data.handle, data.prefs, animations, backgroundLayers, foregroundLayers);
+    return new ACV.Game.Level(appContext, data.handle, data.prefs, animations, backgroundLayers, foregroundLayers);
 };
 
 ACV.Game.Level.prototype = ACV.Core.createPrototype('ACV.Game.Level',
@@ -83,8 +85,6 @@ ACV.Game.Level.prototype = ACV.Core.createPrototype('ACV.Game.Level',
         _foregroundElement: null,
         _backgroundElement: null,
         animations: [],
-        _currentZoom: 1,
-        _zoomWrappers: null,
         _x: 0,
         _xBefore: 0
     });
@@ -98,27 +98,21 @@ ACV.Game.Level.prototype = ACV.Core.createPrototype('ACV.Game.Level',
  * @returns void
  */
 ACV.Game.Level.prototype.init = function (scene, backgroundWrapper, foregroundWrapper, minHeight, maxHeight) {
-    var layerIndex, animationIndex, backgroundZoomWrapper, foregroundZoomWrapper;
+    var layerIndex, animationIndex;
 
-    this._foregroundElement = $('<div class="level foreground level-' + this.handle.substr(0, this.handle.indexOf('-')) + '" data-handle="' + this.handle + '"><div class="zoom-wrapper" /></div>');
-    this._foregroundElement.css('max-width', this.prefs.clip.x2, 0);
-
-
-    this._backgroundElement = $('<div class="level background level-' + this.handle.substr(0, this.handle.indexOf('-')) + '"data-handle="' + this.handle + '"><div class="zoom-wrapper" /></div>');
+    this._backgroundElement = $('<div class="level background level-' + this.handle.substr(0, this.handle.indexOf('-')) + '"data-handle="' + this.handle + '" />');
     this._backgroundElement.css('max-width', this.prefs.clip.x2, 0);
 
-    backgroundZoomWrapper = this._backgroundElement.children('.zoom-wrapper');
-    foregroundZoomWrapper = this._foregroundElement.children('.zoom-wrapper');
-
-    this._zoomWrappers = backgroundZoomWrapper.add(foregroundZoomWrapper);
+    this._foregroundElement = $('<div class="level foreground level-' + this.handle.substr(0, this.handle.indexOf('-')) + '" data-handle="' + this.handle + '" />');
+    this._foregroundElement.css('max-width', this.prefs.clip.x2, 0);
 
     for (layerIndex in this.backgroundLayers) {
         //TODO remove children() from loop
-        this.backgroundLayers[layerIndex].init(backgroundZoomWrapper, minHeight, maxHeight);
+        this.backgroundLayers[layerIndex].init(this._backgroundElement, minHeight, maxHeight);
     }
     for (layerIndex in this.foregroundLayers) {
         //TODO remove children() from loop
-        this.foregroundLayers[layerIndex].init(foregroundZoomWrapper, minHeight, maxHeight);
+        this.foregroundLayers[layerIndex].init(this._foregroundElement, minHeight, maxHeight);
     }
 
     for (animationIndex in this.animations) {
@@ -130,34 +124,22 @@ ACV.Game.Level.prototype.init = function (scene, backgroundWrapper, foregroundWr
     foregroundWrapper.append(this._foregroundElement);
     this.info('Level initialized with ' + this.foregroundLayers.length + ' foreground layers and ' + this.backgroundLayers.length + ' background layers', 'd');
 };
+
+
 /**
  *
- * @param {number} target
- * @param {number} speed
- * @returns void
- * @since 2014-03-08
- * @todo Change scroll top to smooth zooming
+ * @param {number} x
+ * @param {number} y
+ * @since 2014-03-18
  */
-ACV.Game.Level.prototype.zoomTo = function (target, speed) {
-    var duration;
-    var level = this;
-    var start = this._currentZoom;
-
-    duration = ACV.Utils.calculateAnimationDuration(this._currentZoom, target, speed);
-    this.debug('Zooming to %s', target);
-
-    this._backgroundElement.stop('zoom', true).animate({
-        textIndent: target * 100
-    }, {
-        queue: 'zoom',
-        duration: duration,
-        easing: 'easeInOutSine',
-        step: function (now, tween) {
-            level._currentZoom = (1 - tween.pos ) * start + tween.pos * target;
-            level._zoomWrappers.css('transform', 'scale(' + level._currentZoom + ')');
-            level.scene.playerLayer.zoomWrapper.css('transform', 'scale(' + level._currentZoom + ')');
-        }
-    }).dequeue('zoom');
+ACV.Game.Level.prototype.applyLookAroundDistortion = function (x, y) {
+    var layerIndex;
+    for (layerIndex in this.foregroundLayers) {
+        this.foregroundLayers[layerIndex].applyLookAroundDistortion(x, y);
+    }
+    for (layerIndex in this.backgroundLayers) {
+        this.backgroundLayers[layerIndex].applyLookAroundDistortion(x, y);
+    }
 };
 
 /**

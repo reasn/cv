@@ -44,74 +44,67 @@ body {
 #container #scene .level-wrapper .level.visible {
   display: block;
 }
-#container #scene .level-wrapper .level .zoom-wrapper {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  position: absolute;
-}
-#container #scene .level-wrapper .level .zoom-wrapper .layer {
+#container #scene .level-wrapper .level .layer {
   position: absolute;
   height: 100%;
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper {
+#container #scene .level-wrapper .level .layer .sprite-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite {
   position: absolute;
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.image-background {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.image-background {
   background-size: contain;
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.white {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.white {
   background-image: url("../assets/graphics/scene/world/matte/patterns/white.jpg");
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.yellow {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.yellow {
   background-image: url("../assets/graphics/scene/world/matte/patterns/yellow.jpg");
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.pink {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.pink {
   background-image: url("../assets/graphics/scene/world/matte/patterns/pink.jpg");
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.green {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.green {
   background-image: url("../assets/graphics/scene/world/matte/patterns/green.jpg");
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.orange {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.orange {
   background-image: url("../assets/graphics/scene/world/matte/patterns/orange.jpg");
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.blue {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blue {
   background-image: url("../assets/graphics/scene/world/matte/patterns/blue.jpg");
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.blurred {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred {
   border: 80px solid transparent;
   -background-image: none;
   -background-color: #f6c74b;
   box-sizing: padding-box;
   background-clip: padding-box;
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.blurred.white {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred.white {
   border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/white.png") 80 80 repeat;
   background-color: #e7e7e5;
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.blurred.yellow {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred.yellow {
   border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/yellow.png") 80 80 repeat;
   background-color: #f6c74b;
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.blurred.pink {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred.pink {
   border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/pink.png") 80 80 repeat;
   background-color: #c75093;
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.blurred.green {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred.green {
   border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/green.png") 80 80 repeat;
   background-color: #8dc45c;
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.blurred.orange {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred.orange {
   border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/orange.png") 80 80 repeat;
   background-color: #f6943f;
 }
-#container #scene .level-wrapper .level .zoom-wrapper .layer .sprite-wrapper .sprite.colored.blurred.blue {
+#container #scene .level-wrapper .level .layer .sprite-wrapper .sprite.colored.blurred.blue {
   border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/blue.png") 80 80 repeat;
   background-color: #15a2c1;
 }
@@ -119,54 +112,47 @@ body {
   position: relative;
   height: 100%;
 }
-#container #scene .player-layer .zoom-wrapper {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  position: absolute;
-}
-#container #scene .player-layer .zoom-wrapper .player {
+#container #scene .player-layer .player {
   position: absolute;
   background-repeat: no-repeat;
 }
-#container #scene .player-layer .zoom-wrapper .player.baby {
+#container #scene .player-layer .player.baby {
   background: url("../assets/graphics/scene/player/baby/stand.gif");
 }
-#container #scene .player-layer .zoom-wrapper .player.baby.walking {
+#container #scene .player-layer .player.baby.walking {
   background: url("../assets/graphics/scene/player/baby/walk-forward.gif");
 }
-#container #scene .player-layer .zoom-wrapper .player.baby.walking.backwards {
+#container #scene .player-layer .player.baby.walking.backwards {
   background: url("../assets/graphics/scene/player/baby/walk-backwards.gif");
 }
-#container #scene .player-layer .zoom-wrapper .player.child {
+#container #scene .player-layer .player.child {
   background: url("../assets/graphics/scene/player/child/stand.gif");
 }
-#container #scene .player-layer .zoom-wrapper .player.child.walking {
+#container #scene .player-layer .player.child.walking {
   background: url("../assets/graphics/scene/player/child/walk-forward.gif");
 }
-#container #scene .player-layer .zoom-wrapper .player.child.walking.backwards {
+#container #scene .player-layer .player.child.walking.backwards {
   background: url("../assets/graphics/scene/player/child/walk-backwards.gif");
 }
-#container #scene .player-layer .zoom-wrapper .player.teen {
+#container #scene .player-layer .player.teen {
   background: url("../assets/graphics/scene/player/teen/stand.gif");
 }
-#container #scene .player-layer .zoom-wrapper .player.teen.walking {
+#container #scene .player-layer .player.teen.walking {
   background: url("../assets/graphics/scene/player/teen/walk-forward.gif");
 }
-#container #scene .player-layer .zoom-wrapper .player.teen.walking.backwards {
+#container #scene .player-layer .player.teen.walking.backwards {
   background: url("../assets/graphics/scene/player/teen/walk-backwards.gif");
 }
-#container #scene .player-layer .zoom-wrapper .player.adult {
+#container #scene .player-layer .player.adult {
   background: url("../assets/graphics/scene/player/adult/stand.gif");
 }
-#container #scene .player-layer .zoom-wrapper .player.adult.walking {
+#container #scene .player-layer .player.adult.walking {
   background: url("../assets/graphics/scene/player/adult/walk-forward.gif");
 }
-#container #scene .player-layer .zoom-wrapper .player.adult.walking.backwards {
+#container #scene .player-layer .player.adult.walking.backwards {
   background: url("../assets/graphics/scene/player/adult/walk-backwards.gif");
 }
-#container #scene .player-layer .zoom-wrapper .powerUp {
+#container #scene .player-layer .powerUp {
   position: absolute;
   color: black;
   width: 50px;

@@ -8,6 +8,7 @@ var ACV = ACV ? ACV : {};
 ACV.Game = ACV.Game ? ACV.Game : {};
 /**
  * @type {{
+ *   _appContext: ACV.AppContext
  *   prefs: Object
  *   element: jQuery
  *   player: ACV.Game.Player
@@ -15,44 +16,54 @@ ACV.Game = ACV.Game ? ACV.Game : {};
  *   lastCollisionDetection: number
  *   playerLayer: ACV.Game.PlayerLayer
  *   zoomWrapper: jQuery
+ *   _lookAroundDistortion: LookAroundDistortion
  * }}
- * @param prefs
- * @param player
- * @param powerUps
+ * @param {ACV.AppContext} appContext
+ * @param {PlayerLayerPrefs} prefs
+ * @param {ACV.Game.Player} player
+ * @param {Array.<ACV.Game.PowerUp>} powerUps
  * @constructor
  */
-ACV.Game.PlayerLayer = function (prefs, player, powerUps) {
+ACV.Game.PlayerLayer = function (appContext, prefs, player, powerUps) {
+
+    appContext.player = player;
+    console.warn(appContext);
+
+    this._appContext = appContext;
     this.prefs = prefs;
     this.player = player;
     this.powerUps = powerUps;
 };
 
-ACV.Game.PlayerLayer.createFromData = function (data, performanceSettings) {
+ACV.Game.PlayerLayer.createFromData = function (appContext, data) {
     var player, powerUpIndex, powerUps = [];
 
     player = new ACV.Game.Player(data.player);
     for (powerUpIndex in data.powerUps) {
         powerUps.push(new ACV.Game.PowerUp(data.powerUps[powerUpIndex].x, data.powerUps[powerUpIndex].y, data.powerUps[powerUpIndex].type));
     }
-    return new ACV.Game.PlayerLayer(data.prefs, player, powerUps);
+    return new ACV.Game.PlayerLayer(appContext, data.prefs, player, powerUps);
 };
 
 ACV.Game.PlayerLayer.prototype = ACV.Core.createPrototype('ACV.Game.PlayerLayer',
     {
+        _appContext: null,
         prefs: null,
         element: null,
         player: null,
         powerUps: [],
         lastCollisionDetection: 0,
         playerLayer: null,
-        zoomWrapper: null
+        _lookAroundDistortion: {
+            x: 0,
+            y: 0
+        }
     });
 
-ACV.Game.PlayerLayer.prototype.init = function (wrapperElement, width, minHeight, maxHeight, scene) {
+ACV.Game.PlayerLayer.prototype.init = function (wrapperElement, width, minHeight, maxHeight) {
     var powerUpIndex, playerLayer = this;
 
-    this.element = $('<div class="player-layer"><div class="zoom-wrapper"/></div>');
-    this.zoomWrapper = this.element.children('.zoom-wrapper');
+    this.element = $('<div class="player-layer" />');
     this.element.css(
         {
             width: width,
@@ -61,16 +72,17 @@ ACV.Game.PlayerLayer.prototype.init = function (wrapperElement, width, minHeight
         });
 
     for (powerUpIndex in this.powerUps) {
-        this.powerUps[powerUpIndex].init(this.zoomWrapper);
+        this.powerUps[powerUpIndex].init(this.element);
     }
 
     //enclose variable here to reduce calls and improve performance
 
-    this.player.init(this.zoomWrapper, function (playerX, targetPlayerX, sceneX, viewportDimensions) {
-        $('#playerX').text(playerX);
+    this.player.init(this.element);
+
+    this.player.addMovementListener(function (playerX, playerXBefore, targetPlayerX, sceneX, viewportDimensions) {
         playerLayer._detectCollisions(playerX, sceneX, viewportDimensions);
-        scene.handleTriggers(playerX, targetPlayerX, sceneX);
     });
+
     //Add to DOM at last to reduce draw calls
     wrapperElement.append(this.element);
 };
@@ -81,14 +93,31 @@ ACV.Game.PlayerLayer.prototype.init = function (wrapperElement, width, minHeight
  * @param {ViewportDimensions} viewportDimensions
  */
 ACV.Game.PlayerLayer.prototype.updatePositions = function (sceneX, viewportDimensions) {
-    var granularSceneX = Math.round(sceneX / this.prefs.collisionDetectionGridSize);
+//    var granularSceneX = Math.round(sceneX / this.prefs.collisionDetectionGridSize);
 
     //Set wrapper position to have the player stay at the same point of the scrolling scenery
-    this.element.css('left', -sceneX);
-
+    this._x = -sceneX;
+    this.element.css('left', (this._x + this._lookAroundDistortion.x) + 'px');
     this.player.updatePosition(sceneX, viewportDimensions);
-
 };
+
+
+/**
+ *
+ * @param {number} x
+ * @param {number} y
+ * @since 2014-03-18
+ */
+ACV.Game.PlayerLayer.prototype.applyLookAroundDistortion = function (x, y) {
+
+    this._lookAroundDistortion.x = x;
+    this._lookAroundDistortion.y = y;
+    this.element.css({
+        top: this._lookAroundDistortion.y + 'px',
+        left: (this._x + this._lookAroundDistortion.x) + 'px'
+    });
+};
+
 
 /**
  *

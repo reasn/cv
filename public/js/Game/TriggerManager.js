@@ -88,9 +88,6 @@ ACV.Game.TriggerManager.prototype._execute = function (action) {
         case 'player.jumpAndStay':
             this.scene.playerLayer.player.jumpAndStay(parseInt(action.args[0]));
             return;
-        case 'scene.zoom':
-            this.scene.startZoom(action.args[0], parseInt(action.args[1]));
-            return;
         default:
             this.warn('Unknown trigger action:');
             this.warn(action);

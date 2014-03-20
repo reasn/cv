@@ -35,4 +35,5 @@ ACV.Game.PowerUp.prototype.init = function (playerLayerElement) {
 };
 ACV.Game.PowerUp.prototype.hasJustBeenCollected = function (playerX) {
     return playerX >= this.x;
+    //TODO fires endlessly?
 };

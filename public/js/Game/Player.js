@@ -7,21 +7,32 @@ var ACV = ACV ? ACV : {};
 
 ACV.Game = ACV.Game ? ACV.Game : {};
 
+/**
+ * @typedef {function} PlayerMovementListener {{
+ * @param {number} playerX
+ * @param {number} payerXBefore
+ * @param {number} targetPlayerX
+ * @param {number} sceneX
+ * @param {ViewportDimensions} viewportDimensions
+ * }}
+ */
 
 /**
  * @type {{
  *   prefs: Object
  *   element: jQuery,
  *   x: number,
+ *   _lastTriggeredX: number
  *   y: number,
  *   width: number,
  *   height: number,
- *   movementListener: function
+ *   _movementListeners: Array.<PlayerMovementListener>
  * }}
  * @param {Object} prefs
  * @constructor
  */
 ACV.Game.Player = function (prefs) {
+
     this.prefs = prefs;
     this.y = prefs.position.y;
 };
@@ -46,18 +57,17 @@ ACV.Game.Player.prototype = ACV.Core.createPrototype('ACV.Game.Player',
         y: 0,
         width: 0,
         height: 0,
-        movementListener: null
+        _movementListeners: [],
+        _lastTriggeredX: 0
     });
 /**
  *
  * @param {jQuery} playerLayerElement
- * @param {function} movementListener
  */
-ACV.Game.Player.prototype.init = function (playerLayerElement, movementListener) {
+ACV.Game.Player.prototype.init = function (playerLayerElement) {
 
     this.debug('Initializing player');
 
-    this.movementListener = movementListener;
 
     this.element = $('<div class="player" />');
 
@@ -66,6 +76,14 @@ ACV.Game.Player.prototype.init = function (playerLayerElement, movementListener)
     playerLayerElement.append(this.element);
     this.debug('Player initialized');
 };
+/**
+ *
+ * @param {PlayerMovementListener} callback
+ */
+ACV.Game.Player.prototype.addMovementListener = function (callback) {
+    this._movementListeners.push(callback)
+};
+
 /**
  * @param {number} age
  * @since 2013-11-24
@@ -196,7 +214,7 @@ ACV.Game.Player.prototype.moveTo = function (targetX, sceneX, speed, viewportDim
      * is alright because this code wouldn't be reached while jumping.
      */
     if (this.element.is(':animated')) {
-        speed *= 1.5;
+        speed *= player.prefs.fastWalkMultiplicator;
     }
 
     //Reduce redraws by adding/removing as many classes at a time as possible
@@ -215,17 +233,21 @@ ACV.Game.Player.prototype.moveTo = function (targetX, sceneX, speed, viewportDim
             duration: Math.abs(this.x - targetX) / speed,
             queue: 'walk',
             step: function (now) {
-                var coarseX = Math.round(now / player.prefs.movementTriggerGranularity);
+                var coarseX, listenerIndex;
+
+                coarseX = Math.floor(now / player.prefs.movementTriggerGranularity);
                 player.x = now;
 
                 if (coarseX !== player.lastCoarseX) {
                     player.lastCoarseX = coarseX;
-                    player.movementListener.call(player, player.x, targetX, sceneX, viewportDimensions);
+                    for (listenerIndex in player._movementListeners) {
+                        player._movementListeners[listenerIndex].apply(player, [player.x, player._lastTriggeredX, targetX, sceneX, viewportDimensions]);
+                    }
+                    player._lastTriggeredX = player.x;
                 }
             },
             complete: function () {
                 player.element.removeClass('walking');
             }
         }).dequeue('walk');
-}
-;
+};

@@ -9,6 +9,7 @@ ACV.Game = ACV.Game ? ACV.Game : new Object();
 
 /**
  *
+ * @param {ACV.AppContext} appContext
  * @param {string} id
  * @param {string} caption
  * @param {number} x
@@ -20,7 +21,8 @@ ACV.Game = ACV.Game ? ACV.Game : new Object();
  * @param {string} color
  * @param {boolean} blurred
  */
-ACV.Game.Sprite = function (id, caption, x, y, width, height, topAligned, source, color, blurred) {
+ACV.Game.Sprite = function (appContext, id, caption, x, y, width, height, topAligned, source, color, blurred) {
+    this._appContext = appContext;
     this.id = id;
     this.caption = caption;
     this.x = x;
@@ -32,11 +34,13 @@ ACV.Game.Sprite = function (id, caption, x, y, width, height, topAligned, source
     this.color = color;
     this.blurred = blurred;
 };
-ACV.Game.Sprite.createFromPrefs = function (data) {
-    return new ACV.Game.Sprite(data.id, data.caption, data.x, data.y, data.width, data.height, data.topAligned, data.source, data.color, data.blurred);
+ACV.Game.Sprite.createFromPrefs = function (appContext, data) {
+    return new ACV.Game.Sprite(appContext, data.id, data.caption, data.x, data.y, data.width, data.height, data.topAligned, data.source, data.color, data.blurred);
 };
+
 ACV.Game.Sprite.mockColors = ['#9932CC', '#8B0000', '#E9967A', '#8FBC8F', '#483D8B', '#2F4F4F', '#00CED1', '#9400D3', '#FF1493', '#00BFFF', '#696969', '#1E90FF', '#B22222', '#FFFAF0', '#228B22', '#FF00FF', '#DCDCDC', '#F8F8FF', '#FFD700', '#DAA520', '#808080', '#008000', '#ADFF2F', '#F0FFF0', '#FF69B4'];
 ACV.Game.Sprite.mockColorIndex = 0;
+
 ACV.Game.Sprite.prototype = ACV.Core.createPrototype('ACV.Game.Sprite',
     {
         id: null,
@@ -65,7 +69,7 @@ ACV.Game.Sprite.prototype.init = function (layerElement) {
 
     //TODO implement combined asset files
     if (typeof (this.source) === 'string') {
-        this.element.css('backgroundImage', 'url("' + ACV.App.config.assetPath + '/' + this.source + '")');
+        this.element.css('backgroundImage', 'url("' + this._appContext.prefs.assetPath + '/' + this.source + '")');
         this.element.addClass('image-background')
     } else if (typeof(this.color) === 'string') {
         this.element.addClass('colored').addClass(this.color);
