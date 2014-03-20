@@ -9,35 +9,46 @@ ACV.HUD = ACV.HUD ? ACV.HUD : {};
 
 /**
  * @type {{
- *   keyFrames: Array.<Object>
- *   lastHeight: number
+ *   _keyFrames: Array.<Object>
+ *   _lastHeight: number
  * }}
  * @param keyFrames
  * @constructor
  */
 ACV.HUD.HeightDisplay = function (keyFrames) {
-    this.keyFrames = keyFrames;
+    this._keyFrames = keyFrames;
 };
-
-ACV.HUD.HeightDisplay.createFromData = function (data, performanceSettings) {
+/**
+ *
+ * @param {Object} data
+ * @returns {ACV.HUD.HeightDisplay}
+ */
+ACV.HUD.HeightDisplay.createFromData = function (data) {
     return new ACV.HUD.HeightDisplay(data.keyFrames);
 };
 
 ACV.HUD.HeightDisplay.prototype = ACV.Core.createPrototype('ACV.HUD.HeightDisplay', {
-    keyFrames: [],
-    lastHeight: null
+    _keyFrames: [],
+    _lastHeight: null
 });
 
+/**
+ *
+ * @param {jQuery} hudElement
+ */
 ACV.HUD.HeightDisplay.prototype.init = function (hudElement) {
-    this.element = $('<div id="height">' + this.year + '</div>');
+    this.element = $('<div class="height-display" />');
     hudElement.append(this.element);
 
     this.debug('HeightDisplay initialized');
 };
-
+/**
+ *
+ * @param {number} ratio
+ */
 ACV.HUD.HeightDisplay.prototype.update = function (ratio) {
     var frameIndex, factor, height;
-    var keys = Object.keys(this.keyFrames);
+    var keys = Object.keys(this._keyFrames);
 
     // Automatically hide DOM-element when it's no longer needed
     if (ratio > keys[keys.length - 1] && this.elementVisible) {
@@ -61,13 +72,13 @@ ACV.HUD.HeightDisplay.prototype.update = function (ratio) {
         factor = (ratio - keys[frameIndex]) / (keys[frameIndex + 1] - keys[frameIndex]);
 
         // h = (1-factor) * a + factor * b
-        height = (1 - factor) * this.keyFrames[keys[frameIndex]] + factor * this.keyFrames[keys[frameIndex + 1]];
+        height = (1 - factor) * this._keyFrames[keys[frameIndex]] + factor * this._keyFrames[keys[frameIndex + 1]];
         break;
 
     }
     // Reduces draw calls
-    if (height !== this.lastHeight) {
-        this.lastHeight = height;
+    if (height !== this._lastHeight) {
+        this._lastHeight = height;
         this.element.text(Math.round(height));
     }
 };

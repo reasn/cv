@@ -46,10 +46,10 @@ ACV.HUD.createFromData = function (appContext, data) {
 
     skillBasket = ACV.HUD.SkillBasket.createFromData(data.skillBasket, appContext.performanceSettings);
     if (appContext.performanceSettings.yearDisplay) {
-        yearDisplay = ACV.HUD.YearDisplay.createFromData(data.yearDisplay, appContext.performanceSettings);
+        yearDisplay = ACV.HUD.YearDisplay.createFromData(data.yearDisplay);
     }
     if (appContext.performanceSettings.heightDisplay) {
-        heightDisplay = ACV.HUD.HeightDisplay.createFromData(data.heightDisplay, appContext.performanceSettings);
+        heightDisplay = ACV.HUD.HeightDisplay.createFromData(data.heightDisplay);
     }
 
     timeline = ACV.HUD.Timeline.createFromData(appContext, data.timeline);
@@ -66,9 +66,13 @@ ACV.HUD.prototype = ACV.Core.createPrototype('ACV.HUD', {
     heightDisplay: null,
     _timeline: null
 });
-
+/**
+ *
+ * @param {jQuery} element
+ * @param viewportManager
+ */
 ACV.HUD.prototype.init = function (element, viewportManager) {
-    this.element = $(element);
+    this.element = element;
     this.element.css({
         height: this.height
     });

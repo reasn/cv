@@ -30,8 +30,12 @@ ACV.App.config =
 {
     assetPath: 'assets'
 };
-
-ACV.App.prototype.init = function (data) {
+/**
+ *
+ * @param {Object} data
+ * @param {jQuery} container
+ */
+ACV.App.prototype.init = function (data, container) {
     var sceneElement;
     var app = this;
 
@@ -51,7 +55,7 @@ ACV.App.prototype.init = function (data) {
     this.hud = ACV.HUD.createFromData(this._appContext, data.hud);
 
     //Prepare scene
-    sceneElement = $('<div id="scene"/>');
+    sceneElement = container.children('.scene');
     this.scene = ACV.Game.Scene.createFromData(this._appContext, sceneElement, data.scene);
     this.scene.playerLayer.skillBasket = this.hud.skillBasket;
 
@@ -60,10 +64,8 @@ ACV.App.prototype.init = function (data) {
     this._sceneViewportDimenstions.height = this.viewportManager.viewportDimensions.height - this.hud.height;
 
     //Initialize HUD and scene
-    this.hud.init('#hud', this.viewportManager);
+    this.hud.init(container.children('.hud'), this.viewportManager);
     this.scene.init(this._sceneViewportDimenstions);
-
-    $('#container').prepend(sceneElement);
 
     //Sink events
     this.viewportManager.listen(function (ratio, ratioBefore, interval, viewportDimensions) {

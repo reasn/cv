@@ -54,7 +54,7 @@ ACV.HUD.Timeline.prototype = ACV.Core.createPrototype('ACV.HUD.Timeline', {
 ACV.HUD.Timeline.prototype.init = function (hudElement) {
     var timeline = this;
 
-    this._domNode = $('<div id="timeline" ><div class="element-wrapper" /></div>');
+    this._domNode = $('<div class="timeline" ><div class="element-wrapper" /></div>');
     this._elementWrapper = this._domNode.children('.element-wrapper');
 
     hudElement.append(this._domNode);

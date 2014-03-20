@@ -41,7 +41,7 @@ ACV.HUD.YearDisplay.prototype = ACV.Core.createPrototype('ACV.HUD.YearDisplay',
  * @returns void
  */
 ACV.HUD.YearDisplay.prototype.init = function (hudElement) {
-    this.element = $('<div id="year">' + this.year + '</div>');
+    this.element = $('<div class="year-display">' + this.year + '</div>');
     hudElement.append(this.element);
 
     this.info('Year display initialized', 'd');

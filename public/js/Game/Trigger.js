@@ -79,11 +79,11 @@ ACV.Game.Trigger.createFromData = function (data) {
 /**
  *
  * @param {number} value
- * @param {number} targetValue This value is required for ranged trigger animations (e.g. jumps).
  * @param {number} lastValue
+ * @param {number} targetValue This value is required for ranged trigger animations (e.g. jumps).
  * @returns {?TriggerAction}
  */
-ACV.Game.Trigger.prototype.determineActionToBeExecuted = function (value, targetValue, lastValue) {
+ACV.Game.Trigger.prototype.determineActionToBeExecuted = function (value, lastValue, targetValue) {
     var a = this._range[0];
     var b = this._range[this._range.length - 1];
     var m = this._range.length === 3 ? this._range[1] : null;

@@ -106,7 +106,7 @@ ACV.Game.Scene.prototype.init = function (viewportDimensions) {
 
     this._appContext.player.addMovementListener(function (playerX, playerXBefore, targetPlayerX, sceneX) {
         $('#playerX').text(playerX);
-        scene.handleTriggers(playerX, targetPlayerX, sceneX);
+        scene.handleTriggers(playerX, playerXBefore, targetPlayerX, sceneX);
     });
 
     this.element.append(this.foregroundElement);
@@ -161,9 +161,15 @@ ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore) {
     //TODO remove:
     $('#sceneX').text(this._x);
 };
-
-ACV.Game.Scene.prototype.handleTriggers = function (playerX, targetPlayerX, sceneX) {
-    this.triggerManager.check(playerX, targetPlayerX, sceneX);
+/**
+ *
+ * @param {number} playerX
+ * @param {number} playerXBefore
+ * @param {number} targetPlayerX
+ * @param {number} sceneX
+ */
+ACV.Game.Scene.prototype.handleTriggers = function (playerX, playerXBefore, targetPlayerX, sceneX) {
+    this.triggerManager.check(playerX, playerXBefore, targetPlayerX, sceneX);
 };
 
 ACV.Game.Scene.prototype._handleViewportChange = function () {

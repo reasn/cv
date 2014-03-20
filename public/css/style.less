@@ -44,7 +44,7 @@ body {
     background-image: url("../assets/graphics/scene/world/matte/patterns/blue.jpg");
     background-repeat: repeat;
 
-    #scene {
+    .scene {
         top: 0;
         right: 0;
         bottom: 0;
@@ -183,7 +183,7 @@ body {
             }
         }
     }
-    #hud {
+    .hud {
         z-index: @zHud;
         right: 0;
         bottom: 0;
@@ -249,14 +249,14 @@ body {
                 .skill();
             }
         }
-        #year {
+        .year-display{
             position: fixed;
             top: 10px;
             left: 10px;
             font-size: 100px;
             font-weight: bold;
         }
-        #height {
+        .height-display {
             position: fixed;
             top: 150px;
             left: 10px;
@@ -264,6 +264,11 @@ body {
             font-weight: bold;
             &:after {
                 content: 'cm'
+            }
+        }
+        .timeline {
+            .event-wrapper {
+
             }
         }
     }

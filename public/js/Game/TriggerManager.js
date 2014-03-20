@@ -11,7 +11,6 @@ ACV.Game = ACV.Game ? ACV.Game : {};
  * @type {{
  *   scene: ACV.Game.Scene
  *   triggers: Array.<ACV.Game.Trigger>
- *   lastPlayerX: number
  * }}
  * @param triggers
  * @constructor
@@ -30,8 +29,7 @@ ACV.Game.TriggerManager = function (triggers) {
 ACV.Game.TriggerManager.prototype = ACV.Core.createPrototype('ACV.Game.TriggerManager',
     {
         scene: null,
-        triggers: [],
-        lastPlayerX: 0
+        triggers: []
     });
 
 ACV.Game.TriggerManager.createFromData = function (triggerData, performanceSettings) {
@@ -42,21 +40,27 @@ ACV.Game.TriggerManager.createFromData = function (triggerData, performanceSetti
     }
     return new ACV.Game.TriggerManager(triggers);
 };
-
-ACV.Game.TriggerManager.prototype.check = function (playerX, targetPlayerX, sceneX) {
+/**
+ *
+ * @param {number} playerX
+ * @param {number} playerXBefore
+ * @param {number} targetPlayerX
+ * @param {number} sceneX
+ */
+ACV.Game.TriggerManager.prototype.check = function (playerX, playerXBefore, targetPlayerX, sceneX) {
     var triggerIndex, trigger, action;
 
-    //this.debug('PlayerX always: %s    %s', playerX, this.lastPlayerX);
+    //this.debug('PlayerX always: %s    %s', playerX, playerXBefore);
     for (triggerIndex in this.triggers) {
         trigger = this.triggers[triggerIndex];
 
         if (trigger.relativeTo === 'player') {
-            action = trigger.determineActionToBeExecuted(playerX, targetPlayerX, this.lastPlayerX);
+            action = trigger.determineActionToBeExecuted(playerX, playerXBefore, targetPlayerX);
         }
-        if (action !== null)
+        if (action !== null) {
             this._execute(action);
+        }
     }
-    this.lastPlayerX = playerX;
 };
 /**
  * Testable via "testableApp.scene.triggerManager._execute({type: 'player.jumpUpAndDown', data: ''})".
