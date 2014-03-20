@@ -80,7 +80,7 @@ ACV.Game.PlayerLayer.prototype.init = function (wrapperElement, width, minHeight
     this.player.init(this.element);
 
     this.player.addMovementListener(function (playerX, playerXBefore, targetPlayerX, sceneX, viewportDimensions) {
-        playerLayer._detectCollisions(playerX, sceneX, viewportDimensions);
+        playerLayer._detectCollisions(playerX, playerXBefore, sceneX, viewportDimensions);
     });
 
     //Add to DOM at last to reduce draw calls
@@ -122,15 +122,17 @@ ACV.Game.PlayerLayer.prototype.applyLookAroundDistortion = function (x, y) {
 /**
  *
  * @param {number} playerX
+ * @param {number} playerXBefore
  * @param {number} sceneX
  * @param {ViewportDimensions} viewportDimensions
  * @private
  */
-ACV.Game.PlayerLayer.prototype._detectCollisions = function (playerX, sceneX, viewportDimensions) {
-    var powerUpIndex;
-    var testX = playerX + this.prefs.hitBox + .5 * this.player.width;
+ACV.Game.PlayerLayer.prototype._detectCollisions = function (playerX, playerXBefore, sceneX, viewportDimensions) {
+    var testX, powerUpIndex, powerUp;
+    testX = playerX + this.prefs.hitBox + .5 * this.player.width;
     for (powerUpIndex in this.powerUps) {
-        if (this.powerUps[powerUpIndex].hasJustBeenCollected(testX)) {
+        powerUp = this.powerUps[powerUpIndex];
+        if (!powerUp.collected && playerX > powerUp.x && playerXBefore < powerUp.x) {
             this._collectPowerUp(powerUpIndex, sceneX, viewportDimensions);
             powerUpIndex--;
         }

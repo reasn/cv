@@ -33,7 +33,3 @@ ACV.Game.PowerUp.prototype.init = function (playerLayerElement) {
 
     this.debug('PowerUp initialized');
 };
-ACV.Game.PowerUp.prototype.hasJustBeenCollected = function (playerX) {
-    return playerX >= this.x;
-    //TODO fires endlessly?
-};
