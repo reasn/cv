@@ -9,11 +9,12 @@ ACV.HUD = ACV.HUD ? ACV.HUD : {};
 
 /**
  * @type {function} {{
+ *   visible: boolean
  *   playerX: number
  *   timestamp: Date
  *   type: string
  *   data: Object
- *   domNode: jQuery
+ *   element: jQuery
  * }}
  * @param {number} playerX
  * @param {Date} timestamp
@@ -28,12 +29,13 @@ ACV.HUD.TimelineEvent = function (playerX, timestamp, type, data) {
     this._data = data;
 };
 
-ACV.HUD.TimelineEvent.prototype = ACV.Core.createPrototype('ACV.HUD.Timeline', {
+ACV.HUD.TimelineEvent.prototype = ACV.Core.createPrototype('ACV.HUD.TimelineEvent', {
+    visible: false,
     playerX: 0,
     _timestamp: null,
     _type: '',
     _data: null,
-    domNode: null
+    element: null
 });
 
 /**
@@ -47,19 +49,11 @@ ACV.HUD.TimelineEvent.createFromData = function (rawElement) {
 
 /**
  *
- * @param {jQuery} wrapperElement
- */
-ACV.HUD.TimelineEvent.prototype.addToDom = function (wrapperElement) {
-    this.domNode = this._createElement();
-    wrapperElement.append(this.domNode);
-};
-
-/**
- *
  */
 ACV.HUD.TimelineEvent.prototype.removeFromDom = function () {
-    this.domNode.remove();
-    this.domNode = null;
+    this.element.remove();
+    this.element = null;
+    this.debug('removed event %s from dom', this._data.message);
 };
 
 /**
@@ -69,13 +63,17 @@ ACV.HUD.TimelineEvent.prototype.removeFromDom = function () {
  * @returns {jQuery}
  * @private
  */
-ACV.HUD.TimelineEvent.prototype._createElement = function () {
+ACV.HUD.TimelineEvent.prototype.getElement = function () {
 
+    if (this.element !== null) {
+        return this.element;
+    }
+    this.debug('creating element for event %s', this._data.message);
     switch (this._type) {
         case 'post':
-            return $('<h1>Test</h1>');
+            return this.element = $('<div class="event"><h1>' + this._data.message + '</h1></div>');
         case 'activity':
-            return $('<h1>Activity</h1>');
+            return this.element = $('<div class="event"><h1>' + this._data.message + '</h1></div>');
         default:
             throw 'Invalid timeline element type' + this._type;
     }

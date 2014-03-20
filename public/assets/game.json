@@ -169,7 +169,10 @@
             }
         },
         "timeline": {
+            "comment": "the events must be in strict ascending ordered (by playerX)",
             "prefs": {
+                "minVisibleEvents": 2,
+                "maxVisibleEvents": 2
             },
             "events": [
                 {
@@ -177,7 +180,7 @@
                     "timestamp": "1987-09-18",
                     "type": "post",
                     "data": {
-                        "message": "Yeah, alive finally!"
+                        "message": "A Yeah, alive finally!"
                     }
                 },
                 {
@@ -185,7 +188,7 @@
                     "timestamp": "1989-11-09",
                     "type": "post",
                     "data": {
-                        "message": "no more wall"
+                        "message": "B no more wall"
                     }
                 },
                 {
@@ -193,7 +196,7 @@
                     "timestamp": "1991-01-01",
                     "type": "activity",
                     "data": {
-                        "message": "[Alexander] learns to walk"
+                        "message": "C [Alexander] learns to walk"
                     }
                 }
             ]

@@ -167,6 +167,13 @@ body {
   background: #000099;
   position: absolute;
 }
+#container .hud .dev-info {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: 100%;
+}
 #container .hud .skill-basket {
   display: block;
   position: absolute;
@@ -266,6 +273,17 @@ body {
 }
 #container .hud .height-display:after {
   content: 'cm';
+}
+#container .hud .timeline {
+  right: 0;
+  width: 50%;
+  height: 100%;
+  position: absolute;
+}
+#container .hud .timeline .event-wrapper .event {
+  height: 100px;
+  margin: 20px 0;
+  background-color: #000000;
 }
 .tag-cloud li {
   display: block;

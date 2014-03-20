@@ -11,7 +11,8 @@ ACV.HUD = ACV.HUD ? ACV.HUD : {};
  * @type {{
  *   _appContext: AppContext
  *   _events: Array.<TimelineEvent>
- *   domNode: jQuery
+ *   _element: jQuery
+ *   _numberOfEventsVisible: number
  * }}
  * @param {ACV.AppContext} appContext
  * @param {Object} prefs
@@ -43,8 +44,9 @@ ACV.HUD.Timeline.prototype = ACV.Core.createPrototype('ACV.HUD.Timeline', {
     _appContext: null,
     _prefs: null,
     _events: [],
-    _domNode: null,
-    _elementWrapper: null
+    _element: null,
+    _eventWrapper: null,
+    _numberOfEventsVisible: 0
 });
 
 /**
@@ -54,10 +56,10 @@ ACV.HUD.Timeline.prototype = ACV.Core.createPrototype('ACV.HUD.Timeline', {
 ACV.HUD.Timeline.prototype.init = function (hudElement) {
     var timeline = this;
 
-    this._domNode = $('<div class="timeline" ><div class="element-wrapper" /></div>');
-    this._elementWrapper = this._domNode.children('.element-wrapper');
+    this._element = $('<div class="timeline" ><div class="event-wrapper" /></div>');
+    this._eventWrapper = this._element.children('.event-wrapper');
 
-    hudElement.append(this._domNode);
+    hudElement.append(this._element);
 
     if (this._appContext.player === undefined) {
         throw 'player must have been instantiated before Timeline can be initialized.';
@@ -75,15 +77,77 @@ ACV.HUD.Timeline.prototype.init = function (hudElement) {
  * @private
  */
 ACV.HUD.Timeline.prototype._update = function (playerX, playerXBefore) {
-    var elementIndex, element;
+    var eventIndex, event, lastIndexRemoved = -1;
 
-    for (elementIndex in this._events) {
-        element = this._events[elementIndex];
+    for (eventIndex in this._events) {
+        event = this._events[eventIndex];
 
-        if (playerX > element.playerX && playerXBefore < element.playerX && element.domNode === null) {
-            element.addToDom(this._elementWrapper);
-        } else if (playerX < element.playerX && playerXBefore > element.playerX && element.domNode !== null) {
-            element.removeFromDom();
+        if (playerX > event.playerX && playerXBefore < event.playerX && !event.visible) {
+            this._prepend(event);
+
+        } else if (playerX < event.playerX && playerXBefore > event.playerX && event.visible) {
+            this._remove(event);
+            lastIndexRemoved = eventIndex;
         }
     }
+    if (this._numberOfEventsVisible > this._prefs.maxVisibleEvents) {
+        //Assume that the events are in ascending order
+        for (eventIndex in this._events) {
+            event = this._events[eventIndex];
+            if (event.visible) {
+                this.debug('Too many timeline events visible, removing lowermost');
+                this._remove(event);
+                break;
+            }
+        }
+    }
+    if (lastIndexRemoved !== -1 && this._numberOfEventsVisible < this._prefs.minVisibleEvents) {
+        //Assume that the events are in ascending order
+        for (eventIndex = lastIndexRemoved - 1; eventIndex >= 0; eventIndex--) {
+            //Find the first element that is invisible moving downwards starting at lastIndexRemoved
+            event = this._events[eventIndex];
+
+            if (!event.visible) {
+                this._append(event);
+                break;
+            }
+        }
+    }
+};
+ACV.HUD.Timeline.prototype._remove = function (event) {
+    var timeline = this;
+    event.visible = false;
+    timeline._numberOfEventsVisible--;
+    event.element.animate({
+        opacity: 0
+    }, 500, 'easeOutCirc', function () {
+        event.element.animate({
+            height: 0,
+            margin: 0
+        }, 500, 'easeOutCirc', function () {
+            event.removeFromDom();
+        });
+    });
+};
+
+ACV.HUD.Timeline.prototype._prepend = function (event) {
+    var eventElement, timeline = this;
+    event.visible = true;
+    timeline._numberOfEventsVisible++;
+    eventElement = event.getElement();
+    eventElement.css({opacity: 0, height: 0});
+
+    this._eventWrapper.prepend(eventElement);
+
+    eventElement.animate({height: 100}, 'easeOutCirc', function () {
+        eventElement.animate({
+            opacity: 1
+        }, 500, 'easeOutCirc')
+    });
+};
+
+ACV.HUD.Timeline.prototype._append = function (event) {
+    event.visible = true;
+    this._eventWrapper.append(event.getElement());
+    this._numberOfEventsVisible++;
 };

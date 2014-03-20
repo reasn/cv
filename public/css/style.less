@@ -191,6 +191,14 @@ body {
         background: #000099;
         position: absolute;
 
+        .dev-info {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 100%;
+        }
+
         .skill() {
             margin: 2px;
             display: block;
@@ -249,7 +257,7 @@ body {
                 .skill();
             }
         }
-        .year-display{
+        .year-display {
             position: fixed;
             top: 10px;
             left: 10px;
@@ -267,8 +275,17 @@ body {
             }
         }
         .timeline {
-            .event-wrapper {
+            right: 0;
+            width: 50%;
+            height: 100%;
+            position: absolute;
 
+            .event-wrapper {
+                .event {
+                    height: 100px;
+                    margin: 20px 0;
+                    background-color: #000000;
+                }
             }
         }
     }
