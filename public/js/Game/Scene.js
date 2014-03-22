@@ -91,7 +91,7 @@ ACV.Game.Scene.prototype.init = function (viewportDimensions) {
     });
 
     if (this._appContext.performanceSettings.lookAroundDistortion) {
-        this.foregroundElement.on('mousemove', function (event) {
+        $(document).on('mousemove', function (event) {
             scene._handleMouseMove(event.clientX, event.clientY);
         });
     }
@@ -141,6 +141,18 @@ ACV.Game.Scene.prototype._handleMouseMove = function (clientX, clientY) {
 
 ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore) {
     var levelIndex;
+
+
+    if (ratio > 0 && !this._visible) {
+        this._visible = true;
+        this.element.show();
+    } else if (ratio === 0 && this._visible) {
+        this._visible = false;
+        this.element.hide();
+    } else if (!this._visible) {
+        return;
+    }
+
     this._x = ratio * (this.prefs.width - this._viewportDimensions.width);
     this._xBefore = ratio * (this.prefs.width - this._viewportDimensions.width);
 

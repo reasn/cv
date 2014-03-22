@@ -4,10 +4,14 @@
  * @since 2013-11-03
  */
 var ACV = ACV ? ACV : {};
-
-ACV.ViewportManager = function(staticContainer, scrollableDistance, moveByDrag)
-{
-    this.staticContainer = $(staticContainer);
+/**
+ * @param {jQuery} staticContainer
+ * @param {number} scrollableDistance
+ * @param {boolean} moveByDrag
+ * @constructor
+ */
+ACV.ViewportManager = function (staticContainer, scrollableDistance, moveByDrag) {
+    this._staticContainer = staticContainer;
     this.scrollableDistance = scrollableDistance;
     this.moveByDrag = moveByDrag;
 };
@@ -15,66 +19,50 @@ ACV.ViewportManager = function(staticContainer, scrollableDistance, moveByDrag)
 ACV.ViewportManager.maxInterval = 1000;
 
 ACV.ViewportManager.prototype = ACV.Core.createPrototype('ACV.ViewportManager',
-{
-    staticContainer: null,
-    listeners: [],
-    viewportDimensions:
     {
-        width: 0,
-        height: 0,
-        changed: false
-    },
-    lastTrigger: null,
-    moveByDrag: true,
-    touch:
-    {
-        virtualPosition: 0,
-        lastY: null
-    }
-});
-
-ACV.ViewportManager.prototype.init = function()
-{
-    var vpm = this, w = $(window), body = $('body');
-
-    this.staticContainer.css(
-    {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-        position: 'fixed'
+        _containerFixedToViewport: false,
+        _staticContainer: null,
+        listeners: [],
+        viewportDimensions: {
+            width: 0,
+            height: 0,
+            changed: false
+        },
+        lastTrigger: null,
+        moveByDrag: true,
+        touch: {
+            virtualPosition: 0,
+            lastY: null
+        }
     });
 
-    if (this.moveByDrag)
-    {
-        body.on('touchmove', function(e)
-        {
+ACV.ViewportManager.prototype.init = function () {
+    var vpm = this, w = $(window), body = $('body');
+
+    this._containerDistanceFromTop = this._staticContainer.position().top;
+
+    if (this.moveByDrag) {
+        body.on('touchmove', function (e) {
             var y = e.originalEvent.changedTouches[0].screenY;
-            if (vpm.touch.lastY !== null && y > 0)
-            {
+            if (vpm.touch.lastY !== null && y > 0) {
                 vpm.touch.virtualPosition = Math.max(0, vpm.touch.virtualPosition - (y - vpm.touch.lastY));
-                vpm._trigger(vpm.touch.virtualPosition);
+                vpm._handleScroll(vpm.touch.virtualPosition, false);
             }
             vpm.touch.lastY = y;
         });
-        body.on('touchend', function(e)
-        {
+        body.on('touchend', function (e) {
             vpm.touch.lastY = null;
         });
-    } else
-    {
+    } else {
         body.css('height', this.scrollableDistance + 'px');
-        $(document).on('scroll', function()
-        {
-            vpm._trigger($(document).scrollTop());
+        $(document).on('scroll', function () {
+            vpm._handleScroll($(document).scrollTop(), false);
         });
 
     }
 
-    w.on('resize', function()
-    {
-        vpm.triggerAll();
+    w.on('resize', function () {
+        vpm._handleResize(false);
     });
     vpm.viewportDimensions.width = w.width();
     vpm.viewportDimensions.height = w.height();
@@ -82,25 +70,63 @@ ACV.ViewportManager.prototype.init = function()
     this.info('ViewportManager initialized');
 };
 
-ACV.ViewportManager.prototype.triggerAll = function()
-{
+ACV.ViewportManager.prototype.fireAllTriggers = function () {
+    this._handleResize(true);
+};
+
+ACV.ViewportManager.prototype._handleResize = function (forceFire) {
     var w = $(window);
     this.viewportDimensions.width = w.width();
     this.viewportDimensions.height = w.height();
     this.viewportDimensions.changed = true;
-    if (this.moveByDrag)
-        this._trigger(this.touch.virtualPosition);
-    else
-        this._trigger($(document).scrollTop());
+
+    if (!this._containerFixedToViewport) {
+        this._staticContainer.css({
+            height: this.viewportDimensions.height
+        });
+    }
+
+    if (this.moveByDrag) {
+        this._handleScroll(this.touch.virtualPosition, forceFire);
+    }
+    else {
+        this._handleScroll($(document).scrollTop(), forceFire);
+    }
 };
-ACV.ViewportManager.prototype._trigger = function(distance)
-{
+
+/**
+ *
+ * @param {number} distance
+ * @param {number} forceFire
+ * @private
+ */
+ACV.ViewportManager.prototype._handleScroll = function (distance, forceFire) {
     var now, interval, ratioBefore;
+
+    if (!forceFire) {
+        //Automatically start and stop to play when container touches top of the viewport
+        if (!this._containerFixedToViewport && distance > this._containerDistanceFromTop) {
+            this._containerFixedToViewport = true;
+            this._staticContainer.addClass('fixed');
+
+        } else if (this._containerFixedToViewport && distance < this._containerDistanceFromTop) {
+            this._containerFixedToViewport = false;
+            this._staticContainer.removeClass('fixed');
+            this._handleResize();
+            return;
+        } else if (!this._containerFixedToViewport) {
+            return;
+        }
+        distance = distance - this._containerDistanceFromTop;
+    }
+
+
+
     now = new Date().getTime();
-    if (this.lastTrigger === null)
+    if (this.lastTrigger === null) {
         interval = null;
-    else
-    {
+    }
+    else {
         interval = now - this.lastTrigger;
         if (interval > ACV.ViewportManager.maxInterval)
             interval = null;
@@ -110,24 +136,19 @@ ACV.ViewportManager.prototype._trigger = function(distance)
     ratioBefore = this.lastRatio;
     this.lastRatio = Math.min(1, distance / Math.max(0, this.scrollableDistance - this.viewportDimensions.height));
 
-    for (var i in this.listeners)
-    {
+    for (var i in this.listeners) {
         this.listeners[i].call(window, this.lastRatio, ratioBefore, interval, this.viewportDimensions);
     }
     this.viewportDimensions.changed = false;
 
 };
-ACV.ViewportManager.prototype.listen = function(callback)
-{
+ACV.ViewportManager.prototype.listen = function (callback) {
     this.listeners.push(callback);
 };
 
-ACV.ViewportManager.prototype.stopListening = function(callback)
-{
-    for (var i in this.listeners)
-    {
-        if (this.listeners[i] === callback)
-        {
+ACV.ViewportManager.prototype.stopListening = function (callback) {
+    for (var i in this.listeners) {
+        if (this.listeners[i] === callback) {
             this.listeners = this.listeners.splice(i, 1);
             return;
         }

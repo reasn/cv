@@ -73,9 +73,10 @@ ACV.HUD.prototype = ACV.Core.createPrototype('ACV.HUD', {
  */
 ACV.HUD.prototype.init = function (element, viewportManager) {
     this.element = element;
+    /* TODO remove height-property or use for responsiveness
     this.element.css({
         height: this.height
-    });
+    });*/
     this.skillBasket.init(this.element);
     if (this.yearDisplay !== null) {
         this.yearDisplay.init(this.element);

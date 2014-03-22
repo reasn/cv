@@ -46,7 +46,7 @@ ACV.App.prototype.init = function (data, container) {
         totalDistance *= this.prefs.ieFactor;
 
     //Initialize viewport manager
-    this.viewportManager = new ACV.ViewportManager('#container', totalDistance, ACV.Utils.isMobile());
+    this.viewportManager = new ACV.ViewportManager(container, totalDistance, ACV.Utils.isMobile());
     this.viewportManager.init();
 
     this._appContext = new ACV.AppContext(data.app.prefs, data.app.performanceSettings);
@@ -80,7 +80,7 @@ ACV.App.prototype.init = function (data, container) {
 
     //Scroll to beginning
     $(window).scrollTop(0);
-    this.viewportManager.triggerAll();
+    this.viewportManager.fireAllTriggers();
 
     //debug stuff
     this.viewportManager.listen(function (ratio, lastRatio, interval) {

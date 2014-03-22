@@ -38,8 +38,9 @@
                     }
                     var app = new ACV.App();
                     (new ACV.Core.PrefLoader()).load(function(gameData) {
-                        app.init(gameData, $('#container'));
+                        app.init(gameData, $('.game-container'));
                     });
+
                     //TODO remove the next line
                     window.testableApp = app;
                 });
@@ -49,8 +50,11 @@
         <link href="css/style.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-        <a id="github-ribbon" href="https://github.com/reasn/cv"><img src="assets/graphics/github-ribbon.png" alt="Fork me on GitHub"></a>
-        <div id="container">
+        <div class="welcome-container">
+            <h1>Hello World</h1>
+            <p>bla bla bla</p>
+        </div>
+        <div class="game-container">
             <div class="scene"></div>
             <div class="hud">
                 <ul class="dev-info">
@@ -67,7 +71,7 @@
                         playerX: <span id="playerX">N/A</span>
                     </li>
                 </ul>
-                <ul class="skill-basket-info">
+                <ul class="skill-basket skill-basket-info">
                     <li class="beginner">
                         beginner
                     </li>
@@ -83,5 +87,8 @@
                 </ul>
             </div>
         </div>
+    <p>
+        <a id="github-ribbon" href="https://github.com/reasn/cv"><img src="assets/graphics/github-ribbon.png" alt="Fork me on GitHub"></a>
+    </p>
     </body>
 </html>
