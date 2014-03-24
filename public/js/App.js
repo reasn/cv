@@ -36,8 +36,8 @@ ACV.App.config =
  * @param {jQuery} container
  */
 ACV.App.prototype.init = function (data, container) {
-    var sceneElement;
-    var app = this;
+    var sceneElement, movementMethod, app;
+    app = this;
 
     this.prefs = data.app;
     var totalDistance = this.prefs.totalDistance;
@@ -46,7 +46,22 @@ ACV.App.prototype.init = function (data, container) {
         totalDistance *= this.prefs.ieFactor;
 
     //Initialize viewport manager
-    this.viewportManager = new ACV.ViewportManager(container, totalDistance, ACV.Utils.isMobile());
+    if (ACV.Utils.isMobile()) {
+        movementMethod = ACV.ViewportManager.SCROLL_DRAG;
+    } else if (navigator.userAgent.indexOf('WebKit') !== -1) {
+        /*
+         * WebKit renders the page with some flickering when using native scroll events.
+         * Did in-depth profiling and debugging. A single draw-call (changing a CSS property)
+         * results in layers moving slightly too far and back to the right position (less than 100ms)
+         * when said draw-call is made during a scroll event. This mustn't happen because everything
+         * plays out inside a layer with fixed position. So I assume a platform bug. A simple remedy
+         * is not disable scrolling and directly access the mouse wheel event provided by Chromium.
+         */
+        movementMethod = ACV.ViewportManager.SCROLL_WHEEL;
+    } else {
+        movementMethod = ACV.ViewportManager.SCROLL_NATIVE;
+    }
+    this.viewportManager = new ACV.ViewportManager(container, totalDistance, movementMethod);
     this.viewportManager.init();
 
     this._appContext = new ACV.AppContext(data.app.prefs, data.app.performanceSettings);

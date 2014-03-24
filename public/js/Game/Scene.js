@@ -142,17 +142,6 @@ ACV.Game.Scene.prototype._handleMouseMove = function (clientX, clientY) {
 ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore) {
     var levelIndex;
 
-
-    if (ratio > 0 && !this._visible) {
-        this._visible = true;
-        this.element.show();
-    } else if (ratio === 0 && this._visible) {
-        this._visible = false;
-        this.element.hide();
-    } else if (!this._visible) {
-        return;
-    }
-
     this._x = ratio * (this.prefs.width - this._viewportDimensions.width);
     this._xBefore = ratio * (this.prefs.width - this._viewportDimensions.width);
 
@@ -185,8 +174,8 @@ ACV.Game.Scene.prototype.handleTriggers = function (playerX, playerXBefore, targ
 };
 
 ACV.Game.Scene.prototype._handleViewportChange = function () {
-    var levelIndex, layerIndex;
-    var elementsToAlter = this.playerLayer.element;
+    var levelIndex, layerIndex, elementsToAlter;
+    elementsToAlter = this.playerLayer.element;
 
 
     for (levelIndex in this.levels) {

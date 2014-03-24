@@ -10,11 +10,15 @@ var ACV = ACV ? ACV : {};
  * @param {boolean} moveByDrag
  * @constructor
  */
-ACV.ViewportManager = function (staticContainer, scrollableDistance, moveByDrag) {
+ACV.ViewportManager = function (staticContainer, scrollableDistance, moveMethod) {
     this._staticContainer = staticContainer;
     this.scrollableDistance = scrollableDistance;
-    this.moveByDrag = moveByDrag;
+    this.moveMethod = moveMethod;
 };
+
+ACV.ViewportManager.SCROLL_DRAG = 0x01;
+ACV.ViewportManager.SCROLL_NATIVE = 0x02;
+ACV.ViewportManager.SCROLL_WHEEL = 0x03;
 
 ACV.ViewportManager.maxInterval = 1000;
 
@@ -29,7 +33,7 @@ ACV.ViewportManager.prototype = ACV.Core.createPrototype('ACV.ViewportManager',
             changed: false
         },
         lastTrigger: null,
-        moveByDrag: true,
+        moveMethod: true,
         touch: {
             virtualPosition: 0,
             lastY: null
@@ -37,11 +41,15 @@ ACV.ViewportManager.prototype = ACV.Core.createPrototype('ACV.ViewportManager',
     });
 
 ACV.ViewportManager.prototype.init = function () {
-    var vpm = this, w = $(window), body = $('body');
+    var vpm, w, body, nonNativeScrollOffset;
+
+    vpm = this;
+    w = $(window);
+    body = $('body');
 
     this._containerDistanceFromTop = this._staticContainer.position().top;
 
-    if (this.moveByDrag) {
+    if (this.moveMethod === ACV.ViewportManager.SCROLL_DRAG) {
         body.on('touchmove', function (e) {
             var y = e.originalEvent.changedTouches[0].screenY;
             if (vpm.touch.lastY !== null && y > 0) {
@@ -53,12 +61,21 @@ ACV.ViewportManager.prototype.init = function () {
         body.on('touchend', function (e) {
             vpm.touch.lastY = null;
         });
-    } else {
+    } else if (this.moveMethod === ACV.ViewportManager.SCROLL_NATIVE) {
         body.css('height', this.scrollableDistance + 'px');
-        $(document).on('scroll', function () {
+        $(document).on('scroll', function (event) {
             vpm._handleScroll($(document).scrollTop(), false);
         });
 
+    } else if (this.moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
+
+        nonNativeScrollOffset = 0;
+        body.on('mousewheel DOMMouseScroll', function (event) {
+            nonNativeScrollOffset += event.originalEvent.deltaY;
+            vpm._handleScroll(nonNativeScrollOffset, false);
+        });
+    } else {
+        throw new Error('Unknown movement method "' + this.moveMethod + '".');
     }
 
     w.on('resize', function () {
@@ -76,7 +93,7 @@ ACV.ViewportManager.prototype.fireAllTriggers = function () {
 
 ACV.ViewportManager.prototype._handleResize = function (forceFire) {
     var w = $(window);
-    this.viewportDimensions.width = w.width();
+    this.viewportDimensions.width = this._staticContainer.width();
     this.viewportDimensions.height = w.height();
     this.viewportDimensions.changed = true;
 
@@ -86,7 +103,7 @@ ACV.ViewportManager.prototype._handleResize = function (forceFire) {
         });
     }
 
-    if (this.moveByDrag) {
+    if (this.moveMethod) {
         this._handleScroll(this.touch.virtualPosition, forceFire);
     }
     else {
@@ -108,10 +125,20 @@ ACV.ViewportManager.prototype._handleScroll = function (distance, forceFire) {
         if (!this._containerFixedToViewport && distance > this._containerDistanceFromTop) {
             this._containerFixedToViewport = true;
             this._staticContainer.addClass('fixed');
+            if (this.moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
+                //Required to have a smooth transition between textual content and game container
+                $(window).scrollTop(this._containerDistanceFromTop);
+            }
 
         } else if (this._containerFixedToViewport && distance < this._containerDistanceFromTop) {
             this._containerFixedToViewport = false;
+
             this._staticContainer.removeClass('fixed');
+            if (this.moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
+                //Required to have a smooth transition between textual content and game container
+                $(window).scrollTop(this._containerDistanceFromTop);
+            }
+
             this._handleResize();
             return;
         } else if (!this._containerFixedToViewport) {
@@ -119,8 +146,6 @@ ACV.ViewportManager.prototype._handleScroll = function (distance, forceFire) {
         }
         distance = distance - this._containerDistanceFromTop;
     }
-
-
 
     now = new Date().getTime();
     if (this.lastTrigger === null) {
@@ -135,6 +160,7 @@ ACV.ViewportManager.prototype._handleScroll = function (distance, forceFire) {
 
     ratioBefore = this.lastRatio;
     this.lastRatio = Math.min(1, distance / Math.max(0, this.scrollableDistance - this.viewportDimensions.height));
+
 
     for (var i in this.listeners) {
         this.listeners[i].call(window, this.lastRatio, ratioBefore, interval, this.viewportDimensions);

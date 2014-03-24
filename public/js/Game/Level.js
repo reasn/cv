@@ -155,6 +155,9 @@ ACV.Game.Level.prototype.updatePositions = function (sceneX, sceneXBefore, viewp
     this._XBefore = sceneXBefore - this.prefs.offset;
 
     this._updateVisibility(sceneX, sceneXBefore, viewportDimensions);
+    if (!this.visible) {
+        return;
+    }
     this._applyClippingAndUpdateLayerPositions(sceneX, sceneXBefore);
     this._handleAnimations(sceneX, sceneXBefore, viewportDimensions, false);
 };
@@ -217,6 +220,7 @@ ACV.Game.Level.prototype._applyClippingAndUpdateLayerPositions = function (scene
     for (layerIndex in this.foregroundLayers) {
         this.foregroundLayers[layerIndex].updatePositions(this.prefs.offset, this._x, this._xBefore, distanceBetweenLeftViewportMarginAndLevelBegin);
     }
+
 };
 
 
