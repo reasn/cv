@@ -118,6 +118,9 @@ ACV.HUD.Timeline.prototype._remove = function (event) {
     var timeline = this;
     event.visible = false;
     timeline._numberOfEventsVisible--;
+    if (event.element === null) {
+        return;
+    }
     event.element.animate({
         opacity: 0
     }, 400, 'easeInCirc', function () {
