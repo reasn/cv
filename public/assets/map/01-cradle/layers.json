@@ -1,14 +1,14 @@
 {
     "background": [
         {
-            "caption": "background - outside",
+            "handle": "backgroundOutside",
             "prefs": {
                 "offset": 760,
                 "speed": 0.4
             },
             "sprites": [
                 {
-                    "comment": "sky and mountains",
+                    "handle": "skyAndMountains",
                     "x": 0,
                     "y": "200px",
                     "topAligned": true,
@@ -19,14 +19,14 @@
             ]
         },
         {
-            "caption": "background - wall",
+            "handle": "backgroundWall",
             "prefs": {
                 "offset": 0,
                 "speed": 0.5
             },
             "sprites": [
                 {
-                    "caption": "window",
+                    "handle": "rearWindow",
                     "x": 1100,
                     "y": "100px",
                     "topAligned": true,
@@ -35,52 +35,52 @@
                     "source": "graphics/scene/world/01-cradle/window.png"
                 },
                 {
-                    "caption": "top wall",
+                    "handle": "topWall",
                     "x": 1100,
-                    "y": "0px",
+                    "y": "-maxLookAroundDistortion",
                     "topAligned": true,
                     "width": 535,
-                    "height": "100px",
+                    "height": "maxLookAroundDistortion + sprites.backgroundWall.rearWindow.top",
                     "color": "orange"
                 },
                 {
-                    "caption": "right wall",
+                    "handle": "rightWall",
                     "x": 1635,
-                    "y": "0px",
+                    "y": "-maxLookAroundDistortion",
                     "topAligned": true,
                     "width": 1500,
-                    "height": "100%",
+                    "height": "viewportHeight + 2 * maxLookAroundDistortion",
                     "color": "orange"
                 },
                 {
-                    "caption": "bottom wall",
+                    "handle": "bottomWall",
                     "x": 1100,
-                    "y": "600px",
+                    "y": "sprites.backgroundWall.rearWindow.bottom",
                     "topAligned": true,
                     "width": 535,
-                    "height": "300px",
+                    "height": "viewportHeight - sprites.backgroundWall.rearWindow.bottom + maxLookAroundDistortion",
                     "color": "orange"
                 },
                 {
-                    "caption": "left wall",
-                    "x": 0,
-                    "y": "0px",
+                    "handle": "leftWall",
+                    "x": -50,
+                    "y": "-50px",
                     "topAligned": true,
-                    "width": 1100,
+                    "width": 1150,
                     "height": "100%",
                     "color": "orange"
                 }
             ]
         },
         {
-            "caption": "book shelf",
+            "handle": "bookshelf",
             "prefs": {
                 "offset": 0,
                 "speed": 0.8
             },
             "sprites": [
                 {
-                    "caption": "book shelf",
+                    "handle": "bookshelf",
                     "x": 600,
                     "y": "200px",
                     "topAligned": false,
@@ -91,15 +91,15 @@
             ]
         },
         {
-            "caption": "floor and stuff fixed to the floor",
+            "handle": "floorAndStuff",
             "prefs": {
                 "offset": 0,
                 "speed": 1
             },
             "sprites": [
                 {
-                    "caption": "floor",
-                    "x": 0,
+                    "handle": "floor",
+                    "x": -50,
                     "y": "0",
                     "topAligned": false,
                     "width": 4000,
@@ -107,7 +107,7 @@
                     "color": "blue"
                 },
                 {
-                    "caption": "green ball",
+                    "handle": "greenBall",
                     "x": 800,
                     "y": "120px",
                     "topAligned": false,
@@ -116,7 +116,7 @@
                     "source": "graphics/scene/world/01-cradle/ball01.png"
                 },
                 {
-                    "caption": "blue ball",
+                    "handle": "blueBall",
                     "x": 800,
                     "y": "100px",
                     "topAligned": false,
@@ -125,7 +125,7 @@
                     "source": "graphics/scene/world/01-cradle/ball02.png"
                 },
                 {
-                    "caption": "yellow box",
+                    "handle": "yellowBox",
                     "x": 1900,
                     "y": "180px",
                     "topAligned": false,
@@ -136,14 +136,14 @@
             ]
         },
         {
-            "caption": "cradle background and some stuff on the floor",
+            "handle": "cradleBackground",
             "prefs": {
                 "offset": 0,
                 "speed": 1.05
             },
             "sprites": [
                 {
-                    "caption": "yellow ball",
+                    "handle": "yellowBall",
                     "x": 750,
                     "y": "90px",
                     "topAligned": false,
@@ -152,8 +152,7 @@
                     "source": "graphics/scene/world/01-cradle/ball03.png"
                 },
                 {
-                    "id": "01-baby-in-cradle",
-                    "caption": "sleeping baby",
+                    "handle": "sleepingBaby",
                     "x": 1156,
                     "y": "270px",
                     "topAligned": false,
@@ -162,7 +161,7 @@
                     "source": "graphics/scene/player/child/stand.gif"
                 },
                 {
-                    "caption": "cradle background",
+                    "handle": "cradleBackground",
                     "x": 1100,
                     "y": "140px",
                     "topAligned": false,
@@ -171,7 +170,7 @@
                     "color": "green"
                 },
                 {
-                    "caption": "green box",
+                    "handle": "greenBox",
                     "x": 2400,
                     "y": "160px",
                     "topAligned": false,
@@ -184,14 +183,14 @@
     ],
     "foreground": [
         {
-            "caption": "cradle bars",
+            "handle": "cradleBars",
             "prefs": {
                 "offset": 1100,
                 "speed": 1.05
             },
             "sprites": [
                 {
-                    "caption": "cradle bars",
+                    "handle": "cradleBars",
                     "x": 0,
                     "y": "140px",
                     "topAligned": false,
@@ -202,7 +201,7 @@
             ]
         },
         {
-            "caption": "balls and boxes (closer than cradle)",
+            "handle": "ballsAndBoxesInFrontOfCradle",
             "prefs": {
                 "offset": 0,
                 "speed": 1.1
@@ -210,7 +209,7 @@
             "sprites": [
 
                 {
-                    "caption": "pink box",
+                    "handle": "pinkBox",
                     "x": 1000,
                     "y": "20px",
                     "topAligned": false,
@@ -219,7 +218,7 @@
                     "source": "graphics/scene/world/01-cradle/box04.png"
                 },
                 {
-                    "caption": "blue box",
+                    "handle": "blueBox",
                     "x": 2650,
                     "y": "68px",
                     "topAligned": false,
@@ -230,14 +229,14 @@
             ]
         },
         {
-            "caption": "foreground - lamp",
+            "handle": "foregroundLamp",
             "prefs": {
                 "offset": 2200,
                 "speed": 0.8
             },
             "sprites": [
                 {
-                    "caption": "lamp",
+                    "handle": "lamp",
                     "x": 0,
                     "y": "50px",
                     "topAligned": true,
@@ -248,14 +247,14 @@
             ]
         },
         {
-            "caption": "foreground - wardrobe",
+            "handle": "foregroundWardrobe",
             "prefs": {
                 "offset": 0,
                 "speed": 1.5
             },
             "sprites": [
                 {
-                    "caption": "wardrobe",
+                    "handle": "wardrobe",
                     "x": 1600,
                     "y": "-80px",
                     "topAligned": false,
@@ -265,7 +264,7 @@
                     "blurred": true
                 },
                 {
-                    "caption": "bottle",
+                    "handle": "bottle",
                     "x": 2300,
                     "y": "0px",
                     "topAligned": false,
@@ -276,43 +275,14 @@
             ]
         },
         {
-            "caption": "foreground - wall",
-            "prefs": {
-                "offset": 0,
-                "speed": 1.5
-            },
-            "sprites": [
-                {
-                    "caption": "left wall",
-                    "x": -80,
-                    "y": "-80px",
-                    "topAligned": true,
-                    "width": 200,
-                    "height": "100%",
-                    "color": "yellow",
-                    "blurred": true
-                },
-                {
-                    "caption": "top wall",
-                    "x": 120,
-                    "y": "-80px",
-                    "topAligned": true,
-                    "width": 5000,
-                    "height": "50px",
-                    "color": "yellow",
-                    "blurred": true
-                }
-            ]
-        },
-        {
-            "caption": "foreground - wall",
+            "handle": "foregroundWall",
             "prefs": {
                 "offset": 0,
                 "speed": 1
             },
             "sprites": [
                 {
-                    "caption": "right wall",
+                    "handle": "rightWall",
                     "x": 3250,
                     "y": "-80px",
                     "topAligned": true,

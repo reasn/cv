@@ -13,6 +13,11 @@
 @zHud: 90;
 @zGithub: 100;
 
+
+.backgroundPattern(@colorName) {
+    background-image : url("../assets/graphics/scene/world/matte/patterns/@{colorName}.jpg");
+}
+
 body {
     margin  : 0;
     padding : 0;
@@ -36,8 +41,8 @@ body {
 
 .welcome-container {
     background-color : #000000;
-    padding-bottom   : 300px;
-    padding-top      : 50px;
+    padding          : 50px 0;
+    .backgroundPattern('orange');
 }
 
 .game-container {
@@ -54,7 +59,6 @@ body {
     background-image  : url("../assets/graphics/scene/world/matte/patterns/blue.jpg");
     background-repeat : repeat;
 
-
     .powerUp() {
         position         : absolute;
         color            : black;
@@ -69,7 +73,6 @@ body {
         bottom   : 0;
         left     : 0;
         position : absolute;
-
 
         .level-wrapper {
 
@@ -89,6 +92,8 @@ body {
                 .layer {
                     position : absolute;
                     height   : 100%;
+                    //top: 0px !important;
+
                     .sprite-wrapper {
                         position : relative;
                         width    : 100%;
@@ -101,30 +106,27 @@ body {
                                 background-size : contain
                             }
                             &.colored {
-                                .bg(@colorName) {
-                                    background-image : url("../assets/graphics/scene/world/matte/patterns/@{colorName}.jpg");
-                                }
                                 .bgBlurred(@color, @colorName) {
                                     border-image     : url("../assets/graphics/scene/world/matte/blurred-patterns/@{colorName}.png") 80 80 repeat;
                                     background-color : @color;
                                 }
                                 &.white {
-                                    .bg('white')
+                                    .backgroundPattern('white')
                                 }
                                 &.yellow {
-                                    .bg('yellow')
+                                    .backgroundPattern('yellow')
                                 }
                                 &.pink {
-                                    .bg('pink')
+                                    .backgroundPattern('pink')
                                 }
                                 &.green {
-                                    .bg('green')
+                                    .backgroundPattern('green')
                                 }
                                 &.orange {
-                                    .bg('orange')
+                                    .backgroundPattern('orange')
                                 }
                                 &.blue {
-                                    .bg('blue')
+                                    .backgroundPattern('blue')
                                 }
 
                                 &.blurred {

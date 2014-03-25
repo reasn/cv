@@ -22,7 +22,8 @@ ACV.App.prototype = ACV.Core.createPrototype('ACV.App',
         _sceneViewportDimensions: {
             width: 0,
             height: 0,
-            changed: false
+            widthChanged: false,
+            heightChanged: false
         }
     });
 
@@ -75,7 +76,6 @@ ACV.App.prototype.init = function (data, container) {
     this.scene = ACV.Game.Scene.createFromData(this._appContext, sceneElement, data.scene);
     this.scene.playerLayer.skillBasket = this.hud.skillBasket;
 
-
     this._sceneViewportDimensions.width = this.viewportManager.viewportDimensions.width;
     this._sceneViewportDimensions.height = this.viewportManager.viewportDimensions.height - this.hud.height;
 
@@ -90,7 +90,8 @@ ACV.App.prototype.init = function (data, container) {
         //Note: _sceneViewportDimensions is referenced by ACV.Game.Scene because it was submitted in this.scene.init().
         app._sceneViewportDimensions.width = viewportDimensions.width;
         app._sceneViewportDimensions.height = viewportDimensions.height - app.hud.height;
-        app._sceneViewportDimensions.changed = viewportDimensions.changed;
+        app._sceneViewportDimensions.widthChanged = viewportDimensions.widthChanged;
+        app._sceneViewportDimensions.heightChanged = viewportDimensions.heightChanged;
         app.scene.updatePositions(ratio, ratioBefore);
     });
 
@@ -102,5 +103,4 @@ ACV.App.prototype.init = function (data, container) {
     this.viewportManager.listen(function (ratio, lastRatio, interval) {
         $('#scrollpos').text(ratio);
     });
-
 };

@@ -22,24 +22,28 @@ ACV.ViewportManager.SCROLL_WHEEL = 0x03;
 
 ACV.ViewportManager.maxInterval = 1000;
 
-ACV.ViewportManager.prototype = ACV.Core.createPrototype('ACV.ViewportManager',
-    {
-        _containerFixedToViewport: false,
-        _staticContainer: null,
-        _currentScrollOffset: 0,
-        listeners: [],
-        viewportDimensions: {
-            width: 0,
-            height: 0,
-            changed: false
-        },
-        lastTrigger: null,
-        moveMethod: true,
-        touch: {
-            virtualPosition: 0,
-            lastY: null
-        }
-    });
+ACV.ViewportManager.prototype = ACV.Core.createPrototype('ACV.ViewportManager', {
+    _containerFixedToViewport: false,
+    _staticContainer: null,
+    _currentScrollOffset: 0,
+    listeners: [],
+    viewportDimensions: {
+        width: 0,
+        height: 0,
+        widthChanged: false,
+        heightChanged: false
+    },
+    _lastViewportDimensions: {
+        width: 0,
+        height: 0
+    },
+    lastTrigger: null,
+    moveMethod: true,
+    touch: {
+        virtualPosition: 0,
+        lastY: null
+    }
+});
 
 ACV.ViewportManager.prototype.init = function () {
     var vpm, w, body;
@@ -102,14 +106,28 @@ ACV.ViewportManager.prototype._handleResize = function (forceFire) {
     var w = $(window);
     this.viewportDimensions.width = this._staticContainer.width();
     this.viewportDimensions.height = w.height();
-    this.viewportDimensions.changed = true;
+
+    this.viewportDimensions.widthChanged = this.viewportDimensions.width !== this._lastViewportDimensions.width;
+    this.viewportDimensions.heightChanged = this.viewportDimensions.height !== this._lastViewportDimensions.height;
+
+    if (this.viewportDimensions.widthChanged) {
+        this.debug('viewport width changed from %s to %s', this._lastViewportDimensions.width, this.viewportDimensions.width);
+    }
+    if (this.viewportDimensions.heightChanged) {
+        this.debug('viewport height changed from %s to %s', this._lastViewportDimensions.height, this.viewportDimensions.height);
+    }
+
+
+    this._lastViewportDimensions.width = this.viewportDimensions.width;
+    this._lastViewportDimensions.height = this.viewportDimensions.height;
+
 
     if (!this._containerFixedToViewport) {
         this._staticContainer.css({
             height: this.viewportDimensions.height
         });
     }
-    this._handleScroll(forceFire);
+    this._handleScroll(forceFire, true);
 };
 
 /**
@@ -117,7 +135,7 @@ ACV.ViewportManager.prototype._handleResize = function (forceFire) {
  * @param {boolean} forceFire
  * @private
  */
-ACV.ViewportManager.prototype._handleScroll = function (forceFire) {
+ACV.ViewportManager.prototype._handleScroll = function (forceFire, keepChangeFlags) {
     var now, interval, ratioBefore, listenerIndex, distance;
 
     distance = this._currentScrollOffset;
@@ -134,12 +152,12 @@ ACV.ViewportManager.prototype._handleScroll = function (forceFire) {
 
         } else if (this._containerFixedToViewport && distance < this._containerDistanceFromTop) {
             this._containerFixedToViewport = false;
-            this.warn('%s && %s < %s ', this._containerFixedToViewport ? 'true' : 'false', distance, this._containerDistanceFromTop);
             this._staticContainer.removeClass('fixed');
             if (this.moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
                 //Required to have a smooth transition between textual content and game container
                 $(window).scrollTop(this._containerDistanceFromTop);
             }
+
 
             this._handleResize();
             return;
@@ -147,6 +165,11 @@ ACV.ViewportManager.prototype._handleScroll = function (forceFire) {
             return;
         }
         distance -= this._containerDistanceFromTop;
+    }
+
+    if (!keepChangeFlags) {
+        this.viewportDimensions.widthChanged = false;
+        this.viewportDimensions.heightChanged = false;
     }
 
     now = new Date().getTime();
@@ -164,12 +187,11 @@ ACV.ViewportManager.prototype._handleScroll = function (forceFire) {
     this.lastRatio = Math.min(1, distance / Math.max(0, this.scrollableDistance - this.viewportDimensions.height));
 
 
-    for (var listenerIndex in this.listeners) {
+    for (listenerIndex in this.listeners) {
         this.listeners[listenerIndex].call(window, this.lastRatio, ratioBefore, interval, this.viewportDimensions);
     }
-    this.viewportDimensions.changed = false;
-
 };
+
 /**
  *
  * @param {function(this:window, lastRatio: float, ratioBefore: float, interval: number, viewportDimensions: ViewportDimensions)} callback

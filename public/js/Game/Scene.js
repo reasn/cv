@@ -8,6 +8,13 @@ var ACV = ACV ? ACV : {};
 ACV.Game = ACV.Game ? ACV.Game : {};
 
 /**
+ * @typedef {Object} LookAroundDistortion {{
+ *   x: number
+ *   y: number
+ * }}
+ */
+
+/**
  *
  * @type {{
  *   _appContext: ACV.AppContext
@@ -19,7 +26,8 @@ ACV.Game = ACV.Game ? ACV.Game : {};
  *   levels: Array.<ACV.Game.Level>,
  *   _viewportDimensions: ViewportDimensions
  *   _x: number
- *   _xBefore: number
+ *   _xBefore: number,
+ *   _lookAroundDistortion: LookAroundDistortion
  * }}
  * @param {ACV.AppContext} appContext
  * @param {jQuery} element
@@ -43,8 +51,7 @@ ACV.Game.Scene.prototype = ACV.Core.createPrototype('ACV.Game.Scene', {
     prefs: {
         width: 0,
         dynamicViewport: {
-            minHeight: 300,
-            maxHeight: 1000
+            minHeight: 300
         }
     },
     backgroundElement: null,
@@ -53,6 +60,10 @@ ACV.Game.Scene.prototype = ACV.Core.createPrototype('ACV.Game.Scene', {
     triggerManager: null,
     levels: [],
     _viewportDimensions: null,
+    _lookAroundDistortion: {
+        x: 0,
+        y: 0
+    },
     _x: 0,
     _xBefore: 0
 });
@@ -102,17 +113,24 @@ ACV.Game.Scene.prototype.init = function (viewportDimensions) {
 
     if (this._appContext.performanceSettings.lookAroundDistortion) {
         $(document).on('mousemove', function (event) {
-            scene._handleMouseMove(event.clientX, event.clientY);
+            /*
+             * We use Math.floor() instead of Math.round() to obtain a
+             * continuous distribution of the results and therefore
+             * reduce (probably invisible) micro-flickering.
+             */
+            scene._lookAroundDistortion.x = -Math.floor(scene._appContext.prefs.lookAroundDistortionIntensity * 2 * (event.clientX / scene._viewportDimensions.width - .5));
+            scene._lookAroundDistortion.y = -Math.floor(scene._appContext.prefs.lookAroundDistortionIntensity * 2 * (event.clientY / scene._viewportDimensions.height - .5));
+            scene.applyLookAroundDistortion();
         });
     }
 
     for (levelIndex in this.levels) {
-        this.levels[levelIndex].init(this, this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight);
+        this.levels[levelIndex].init(this, this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this._lookAroundDistortion, viewportDimensions);
     }
 
     // Reduce draw calls by adding everything to the DOM at last
     this.element.append(this.backgroundElement);
-    this.playerLayer.init(this.element, this.prefs.width, this.prefs.dynamicViewport.minHeight, this.prefs.dynamicViewport.maxHeight, this);
+    this.playerLayer.init(this.element, this.prefs.width, this.prefs.dynamicViewport.minHeight, this._lookAroundDistortion);
 
     this._appContext.player.addMovementListener(function (playerX, playerXBefore, targetPlayerX, sceneX) {
         $('#playerX').text(playerX);
@@ -136,23 +154,18 @@ ACV.Game.Scene.prototype._handleClick = function (clientX) {
 
 /**
  *
- * @param {number} clientX
- * @param {number} clientY
- * @private
  * @since 2014-03-18
  */
-ACV.Game.Scene.prototype._handleMouseMove = function (clientX, clientY) {
-    var levelIndex, x, y;
-
-    x = -Math.round(this.prefs.lookAroundDistortionIntensity * 2 * (clientX / this._viewportDimensions.width - .5));
-    y = -Math.round(this.prefs.lookAroundDistortionIntensity * 2 * (clientY / this._viewportDimensions.height - .5));
+ACV.Game.Scene.prototype.applyLookAroundDistortion = function () {
+    var levelIndex;
 
     for (levelIndex in this.levels) {
         if (this.levels[levelIndex].visible) {
-            this.levels[levelIndex].applyLookAroundDistortion(x, y);
+            this.levels[levelIndex].applyLookAroundDistortion();
         }
     }
-    this.playerLayer.applyLookAroundDistortion(x, y)
+
+    this.playerLayer.applyLookAroundDistortion()
 };
 
 /**
@@ -166,7 +179,7 @@ ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore) {
     this._x = ratio * (this.prefs.width - this._viewportDimensions.width);
     this._xBefore = ratio * (this.prefs.width - this._viewportDimensions.width);
 
-    if (this._viewportDimensions.changed) {
+    if (this._viewportDimensions.heightChanged) {
         this.element.css('height', this._viewportDimensions.height);
         this.debug('New scene height: %s', this._viewportDimensions.height);
     }
@@ -175,7 +188,7 @@ ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore) {
         this.levels[levelIndex].updatePositions(this._x, this._xBefore, this._viewportDimensions);
     }
 
-    if (this._viewportDimensions.changed) {
+    if (this._viewportDimensions.widthChanged || this._viewportDimensions.heightChanged) {
         this._handleViewportChange(this._viewportDimensions);
     }
     this.playerLayer.updatePositions(this._x, this._viewportDimensions);
@@ -183,6 +196,7 @@ ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore) {
     //TODO remove:
     $('#sceneX').text(this._x);
 };
+
 /**
  *
  * @param {number} playerX
@@ -200,6 +214,7 @@ ACV.Game.Scene.prototype.handleTriggers = function (playerX, playerXBefore, targ
 ACV.Game.Scene.prototype._handleViewportChange = function () {
     var levelIndex, layerIndex, elementsToAlter;
 
+
     elementsToAlter = this.playerLayer.element;
 
     for (levelIndex in this.levels) {
@@ -213,14 +228,7 @@ ACV.Game.Scene.prototype._handleViewportChange = function () {
     }
 
     if (this._viewportDimensions.height < this.prefs.dynamicViewport.minHeight) {
-        elementsToAlter.css('top', Math.round(-.5
-            * (this.prefs.dynamicViewport.minHeight - this._viewportDimensions.height))
-            + 'px');
-
-    } else if (this._viewportDimensions.height > this.prefs.dynamicViewport.maxHeight) {
-        elementsToAlter.css('top', Math
-            .round(.5 * (this._viewportDimensions.height - this.prefs.dynamicViewport.maxHeight))
-            + 'px');
+        elementsToAlter.css('top', Math.round(-.5 * (this.prefs.dynamicViewport.minHeight - this._viewportDimensions.height)) + 'px');
 
     } else {
         elementsToAlter.css('top', 0);

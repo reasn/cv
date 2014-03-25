@@ -72,7 +72,7 @@ ACV.Core.Log._add = function (args, logLevel) {
         message = '[undefined]';
 
     } else if (typeof message === 'object') {
-        message = 'Object:\n' + JSON.stringify(message, null, '  ');
+        message = 'Object:\n' + JSON.stringify(message, undefined, '  ');
 
     } else if (typeof message !== 'string' && typeof message !== 'number') {
         message = 'Unknown log argument: ' + typeof message;

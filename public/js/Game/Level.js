@@ -28,8 +28,10 @@ ACV.Game = ACV.Game ? ACV.Game : {};
  *   foregroundLayers: Array.<ACV.Game.Layer>
  *   _foregroundElement: jQuery
  *   _backgroundElement: jQuery
+ *   _flySprites: Array.<FlySprite>
  *   _x: number
- *   _xBefore: number
+ *   _xBefore: number,
+ *   _lookAroundDistortion: LookAroundDistortion
  * }}
  * @param {ACV.AppContext} appContext
  * @param {string} handle
@@ -75,30 +77,35 @@ ACV.Game.Level.createFromPrefs = function (appContext, data) {
     return new ACV.Game.Level(appContext, data.handle, data.prefs, animations, backgroundLayers, foregroundLayers);
 };
 
-ACV.Game.Level.prototype = ACV.Core.createPrototype('ACV.Game.Level',
-    {
-        handle: '',
-        prefs: null,
-        backgroundLayers: [],
-        foregroundLayers: [],
-        visible: false,
-        _foregroundElement: null,
-        _backgroundElement: null,
-        animations: [],
-        _x: 0,
-        _xBefore: 0
-    });
+ACV.Game.Level.prototype = ACV.Core.createPrototype('ACV.Game.Level', {
+    handle: '',
+    prefs: null,
+    backgroundLayers: [],
+    foregroundLayers: [],
+    visible: false,
+    _foregroundElement: null,
+    _backgroundElement: null,
+    _flySprites: {},
+    animations: [],
+    _x: 0,
+    _xBefore: 0,
+    _lookAroundDistortion: null
+});
+
 /**
  *
  * @param {ACV.Game.Scene} scene
  * @param {jQuery} backgroundWrapper
  * @param {jQuery} foregroundWrapper
  * @param {!number} minHeight
- * @param {!number} maxHeight
+ * @param {!LookAroundDistortion} lookAroundDistortion
+ * @param {!ViewportDimensions} viewportDimensions
  * @returns void
  */
-ACV.Game.Level.prototype.init = function (scene, backgroundWrapper, foregroundWrapper, minHeight, maxHeight) {
+ACV.Game.Level.prototype.init = function (scene, backgroundWrapper, foregroundWrapper, minHeight, lookAroundDistortion, viewportDimensions) {
     var layerIndex, animationIndex;
+
+    this._lookAroundDistortion = lookAroundDistortion;
 
     this._backgroundElement = $('<div class="level background level-' + this.handle.substr(0, this.handle.indexOf('-')) + '"data-handle="' + this.handle + '" />');
     this._backgroundElement.css('max-width', this.prefs.clip.x2, 0);
@@ -108,11 +115,11 @@ ACV.Game.Level.prototype.init = function (scene, backgroundWrapper, foregroundWr
 
     for (layerIndex in this.backgroundLayers) {
         //TODO remove children() from loop
-        this.backgroundLayers[layerIndex].init(this._backgroundElement, minHeight, maxHeight);
+        this.backgroundLayers[layerIndex].init(this._backgroundElement, minHeight, viewportDimensions, this._flySprites);
     }
     for (layerIndex in this.foregroundLayers) {
         //TODO remove children() from loop
-        this.foregroundLayers[layerIndex].init(this._foregroundElement, minHeight, maxHeight);
+        this.foregroundLayers[layerIndex].init(this._foregroundElement, minHeight, viewportDimensions, this._flySprites);
     }
 
     for (animationIndex in this.animations) {
@@ -125,20 +132,37 @@ ACV.Game.Level.prototype.init = function (scene, backgroundWrapper, foregroundWr
     this.info('Level initialized with ' + this.foregroundLayers.length + ' foreground layers and ' + this.backgroundLayers.length + ' background layers', 'd');
 };
 
+//Filter out dynamic fly sprites to reduce memory usage
+ACV.Game.Level.prototype._removeDynamicFlySprites = function () {
+    var layerHandles, layerHandleIndex, spriteHandles, spriteHandleIndex;
+
+    layerHandles = Object.keys(this._flySprites);
+
+    for (layerHandleIndex in layerHandles) {
+        var sprites = this._flySprites[layerHandles[layerHandleIndex]];
+
+        spriteHandles = Object.keys(sprites);
+
+        for (spriteHandleIndex in spriteHandles) {
+            if (sprites[spriteHandles[spriteHandleIndex]] !== null && !sprites[spriteHandles[spriteHandleIndex]].static) {
+                sprites[spriteHandles[spriteHandleIndex]] = null
+            }
+        }
+    }
+};
 
 /**
  *
- * @param {number} x
- * @param {number} y
  * @since 2014-03-18
  */
-ACV.Game.Level.prototype.applyLookAroundDistortion = function (x, y) {
+ACV.Game.Level.prototype.applyLookAroundDistortion = function () {
     var layerIndex;
+
     for (layerIndex in this.foregroundLayers) {
-        this.foregroundLayers[layerIndex].applyLookAroundDistortion(x, y);
+        this.foregroundLayers[layerIndex].applyLookAroundDistortion(this._lookAroundDistortion);
     }
     for (layerIndex in this.backgroundLayers) {
-        this.backgroundLayers[layerIndex].applyLookAroundDistortion(x, y);
+        this.backgroundLayers[layerIndex].applyLookAroundDistortion(this._lookAroundDistortion);
     }
 };
 
@@ -158,7 +182,7 @@ ACV.Game.Level.prototype.updatePositions = function (sceneX, sceneXBefore, viewp
     if (!this.visible) {
         return;
     }
-    this._applyClippingAndUpdateLayerPositions(sceneX, sceneXBefore);
+    this._applyClippingAndUpdateLayerPositions(sceneX, viewportDimensions);
     this._handleAnimations(sceneX, sceneXBefore, viewportDimensions, false);
 };
 
@@ -199,14 +223,14 @@ ACV.Game.Level.prototype._updateVisibility = function (sceneX, sceneXBefore, vie
 /**
  * Apply clipping to the left and right
  * @param {!number} sceneX The amount of pixels that already left the viewport on the left side. Positive integer
- * @param {!number} sceneXBefore
+ * @param {!ViewportDimensions} viewportDimensions
  * @returns void
  * @private
  * @version 2014-03-05
  * @since 2014-03-05
  * @author Alexander Thiel
  */
-ACV.Game.Level.prototype._applyClippingAndUpdateLayerPositions = function (sceneX, sceneXBefore) {
+ACV.Game.Level.prototype._applyClippingAndUpdateLayerPositions = function (sceneX, viewportDimensions) {
     var layerIndex, distanceBetweenLeftViewportMarginAndLevelBegin;
 
     distanceBetweenLeftViewportMarginAndLevelBegin = this.prefs.offset - sceneX + this.prefs.clip.x1;
@@ -214,13 +238,13 @@ ACV.Game.Level.prototype._applyClippingAndUpdateLayerPositions = function (scene
     this._backgroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
     this._foregroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
 
+    this._removeDynamicFlySprites();
     for (layerIndex in this.backgroundLayers) {
-        this.backgroundLayers[layerIndex].updatePositions(this.prefs.offset, this._x, this._xBefore, distanceBetweenLeftViewportMarginAndLevelBegin);
+        this.backgroundLayers[layerIndex].updatePositions(this.prefs.offset, this._x, this._xBefore, distanceBetweenLeftViewportMarginAndLevelBegin, viewportDimensions, this._flySprites);
     }
     for (layerIndex in this.foregroundLayers) {
-        this.foregroundLayers[layerIndex].updatePositions(this.prefs.offset, this._x, this._xBefore, distanceBetweenLeftViewportMarginAndLevelBegin);
+        this.foregroundLayers[layerIndex].updatePositions(this.prefs.offset, this._x, this._xBefore, distanceBetweenLeftViewportMarginAndLevelBegin, viewportDimensions, this._flySprites);
     }
-
 };
 
 
@@ -238,7 +262,6 @@ ACV.Game.Level.prototype._applyClippingAndUpdateLayerPositions = function (scene
  * @author Alexander Thiel
  */
 ACV.Game.Level.prototype._handleAnimations = function (sceneX, sceneXBefore, viewportDimensions, executeOutOfRangeAnimation) {
-
     var animationIndex, animation, coarseLevelX;
 
     //handle animations that are dependent on levelX

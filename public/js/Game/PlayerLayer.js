@@ -27,7 +27,6 @@ ACV.Game = ACV.Game ? ACV.Game : {};
 ACV.Game.PlayerLayer = function (appContext, prefs, player, powerUps) {
 
     appContext.player = player;
-    console.warn(appContext);
 
     this._appContext = appContext;
     this.prefs = prefs;
@@ -54,21 +53,26 @@ ACV.Game.PlayerLayer.prototype = ACV.Core.createPrototype('ACV.Game.PlayerLayer'
         powerUps: [],
         lastCollisionDetection: 0,
         playerLayer: null,
-        _lookAroundDistortion: {
-            x: 0,
-            y: 0
-        }
+        _lookAroundDistortion: null
     });
 
-ACV.Game.PlayerLayer.prototype.init = function (wrapperElement, width, minHeight, maxHeight) {
+/**
+ *
+ * @param {jQuery} wrapperElement
+ * @param {number} width
+ * @param {number} minHeight
+ * @param {LookAroundDistortion} lookAroundDistortion
+ */
+ACV.Game.PlayerLayer.prototype.init = function (wrapperElement, width, minHeight, lookAroundDistortion) {
     var powerUpIndex, playerLayer = this;
+
+    this._lookAroundDistortion = lookAroundDistortion;
 
     this.element = $('<div class="player-layer" />');
     this.element.css(
         {
             width: width,
-            minHeight: minHeight,
-            maxHeight: maxHeight
+            minHeight: minHeight
         });
 
     for (powerUpIndex in this.powerUps) {
@@ -104,14 +108,10 @@ ACV.Game.PlayerLayer.prototype.updatePositions = function (sceneX, viewportDimen
 
 /**
  *
- * @param {number} x
- * @param {number} y
  * @since 2014-03-18
  */
-ACV.Game.PlayerLayer.prototype.applyLookAroundDistortion = function (x, y) {
+ACV.Game.PlayerLayer.prototype.applyLookAroundDistortion = function () {
 
-    this._lookAroundDistortion.x = x;
-    this._lookAroundDistortion.y = y;
     this.element.css({
         top: this._lookAroundDistortion.y + 'px',
         left: (this._x + this._lookAroundDistortion.x) + 'px'
