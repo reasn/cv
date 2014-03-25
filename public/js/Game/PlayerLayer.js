@@ -133,58 +133,10 @@ ACV.Game.PlayerLayer.prototype._detectCollisions = function (playerX, playerXBef
     for (powerUpIndex in this.powerUps) {
         powerUp = this.powerUps[powerUpIndex];
         if (!powerUp.collected && playerX > powerUp.x && playerXBefore < powerUp.x) {
-            this._collectPowerUp(powerUpIndex, sceneX, viewportDimensions);
+            this.skillBasket.collectPowerUp(this.powerUps.splice(powerUpIndex, 1)[0], sceneX, viewportDimensions);
             powerUpIndex--;
         }
     }
 
 };
 
-/**
- *
- * @param {number} powerUpIndex
- * @param {number} sceneX
- * @param {ViewportDimensions} viewportDimensions
- * @private
- */
-ACV.Game.PlayerLayer.prototype._collectPowerUp = function (powerUpIndex, sceneX, viewportDimensions) {
-    var playerLayer = this;
-    var powerUp = this.powerUps[powerUpIndex];
-    var p = powerUp.element.position();
-
-    this.powerUps.splice(powerUpIndex, 1);
-
-    powerUp.element.css(
-        {
-            position: 'fixed',
-            left: p.left - sceneX,
-            bottom: viewportDimensions.height - p.top
-        });
-    powerUp.element.animate(
-        {
-            bottom: [viewportDimensions.height - p.top + 100, 'easeOutQuad']
-        },
-        {
-            duration: 200,
-            complete: function () {
-                var targetPosition = playerLayer.skillBasket.getPowerUpAnimationTarget();
-                powerUp.element.animate(
-                    {
-                        left: [targetPosition.left, 'easeInQuad'],
-                        bottom: [targetPosition.bottom, 'easeInQuad']
-                    },
-                    {
-                        duration: 800,
-                        complete: function () {
-                            playerLayer.skillBasket.improve(powerUp.skillType);
-                            powerUp.element.remove();
-                        }
-                    });
-            }
-        });
-
-    //this.powerUps[powerUpIndex].element.remove();
-    //powerUp.element.animate({
-    //left:
-    //})
-};

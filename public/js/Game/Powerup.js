@@ -6,7 +6,13 @@
 var ACV = ACV ? ACV : {};
 
 ACV.Game = ACV.Game ? ACV.Game : {};
-
+/**
+ *
+ * @param {number} x
+ * @param {number} y
+ * @param {string} skillType
+ * @constructor
+ */
 ACV.Game.PowerUp = function (x, y, skillType) {
     this.x = x;
     this.y = y;
@@ -19,7 +25,10 @@ ACV.Game.PowerUp.prototype = ACV.Core.createPrototype('ACV.Game.PowerUp',
         skillType: '',
         element: null
     });
-
+/**
+ *
+ * @param {jQuery} playerLayerElement
+ */
 ACV.Game.PowerUp.prototype.init = function (playerLayerElement) {
     this.element = $('<div class="powerUp" />');
     this.element.css(

@@ -19,7 +19,7 @@ ACV.App.prototype = ACV.Core.createPrototype('ACV.App',
         viewportManager: null,
         scene: null,
         hud: null,
-        _sceneViewportDimenstions: {
+        _sceneViewportDimensions: {
             width: 0,
             height: 0,
             changed: false
@@ -75,21 +75,21 @@ ACV.App.prototype.init = function (data, container) {
     this.scene.playerLayer.skillBasket = this.hud.skillBasket;
 
 
-    this._sceneViewportDimenstions.width = this.viewportManager.viewportDimensions.width;
-    this._sceneViewportDimenstions.height = this.viewportManager.viewportDimensions.height - this.hud.height;
+    this._sceneViewportDimensions.width = this.viewportManager.viewportDimensions.width;
+    this._sceneViewportDimensions.height = this.viewportManager.viewportDimensions.height - this.hud.height;
 
     //Initialize HUD and scene
     this.hud.init(container.children('.hud'), this.viewportManager);
-    this.scene.init(this._sceneViewportDimenstions);
+    this.scene.init(this._sceneViewportDimensions);
 
     //Sink events
     this.viewportManager.listen(function (ratio, ratioBefore, interval, viewportDimensions) {
         app.hud.updateGameRatio(ratio, ratioBefore, viewportDimensions);
 
-        //Note: _sceneViewportDimenstions is referenced by ACV.Game.Scene because it was submitted in this.scene.init().
-        app._sceneViewportDimenstions.width = viewportDimensions.width;
-        app._sceneViewportDimenstions.height = viewportDimensions.height - app.hud.height;
-        app._sceneViewportDimenstions.changed = viewportDimensions.changed;
+        //Note: _sceneViewportDimensions is referenced by ACV.Game.Scene because it was submitted in this.scene.init().
+        app._sceneViewportDimensions.width = viewportDimensions.width;
+        app._sceneViewportDimensions.height = viewportDimensions.height - app.hud.height;
+        app._sceneViewportDimensions.changed = viewportDimensions.changed;
         app.scene.updatePositions(ratio, ratioBefore);
     });
 

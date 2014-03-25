@@ -26,6 +26,7 @@ ACV.ViewportManager.prototype = ACV.Core.createPrototype('ACV.ViewportManager',
     {
         _containerFixedToViewport: false,
         _staticContainer: null,
+        _currentScrollOffset: 0,
         listeners: [],
         viewportDimensions: {
             width: 0,
@@ -41,7 +42,7 @@ ACV.ViewportManager.prototype = ACV.Core.createPrototype('ACV.ViewportManager',
     });
 
 ACV.ViewportManager.prototype.init = function () {
-    var vpm, w, body, nonNativeScrollOffset;
+    var vpm, w, body;
 
     vpm = this;
     w = $(window);
@@ -54,7 +55,8 @@ ACV.ViewportManager.prototype.init = function () {
             var y = e.originalEvent.changedTouches[0].screenY;
             if (vpm.touch.lastY !== null && y > 0) {
                 vpm.touch.virtualPosition = Math.max(0, vpm.touch.virtualPosition - (y - vpm.touch.lastY));
-                vpm._handleScroll(vpm.touch.virtualPosition, false);
+                vpm._currentScrollOffset = vpm.touch.virtualPosition;
+                vpm._handleScroll(false);
             }
             vpm.touch.lastY = y;
         });
@@ -64,15 +66,15 @@ ACV.ViewportManager.prototype.init = function () {
     } else if (this.moveMethod === ACV.ViewportManager.SCROLL_NATIVE) {
         body.css('height', this.scrollableDistance + 'px');
         $(document).on('scroll', function (event) {
-            vpm._handleScroll($(document).scrollTop(), false);
+            vpm._currentScrollOffset = $(document).scrollTop();
+            vpm._handleScroll(false);
         });
 
     } else if (this.moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
 
-        nonNativeScrollOffset = 0;
         body.on('mousewheel DOMMouseScroll', function (event) {
-            nonNativeScrollOffset += event.originalEvent.deltaY;
-            vpm._handleScroll(nonNativeScrollOffset, false);
+            vpm._currentScrollOffset += event.originalEvent.deltaY;
+            vpm._handleScroll(false);
         });
     } else {
         throw new Error('Unknown movement method "' + this.moveMethod + '".');
@@ -102,23 +104,18 @@ ACV.ViewportManager.prototype._handleResize = function (forceFire) {
             height: this.viewportDimensions.height
         });
     }
-
-    if (this.moveMethod) {
-        this._handleScroll(this.touch.virtualPosition, forceFire);
-    }
-    else {
-        this._handleScroll($(document).scrollTop(), forceFire);
-    }
+    this._handleScroll(forceFire);
 };
 
 /**
  *
- * @param {number} distance
  * @param {number} forceFire
  * @private
  */
-ACV.ViewportManager.prototype._handleScroll = function (distance, forceFire) {
+ACV.ViewportManager.prototype._handleScroll = function (forceFire) {
     var now, interval, ratioBefore;
+
+    var distance = this._currentScrollOffset;
 
     if (!forceFire) {
         //Automatically start and stop to play when container touches top of the viewport
@@ -132,7 +129,7 @@ ACV.ViewportManager.prototype._handleScroll = function (distance, forceFire) {
 
         } else if (this._containerFixedToViewport && distance < this._containerDistanceFromTop) {
             this._containerFixedToViewport = false;
-
+            this.warn('%s && %s < %s ', this._containerFixedToViewport ? 'true' : 'false', distance, this._containerDistanceFromTop);
             this._staticContainer.removeClass('fixed');
             if (this.moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
                 //Required to have a smooth transition between textual content and game container
@@ -144,7 +141,7 @@ ACV.ViewportManager.prototype._handleScroll = function (distance, forceFire) {
         } else if (!this._containerFixedToViewport) {
             return;
         }
-        distance = distance - this._containerDistanceFromTop;
+        distance -= this._containerDistanceFromTop;
     }
 
     now = new Date().getTime();

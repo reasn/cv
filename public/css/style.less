@@ -14,93 +14,99 @@
 @zGithub: 100;
 
 body {
-    margin: 0;
-    padding: 0;
+    margin  : 0;
+    padding : 0;
 }
 
 * {
-    color: #ffffff;
+    color : #ffffff;
 }
 
 *:hover {
-    -box-shadow: 0 0 20px 20px red;
+    -box-shadow : 0 0 20px 20px red;
 }
 
 #github-ribbon {
-    position: fixed;
-    top: 0;
-    right: 0;
-    border: 0;
-    z-index: @zGithub;
+    position : fixed;
+    top      : 0;
+    right    : 0;
+    border   : 0;
+    z-index  : @zGithub;
 }
 
 .welcome-container {
-    background-color: #000000;
-    padding-bottom: 300px;
-    padding-top: 50px;
+    background-color : #000000;
+    padding-bottom   : 300px;
+    padding-top      : 50px;
 }
 
 .game-container {
-
-    position: relative;
-    width: 100%;
-    overflow: hidden;
+    position          : relative;
+    width             : 100%;
+    overflow          : hidden;
 
     &.fixed {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        height: auto !important;
+        position : fixed;
+        top      : 0;
+        bottom   : 0;
     }
-    background-color: @cMatteBlue;
-    background-image: url("../assets/graphics/scene/world/matte/patterns/blue.jpg");
-    background-repeat: repeat;
+    background-color  : @cMatteBlue;
+    background-image  : url("../assets/graphics/scene/world/matte/patterns/blue.jpg");
+    background-repeat : repeat;
+
+
+    .powerUp() {
+        position         : absolute;
+        color            : black;
+        width            : 50px;
+        height           : 50px;
+        background-color : #ffff00;
+    }
 
     .scene {
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        position: absolute;
+        top      : 0;
+        right    : 0;
+        bottom   : 0;
+        left     : 0;
+        position : absolute;
+
 
         .level-wrapper {
 
             .level {
-
-                top: 0;
-                right: 0;
-                bottom: 0;
-                left: 0;
-                position: absolute;
-                display: none;
-                overflow: hidden;
+                top      : 0;
+                right    : 0;
+                bottom   : 0;
+                left     : 0;
+                position : absolute;
+                display  : none;
+                overflow : hidden;
 
                 &.visible {
-                    display: block
+                    display : block
                 }
 
                 .layer {
-                    position: absolute;
-                    height: 100%;
+                    position : absolute;
+                    height   : 100%;
                     .sprite-wrapper {
-                        position: relative;
-                        width: 100%;
-                        height: 100%;
+                        position : relative;
+                        width    : 100%;
+                        height   : 100%;
 
                         .sprite {
-                            position: absolute;
+                            position : absolute;
 
                             &.image-background {
-                                background-size: contain
+                                background-size : contain
                             }
                             &.colored {
                                 .bg(@colorName) {
-                                    background-image: url("../assets/graphics/scene/world/matte/patterns/@{colorName}.jpg");
+                                    background-image : url("../assets/graphics/scene/world/matte/patterns/@{colorName}.jpg");
                                 }
                                 .bgBlurred(@color, @colorName) {
-                                    border-image: url("../assets/graphics/scene/world/matte/blurred-patterns/@{colorName}.png") 80 80 repeat;
-                                    background-color: @color;
-
+                                    border-image     : url("../assets/graphics/scene/world/matte/blurred-patterns/@{colorName}.png") 80 80 repeat;
+                                    background-color : @color;
                                 }
                                 &.white {
                                     .bg('white')
@@ -122,11 +128,11 @@ body {
                                 }
 
                                 &.blurred {
-                                    border: 80px solid transparent;
-                                    -background-image: none;
-                                    -background-color: @cMatteYellow;
-                                    box-sizing: padding-box;
-                                    background-clip: padding-box;
+                                    border            : 80px solid transparent;
+                                    -background-image : none;
+                                    -background-color : @cMatteYellow;
+                                    box-sizing        : padding-box;
+                                    background-clip   : padding-box;
 
                                     &.white {
                                         .bgBlurred(@cMatteWhite, 'white')
@@ -154,14 +160,14 @@ body {
             }
         }
         .player-layer {
-            position: relative;
-            height: 100%;
+            position : relative;
+            height   : 100%;
 
             .player {
-                position: absolute;
-                background-repeat: no-repeat;
+                position          : absolute;
+                background-repeat : no-repeat;
                 .statefulAge(@theme, @state) {
-                    background: url("../assets/graphics/scene/player/@{theme}/@{state}.gif");
+                    background : url("../assets/graphics/scene/player/@{theme}/@{state}.gif");
                 }
                 .age(@name) {
                     .statefulAge(@name, "stand");
@@ -186,113 +192,107 @@ body {
                 }
 
             }
-            .powerUp {
-                position: absolute;
-                color: black;
-                width: 50px;
-                height: 50px;
-                background-color: #FFFF00;
-            }
+            .powerUp { .powerUp() }
         }
     }
     .hud {
-        z-index: @zHud;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        position: absolute;
+        z-index  : @zHud;
+        top      : 0;
+        right    : 0;
+        bottom   : 0;
+        left     : 0;
+        position : absolute;
 
         .skill() {
-            margin: 2px;
-            display: inline-block;
-            padding: 0 0 0 13px;
-            transition: font-size 500ms;
-            background: url("../assets/graphics/hud/skills/levels/beginner.gif") 0px 50% no-repeat;
+            margin     : 2px;
+            display    : inline-block;
+            padding    : 0 0 0 13px;
+            transition : font-size 500ms;
+            background : url("../assets/graphics/hud/skills/levels/beginner.gif") 0px 50% no-repeat;
 
             &.unknown {
-                font-size: 0;
-                height: 0;
-                width: 0;
-                display: none
+                font-size : 0;
+                height    : 0;
+                width     : 0;
+                display   : none
             }
             &.beginner {
-                font-size: 10px;
-                color: @cMainGreen;
+                font-size : 10px;
+                color     : @cMainGreen;
             }
             &.intermediate {
-                font-size: 20px;
-                background-image: url("../assets/graphics/hud/skills/levels/intermediate.gif");
-                padding-left: 20px;
-                color: @cMainBlue;
+                font-size        : 20px;
+                background-image : url("../assets/graphics/hud/skills/levels/intermediate.gif");
+                padding-left     : 20px;
+                color            : @cMainBlue;
             }
             &.expert {
-                font-size: 30px;
-                background-image: url("../assets/graphics/hud/skills/levels/expert.gif");
-                padding-left: 34px;
-                color: @cMainYellow;
+                font-size        : 30px;
+                background-image : url("../assets/graphics/hud/skills/levels/expert.gif");
+                padding-left     : 34px;
+                color            : @cMainYellow;
             }
             &.master {
-                font-size: 40px;
-                background-image: url("../assets/graphics/hud/skills/levels/master.gif");
-                padding-left: 46px;
-                color: @cMainPink;
+                font-size        : 40px;
+                background-image : url("../assets/graphics/hud/skills/levels/master.gif");
+                padding-left     : 46px;
+                color            : @cMainPink;
             }
         }
 
+        .powerUp { .powerUp() }
+
         .dev-info {
-            cursor: pointer;
-            position: absolute;
-            left: 0;
-            width: 300px;
-            bottom: 0;
+            cursor   : pointer;
+            position : absolute;
+            left     : 0;
+            width    : 300px;
+            bottom   : 0;
         }
 
         .skill-basket {
-            display: block;
-            position: absolute;
-            bottom: 0;
-            background-color: #000000;
-            left: 700px;
-            height: 200px;
-            width: 320px;
+            display          : block;
+            position         : absolute;
+            bottom           : 0;
+            background-color : #000000;
+            left             : 700px;
+            height           : 200px;
+            width            : 320px;
 
-            li {
-                .skill();
-            }
+            li { .skill() }
         }
         .skill-basket-info {
-            left: 230px;
+            left : 230px;
         }
         .year-display {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 100px;
-            font-weight: bold;
+            position    : absolute;
+            top         : 10px;
+            left        : 10px;
+            font-size   : 100px;
+            font-weight : bold;
         }
         .height-display {
-            position: absolute;
-            top: 150px;
-            left: 10px;
-            font-size: 100px;
-            font-weight: bold;
+            position    : absolute;
+            top         : 150px;
+            left        : 10px;
+            font-size   : 100px;
+            font-weight : bold;
             &:after {
-                content: 'cm'
+                content : 'cm'
             }
         }
         .timeline {
-            right: 0;
-            width: 50%;
-            height: 300px;
-            bottom: 0;
-            position: absolute;
+            right    : 0;
+            width    : 50%;
+            height   : 300px;
+            bottom   : 0;
+            position : absolute;
 
             .event-wrapper {
                 .event {
-                    height: 100px;
-                    margin: 20px 0;
-                    background-color: #000000;
+                    height           : 100px;
+                    margin           : 20px 0;
+                    background-color : #000000;
                 }
             }
         }
@@ -301,12 +301,11 @@ body {
 
 .tag-cloud {
     li {
-        display: block;
-        float: left;
-
+        display : block;
+        float   : left;
     }
 }
 
 .level.background.level-02 {
-    background-color: #000000;
+    background-color : #000000;
 }
