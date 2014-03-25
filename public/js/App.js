@@ -42,8 +42,9 @@ ACV.App.prototype.init = function (data, container) {
     this.prefs = data.app;
     var totalDistance = this.prefs.totalDistance;
 
-    if (ACV.Utils.isIE())
+    if (ACV.Utils.isIE()) {
         totalDistance *= this.prefs.ieFactor;
+    }
 
     //Initialize viewport manager
     if (ACV.Utils.isMobile()) {

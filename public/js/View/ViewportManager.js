@@ -7,7 +7,7 @@ var ACV = ACV ? ACV : {};
 /**
  * @param {jQuery} staticContainer
  * @param {number} scrollableDistance
- * @param {boolean} moveByDrag
+ * @param {number} moveMethod
  * @constructor
  */
 ACV.ViewportManager = function (staticContainer, scrollableDistance, moveMethod) {
@@ -55,7 +55,7 @@ ACV.ViewportManager.prototype.init = function () {
             var y = e.originalEvent.changedTouches[0].screenY;
             if (vpm.touch.lastY !== null && y > 0) {
                 vpm.touch.virtualPosition = Math.max(0, vpm.touch.virtualPosition - (y - vpm.touch.lastY));
-                vpm._currentScrollOffset = vpm.touch.virtualPosition;
+                vpm._currentScrollOffset = Math.min(vpm.scrollableDistance, vpm._currentScrollOffset + vpm.touch.virtualPosition);
                 vpm._handleScroll(false);
             }
             vpm.touch.lastY = y;
@@ -66,14 +66,14 @@ ACV.ViewportManager.prototype.init = function () {
     } else if (this.moveMethod === ACV.ViewportManager.SCROLL_NATIVE) {
         body.css('height', this.scrollableDistance + 'px');
         $(document).on('scroll', function (event) {
-            vpm._currentScrollOffset = $(document).scrollTop();
+            vpm._currentScrollOffset = Math.min(vpm.scrollableDistance, $(document).scrollTop());
             vpm._handleScroll(false);
         });
 
     } else if (this.moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
 
         body.on('mousewheel DOMMouseScroll', function (event) {
-            vpm._currentScrollOffset += event.originalEvent.deltaY;
+            vpm._currentScrollOffset = Math.min(vpm.scrollableDistance, vpm._currentScrollOffset + event.originalEvent.deltaY);
             vpm._handleScroll(false);
         });
     } else {
@@ -93,6 +93,11 @@ ACV.ViewportManager.prototype.fireAllTriggers = function () {
     this._handleResize(true);
 };
 
+/**
+ *
+ * @param {boolean} forceFire
+ * @private
+ */
 ACV.ViewportManager.prototype._handleResize = function (forceFire) {
     var w = $(window);
     this.viewportDimensions.width = this._staticContainer.width();
@@ -109,13 +114,13 @@ ACV.ViewportManager.prototype._handleResize = function (forceFire) {
 
 /**
  *
- * @param {number} forceFire
+ * @param {boolean} forceFire
  * @private
  */
 ACV.ViewportManager.prototype._handleScroll = function (forceFire) {
-    var now, interval, ratioBefore;
+    var now, interval, ratioBefore, listenerIndex, distance;
 
-    var distance = this._currentScrollOffset;
+    distance = this._currentScrollOffset;
 
     if (!forceFire) {
         //Automatically start and stop to play when container touches top of the viewport
@@ -159,20 +164,29 @@ ACV.ViewportManager.prototype._handleScroll = function (forceFire) {
     this.lastRatio = Math.min(1, distance / Math.max(0, this.scrollableDistance - this.viewportDimensions.height));
 
 
-    for (var i in this.listeners) {
-        this.listeners[i].call(window, this.lastRatio, ratioBefore, interval, this.viewportDimensions);
+    for (var listenerIndex in this.listeners) {
+        this.listeners[listenerIndex].call(window, this.lastRatio, ratioBefore, interval, this.viewportDimensions);
     }
     this.viewportDimensions.changed = false;
 
 };
+/**
+ *
+ * @param {function(this:window, lastRatio: float, ratioBefore: float, interval: number, viewportDimensions: ViewportDimensions)} callback
+ */
 ACV.ViewportManager.prototype.listen = function (callback) {
     this.listeners.push(callback);
 };
 
+/**
+ * @param {function(this:window, lastRatio: float, ratioBefore: float, interval: number, viewportDimensions: ViewportDimensions)} callback
+ */
 ACV.ViewportManager.prototype.stopListening = function (callback) {
-    for (var i in this.listeners) {
-        if (this.listeners[i] === callback) {
-            this.listeners = this.listeners.splice(i, 1);
+    var listenerIndex;
+
+    for (listenerIndex in this.listeners) {
+        if (this.listeners[listenerIndex] === callback) {
+            this.listeners = this.listeners.splice(listenerIndex, 1);
             return;
         }
     }

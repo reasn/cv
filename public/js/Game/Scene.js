@@ -57,6 +57,13 @@ ACV.Game.Scene.prototype = ACV.Core.createPrototype('ACV.Game.Scene', {
     _xBefore: 0
 });
 
+/**
+ *
+ * @param {AppContext} appContext
+ * @param {jQuery} element
+ * @param {Object} data
+ * @returns {ACV.Game.Scene}
+ */
 ACV.Game.Scene.createFromData = function (appContext, element, data) {
     var levels = [], playerLayer, triggerManager, levelIndex;
 
@@ -72,9 +79,12 @@ ACV.Game.Scene.createFromData = function (appContext, element, data) {
     return new ACV.Game.Scene(appContext, element, data.prefs, levels, playerLayer, triggerManager);
 };
 
+/**
+ *
+ * @param {ViewportDimensions} viewportDimensions
+ */
 ACV.Game.Scene.prototype.init = function (viewportDimensions) {
-    var levelIndex;
-    var scene = this;
+    var levelIndex, scene = this;
 
     this._viewportDimensions = viewportDimensions;
 
@@ -112,8 +122,14 @@ ACV.Game.Scene.prototype.init = function (viewportDimensions) {
     this.element.append(this.foregroundElement);
 };
 
+/**
+ *
+ * @param {number} clientX
+ * @private
+ */
 ACV.Game.Scene.prototype._handleClick = function (clientX) {
     var targetX = this._x + clientX;
+
     this.info('User clicked, player will walk to %s', targetX);
     this.playerLayer.player.moveTo(targetX, this._x, 0.5, this._viewportDimensions);
 };
@@ -139,6 +155,11 @@ ACV.Game.Scene.prototype._handleMouseMove = function (clientX, clientY) {
     this.playerLayer.applyLookAroundDistortion(x, y)
 };
 
+/**
+ *
+ * @param {float} ratio
+ * @param {float} ratioBefore
+ */
 ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore) {
     var levelIndex;
 
@@ -173,10 +194,13 @@ ACV.Game.Scene.prototype.handleTriggers = function (playerX, playerXBefore, targ
     this.triggerManager.check(playerX, playerXBefore, targetPlayerX, sceneX);
 };
 
+/**
+ * @private
+ */
 ACV.Game.Scene.prototype._handleViewportChange = function () {
     var levelIndex, layerIndex, elementsToAlter;
-    elementsToAlter = this.playerLayer.element;
 
+    elementsToAlter = this.playerLayer.element;
 
     for (levelIndex in this.levels) {
 
