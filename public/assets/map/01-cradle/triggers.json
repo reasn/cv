@@ -5,8 +5,8 @@
     },
     {
         "playerX": 1156,
-        "before": "sprite.show(01-baby-in-cradle)",
-        "after": "sprite.hide(01-baby-in-cradle)"
+        "before": "sprite.show(cradleBackground.sleepingBaby)",
+        "after": "sprite.hide(cradleBackground.sleepingBaby)"
     },
     {
         "playerX": 1156,

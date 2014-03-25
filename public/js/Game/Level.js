@@ -4,14 +4,6 @@
  * @since 2014-02-28
  */
 
-/**
- *
- * @name ViewportDimensions
- * @type {Object}
- * @property {number} width - the viewport's width
- * @property {number} height - the viewport's height
- * @property {boolean} changed - A flag whether the viewport has just changed
- */
 
 var ACV = ACV ? ACV : {};
 
@@ -132,7 +124,14 @@ ACV.Game.Level.prototype.init = function (scene, backgroundWrapper, foregroundWr
     this.info('Level initialized with ' + this.foregroundLayers.length + ' foreground layers and ' + this.backgroundLayers.length + ' background layers', 'd');
 };
 
-//Filter out dynamic fly sprites to reduce memory usage
+/**
+ * Filter out dynamic fly sprites to reduce memory usage.
+ *
+ * More important purpose: ensures that no invalid dependencies occur where sprite A is positioned relative to sprite B's position before sprite B is repositioned.
+ * In that case this method makes sure sprite A has no invalid/outdated position because it makes sure that sprites can only access other sprites dynamic positions
+ * within the same recalculation call.
+ * @private
+ */
 ACV.Game.Level.prototype._removeDynamicFlySprites = function () {
     var layerHandles, layerHandleIndex, spriteHandles, spriteHandleIndex;
 

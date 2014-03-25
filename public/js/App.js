@@ -81,7 +81,7 @@ ACV.App.prototype.init = function (data, container) {
 
     //Initialize HUD and scene
     this.hud.init(container.children('.hud'), this.viewportManager);
-    this.scene.init(this._sceneViewportDimensions);
+    this.scene.init(this.viewportManager.viewportDimensions, this._sceneViewportDimensions);
 
     //Sink events
     this.viewportManager.listen(function (ratio, ratioBefore, interval, viewportDimensions) {

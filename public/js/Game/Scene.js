@@ -24,7 +24,7 @@ ACV.Game = ACV.Game ? ACV.Game : {};
  *   playerLayer: ACV.Game.PlayerLayer,
  *   triggerManager: ACV.Game.TriggerManager
  *   levels: Array.<ACV.Game.Level>,
- *   _viewportDimensions: ViewportDimensions
+ *   _sceneViewportDimensions: ViewportDimensions
  *   _x: number
  *   _xBefore: number,
  *   _lookAroundDistortion: LookAroundDistortion
@@ -59,7 +59,7 @@ ACV.Game.Scene.prototype = ACV.Core.createPrototype('ACV.Game.Scene', {
     playerLayer: null,
     triggerManager: null,
     levels: [],
-    _viewportDimensions: null,
+    _sceneViewportDimensions: null,
     _lookAroundDistortion: {
         x: 0,
         y: 0
@@ -92,16 +92,17 @@ ACV.Game.Scene.createFromData = function (appContext, element, data) {
 
 /**
  *
- * @param {ViewportDimensions} viewportDimensions
+ * @param {ViewportDimensions} appViewportDimensions
+ * @param {ViewportDimensions} sceneViewportDimensions
  */
-ACV.Game.Scene.prototype.init = function (viewportDimensions) {
+ACV.Game.Scene.prototype.init = function (appViewportDimensions, sceneViewportDimensions) {
     var levelIndex, scene = this;
 
-    this._viewportDimensions = viewportDimensions;
+    this._sceneViewportDimensions = sceneViewportDimensions;
 
     this.element.css({
         bottom: 'auto',
-        height: this._viewportDimensions.height
+        height: this._sceneViewportDimensions.height
     });
 
     this.backgroundElement = $('<div class="level-wrapper background" />');
@@ -118,14 +119,16 @@ ACV.Game.Scene.prototype.init = function (viewportDimensions) {
              * continuous distribution of the results and therefore
              * reduce (probably invisible) micro-flickering.
              */
-            scene._lookAroundDistortion.x = -Math.floor(scene._appContext.prefs.lookAroundDistortionIntensity * 2 * (event.clientX / scene._viewportDimensions.width - .5));
-            scene._lookAroundDistortion.y = -Math.floor(scene._appContext.prefs.lookAroundDistortionIntensity * 2 * (event.clientY / scene._viewportDimensions.height - .5));
+            //scene._lookAroundDistortion.x = -Math.floor(scene._appContext.prefs.maxLookAroundDistortion * 2 * (event.clientX / scene._sceneViewportDimensions.width - .5));
+            //scene._lookAroundDistortion.y = -Math.floor(scene._appContext.prefs.maxLookAroundDistortion * 2 * (event.clientY / scene._sceneViewportDimensions.height - .5));
+            scene._lookAroundDistortion.x = -Math.floor(scene._appContext.prefs.maxLookAroundDistortion * 2 * (event.clientX / appViewportDimensions.width - .5));
+            scene._lookAroundDistortion.y = -Math.floor(scene._appContext.prefs.maxLookAroundDistortion * 2 * (event.clientY / appViewportDimensions.height - .5));
             scene.applyLookAroundDistortion();
         });
     }
 
     for (levelIndex in this.levels) {
-        this.levels[levelIndex].init(this, this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this._lookAroundDistortion, viewportDimensions);
+        this.levels[levelIndex].init(this, this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this._lookAroundDistortion, sceneViewportDimensions);
     }
 
     // Reduce draw calls by adding everything to the DOM at last
@@ -149,7 +152,7 @@ ACV.Game.Scene.prototype._handleClick = function (clientX) {
     var targetX = this._x + clientX;
 
     this.info('User clicked, player will walk to %s', targetX);
-    this.playerLayer.player.moveTo(targetX, this._x, 0.5, this._viewportDimensions);
+    this.playerLayer.player.moveTo(targetX, this._x, 0.5, this._sceneViewportDimensions);
 };
 
 /**
@@ -176,22 +179,22 @@ ACV.Game.Scene.prototype.applyLookAroundDistortion = function () {
 ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore) {
     var levelIndex;
 
-    this._x = ratio * (this.prefs.width - this._viewportDimensions.width);
-    this._xBefore = ratio * (this.prefs.width - this._viewportDimensions.width);
+    this._x = ratio * (this.prefs.width - this._sceneViewportDimensions.width);
+    this._xBefore = ratio * (this.prefs.width - this._sceneViewportDimensions.width);
 
-    if (this._viewportDimensions.heightChanged) {
-        this.element.css('height', this._viewportDimensions.height);
-        this.debug('New scene height: %s', this._viewportDimensions.height);
+    if (this._sceneViewportDimensions.heightChanged) {
+        this.element.css('height', this._sceneViewportDimensions.height);
+        this.debug('New scene height: %s', this._sceneViewportDimensions.height);
     }
 
     for (levelIndex in this.levels) {
-        this.levels[levelIndex].updatePositions(this._x, this._xBefore, this._viewportDimensions);
+        this.levels[levelIndex].updatePositions(this._x, this._xBefore, this._sceneViewportDimensions);
     }
 
-    if (this._viewportDimensions.widthChanged || this._viewportDimensions.heightChanged) {
-        this._handleViewportChange(this._viewportDimensions);
+    if (this._sceneViewportDimensions.widthChanged || this._sceneViewportDimensions.heightChanged) {
+        this._handleViewportChange(this._sceneViewportDimensions);
     }
-    this.playerLayer.updatePositions(this._x, this._viewportDimensions);
+    this.playerLayer.updatePositions(this._x, this._sceneViewportDimensions);
 
     //TODO remove:
     $('#sceneX').text(this._x);
@@ -227,8 +230,8 @@ ACV.Game.Scene.prototype._handleViewportChange = function () {
         }
     }
 
-    if (this._viewportDimensions.height < this.prefs.dynamicViewport.minHeight) {
-        elementsToAlter.css('top', Math.round(-.5 * (this.prefs.dynamicViewport.minHeight - this._viewportDimensions.height)) + 'px');
+    if (this._sceneViewportDimensions.height < this.prefs.dynamicViewport.minHeight) {
+        elementsToAlter.css('top', Math.round(-.5 * (this.prefs.dynamicViewport.minHeight - this._sceneViewportDimensions.height)) + 'px');
 
     } else {
         elementsToAlter.css('top', 0);

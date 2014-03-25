@@ -16,8 +16,8 @@ ACV.Game = ACV.Game ? ACV.Game : {};
 
 /**
  * @typedef {Object} FlySprite {{
- *   top: number
- *   bottom: number
+ *   y: number
+ *   height: number
  *   static: boolean
  * }}
  */
@@ -124,48 +124,46 @@ ACV.Game.Layer.prototype.updatePositions = function (levelOffset, levelX, levelX
 ACV.Game.Layer.prototype._positionSprite = function (sprite, viewportDimensions, flySprites) {
 
     /* flySprite is a flyweight representation of a Sprite */
-    var settableY, calculatedY, calculatedHeight, flySprite = {}, cssProps = {};
+    var flySprite = {}, cssProps = {};
 
     flySprite.static = true;
 
     if (typeof sprite.y === 'function') {
-        settableY = calculatedY = sprite.y.apply(flySprite, [this._appContext.prefs.maxLookAroundDistortion, viewportDimensions.height, flySprites]);
+        flySprite.y = sprite.y.apply(flySprite, [this._appContext.prefs.maxLookAroundDistortion, viewportDimensions.height, flySprites]);
         flySprite.static = false;
-        //this.warn('%s has now y of %s', sprite.handle, settableY);
+
+    } else if (typeof sprite.y === 'number') {
+        flySprite.y = sprite.y;
+
     } else {
-        settableY = sprite.y;
-        calculatedY = sprite.y.indexOf('%') === -1 ? parseInt(sprite.y) : viewportDimensions.height / 100 * parseInt(sprite.y);
-        //console.warn('%s: %s from %s', sprite.handle, calculatedY, sprite.y);
+        flySprite.y = sprite.y.indexOf('%') === -1 ? parseInt(sprite.y) : viewportDimensions.height / 100 * parseInt(sprite.y);
     }
 
     if (sprite.topAligned) {
-        flySprite.top = calculatedY;
+        cssProps.top = flySprite.y + 'px';
     } else {
-        flySprite.top = viewportDimensions.height - calculatedY;
+        cssProps.bottom = flySprite.y + 'px';
     }
 
     //Calculate height
     if (typeof sprite.height === 'function') {
-        cssProps.height = calculatedHeight = sprite.height.apply(flySprite, [this._appContext.prefs.maxLookAroundDistortion, viewportDimensions.height, flySprites]);
+        flySprite.height = sprite.height.apply(flySprite, [this._appContext.prefs.maxLookAroundDistortion, viewportDimensions.height, flySprites]);
         flySprite.static = false;
-        //this.warn('%s has now height of "%s"', sprite.handle, calculatedHeight);
+
+    } else if (typeof sprite.height === 'number') {
+        flySprite.height = sprite.height;
+
     } else {
-        cssProps.height = sprite.height;
-        calculatedHeight = sprite.height.indexOf('%') === -1 ? parseInt(sprite.height) : viewportDimensions.height / 100 * parseInt(sprite.height);
+        flySprite.height = sprite.height.indexOf('%') === -1 ? parseInt(sprite.height) : viewportDimensions.height / 100 * parseInt(sprite.height);
     }
-    flySprite.bottom = flySprite.top + calculatedHeight;
+
+    cssProps.height = flySprite.height;
 
     if (flySprites[this._handle] === undefined) {
         flySprites[this._handle] = {};
     }
     flySprites[this._handle][sprite.handle] = flySprite;
 
-    //Set properties
-    if (sprite.topAligned) {
-        cssProps.top = settableY;
-    } else {
-        cssProps.bottom = settableY;
-    }
     sprite.element.css(cssProps);
 };
 

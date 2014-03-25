@@ -92,8 +92,6 @@ ACV.Game.Sprite._unpackDynamicExpression = function (appContext, expression, spr
     code = code.replace(/\%handle/, spriteHandle);
     code = code.replace(/\%property/, propertyName);
     return new Function(['maxLookAroundDistortion', 'viewportHeight', 'sprites'], code);
-
-
 };
 
 ACV.Game.Sprite.mockColors = ['#9932CC', '#8B0000', '#E9967A', '#8FBC8F', '#483D8B', '#2F4F4F', '#00CED1', '#9400D3', '#FF1493', '#00BFFF', '#696969', '#1E90FF', '#B22222', '#FFFAF0', '#228B22', '#FF00FF', '#DCDCDC', '#F8F8FF', '#FFD700', '#DAA520', '#808080', '#008000', '#ADFF2F', '#F0FFF0', '#FF69B4'];
@@ -120,12 +118,11 @@ ACV.Game.Sprite.prototype.init = function (layerElement) {
     if (this.id) {
         this.element.attr('id', this.id);
     }
-    this.element.css(
-        {
-            left: this.x + 'px',
-            width: this.width + 'px',
-            height: this.height
-        });
+    this.element.css({
+        left: this.x + 'px',
+        width: this.width + 'px',
+        height: this.height
+    });
 
     //TODO implement combined asset files
     if (typeof (this.source) === 'string') {
@@ -143,5 +140,5 @@ ACV.Game.Sprite.prototype.init = function (layerElement) {
 
     layerElement.append(this.element);
 
-    this.debug('Sprite initialized');
+    this.debug('Sprite %s initialized', this.handle);
 };

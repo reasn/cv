@@ -74,7 +74,7 @@
             },
             {
                 "handle": "02-way-to-school",
-                "enabled": false,
+                "enabled": true,
                 "prefs": {
                     "_offset": 0,
                     "offset": 3400,
@@ -90,7 +90,7 @@
             },
             {
                 "handle": "03-heidelberg",
-                "enabled": false,
+                "enabled": true,
                 "prefs": {
                     "_offset": 0,
                     "offset": 7400,

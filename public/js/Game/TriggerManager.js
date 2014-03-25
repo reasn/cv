@@ -78,10 +78,12 @@ ACV.Game.TriggerManager.prototype._execute = function (action) {
 
     switch (action.action) {
         case 'sprite.show':
-            $('#' + action.args[0]).show();
+            //TODO make clean:
+            $('div[data-handle="' + action.args[0].replace(/\./g, '] div[data-handle="') + ']').show();
             return;
         case 'sprite.hide':
-            $('#' + action.args[0]).hide();
+            //TODO make clean:
+            $('div[data-handle="' + action.args[0].replace(/\./g, '"] div[data-handle="') + '"]').hide();
             return;
         case 'player.setAge':
             this.scene.playerLayer.player.setAge(action.args[0]);
