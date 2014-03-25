@@ -58,6 +58,7 @@ ACV.Game.Scene.prototype = ACV.Core.createPrototype('ACV.Game.Scene', {
     foregroundElement: null,
     playerLayer: null,
     triggerManager: null,
+    _width: 0,
     levels: [],
     _sceneViewportDimensions: null,
     _lookAroundDistortion: {
@@ -108,32 +109,14 @@ ACV.Game.Scene.prototype.init = function (appViewportDimensions, sceneViewportDi
     this.backgroundElement = $('<div class="level-wrapper background" />');
     this.foregroundElement = $('<div class="level-wrapper foreground" />');
 
-    this.foregroundElement.on('click', function (event) {
-        scene._handleClick(event.clientX);
-    });
-
-    if (this._appContext.performanceSettings.lookAroundDistortion) {
-        $(document).on('mousemove', function (event) {
-            /*
-             * We use Math.floor() instead of Math.round() to obtain a
-             * continuous distribution of the results and therefore
-             * reduce (probably invisible) micro-flickering.
-             */
-            //scene._lookAroundDistortion.x = -Math.floor(scene._appContext.prefs.maxLookAroundDistortion * 2 * (event.clientX / scene._sceneViewportDimensions.width - .5));
-            //scene._lookAroundDistortion.y = -Math.floor(scene._appContext.prefs.maxLookAroundDistortion * 2 * (event.clientY / scene._sceneViewportDimensions.height - .5));
-            scene._lookAroundDistortion.x = -Math.floor(scene._appContext.prefs.maxLookAroundDistortion * 2 * (event.clientX / appViewportDimensions.width - .5));
-            scene._lookAroundDistortion.y = -Math.floor(scene._appContext.prefs.maxLookAroundDistortion * 2 * (event.clientY / appViewportDimensions.height - .5));
-            scene.applyLookAroundDistortion();
-        });
-    }
-
     for (levelIndex in this.levels) {
         this.levels[levelIndex].init(this, this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this._lookAroundDistortion, sceneViewportDimensions);
+        this._width += this.levels[levelIndex].getWidth();
     }
 
     // Reduce draw calls by adding everything to the DOM at last
     this.element.append(this.backgroundElement);
-    this.playerLayer.init(this.element, this.prefs.width, this.prefs.dynamicViewport.minHeight, this._lookAroundDistortion);
+    this.playerLayer.init(this.element, this._width, this.prefs.dynamicViewport.minHeight, this._lookAroundDistortion);
 
     this._appContext.player.addMovementListener(function (playerX, playerXBefore, targetPlayerX, sceneX) {
         $('#playerX').text(playerX);
@@ -143,12 +126,24 @@ ACV.Game.Scene.prototype.init = function (appViewportDimensions, sceneViewportDi
     this.element.append(this.foregroundElement);
 };
 
+ACV.Game.Scene.prototype.handleMouseMove = function (clientX, clientY, appViewportDimensions) {
+    /*
+     * We use Math.floor() instead of Math.round() to obtain a
+     * continuous distribution of the results and therefore
+     * reduce (probably invisible) micro-flickering.
+     */
+    //scene._lookAroundDistortion.x = -Math.floor(scene._appContext.prefs.maxLookAroundDistortion * 2 * (event.clientX / scene._sceneViewportDimensions.width - .5));
+    //scene._lookAroundDistortion.y = -Math.floor(scene._appContext.prefs.maxLookAroundDistortion * 2 * (event.clientY / scene._sceneViewportDimensions.height - .5));
+    this._lookAroundDistortion.x = -Math.floor(this._appContext.prefs.maxLookAroundDistortion * 2 * (clientX / appViewportDimensions.width - .5));
+    this._lookAroundDistortion.y = -Math.floor(this._appContext.prefs.maxLookAroundDistortion * 2 * (clientY / appViewportDimensions.height - .5));
+    this.applyLookAroundDistortion();
+};
+
 /**
  *
  * @param {number} clientX
- * @private
  */
-ACV.Game.Scene.prototype._handleClick = function (clientX) {
+ACV.Game.Scene.prototype.handleMouseClick = function (clientX) {
     var targetX = this._x + clientX;
 
     this.info('User clicked, player will walk to %s', targetX);
@@ -179,8 +174,8 @@ ACV.Game.Scene.prototype.applyLookAroundDistortion = function () {
 ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore) {
     var levelIndex;
 
-    this._x = ratio * (this.prefs.width - this._sceneViewportDimensions.width);
-    this._xBefore = ratio * (this.prefs.width - this._sceneViewportDimensions.width);
+    this._x = ratio * (this._width - this._sceneViewportDimensions.width);
+    this._xBefore = ratio * (this._width - this._sceneViewportDimensions.width);
 
     if (this._sceneViewportDimensions.heightChanged) {
         this.element.css('height', this._sceneViewportDimensions.height);

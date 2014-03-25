@@ -76,15 +76,15 @@ ACV.App.prototype.init = function (data, container) {
     this.scene = ACV.Game.Scene.createFromData(this._appContext, sceneElement, data.scene);
     this.scene.playerLayer.skillBasket = this.hud.skillBasket;
 
-    this._sceneViewportDimensions.width = this.viewportManager.viewportDimensions.width;
-    this._sceneViewportDimensions.height = this.viewportManager.viewportDimensions.height - this.hud.height;
+    this._sceneViewportDimensions.width = this.viewportManager.getDimensions().width;
+    this._sceneViewportDimensions.height = this.viewportManager.getDimensions().height - this.hud.height;
 
     //Initialize HUD and scene
-    this.hud.init(container.children('.hud'), this.viewportManager);
-    this.scene.init(this.viewportManager.viewportDimensions, this._sceneViewportDimensions);
+    this.hud.init(this.scene, container.children('.hud'), this.viewportManager);
+    this.scene.init(this.viewportManager.getDimensions(), this._sceneViewportDimensions);
 
     //Sink events
-    this.viewportManager.listen(function (ratio, ratioBefore, interval, viewportDimensions) {
+    this.viewportManager.listen(function (ratio, ratioBefore, viewportDimensions) {
         app.hud.updateGameRatio(ratio, ratioBefore, viewportDimensions);
 
         //Note: _sceneViewportDimensions is referenced by ACV.Game.Scene because it was submitted in this.scene.init().
@@ -100,7 +100,7 @@ ACV.App.prototype.init = function (data, container) {
     this.viewportManager.fireAllTriggers();
 
     //debug stuff
-    this.viewportManager.listen(function (ratio, lastRatio, interval) {
+    this.viewportManager.listen(function (ratio, lastRatio) {
         $('#scrollpos').text(ratio);
     });
 };

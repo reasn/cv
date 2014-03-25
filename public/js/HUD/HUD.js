@@ -67,16 +67,18 @@ ACV.HUD.prototype = ACV.Core.createPrototype('ACV.HUD', {
     _timeline: null
 });
 /**
- *
+ * @param {ACV.Game.Scene} scene
  * @param {jQuery} element
  * @param viewportManager
  */
-ACV.HUD.prototype.init = function (element, viewportManager) {
+ACV.HUD.prototype.init = function (scene, element, viewportManager) {
+    var viewportDimensions;
+
     this.element = element;
     /* TODO remove height-property or use for responsiveness
-    this.element.css({
-        height: this.height
-    });*/
+     this.element.css({
+     height: this.height
+     });*/
     this.skillBasket.init(this.element);
     if (this.yearDisplay !== null) {
         this.yearDisplay.init(this.element);
@@ -85,12 +87,24 @@ ACV.HUD.prototype.init = function (element, viewportManager) {
         this.heightDisplay.init(this.element);
     }
 
+    viewportDimensions = viewportManager.getDimensions();
+
+    if (this._appContext.performanceSettings.lookAroundDistortion) {
+        this.element.on('mousemove', function (event) {
+            scene.handleMouseMove(event.clientX, event.clientY, viewportDimensions);
+        });
+        this.element.on('click', function (event) {
+            scene.handleMouseClick(event.clientX, event.clientY, viewportDimensions);
+        });
+    }
+
+
     this._timeline.init(this.element);
 
     this.debug('HUD initialized');
 };
 
-ACV.HUD.prototype.updateGameRatio = function (ratio, ratioBefore, viewportDimensions) {
+ACV.HUD.prototype.updateGameRatio = function (ratio, ratioBefore) {
     if (this.yearDisplay !== null) {
         this.yearDisplay.update(ratio);
     }

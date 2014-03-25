@@ -125,6 +125,15 @@ ACV.Game.Level.prototype.init = function (scene, backgroundWrapper, foregroundWr
 };
 
 /**
+ *
+ * @returns {number}
+ * @since 2017-03-25
+ */
+ACV.Game.Level.prototype.getWidth = function () {
+    return this.prefs.clip.x2 - this.prefs.clip.x1;
+};
+
+/**
  * Filter out dynamic fly sprites to reduce memory usage.
  *
  * More important purpose: ensures that no invalid dependencies occur where sprite A is positioned relative to sprite B's position before sprite B is repositioned.

@@ -14,7 +14,7 @@ var animations = [
                 return;
             }
 
-            target = Math.min(1, Math.max(0, this.levelX / (this.level.prefs.clip.x2 * .75)));
+            target = Math.min(1, Math.max(0, (this.levelX + this.viewportDimensions.width) / this.level.prefs.clip.x2));
             duration = ACV.Utils.calculateAnimationDuration(sky.css('opacity'), target, 0.0002);
 
             sky.stop('sunrise', true).animate({

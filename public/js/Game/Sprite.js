@@ -84,7 +84,14 @@ ACV.Game.Sprite._unpackDynamicExpression = function (appContext, expression, spr
     expression = expression.replace(/maxLookAroundDistortion/g, appContext.prefs.maxLookAroundDistortion);
     expression = expression.replace(' ', '');
 
-    if (expression.match(/[^0-9\%px\-]+/) === null) {
+    if (expression.match(/[^0-9\%px\-\+]+/) === null) {
+        /*
+         * Automatically calculate arithmetic expressions without external dependencies
+         * Allows optimization of expressions like "100 + maxLookAroundDistortion".
+         */
+        if (expression.substr(1).indexOf('-') !== -1 || expression.indexOf('+') !== -1) {
+            expression = (new Function([], 'return ' + expression))();
+        }
         return expression;
     }
 

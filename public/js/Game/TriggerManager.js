@@ -79,7 +79,7 @@ ACV.Game.TriggerManager.prototype._execute = function (action) {
     switch (action.action) {
         case 'sprite.show':
             //TODO make clean:
-            $('div[data-handle="' + action.args[0].replace(/\./g, '] div[data-handle="') + ']').show();
+            $('div[data-handle="' + action.args[0].replace(/\./g, '"] div[data-handle="') + '"]').show();
             return;
         case 'sprite.hide':
             //TODO make clean:

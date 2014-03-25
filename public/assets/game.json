@@ -1,7 +1,7 @@
 {
     "app": {
         "scrollVertical": true,
-        "totalDistance": 10000,
+        "totalDistance": 5000,
         "prefs": {
             "assetPath": "assets",
             "maxLookAroundDistortion": 50
@@ -15,7 +15,7 @@
     },
     "scene": {
         "prefs": {
-            "width": 15284,
+            "width": 10284,
             "dynamicViewport": {
                 "minHeight": 500
             }
@@ -90,7 +90,7 @@
             },
             {
                 "handle": "03-heidelberg",
-                "enabled": true,
+                "enabled": false,
                 "prefs": {
                     "_offset": 0,
                     "offset": 7400,

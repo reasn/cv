@@ -10,7 +10,7 @@
                 {
                     "handle": "skyAndMountains",
                     "x": 0,
-                    "y": "200px",
+                    "y": ".5 * (viewportHeight - 535) + 100",
                     "topAligned": true,
                     "width": 740,
                     "height": "300px",
@@ -28,7 +28,7 @@
                 {
                     "handle": "rearWindow",
                     "x": 1100,
-                    "y": "100px",
+                    "y": ".5 * (viewportHeight - 535)",
                     "topAligned": true,
                     "width": 535,
                     "height": "500px",
@@ -48,7 +48,7 @@
                     "x": 1635,
                     "y": "-maxLookAroundDistortion",
                     "topAligned": true,
-                    "width": 1500,
+                    "width": 1800,
                     "height": "viewportHeight + 2 * maxLookAroundDistortion",
                     "color": "orange"
                 },
@@ -67,7 +67,7 @@
                     "y": "-maxLookAroundDistortion",
                     "topAligned": true,
                     "width": 1150,
-                    "height": "100%",
+                    "height": "viewportHeight",
                     "color": "orange"
                 }
             ]
@@ -81,11 +81,11 @@
             "sprites": [
                 {
                     "handle": "bookshelf",
-                    "x": 600,
+                    "x": 400,
                     "y": 190,
                     "topAligned": false,
-                    "width": 600,
-                    "height": "400px",
+                    "width": 800,
+                    "height": "Math.max(400, Math.min(1200, .4 * viewportHeight))",
                     "color": "pink"
                 }
             ]
@@ -190,10 +190,10 @@
                 {
                     "handle": "rightWall",
                     "x": 3250,
-                    "y": "-80px",
+                    "y": "-80 - maxLookAroundDistortion",
                     "topAligned": true,
                     "width": 100,
-                    "height": "120%",
+                    "height": "viewportHeight - this.y",
                     "color": "pink",
                     "blurred": true
                 }
@@ -257,7 +257,7 @@
                 {
                     "handle": "lamp",
                     "x": 0,
-                    "y": "50px",
+                    "y": "-maxLookAroundDistortion",
                     "topAligned": true,
                     "width": 329,
                     "height": "363px",

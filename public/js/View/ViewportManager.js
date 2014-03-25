@@ -21,17 +21,24 @@ var ACV = ACV ? ACV : {};
 
 /**
  * @type {Object} {{
+ *   _containerFixedToViewport: boolean
+ *   _staticContainer: jQuery
+ *   _currentScrollOffset: number
  *   _listeners: Array<ViewportListener>
+ *   _dimensions: ViewportDimensions
+ *   _lastViewportDimensions: { width: number, height: number }
+ *   _moveMethod: number
+ *   _touch: { virtualPosition: number, lastY: number }
  * }}
  * @param {jQuery} staticContainer
  * @param {number} scrollableDistance
- * @param {number} moveMethod
+ * @param {number} _moveMethod
  * @constructor
  */
-ACV.ViewportManager = function (staticContainer, scrollableDistance, moveMethod) {
+ACV.ViewportManager = function (staticContainer, scrollableDistance, _moveMethod) {
     this._staticContainer = staticContainer;
     this.scrollableDistance = scrollableDistance;
-    this.moveMethod = moveMethod;
+    this._moveMethod = _moveMethod;
 };
 
 ACV.ViewportManager.SCROLL_DRAG = 0x01;
@@ -45,7 +52,7 @@ ACV.ViewportManager.prototype = ACV.Core.createPrototype('ACV.ViewportManager', 
     _staticContainer: null,
     _currentScrollOffset: 0,
     _listeners: [],
-    viewportDimensions: {
+    _dimensions: {
         width: 0,
         height: 0,
         widthChanged: false,
@@ -55,9 +62,8 @@ ACV.ViewportManager.prototype = ACV.Core.createPrototype('ACV.ViewportManager', 
         width: 0,
         height: 0
     },
-    lastTrigger: null,
-    moveMethod: true,
-    touch: {
+    _moveMethod: -1,
+    _touch: {
         virtualPosition: 0,
         lastY: null
     }
@@ -72,101 +78,105 @@ ACV.ViewportManager.prototype.init = function () {
 
     this._containerDistanceFromTop = this._staticContainer.position().top;
 
-    if (this.moveMethod === ACV.ViewportManager.SCROLL_DRAG) {
+    if (this._moveMethod === ACV.ViewportManager.SCROLL_DRAG) {
         body.on('touchmove', function (e) {
             var y = e.originalEvent.changedTouches[0].screenY;
-            if (vpm.touch.lastY !== null && y > 0) {
-                vpm.touch.virtualPosition = Math.max(0, vpm.touch.virtualPosition - (y - vpm.touch.lastY));
-                vpm._handleScroll(Math.min(vpm.scrollableDistance, vpm._currentScrollOffset + vpm.touch.virtualPosition));
+            if (vpm._touch.lastY !== null && y > 0) {
+                vpm._touch.virtualPosition = Math.max(0, vpm._touch.virtualPosition - (y - vpm._touch.lastY));
+                vpm._handleScroll(Math.min(vpm.scrollableDistance, vpm._currentScrollOffset + vpm._touch.virtualPosition));
             }
-            vpm.touch.lastY = y;
+            vpm._touch.lastY = y;
         });
-        body.on('touchend', function (e) {
-            vpm.touch.lastY = null;
+        body.on('touchend', function () {
+            vpm._touch.lastY = null;
         });
-    } else if (this.moveMethod === ACV.ViewportManager.SCROLL_NATIVE) {
+    } else if (this._moveMethod === ACV.ViewportManager.SCROLL_NATIVE) {
         body.css('height', this.scrollableDistance + 'px');
-        $(document).on('scroll', function (event) {
+        $(document).on('scroll', function () {
             vpm._handleScroll(Math.min(vpm.scrollableDistance, $(document).scrollTop()));
         });
 
-    } else if (this.moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
+    } else if (this._moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
 
         body.on('mousewheel DOMMouseScroll', function (event) {
             vpm._handleScroll(Math.min(vpm.scrollableDistance, vpm._currentScrollOffset + event.originalEvent.deltaY));
         });
     } else {
-        throw new Error('Unknown movement method "' + this.moveMethod + '".');
+        throw new Error('Unknown movement method "' + this._moveMethod + '".');
     }
 
     w.on('resize', function () {
-        vpm._handleResize(false);
+        vpm._handleResize(true);
     });
-    vpm.viewportDimensions.width = w.width();
-    vpm.viewportDimensions.height = w.height();
+    vpm._dimensions.width = w.width();
+    vpm._dimensions.height = w.height();
 
     this.info('ViewportManager initialized');
 };
 
 ACV.ViewportManager.prototype.fireAllTriggers = function () {
-    this._handleResize(true);
+    this._handleResize(false);
 };
 
 ACV.ViewportManager.prototype._handleScroll = function (newOffset) {
     this._currentScrollOffset = newOffset;
-    this.viewportDimensions.widthChanged = false;
-    this.viewportDimensions.heightChanged = false;
-    this._handleChange(false);
+    this._dimensions.widthChanged = false;
+    this._dimensions.heightChanged = false;
+    this._handleChange(true);
 };
 
 /**
- * Note: viewportDimensions is never changed, only its properties are being set. That allows the entire
+ * Note: _dimensions is never changed, only its properties are being set. That allows the entire
  * application to keep references to it.
  *
- * @param {boolean} keepFixationStatus
+ * @param {boolean} updateFixationStatus
  * @private
  */
-ACV.ViewportManager.prototype._handleResize = function (keepFixationStatus) {
+ACV.ViewportManager.prototype._handleResize = function (updateFixationStatus) {
+
+    this._updateDimensions();
+    this._handleChange(updateFixationStatus);
+};
+
+ACV.ViewportManager.prototype._updateDimensions = function () {
     if (!this._containerFixedToViewport) {
         this._staticContainer.css('height', $(window).height());
     }
 
-    this.viewportDimensions.width = this._staticContainer.width();
-    this.viewportDimensions.height = this._staticContainer.height();
+    this._dimensions.width = this._staticContainer.width();
+    this._dimensions.height = this._staticContainer.height();
 
-    this.viewportDimensions.widthChanged = this.viewportDimensions.width !== this._lastViewportDimensions.width;
-    this.viewportDimensions.heightChanged = this.viewportDimensions.height !== this._lastViewportDimensions.height;
+    this._dimensions.widthChanged = this._dimensions.width !== this._lastViewportDimensions.width;
+    this._dimensions.heightChanged = this._dimensions.height !== this._lastViewportDimensions.height;
 
-    if (this.viewportDimensions.widthChanged) {
-        this.debug('viewport width changed from %s to %s', this._lastViewportDimensions.width, this.viewportDimensions.width);
+    if (this._dimensions.widthChanged) {
+        this.debug('viewport width changed from %s to %s', this._lastViewportDimensions.width, this._dimensions.width);
     }
-    if (this.viewportDimensions.heightChanged) {
-        this.debug('viewport height changed from %s to %s', this._lastViewportDimensions.height, this.viewportDimensions.height);
+    if (this._dimensions.heightChanged) {
+        this.debug('viewport height changed from %s to %s', this._lastViewportDimensions.height, this._dimensions.height);
     }
 
-    this._lastViewportDimensions.width = this.viewportDimensions.width;
-    this._lastViewportDimensions.height = this.viewportDimensions.height;
-
-    this._handleChange(keepFixationStatus);
+    this._lastViewportDimensions.width = this._dimensions.width;
+    this._lastViewportDimensions.height = this._dimensions.height;
 };
 
 /**
  *
- * @param {boolean} keepFixationStatus
+ * @param {boolean} updateFixationStatus
  * @private
  */
-ACV.ViewportManager.prototype._handleChange = function (keepFixationStatus) {
-    var now, interval, ratioBefore, listenerIndex, distance;
+ACV.ViewportManager.prototype._handleChange = function (updateFixationStatus) {
+    var ratioBefore, listenerIndex, distance;
 
     distance = this._currentScrollOffset;
 
-    if (!keepFixationStatus) {
+    if (updateFixationStatus) {
         //Automatically start and stop to play when container touches top of the viewport
         if (!this._containerFixedToViewport && distance > this._containerDistanceFromTop) {
             this._containerFixedToViewport = true;
             this._staticContainer.addClass('fixed');
             this._staticContainer.css('height', 'auto');
-            if (this.moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
+            if (this._moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
                 //Required to have a smooth transition between textual content and game container
                 $(window).scrollTop(this._containerDistanceFromTop);
             }
@@ -174,35 +184,24 @@ ACV.ViewportManager.prototype._handleChange = function (keepFixationStatus) {
         } else if (this._containerFixedToViewport && distance < this._containerDistanceFromTop) {
             this._containerFixedToViewport = false;
             this._staticContainer.removeClass('fixed');
-            if (this.moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
+            if (this._moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
                 //Required to have a smooth transition between textual content and game container
                 $(window).scrollTop(this._containerDistanceFromTop);
             }
-            this._handleResize();
-            return;
-        } else if (!this._containerFixedToViewport) {
+            this._updateDimensions();
+        }
+
+        if (!this._containerFixedToViewport) {
             return;
         }
         distance -= this._containerDistanceFromTop;
     }
 
-    now = new Date().getTime();
-    if (this.lastTrigger === null) {
-        interval = null;
-    }
-    else {
-        interval = now - this.lastTrigger;
-        if (interval > ACV.ViewportManager.maxInterval)
-            interval = null;
-    }
-    this.lastTrigger = now;
-
     ratioBefore = this.lastRatio;
-    this.lastRatio = Math.min(1, distance / Math.max(0, this.scrollableDistance - this.viewportDimensions.height));
-
+    this.lastRatio = Math.min(1, distance / Math.max(0, this.scrollableDistance - this._dimensions.height));
 
     for (listenerIndex in this._listeners) {
-        this._listeners[listenerIndex].call(window, this.lastRatio, ratioBefore, interval, this.viewportDimensions);
+        this._listeners[listenerIndex].call(window, this.lastRatio, ratioBefore, this._dimensions);
     }
 };
 
@@ -212,6 +211,15 @@ ACV.ViewportManager.prototype._handleChange = function (keepFixationStatus) {
  */
 ACV.ViewportManager.prototype.listen = function (callback) {
     this._listeners.push(callback);
+};
+
+/**
+ *
+ * @returns {ViewportDimensions}
+ * @since 2014-03-25
+ */
+ACV.ViewportManager.prototype.getDimensions = function () {
+    return this._dimensions;
 };
 
 /**
