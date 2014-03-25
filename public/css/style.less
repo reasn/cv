@@ -13,7 +13,6 @@
 @zHud: 90;
 @zGithub: 100;
 
-
 .backgroundPattern(@colorName) {
     background-image : url("../assets/graphics/scene/world/matte/patterns/@{colorName}.jpg");
 }
@@ -245,11 +244,14 @@ body {
         .powerUp { .powerUp() }
 
         .dev-info {
-            cursor   : pointer;
-            position : absolute;
-            left     : 0;
-            width    : 300px;
-            bottom   : 0;
+            cursor           : pointer;
+            position         : absolute;
+            right            : 0;
+            width            : 130px;
+            bottom           : 40%;
+            background-color : #000000;
+            font-family      : monospace, sans-serif;
+            padding          : 20px 0 20px 30px;
         }
 
         .skill-basket {
@@ -257,14 +259,56 @@ body {
             position         : absolute;
             bottom           : 0;
             background-color : #000000;
-            left             : 700px;
+            left             : 15%;
             height           : 200px;
-            width            : 320px;
+            width            : 45%;
+            margin           : 0;
+            padding          : 0;
 
             li { .skill() }
         }
         .skill-basket-info {
-            left : 230px;
+            left    : 0;
+            bottom  : 0;
+            width   : 15%;
+            height  : 160px;
+            margin  : 0px;
+            padding : 20px;
+        }
+        .timeline {
+            right            : 0;
+            width            : 40%;
+            height           : 200px;
+            padding          : 0;
+            bottom           : 0;
+            position         : absolute;
+            background-color : #000000;
+
+            .event-wrapper {
+                .event {
+                    margin           : 20px 0;
+                    background-color : #000000;
+                    font-family      : sans-serif;
+                    font-weight      : normal;
+                    background       : url("../assets/graphics/hud/timeline/timeline-avatar-01.gif") no-repeat 0 0;
+
+                    h3 {
+                        margin  : 0 0 0 50px;
+                        padding : 0;
+                        font-weight: normal;
+                        .name { font-weight : bold; color : #00a2ff }
+                    }
+                    p.timestamp {
+                        margin  : 0 0 0 50px;
+                        padding : 0;
+                        color   : #999;
+                    }
+                    p.message {
+                        margin  : 0;
+                        padding : 5px 0;
+                    }
+                }
+            }
         }
         .year-display {
             position    : absolute;
@@ -281,21 +325,6 @@ body {
             font-weight : bold;
             &:after {
                 content : 'cm'
-            }
-        }
-        .timeline {
-            right    : 0;
-            width    : 50%;
-            height   : 300px;
-            bottom   : 0;
-            position : absolute;
-
-            .event-wrapper {
-                .event {
-                    height           : 100px;
-                    margin           : 20px 0;
-                    background-color : #000000;
-                }
             }
         }
     }

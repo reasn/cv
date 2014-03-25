@@ -106,7 +106,8 @@ ACV.ViewportManager.prototype.init = function () {
     }
 
     w.on('resize', function () {
-        vpm._handleResize(true);
+        vpm._handleResize();
+        vpm._fire();
     });
     vpm._dimensions.width = w.width();
     vpm._dimensions.height = w.height();
@@ -115,27 +116,30 @@ ACV.ViewportManager.prototype.init = function () {
 };
 
 ACV.ViewportManager.prototype.fireAllTriggers = function () {
-    this._handleResize(false);
+    this._handleResize();
+    this._fire();
 };
 
 ACV.ViewportManager.prototype._handleScroll = function (newOffset) {
     this._currentScrollOffset = newOffset;
     this._dimensions.widthChanged = false;
     this._dimensions.heightChanged = false;
-    this._handleChange(true);
+    this._updateFixationStatus();
+    if (this._containerFixedToViewport) {
+        this._fire();
+    }
 };
 
 /**
  * Note: _dimensions is never changed, only its properties are being set. That allows the entire
  * application to keep references to it.
  *
- * @param {boolean} updateFixationStatus
  * @private
  */
-ACV.ViewportManager.prototype._handleResize = function (updateFixationStatus) {
+ACV.ViewportManager.prototype._handleResize = function () {
 
     this._updateDimensions();
-    this._handleChange(updateFixationStatus);
+    this._updateFixationStatus();
 };
 
 ACV.ViewportManager.prototype._updateDimensions = function () {
@@ -160,42 +164,34 @@ ACV.ViewportManager.prototype._updateDimensions = function () {
     this._lastViewportDimensions.height = this._dimensions.height;
 };
 
-/**
- *
- * @param {boolean} updateFixationStatus
- * @private
- */
-ACV.ViewportManager.prototype._handleChange = function (updateFixationStatus) {
+ACV.ViewportManager.prototype._updateFixationStatus = function () {
+
+//Automatically start and stop to play when container touches top of the viewport
+
+    if (!this._containerFixedToViewport && this._currentScrollOffset > this._containerDistanceFromTop) {
+        this._containerFixedToViewport = true;
+        this._staticContainer.addClass('fixed');
+        this._staticContainer.css('height', 'auto');
+        if (this._moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
+            //Required to have a smooth transition between textual content and game container
+            $(window).scrollTop(this._containerDistanceFromTop);
+        }
+
+    } else if (this._containerFixedToViewport && this._currentScrollOffset < this._containerDistanceFromTop) {
+        this._containerFixedToViewport = false;
+        this._staticContainer.removeClass('fixed');
+        if (this._moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
+            //Required to have a smooth transition between textual content and game container
+            $(window).scrollTop(this._containerDistanceFromTop);
+        }
+        this._updateDimensions();
+    }
+};
+
+ACV.ViewportManager.prototype._fire = function () {
     var ratioBefore, listenerIndex, distance;
 
-    distance = this._currentScrollOffset;
-
-    if (updateFixationStatus) {
-        //Automatically start and stop to play when container touches top of the viewport
-        if (!this._containerFixedToViewport && distance > this._containerDistanceFromTop) {
-            this._containerFixedToViewport = true;
-            this._staticContainer.addClass('fixed');
-            this._staticContainer.css('height', 'auto');
-            if (this._moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
-                //Required to have a smooth transition between textual content and game container
-                $(window).scrollTop(this._containerDistanceFromTop);
-            }
-
-        } else if (this._containerFixedToViewport && distance < this._containerDistanceFromTop) {
-            this._containerFixedToViewport = false;
-            this._staticContainer.removeClass('fixed');
-            if (this._moveMethod === ACV.ViewportManager.SCROLL_WHEEL) {
-                //Required to have a smooth transition between textual content and game container
-                $(window).scrollTop(this._containerDistanceFromTop);
-            }
-            this._updateDimensions();
-        }
-
-        if (!this._containerFixedToViewport) {
-            return;
-        }
-        distance -= this._containerDistanceFromTop;
-    }
+    distance = Math.max(0, this._currentScrollOffset - this._containerDistanceFromTop);
 
     ratioBefore = this.lastRatio;
     this.lastRatio = Math.min(1, distance / Math.max(0, this.scrollableDistance - this._dimensions.height));

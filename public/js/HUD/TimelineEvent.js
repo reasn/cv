@@ -71,11 +71,22 @@ ACV.HUD.TimelineEvent.prototype.getElement = function () {
     this.debug('creating element for event %s', this._data.message);
     switch (this._type) {
         case 'post':
-            return this.element = $('<div class="event"><h1>' + this._data.message + '</h1></div>');
+            return this.element = this._render('post', '[' + this._data.author + ']', '<p class="message">' + this._data.message + '</p>');
         case 'activity':
-            return this.element = $('<div class="event"><h1>' + this._data.message + '</h1></div>');
+            return this.element = this._render('activity', this._data.message, '');
         default:
             throw 'Invalid timeline element type' + this._type;
     }
 };
 
+ACV.HUD.TimelineEvent.prototype._render = function (type, message, body) {
+    var date, html;
+
+    date = this._timestamp.toLocaleDateString('en-GB', {weekday: "long", year: "numeric", month: "long", day: "numeric"});
+
+    html = '<div class="event ' + type + '"><h3>' + message + '</h3><p class="timestamp">' + date + '</p>' + body + '</div>';
+
+    html = html.replace(/\[/g, '<span class="name">');
+    html = html.replace(/\]/g, '</span>');
+    return $(html);
+};

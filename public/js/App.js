@@ -101,6 +101,6 @@ ACV.App.prototype.init = function (data, container) {
 
     //debug stuff
     this.viewportManager.listen(function (ratio, lastRatio) {
-        $('#scrollpos').text(ratio);
+        $('#scrollpos').text(Math.round(ratio * 1000) / 1000);
     });
 };

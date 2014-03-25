@@ -52,7 +52,7 @@ ACV.HUD.SkillBasket.prototype.collectPowerUp = function (powerUp, sceneX, viewpo
 
         left: position.left - sceneX,
         bottom: viewportDimensions.height - position.top
-    }).appendTo(this.element.parent());
+    }).prependTo(this.element.parent());
 
     powerUp.element.animate({
         bottom: [viewportDimensions.height - position.top + 100, 'easeOutQuad']

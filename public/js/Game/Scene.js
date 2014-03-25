@@ -119,7 +119,7 @@ ACV.Game.Scene.prototype.init = function (appViewportDimensions, sceneViewportDi
     this.playerLayer.init(this.element, this._width, this.prefs.dynamicViewport.minHeight, this._lookAroundDistortion);
 
     this._appContext.player.addMovementListener(function (playerX, playerXBefore, targetPlayerX, sceneX) {
-        $('#playerX').text(playerX);
+        $('#playerX').text(Math.round(playerX));
         scene.handleTriggers(playerX, playerXBefore, targetPlayerX, sceneX);
     });
 
@@ -174,8 +174,9 @@ ACV.Game.Scene.prototype.applyLookAroundDistortion = function () {
 ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore) {
     var levelIndex;
 
-    this._x = ratio * (this._width - this._sceneViewportDimensions.width);
-    this._xBefore = ratio * (this._width - this._sceneViewportDimensions.width);
+    //this._x must be at least 0. Therefore Math.max() is required to avoid unexpected behaviour if the screen is larger than the entire scene
+    this._x = Math.max(0, ratio * (this._width - this._sceneViewportDimensions.width));
+    this._xBefore = Math.max(0, ratio * (this._width - this._sceneViewportDimensions.width));
 
     if (this._sceneViewportDimensions.heightChanged) {
         this.element.css('height', this._sceneViewportDimensions.height);
@@ -192,7 +193,7 @@ ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore) {
     this.playerLayer.updatePositions(this._x, this._sceneViewportDimensions);
 
     //TODO remove:
-    $('#sceneX').text(this._x);
+    $('#sceneX').text(Math.round(this._x));
 };
 
 /**

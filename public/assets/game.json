@@ -170,32 +170,58 @@
         "timeline": {
             "comment": "the events must be in strict ascending ordered (by playerX)",
             "prefs": {
-                "minVisibleEvents": 2,
-                "maxVisibleEvents": 2
+                "minVisibleEvents": 3,
+                "maxVisibleEvents": 5
             },
             "events": [
                 {
-                    "playerX": 1000,
+                    "playerX": 500,
                     "timestamp": "1987-09-18",
                     "type": "post",
                     "data": {
-                        "message": "A Yeah, alive finally!"
+                        "author": "Dr. Ulla Thiel",
+                        "message": "Great, there comes the baby!"
                     }
                 },
                 {
-                    "playerX": 1500,
+                    "playerX": 1000,
                     "timestamp": "1989-11-09",
-                    "type": "post",
+                    "type": "activity",
                     "data": {
-                        "message": "B no more wall"
+                        "message": "[Cold War] ends."
                     }
                 },
                 {
                     "playerX": 2000,
-                    "timestamp": "1991-01-01",
+                    "timestamp": "1999-08-24",
+                    "type": "post",
+                    "data": {
+                        "author": "Alexander Thiel",
+                        "message": "Oh wow, my first computer! Thanks [mom]. I will start programming right away. But maybe play a bit first. Don't want to end up being too nerdy ;-)"
+                    }
+                },
+                {
+                    "playerX": 3000,
+                    "timestamp": "1999-08-24",
                     "type": "activity",
                     "data": {
-                        "message": "C [Alexander] learns to walk"
+                        "message": "[Tobias] bashes [Alexander] during a Wasserschlacht."
+                    }
+                },
+                {
+                    "playerX": 4000,
+                    "timestamp": "2006-06-14",
+                    "type": "activity",
+                    "data": {
+                        "message": "[Alexander] gets his Abitur."
+                    }
+                },
+                {
+                    "playerX": 5000,
+                    "timestamp": "2014-02-21",
+                    "type": "activity",
+                    "data": {
+                        "message": "[Alexander Thiel] happily joins [Burning Man 2014]"
                     }
                 }
             ]

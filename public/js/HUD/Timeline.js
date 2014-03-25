@@ -120,7 +120,7 @@ ACV.HUD.Timeline.prototype._remove = function (event) {
     timeline._numberOfEventsVisible--;
     event.element.animate({
         opacity: 0
-    }, 500, 'easeOutCirc', function () {
+    }, 400, 'easeInCirc', function () {
         event.element.animate({
             height: 0,
             margin: 0
@@ -135,11 +135,15 @@ ACV.HUD.Timeline.prototype._prepend = function (event) {
     event.visible = true;
     timeline._numberOfEventsVisible++;
     eventElement = event.getElement();
-    eventElement.css({opacity: 0, height: 0});
 
     this._eventWrapper.prepend(eventElement);
 
-    eventElement.animate({height: 100}, 'easeOutCirc', function () {
+    var height = eventElement.height();
+    //alert(height);
+    eventElement.css({opacity: 0, height: 0});
+
+
+    eventElement.animate({height: height}, 'easeOutCirc', function () {
         eventElement.animate({
             opacity: 1
         }, 500, 'easeOutCirc')
