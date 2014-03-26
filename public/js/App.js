@@ -47,7 +47,7 @@ ACV.App.prototype.init = function (data, container) {
     if (ACV.Utils.isMobile()) {
         movementMethod = ACV.ViewportManager.SCROLL_CLICK_AND_EDGE;
         data.app.performanceSettings.lookAroundDistortion = false;
-    } else if (true ||navigator.userAgent.indexOf('WebKit') !== -1) {
+    } else if (navigator.userAgent.indexOf('WebKit') !== -1) {
         /*
          * WebKit renders the page with some flickering when using native scroll events.
          * Did in-depth profiling and debugging. A single draw-call (changing a CSS property)
