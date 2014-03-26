@@ -60,7 +60,12 @@ ACV.Game.Scene.prototype = ACV.Core.createPrototype('ACV.Game.Scene', {
     triggerManager: null,
     _width: 0,
     levels: [],
-    _sceneViewportDimensions: null,
+    _sceneViewportDimensions: {
+        width: 0,
+        height: 0,
+        widthChanged: false,
+        heightChanged: false
+    },
     _lookAroundDistortion: {
         x: 0,
         y: 0
@@ -92,14 +97,15 @@ ACV.Game.Scene.createFromData = function (appContext, element, data) {
 };
 
 /**
- *
- * @param {ViewportDimensions} appViewportDimensions
- * @param {ViewportDimensions} sceneViewportDimensions
+ * @param {ACV.HUD} hud
  */
-ACV.Game.Scene.prototype.init = function (appViewportDimensions, sceneViewportDimensions) {
+ACV.Game.Scene.prototype.init = function (hud) {
     var levelIndex, scene = this;
 
-    this._sceneViewportDimensions = sceneViewportDimensions;
+    this._sceneViewportDimensions.width = this._appContext.viewportManager.getDimensions().width;
+    this._sceneViewportDimensions.height = this._appContext.viewportManager.getDimensions().height - hud.height;
+
+    this.playerLayer.skillBasket = hud.skillBasket;
 
     this.element.css({
         bottom: 'auto',
@@ -110,7 +116,7 @@ ACV.Game.Scene.prototype.init = function (appViewportDimensions, sceneViewportDi
     this.foregroundElement = $('<div class="level-wrapper foreground" />');
 
     for (levelIndex in this.levels) {
-        this.levels[levelIndex].init(this, this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this._lookAroundDistortion, sceneViewportDimensions);
+        this.levels[levelIndex].init(this, this.backgroundElement, this.foregroundElement, this.prefs.dynamicViewport.minHeight, this._lookAroundDistortion, this._sceneViewportDimensions);
         this._width += this.levels[levelIndex].getWidth();
     }
 
@@ -121,6 +127,25 @@ ACV.Game.Scene.prototype.init = function (appViewportDimensions, sceneViewportDi
     this._appContext.player.addMovementListener(function (playerX, playerXBefore, targetPlayerX, sceneX) {
         $('#playerX').text(Math.round(playerX));
         scene.handleTriggers(playerX, playerXBefore, targetPlayerX, sceneX);
+    });
+
+    if (scene._appContext.performanceSettings.lookAroundDistortion) {
+        this._appContext.viewportManager.listenToMouseMove(function (clientX, clientY, viewportDimensions) {
+            scene.handleMouseMove(clientX, clientY, viewportDimensions);
+        });
+    }
+
+    this._appContext.viewportManager.listenToMouseClick(function (clientX, clientY, viewportDimensions) {
+        scene.handleMouseClick(clientX);
+    });
+
+    //Sink events
+    this._appContext.viewportManager.listenToScroll(function (ratio, ratioBefore, viewportDimensions) {
+        scene._sceneViewportDimensions.width = viewportDimensions.width;
+        scene._sceneViewportDimensions.height = viewportDimensions.height - hud.height;
+        scene._sceneViewportDimensions.widthChanged = viewportDimensions.widthChanged;
+        scene._sceneViewportDimensions.heightChanged = viewportDimensions.heightChanged;
+        scene.updatePositions(ratio);
     });
 
     this.element.append(this.foregroundElement);
@@ -169,9 +194,8 @@ ACV.Game.Scene.prototype.applyLookAroundDistortion = function () {
 /**
  *
  * @param {float} ratio
- * @param {float} ratioBefore
  */
-ACV.Game.Scene.prototype.updatePositions = function (ratio, ratioBefore) {
+ACV.Game.Scene.prototype.updatePositions = function (ratio) {
     var levelIndex;
 
     //this._x must be at least 0. Therefore Math.max() is required to avoid unexpected behaviour if the screen is larger than the entire scene

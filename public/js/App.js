@@ -7,6 +7,9 @@ var ACV = ACV ? ACV : {};
 
 /**
  *
+ * @type {Object} {{
+ *   hud: ACV.HUD
+ * }}
  * @constructor
  */
 ACV.App = function () {
@@ -16,15 +19,8 @@ ACV.App.prototype = ACV.Core.createPrototype('ACV.App',
     {
         _appContext: null,
         prefs: null,
-        viewportManager: null,
         scene: null,
-        hud: null,
-        _sceneViewportDimensions: {
-            width: 0,
-            height: 0,
-            widthChanged: false,
-            heightChanged: false
-        }
+        hud: null
     });
 
 ACV.App.config =
@@ -37,7 +33,7 @@ ACV.App.config =
  * @param {jQuery} container
  */
 ACV.App.prototype.init = function (data, container) {
-    var sceneElement, movementMethod, app;
+    var sceneElement, movementMethod, app, viewportManager;
     app = this;
 
     this.prefs = data.app;
@@ -49,8 +45,9 @@ ACV.App.prototype.init = function (data, container) {
 
     //Initialize viewport manager
     if (ACV.Utils.isMobile()) {
-        movementMethod = ACV.ViewportManager.SCROLL_DRAG;
-    } else if (navigator.userAgent.indexOf('WebKit') !== -1) {
+        movementMethod = ACV.ViewportManager.SCROLL_CLICK_AND_EDGE;
+        data.app.performanceSettings.lookAroundDistortion = false;
+    } else if (true ||navigator.userAgent.indexOf('WebKit') !== -1) {
         /*
          * WebKit renders the page with some flickering when using native scroll events.
          * Did in-depth profiling and debugging. A single draw-call (changing a CSS property)
@@ -63,44 +60,25 @@ ACV.App.prototype.init = function (data, container) {
     } else {
         movementMethod = ACV.ViewportManager.SCROLL_NATIVE;
     }
-    this.viewportManager = new ACV.ViewportManager(container, totalDistance, movementMethod);
-    this.viewportManager.init();
+    viewportManager = new ACV.ViewportManager(container, totalDistance, movementMethod);
+    viewportManager.init();
 
-    this._appContext = new ACV.AppContext(data.app.prefs, data.app.performanceSettings);
+    this._appContext = new ACV.AppContext(viewportManager, data.app.prefs, data.app.performanceSettings);
 
     //Prepare HUD
     this.hud = ACV.HUD.createFromData(this._appContext, data.hud);
 
     //Prepare scene
-    sceneElement = container.children('.scene');
-    this.scene = ACV.Game.Scene.createFromData(this._appContext, sceneElement, data.scene);
-    this.scene.playerLayer.skillBasket = this.hud.skillBasket;
-
-    this._sceneViewportDimensions.width = this.viewportManager.getDimensions().width;
-    this._sceneViewportDimensions.height = this.viewportManager.getDimensions().height - this.hud.height;
+    this.scene = ACV.Game.Scene.createFromData(this._appContext, container.children('.scene'), data.scene);
 
     //Initialize HUD and scene
-    this.hud.init(this.scene, container.children('.hud'), this.viewportManager);
-    this.scene.init(this.viewportManager.getDimensions(), this._sceneViewportDimensions);
+    this.hud.init(container.children('.hud'));
+    this.scene.init(this.hud);
 
-    //Sink events
-    this.viewportManager.listen(function (ratio, ratioBefore, viewportDimensions) {
-        app.hud.updateGameRatio(ratio, ratioBefore, viewportDimensions);
-
-        //Note: _sceneViewportDimensions is referenced by ACV.Game.Scene because it was submitted in this.scene.init().
-        app._sceneViewportDimensions.width = viewportDimensions.width;
-        app._sceneViewportDimensions.height = viewportDimensions.height - app.hud.height;
-        app._sceneViewportDimensions.widthChanged = viewportDimensions.widthChanged;
-        app._sceneViewportDimensions.heightChanged = viewportDimensions.heightChanged;
-        app.scene.updatePositions(ratio, ratioBefore);
-    });
-
-    //Scroll to beginning
-    $(window).scrollTop(0);
-    this.viewportManager.fireAllTriggers();
+    viewportManager.start();
 
     //debug stuff
-    this.viewportManager.listen(function (ratio, lastRatio) {
+    this._appContext.viewportManager.listenToScroll(function (ratio) {
         $('#scrollpos').text(Math.round(ratio * 1000) / 1000);
     });
 };

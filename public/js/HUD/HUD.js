@@ -67,19 +67,19 @@ ACV.HUD.prototype = ACV.Core.createPrototype('ACV.HUD', {
     _timeline: null
 });
 /**
- * @param {ACV.Game.Scene} scene
  * @param {jQuery} element
- * @param viewportManager
  */
-ACV.HUD.prototype.init = function (scene, element, viewportManager) {
-    var viewportDimensions;
+ACV.HUD.prototype.init = function (element) {
+    var hud = this;
 
     this.element = element;
     /* TODO remove height-property or use for responsiveness
      this.element.css({
      height: this.height
      });*/
+
     this.skillBasket.init(this.element);
+
     if (this.yearDisplay !== null) {
         this.yearDisplay.init(this.element);
     }
@@ -87,17 +87,9 @@ ACV.HUD.prototype.init = function (scene, element, viewportManager) {
         this.heightDisplay.init(this.element);
     }
 
-    viewportDimensions = viewportManager.getDimensions();
-
-    if (this._appContext.performanceSettings.lookAroundDistortion) {
-        this.element.on('mousemove', function (event) {
-            scene.handleMouseMove(event.clientX, event.clientY, viewportDimensions);
-        });
-        this.element.on('click', function (event) {
-            scene.handleMouseClick(event.clientX, event.clientY, viewportDimensions);
-        });
-    }
-
+    this._appContext.viewportManager.listenToScroll(function (ratio, ratioBefore, viewportDimensions) {
+        hud.updateGameRatio(ratio, ratioBefore, viewportDimensions);
+    });
 
     this._timeline.init(this.element);
 
