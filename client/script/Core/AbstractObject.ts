@@ -11,20 +11,20 @@ module ACV.Core {
             this.className = className;
         }
 
-        debug() {
-            ACV.Core.Log.debug.apply(window, [this.className].concat(Array.prototype.slice.call(arguments)));
+        debug(...args: any[]) {
+            Log.add([this.className].concat(args), 'd');
         }
 
-        info() {
-            ACV.Core.Log.info.apply(window, [this.className].concat(Array.prototype.slice.call(arguments)));
+        info(...args: any[]) {
+            Log.add([this.className].concat(args), 'i');
         }
 
-        warn() {
-            ACV.Core.Log.warn.apply(window, [this.className].concat(Array.prototype.slice.call(arguments)));
+        warn(...args: any[]) {
+            Log.add([this.className].concat(args), 'w');
         }
 
-        error() {
-            ACV.Core.Log.error.apply(window, [this.className].concat(Array.prototype.slice.call(arguments)));
+        error(...args: any[]) {
+            Log.add([this.className].concat(args), 'e');
         }
     }
 }

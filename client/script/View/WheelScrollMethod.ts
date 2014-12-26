@@ -1,65 +1,65 @@
-"use strict";
+module ACV.View {
 
-/**
- * @since 2014-03-26
- */
-var ACV = ACV ? ACV : {};
+    /**
+     * @since 2014-03-26
+     */
 
-ACV.View = ACV.View ? ACV.View : {};
-
-ACV.View.WheelScrollMethod = function (viewportManager, scrollableDistance) {
-    this._viewportManager = viewportManager;
-    this._scrollableDistance = scrollableDistance;
-};
-
-ACV.View.WheelScrollMethod.prototype = ACV.Core.createPrototype('ACV.View.WheelScrollMethod', {
-    _viewportManager         : null,
-    _scrollableDistance      : 0,
-    _containerFixedToViewport: false,
-    _containerDistanceFromTop: 0,
-    _offset                  : 0
-});
+    export class WheelScrollMethod extends ACV.Core.AbstractObject implements ScrollMethod {
 
 
-ACV.View.WheelScrollMethod.prototype.init = function (containerDistanceFromTop) {
+        private viewportManager: ViewportManager;
+        private scrollableDistance = 0;
+        private containerFixedToViewport = false;
+        private containerDistanceFromTop = 0;
+        private offset = 0;
 
-    this._containerDistanceFromTop = containerDistanceFromTop;
+        constructor(viewportManager, scrollableDistance) {
+            super('ACV.View.WheelScrollMethod');
+            this.viewportManager = viewportManager;
+            this.scrollableDistance = scrollableDistance;
+        }
 
-    var wheelScrollMethod = this;
+        init(containerDistanceFromTop) {
 
-    console.log(containerDistanceFromTop);
+            this.containerDistanceFromTop = containerDistanceFromTop;
 
 
-    $('body').on('mousewheel DOMMouseScroll', function (event) {
-        var delta = event.originalEvent.deltaY !== undefined ? event.originalEvent.deltaY : event.originalEvent.detail * 30;
-        wheelScrollMethod._offset = Math.min(wheelScrollMethod._scrollableDistance, Math.max(0, wheelScrollMethod._offset + delta));
-        wheelScrollMethod._viewportManager.handleScroll(wheelScrollMethod._offset - wheelScrollMethod._containerDistanceFromTop);
-    });
-};
+            console.log(containerDistanceFromTop);
 
-ACV.View.WheelScrollMethod.prototype.isGameActive = function () {
-    return this._containerFixedToViewport;
-};
 
-ACV.View.WheelScrollMethod.prototype.handleFixation = function (staticContainer) {
+            $('body').on('mousewheel DOMMouseScroll', (event: JQueryMouseEventObject) => {
+                var originalEvent: any = event.originalEvent,
+                    delta = originalEvent.deltaY !== undefined ? originalEvent.deltaY : originalEvent.detail * 30;
+                this.offset = Math.min(this.scrollableDistance, Math.max(0, this.offset + delta));
+                this.viewportManager.handleScroll(this.offset - this.containerDistanceFromTop);
+            });
+        }
+
+        isGameActive() {
+            return this.containerFixedToViewport;
+        }
+
+        handleFixation(staticContainer) {
 
 //Automatically start and stop to play when container touches top of the viewport
 
-    var topScrollOffset = $(window).scrollTop();
+            var topScrollOffset = $(window).scrollTop();
 
-    //this.debug('%s %s', this._offset, this._containerDistanceFromTop);
+            //this.debug('%s %s', this.offset, this.containerDistanceFromTop);
 
-    if (!this._containerFixedToViewport && topScrollOffset > this._containerDistanceFromTop) {
-        this.debug('Fixing game container to viewport %s %s', topScrollOffset, this._containerDistanceFromTop);
-        this._containerFixedToViewport = true;
-        staticContainer.addClass('fixed');
-        //this._offset = 1;
+            if (!this.containerFixedToViewport && topScrollOffset > this.containerDistanceFromTop) {
+                this.debug('Fixing game container to viewport %s %s', topScrollOffset, this.containerDistanceFromTop);
+                this.containerFixedToViewport = true;
+                staticContainer.addClass('fixed');
+                //this.offset = 1;
 
-    } else if (this._containerFixedToViewport && this._offset < this._containerDistanceFromTop) {
-        this.debug('Defixing game container from viewport %s %s', topScrollOffset, this._containerDistanceFromTop);
-        this._containerFixedToViewport = false;
-        staticContainer.removeClass('fixed');
-        this._viewportManager._updateDimensions();
-        $(window).scrollTop(this._containerDistanceFromTop - 1);
+            } else if (this.containerFixedToViewport && this.offset < this.containerDistanceFromTop) {
+                this.debug('Defixing game container from viewport %s %s', topScrollOffset, this.containerDistanceFromTop);
+                this.containerFixedToViewport = false;
+                staticContainer.removeClass('fixed');
+                this.viewportManager.updateDimensions();
+                $(window).scrollTop(this.containerDistanceFromTop - 1);
+            }
+        }
     }
-};
+}

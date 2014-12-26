@@ -1,79 +1,80 @@
-"use strict";
+module ACV.View {
 
-/**
- * @since 2014-03-26
- */
-var ACV = ACV ? ACV : {};
+    /**
+     * @since 2014-03-26
+     */
+    export class ClickAndEdgeScrollMethod extends ACV.Core.AbstractObject implements ScrollMethod {
+        private clickAnimationSocket: JQuery = null;
+        private viewportManager: ViewportManager;
+        private scrollableDistance: number;
 
-ACV.View = ACV.View ? ACV.View : {};
-
-ACV.View.ClickAndEdgeScrollMethod = function (viewportManager, scrollableDistance) {
-    this._viewportManager = viewportManager;
-    this._scrollableDistance = scrollableDistance;
-};
-
-
-ACV.View.ClickAndEdgeScrollMethod.prototype._clickAnimationSocket = null;
-
-ACV.View.ClickAndEdgeScrollMethod.prototype.init = function (containerDistanceFromTop) {
-    var nativeScrollMethod = this;
-
-
-    var a = 0.3,
-        b = 0.5,
-        c = 10,
-        d = 0.2;
-    this._viewportManager.listenToMouseClick(function (clientX, clientY, viewportDimensions) {
-
-        var w = viewportDimensions.width,
-            offset = nativeScrollMethod._viewportManager._currentScrollOffset;
-
-        if (clientX < w * a) {
-            offset -= a * w - clientX;
-        } else if (clientX > w * (1 - b)) {
-            offset += clientX - (w * (1 - b));
-        } else {
-            return;
+        constructor(viewportManager: ViewportManager, scrollableDistance: number) {
+            super('ACV.View.ClickAndEdgeScrollMethod');
+            this.viewportManager = viewportManager;
+            this.scrollableDistance = scrollableDistance;
         }
-        nativeScrollMethod._scrollToClickTarget(offset);
-    });
-    this._viewportManager.listenToMouseMove(function (clientX, clientY, viewportDimensions) {
-        var w = viewportDimensions.width,
-            offset = nativeScrollMethod._viewportManager._currentScrollOffset;
-        if (clientX < c) {
-            offset -= d * w;
-        } else if (clientX > w - c) {
-            offset += d * w;
-        } else {
-            return;
+
+
+        init(containerDistanceFromTop) {
+
+            var a = 0.3,
+                b = 0.5,
+                c = 10,
+                d = 0.2;
+            this.viewportManager.listenToMouseClick((clientX, clientY, viewportDimensions)=> {
+
+                var w = viewportDimensions.width,
+                    offset = this.viewportManager.currentScrollOffset;
+
+                if (clientX < w * a) {
+                    offset -= a * w - clientX;
+                } else if (clientX > w * (1 - b)) {
+                    offset += clientX - (w * (1 - b));
+                } else {
+                    return;
+                }
+                this.scrollToClickTarget(offset);
+            });
+            this.viewportManager.listenToMouseMove((clientX, clientY, viewportDimensions)=> {
+                var w = viewportDimensions.width,
+                    offset = this.viewportManager.currentScrollOffset;
+                if (clientX < c) {
+                    offset -= d * w;
+                } else if (clientX > w - c) {
+                    offset += d * w;
+                } else {
+                    return;
+                }
+                this.scrollToClickTarget(offset);
+            });
         }
-        nativeScrollMethod._scrollToClickTarget(offset);
-    });
-};
 
-ACV.View.ClickAndEdgeScrollMethod.prototype.isGameActive = function () {
-    return true;
-};
+        isGameActive() {
+            return true;
+        }
 
-ACV.View.ClickAndEdgeScrollMethod.prototype.handleFixation = function (staticContainer) {
-};
 
-ACV.View.ClickAndEdgeScrollMethod.prototype._scrollToClickTarget = function (targetOffset) {
+        handleFixation(staticContainer) {
+        }
 
-    var vpm = this._viewportManager;
-    var duration = ACV.Utils.calculateAnimationDuration(vpm._currentScrollOffset, targetOffset, 1);
+        private scrollToClickTarget(targetOffset) {
 
-    if (this._clickAnimationSocket === null) {
-        this._clickAnimationSocket = $('span');
-    }
-    this._clickAnimationSocket.stop().css('width', vpm._currentScrollOffset).animate({
-            width: targetOffset
-        }, {
-            duration: duration,
-            easing  : 'easeInOutQuad',
-            step    : function (now) {
-                vpm.handleScroll(now);
+            var vpm = this.viewportManager;
+            var duration = ACV.Utils.calculateAnimationDuration(vpm.currentScrollOffset, targetOffset, 1);
+
+            if (this.clickAnimationSocket === null) {
+                this.clickAnimationSocket = $('span');
             }
+            this.clickAnimationSocket.stop().css('width', vpm.currentScrollOffset).animate({
+                    width: targetOffset
+                }, {
+                    duration: duration,
+                    easing:   'easeInOutQuad',
+                    step:     function (now) {
+                        vpm.handleScroll(now);
+                    }
+                }
+            );
         }
-    );
-};
+    }
+}

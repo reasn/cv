@@ -1,6 +1,5 @@
-.settings
 .idea
-.buildpath
-.project
 vendor
-public/css/style.css
+node_modules
+dist
+typings

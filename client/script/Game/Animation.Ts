@@ -1,65 +1,47 @@
-"use strict";
+module ACV.Game {
 
-/**
- * @since 2014-05-03
- */
-var ACV = ACV ? ACV : {};
+    /**
+     * @since 2014-05-03
+     */
+    export class Animation extends ACV.Core.AbstractObject {
 
-ACV.Game = ACV.Game ? ACV.Game : {};
+        private name = '';
+        private dependency: string = '';//string Can be levelX or playerX
+        private enabledRange: any = 'auto';
+        private granularity: number = 0;
+        private action: ()=>void = null;//this: ACV.Game.Animation
+        private level: ACV.Game.Level = null;
+        private scene: ACV.Game.Scene = null;
+        private levelX: number = 0;
+        private levelXBefore: number = 0;
+        private viewportDimensions: ACV.View.ViewportDimensions = null;
 
-/**
- * @type {{
- *   level: ACV.Game.Level
- *   scene: ACV.Game.scene
- *   dependency: string Can be levelX or playerX
- *   enabledRange: string|Array.<number>
- *   levelX: number
- *   levelXBefore: number
- *   viewportDimensions: ViewportDimensions
- *   granularity: number,
- *   action: function(this:ACV.Game.Animation)
- * }}
- * @param {Object} data
- * @constructor
- */
-ACV.Game.Animation = function (data) {
-    var keys = Object.keys(data), keyIndex;
-    for (keyIndex in keys) {
-        this[keys[keyIndex]] = data[keys[keyIndex]];
+
+        constructor(data: any) {
+
+            super('ACV.Game.Animation');
+
+            var keys = Object.keys(data),
+                keyIndex;
+
+            for (keyIndex in keys) {
+                this[keys[keyIndex]] = data[keys[keyIndex]];
+            }
+        }
+
+        static createFromPrefs(data): Animation {
+            return new ACV.Game.Animation(data);
+        }
+
+        init(scene: Scene, level: Level) {
+            this.scene = scene;
+            this.level = level;
+
+            if (this.enabledRange === 'auto') {
+                this.enabledRange = [0, this.level.prefs.clip.x2];
+            } else if (this.enabledRange[1] === 'auto') {
+                this.enabledRange[1] = this.level.prefs.clip.x2;
+            }
+        }
     }
-};
-
-ACV.Game.Animation.prototype = ACV.Core.createPrototype('ACV.Game.Animation',
-    {
-        name: '',
-        dependency: '',
-        enabledRange: 'auto',
-        granularity: 0,
-        action: null,
-        level: null,
-        scene: null,
-        levelX: 0,
-        levelXBefore: 0,
-        viewportDimensions: null
-    });
-
-
-ACV.Game.Animation.createFromPrefs = function (data) {
-    return new ACV.Game.Animation(data);
-};
-
-/**
- *
- * @param {ACV.Game.Scene} scene
- * @param {ACV.Game.Level} level
- */
-ACV.Game.Animation.prototype.init = function (scene, level) {
-    this.scene = scene;
-    this.level = level;
-
-    if (this.enabledRange === 'auto') {
-        this.enabledRange = [0, this.level.prefs.clip.x2];
-    } else if (this.enabledRange[1] === 'auto') {
-        this.enabledRange[1] = this.level.prefs.clip.x2;
-    }
-};
+}

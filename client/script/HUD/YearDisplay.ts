@@ -1,75 +1,46 @@
-"use strict";
+module ACV.HUD {
 
-/**
- * @since 2013-11-19
- */
-var ACV = ACV ? ACV : {};
+    /**
+     * @since 2013-11-19
+     */
+    export class YearDisplay extends ACV.Core.AbstractObject {
 
-ACV.HUD = ACV.HUD ? ACV.HUD : {};
+        triggers: any[];
+        year: number;
+        private element: JQuery;
 
-/**
- * @type {{
- *   triggers: Array.<Object>
- *   year: number
- * }}
- * @param {Array.<Object>} triggers
- * @constructor
- */
-ACV.HUD.YearDisplay = function (triggers) {
-    this.triggers = triggers;
-    this.year = this.triggers[Object.keys(this.triggers)[0]];
-};
+        constructor(triggers: any[]) {
+            super('ACV.HUD.YearDisplay');
+            this.triggers = triggers;
+            this.year = this.triggers[Object.keys(this.triggers)[0]];
+        }
 
-/**
- *
- * @param {Object} data
- * @returns {ACV.HUD.YearDisplay}
- */
-ACV.HUD.YearDisplay.createFromData = function (data) {
-    return new ACV.HUD.YearDisplay(data.triggers);
-};
+        static createFromData(data): YearDisplay {
+            return new YearDisplay(data.triggers);
+        }
 
-ACV.HUD.YearDisplay.prototype = ACV.Core.createPrototype('ACV.HUD.YearDisplay',
-    {
-        triggers: [],
-        year: 0
-    });
+        init(hudElement: JQuery) {
+            this.element = $('<div class="year-display">' + this.year + '</div>');
+            hudElement.append(this.element);
 
-/**
- *
- * @param {jQuery} hudElement
- * @returns void
- */
-ACV.HUD.YearDisplay.prototype.init = function (hudElement) {
-    this.element = $('<div class="year-display">' + this.year + '</div>');
-    hudElement.append(this.element);
+            this.info('Year display initialized', 'd');
+        }
 
-    this.info('Year display initialized', 'd');
-};
+        update(ratio: number) {
 
-/**
- *
- * @param {number} ratio
- * @returns void
- */
-ACV.HUD.YearDisplay.prototype.update = function (ratio) {
+            for (var triggerRatio in this.triggers) {
+                if (parseFloat(triggerRatio) >= ratio) {
+                    this.setYear(this.triggers[triggerRatio]);
+                    return;
+                }
+            }
+        }
 
-    for (var triggerRatio in this.triggers) {
-        if (parseFloat(triggerRatio) >= ratio) {
-            this.setYear(this.triggers[triggerRatio]);
-            return;
+        setYear(year: number) {
+            if (this.year !== year) {
+                this.year = year;
+                this.element.text(this.year);
+            }
         }
     }
-};
-
-/**
- *
- * @param {number} year
- * @returns void
- */
-ACV.HUD.YearDisplay.prototype.setYear = function (year) {
-    if (this.year !== year) {
-        this.year = year;
-        this.element.text(this.year);
-    }
-};
+}

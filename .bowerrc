@@ -1,4 +1,4 @@
 {
-    "directory":   "dist/www/bower_components",
+    "directory":   "dist/bower_components",
     "interactive": false
 }

@@ -15,7 +15,6 @@ module ACV.HUD {
         heightDisplay: HeightDisplay;
         private element: JQuery;
         private appContext: ACV.AppContext;
-        private heightDisplay: Timeline;
         private timeline: Timeline;
 
         constructor(appContext: ACV.AppContext, prefs: any,
@@ -53,7 +52,7 @@ module ACV.HUD {
 
             timeline = ACV.HUD.Timeline.createFromData(appContext, data.timeline);
 
-            return new ACV.HUD(appContext, data.prefs, skillBasket, yearDisplay, heightDisplay, timeline);
+            return new HeadsUpDisplay(appContext, data.prefs, skillBasket, yearDisplay, heightDisplay, timeline);
         }
 
         init(element: JQuery) {

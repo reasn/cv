@@ -1,142 +1,116 @@
-"use strict";
+module ACV.Game {
 
-/**
- * @since 2013-11-19
- */
-var ACV = ACV ? ACV : {};
+    /**
+     * @since 2013-11-19
+     */
+    export class PlayerLayer extends ACV.Core.AbstractObject {
 
-ACV.Game = ACV.Game ? ACV.Game : {};
-/**
- * @type {{
- *   _appContext: ACV.AppContext
- *   prefs: Object
- *   element: jQuery
- *   player: ACV.Game.Player
- *   powerUps: Array.<ACV.Game.PowerUp>
- *   lastCollisionDetection: number
- *   playerLayer: ACV.Game.PlayerLayer
- *   zoomWrapper: jQuery
- *   _lookAroundDistortion: LookAroundDistortion
- * }}
- * @param {ACV.AppContext} appContext
- * @param {PlayerLayerPrefs} prefs
- * @param {ACV.Game.Player} player
- * @param {Array.<ACV.Game.PowerUp>} powerUps
- * @constructor
- */
-ACV.Game.PlayerLayer = function (appContext, prefs, player, powerUps) {
+        element: JQuery = null;
+        skillBasket: ACV.HUD.SkillBasket;
+        player: Player = null;
+        powerUps: PowerUp[] = [];
 
-    appContext.player = player;
+        private appContext: ACV.AppContext = null;
+        private prefs: any = null;
+        private lastCollisionDetection: number = 0;
+        private lookAroundDistortion: LookAroundDistortion = {
+            x: 0,
+            y: 0
+        };
+        private x = 0;
 
-    this._appContext = appContext;
-    this.prefs = prefs;
-    this.player = player;
-    this.powerUps = powerUps;
-};
 
-ACV.Game.PlayerLayer.createFromData = function (appContext, data) {
-    var player, powerUpIndex, powerUps = [];
+        constructor(appContext: ACV.AppContext, prefs: any, player: Player, powerUps: PowerUp[]) {
 
-    player = new ACV.Game.Player(data.player);
-    for (powerUpIndex in data.powerUps) {
-        powerUps.push(new ACV.Game.PowerUp(data.powerUps[powerUpIndex].x, data.powerUps[powerUpIndex].y, data.powerUps[powerUpIndex].type));
-    }
-    return new ACV.Game.PlayerLayer(appContext, data.prefs, player, powerUps);
-};
+            super('ACV.Game.PlayerLayer');
 
-ACV.Game.PlayerLayer.prototype = ACV.Core.createPrototype('ACV.Game.PlayerLayer',
-    {
-        _appContext: null,
-        prefs: null,
-        element: null,
-        player: null,
-        powerUps: [],
-        lastCollisionDetection: 0,
-        playerLayer: null,
-        _lookAroundDistortion: null
-    });
+            appContext.player = player;
 
-/**
- *
- * @param {jQuery} wrapperElement
- * @param {number} width
- * @param {number} minHeight
- * @param {LookAroundDistortion} lookAroundDistortion
- */
-ACV.Game.PlayerLayer.prototype.init = function (wrapperElement, width, minHeight, lookAroundDistortion) {
-    var powerUpIndex, playerLayer = this;
+            this.appContext = appContext;
+            this.prefs = prefs;
+            this.player = player;
+            this.powerUps = powerUps;
+        }
 
-    this._lookAroundDistortion = lookAroundDistortion;
+        static createFromData(appContext, data) {
+            var player, powerUpIndex, powerUps = [];
 
-    this.element = $('<div class="player-layer" />');
-    this.element.css(
-        {
-            width: width,
-            minHeight: minHeight
-        });
+            player = new ACV.Game.Player(data.player);
+            for (powerUpIndex in data.powerUps) {
+                powerUps.push(new PowerUp(data.powerUps[powerUpIndex].x, data.powerUps[powerUpIndex].y, data.powerUps[powerUpIndex].type));
+            }
+            return new ACV.Game.PlayerLayer(appContext, data.prefs, player, powerUps);
+        }
 
-    for (powerUpIndex in this.powerUps) {
-        this.powerUps[powerUpIndex].init(this.element);
-    }
+        init(wrapperElement: JQuery, width: number, minHeight: number, lookAroundDistortion: LookAroundDistortion) {
+            var powerUpIndex;
 
-    //enclose variable here to reduce calls and improve performance
+            this.lookAroundDistortion = lookAroundDistortion;
 
-    this.player.init(this.element);
+            this.element = $('<div class="player-layer" />');
+            this.element.css(
+                {
+                    width:     width,
+                    minHeight: minHeight
+                });
 
-    this.player.addMovementListener(function (playerX, playerXBefore, targetPlayerX, sceneX, viewportDimensions) {
-        playerLayer._detectCollisions(playerX, playerXBefore, sceneX, viewportDimensions);
-    });
+            for (powerUpIndex in this.powerUps) {
+                this.powerUps[powerUpIndex].init(this.element);
+            }
 
-    //Add to DOM at last to reduce draw calls
-    wrapperElement.append(this.element);
-};
+            //enclose variable here to reduce calls and improve performance
 
-/**
- *
- * @param {number} sceneX
- * @param {ViewportDimensions} viewportDimensions
- */
-ACV.Game.PlayerLayer.prototype.updatePositions = function (sceneX, viewportDimensions) {
+            this.player.init(this.element);
+
+            this.player.addMovementListener((playerX: number,
+                                             playerXBefore: number,
+                                             targetPlayerX: number,
+                                             sceneX: number,
+                                             viewportDimensions: ACV.View.ViewportDimensions) => {
+                this.detectCollisions(playerX, playerXBefore, sceneX, viewportDimensions);
+            });
+
+            //Add to DOM at last to reduce draw calls
+            wrapperElement.append(this.element);
+        }
+
+        updatePositions(sceneX: number,
+                        viewportDimensions: ACV.View.ViewportDimensions) {
 //    var granularSceneX = Math.round(sceneX / this.prefs.collisionDetectionGridSize);
 
-    //Set wrapper position to have the player stay at the same point of the scrolling scenery
-    this._x = -sceneX;
-    this.element.css('left', (this._x + this._lookAroundDistortion.x) + 'px');
-    this.player.updatePosition(sceneX, viewportDimensions);
-};
+            //Set wrapper position to have the player stay at the same point of the scrolling scenery
+            this.x = -sceneX;
+            this.element.css('left', (this.x + this.lookAroundDistortion.x) + 'px');
+            this.player.updatePosition(sceneX, viewportDimensions);
+        }
 
 
-/**
- *
- * @since 2014-03-18
- */
-ACV.Game.PlayerLayer.prototype.applyLookAroundDistortion = function () {
+        /**
+         *
+         * @since 2014-03-18
+         */
+        applyLookAroundDistortion() {
 
-    this.element.css({
-        top: this._lookAroundDistortion.y + 'px',
-        left: (this._x + this._lookAroundDistortion.x) + 'px'
-    });
-};
+            this.element.css({
+                top:  this.lookAroundDistortion.y + 'px',
+                left: (this.x + this.lookAroundDistortion.x) + 'px'
+            });
+        }
 
 
-/**
- *
- * @param {number} playerX
- * @param {number} playerXBefore
- * @param {number} sceneX
- * @param {ViewportDimensions} viewportDimensions
- * @private
- */
-ACV.Game.PlayerLayer.prototype._detectCollisions = function (playerX, playerXBefore, sceneX, viewportDimensions) {
-    var testX, powerUpIndex, powerUp;
-    testX = playerX + this.prefs.hitBox + .5 * this.player.width;
-    for (powerUpIndex in this.powerUps) {
-        powerUp = this.powerUps[powerUpIndex];
-        if (!powerUp.collected && playerX > powerUp.x && playerXBefore < powerUp.x) {
-            this.skillBasket.collectPowerUp(this.powerUps.splice(powerUpIndex, 1)[0], sceneX, viewportDimensions);
-            powerUpIndex--;
+        private detectCollisions(playerX: number,
+                                 playerXBefore: number,
+                                 sceneX: number,
+                                 viewportDimensions: ACV.View.ViewportDimensions) {
+            var testX, powerUpIndex, powerUp;
+            testX = playerX + this.prefs.hitBox + .5 * this.player.width;
+            for (powerUpIndex in this.powerUps) {
+                powerUp = this.powerUps[powerUpIndex];
+                if (!powerUp.collected && playerX > powerUp.x && playerXBefore < powerUp.x) {
+                    this.skillBasket.collectPowerUp(this.powerUps.splice(powerUpIndex, 1)[0], sceneX, viewportDimensions);
+                    powerUpIndex--;
+                }
+            }
         }
     }
-
-};
-
+}

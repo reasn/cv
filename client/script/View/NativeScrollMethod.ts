@@ -1,53 +1,53 @@
-"use strict";
+module ACV.View {
 
-/**
- * @since 2014-03-26
- */
-var ACV = ACV ? ACV : {};
+    /**
+     * @since 2014-03-26
+     */
+    export class NativeScrollMethod extends ACV.Core.AbstractObject implements ScrollMethod {
 
-ACV.View = ACV.View ? ACV.View : {};
 
-ACV.View.NativeScrollMethod = function (viewportManager, scrollableDistance) {
-    this._viewportManager = viewportManager;
-    this._scrollableDistance = scrollableDistance;
-};
+        viewportManager: ViewportManager = null;
+        scrollableDistance = 0;
+        containerFixedToViewport = false;
+        containerDistanceFromTop = 0;
 
-ACV.View.NativeScrollMethod.prototype = ACV.Core.createPrototype('ACV.View.NativeScrollMethod', {
-    _viewportManager         : null,
-    _scrollableDistance      : 0,
-    _containerFixedToViewport: false,
-    _containerDistanceFromTop: 0
-});
+        constructor(viewportManager: ViewportManager, scrollableDistance: number) {
+            super('ACV.View.NativeScrollMethod');
+            this.viewportManager = viewportManager;
+            this.scrollableDistance = scrollableDistance;
+        }
 
-ACV.View.NativeScrollMethod.prototype.init = function (containerDistanceFromTop) {
-    this._containerDistanceFromTop = containerDistanceFromTop;
+        init(containerDistanceFromTop) {
+            this.containerDistanceFromTop = containerDistanceFromTop;
 
-    var nativeScrollMethod = this;
-    $('body').css('height', this._scrollableDistance + 'px');
-    $(document).on('scroll', function () {
-        nativeScrollMethod._viewportManager.handleScroll($(document).scrollTop() - containerDistanceFromTop);
-    });
-};
 
-ACV.View.NativeScrollMethod.prototype.isGameActive = function () {
-    return this._containerFixedToViewport;
-};
+            $('body').css('height', this.scrollableDistance + 'px');
+            $(document).on('scroll', () => {
+                this.viewportManager.handleScroll($(document).scrollTop() - containerDistanceFromTop);
+            });
+        }
 
-ACV.View.NativeScrollMethod.prototype.handleFixation = function (staticContainer) {
+        isGameActive() {
+            return this.containerFixedToViewport;
+        }
 
-//Automatically start and stop to play when container touches top of the viewport
+        handleFixation(staticContainer) {
 
-    var topScrollOffset = $(window).scrollTop();
+            //Automatically start and stop to play when container touches top of the viewport
 
-    if (!this._containerFixedToViewport && topScrollOffset > this._containerDistanceFromTop) {
-        this.debug('Fixing game container to viewport %s %s', topScrollOffset, this._containerDistanceFromTop);
-        this._containerFixedToViewport = true;
-        staticContainer.addClass('fixed');
+            var topScrollOffset = $(window).scrollTop();
 
-    } else if (this._containerFixedToViewport && topScrollOffset < this._containerDistanceFromTop) {
-        this.debug('Defixing game container from viewport %s %s', topScrollOffset, this._containerDistanceFromTop);
-        this._containerFixedToViewport = false;
-        staticContainer.removeClass('fixed');
-        this._viewportManager._updateDimensions();
+            if (!this.containerFixedToViewport && topScrollOffset > this.containerDistanceFromTop) {
+                this.debug('Fixing game container to viewport %s %s', topScrollOffset, this.containerDistanceFromTop);
+                this.containerFixedToViewport = true;
+                staticContainer.addClass('fixed');
+
+            } else if (this.containerFixedToViewport && topScrollOffset < this.containerDistanceFromTop) {
+                this.debug('Defixing game container from viewport %s %s', topScrollOffset, this.containerDistanceFromTop);
+                this.containerFixedToViewport = false;
+                staticContainer.removeClass('fixed');
+                this.viewportManager.updateDimensions();
+            }
+        }
     }
-};
+}

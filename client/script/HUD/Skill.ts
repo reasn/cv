@@ -1,43 +1,43 @@
-"use strict";
+/// <reference path="../Core/AbstractObject"/>
 
-/**
- * @since 2013-11-19
- */
+module ACV.HUD {
+    /**
+     * @since 2013-11-19
+     */
+    export class Skill extends ACV.Core.AbstractObject {
 
-var ACV = ACV ? ACV : {};
+        static levels: string[] = ['unknown', 'beginner', 'intermediate', 'expert', 'master'];
 
-ACV.HUD = ACV.HUD ? ACV.HUD : {};
+        type = '';
+        level = 'unknown';
+        private element: JQuery;
 
-ACV.HUD.Skill = function (type) {
-    this.type = type;
-};
-ACV.HUD.Skill.levels = ['unknown', 'beginner', 'intermediate', 'expert', 'master'];
+        constructor(type) {
+            super('ACV.HUD.Skill');
+            this.type = type;
+        }
 
-ACV.HUD.Skill.prototype = ACV.Core.createPrototype('ACV.HUD.Skill',
-    {
-        type: '',
-        level: 'unknown'
-    });
+        init(basketElement) {
+            this.element = $('<li class="' + this.level + '">' + this.type + '</li>');
+            basketElement.append(this.element);
 
-ACV.HUD.Skill.prototype.init = function (basketElement) {
-    this.element = $('<li class="' + this.level + '">' + this.type + '</li>');
-    basketElement.append(this.element);
+            this.debug('Skill initialized');
+        }
 
-    this.debug('Skill initialized');
-};
+        improve() {
+            //Increment level
+            var nextLevel = Skill.levels[Skill.levels.indexOf(this.level) + 1];
 
-ACV.HUD.Skill.prototype.improve = function () {
-    //Increment level
-    var nextLevel = ACV.HUD.Skill.levels[ACV.HUD.Skill.levels.indexOf(this.level) + 1];
+            if (typeof (nextLevel) === 'undefined')
+                this.error('Tried to increase skill %s that already was at master level.', this.type);
 
-    if (typeof (nextLevel) === 'undefined')
-        this.error('Tried to increase skill %s that already was at master level.', this.type);
+            //Update element
+            this.element.removeClass(this.level).addClass(nextLevel);
 
-    //Update element
-    this.element.removeClass(this.level).addClass(nextLevel);
+            //Save level
+            this.level = nextLevel;
 
-    //Save level
-    this.level = nextLevel;
-
-    this.info('Skill %s improved to %s', this.type, this.level);
-};
+            this.info('Skill %s improved to %s', this.type, this.level);
+        }
+    }
+}
