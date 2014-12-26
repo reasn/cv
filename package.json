@@ -1,0 +1,33 @@
+{
+  "name":            "me.geniuz.client",
+  "version":         "0.0.1",
+  "description":     "Geniuz Client",
+  "main":            "deploy.js",
+  "author":          "Alexander Thiel <me@alexthiel.de>",
+  "license":         "proprietary",
+  "devDependencies": {
+    "grunt":                  "0.4.x",
+    "grunt-contrib-clean":    "0.6.x",
+    "grunt-contrib-copy":     "0.4.x",
+    "grunt-contrib-jshint":   "0.10.x",
+    "grunt-contrib-less ":    "0.11.x",
+    "grunt-contrib-nodeunit": "0.4.x",
+    "grunt-contrib-watch":    "0.6.x",
+    "grunt-exec":             "0.4.x",
+    "grunt-file-creator":     "0.1.x",
+    "grunt-image-resize":     "0.4.x",
+    "grunt-rename":           "0.1.x",
+    "grunt-string-replace":   "1.0.x",
+    "grunt-typescript":       "",
+    "grunt-version":          "0.3.x",
+    "dateformat":             "1.0.x",
+    "request":                "2.47.x"
+  },
+  "scripts":         {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository":      {
+    "type": "git",
+    "url":  "git@bitbucket.org:quizfunk/client.git"
+  }
+}
