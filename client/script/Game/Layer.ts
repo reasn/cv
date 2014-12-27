@@ -3,32 +3,29 @@ module ACV.Game {
      * @since 2013-11-03
      */
 
-    export interface LookAroundDistortion {
+    export interface ILookAroundDistortion {
         x: number;// - Between -50 and +50
         y: number;// - Between -50 and +50
     }
 
-    export interface FlySprite {
+    export interface IFlySprite {
         y?: number;
         height?: number;
-        static?: boolean;
+        isStatic?: boolean;
     }
 
 
     export class Layer extends ACV.Core.AbstractObject {
         element: JQuery = null;
 
-        private prefs: any = null;
+        prefs: ACV.Data.ILayerPrefs;
         private sprites: ACV.Game.Sprite[] = [];
-        private appContext: ACV.AppContext = null;
-        private handle: string = '';
+        private appContext: ACV.AppContext;
+        private handle: string;
         private x: number = 0;
-        private lookAroundDistortion: LookAroundDistortion = {
-            x: 0,
-            y: 0
-        };
+        private lookAroundDistortion: ILookAroundDistortion;
 
-        constructor(appContext: ACV.AppContext, handle: string, prefs: any, sprites: ACV.Game.Sprite[]) {
+        constructor(appContext: ACV.AppContext, handle: string, prefs: ACV.Data.ILayerPrefs, sprites: ACV.Game.Sprite[]) {
 
             super('ACV.Game.Layer');
 
@@ -39,12 +36,18 @@ module ACV.Game {
             this.handle = handle;
             this.prefs = prefs;
             this.sprites = sprites;
+            this.lookAroundDistortion = {
+                x: 0,
+                y: 0
+            };
         }
 
-        static createFromPrefs(appContext: ACV.AppContext, data: any) {
-            var spriteIndex, sprites = [];
+        static createFromPrefs(appContext: ACV.AppContext, data: ACV.Data.ILayerData) {
+            var spriteIndex: any,
+                sprites: Sprite[] = [];
+
             for (spriteIndex in data.sprites) {
-                sprites.push(ACV.Game.Sprite.createFromPrefs(appContext, data.sprites[spriteIndex]));
+                sprites.push(Sprite.createFromPrefs(appContext, data.sprites[spriteIndex]));
             }
             return new Layer(appContext, data.handle, data.prefs, sprites);
         }
@@ -53,9 +56,10 @@ module ACV.Game {
         init(sceneElement: JQuery,
              minHeight: number,
              viewportDimensions: ACV.View.ViewportDimensions,
-             flySprites: {[handle:string]:FlySprite}) {
+             flySprites: {[handle:string]:IFlySprite}) {
 
-            var spriteIndex, spriteWrapper;
+            var spriteIndex: any,
+                spriteWrapper: JQuery;
 
             //TODO remove handles in productive environment
             this.element = $('<div class="layer" data-handle="' + this.handle + '"><div class="sprite-wrapper" /></div>');
@@ -84,7 +88,7 @@ module ACV.Game {
          * @param {!number} levelX The amount of pixels that already left the viewport on the left side. Positive integer
          * @param {!number} levelXBefore
          * @param {!number} levelClipOffset
-         * @param {!Array<FlySprite>} flySprites
+         * @param {!Array<IFlySprite>} flySprites
          * @param {!ViewportDimensions}  viewportDimensions
          * @version 2014-03-05
          */
@@ -93,13 +97,14 @@ module ACV.Game {
                         levelXBefore: number,
                         levelClipOffset: number,
                         viewportDimensions: ACV.View.ViewportDimensions,
-                        flySprites: {[handle:string]:FlySprite}) {
+                        flySprites: {[handle:string]:IFlySprite}) {
 
             if (viewportDimensions.heightChanged) {
                 this.recalculateSpritePositions(viewportDimensions, flySprites);
             }
             this.x = -1 * (levelOffset + levelClipOffset + this.prefs.speed * levelX - this.prefs.offset);
-            this.element.css('left', (this.x + this.lookAroundDistortion.x) + 'px');
+            this.element.css('transform', 'translateX(' + (this.x + this.lookAroundDistortion.x) + 'px)');
+            //this.element.css('left', (this.x + this.lookAroundDistortion.x) + 'px');
         }
 
         /**
@@ -107,12 +112,12 @@ module ACV.Game {
          */
         private positionSprite(sprite: ACV.Game.Sprite,
                                viewportDimensions: ACV.View.ViewportDimensions,
-                               flySprites: {[handle:string]:FlySprite}) {
+                               flySprites: {[handle:string]:IFlySprite}) {
 
             /* flySprite is a flyweight representation of a Sprite */
-            var cssProps: any = {},
-                flySprite: FlySprite = {
-                    static: true
+            var cssProps: {top?:number; bottom?:number; height?:number;} = {},
+                flySprite: IFlySprite = {
+                    isStatic: true
                 };
 
 
@@ -122,7 +127,7 @@ module ACV.Game {
                     viewportDimensions.height,
                     flySprites
                 ]);
-                flySprite.static = false;
+                flySprite.isStatic = false;
 
             } else if (typeof sprite.y === 'number') {
                 flySprite.y = sprite.y;
@@ -132,15 +137,15 @@ module ACV.Game {
             }
 
             if (sprite.topAligned) {
-                cssProps.top = flySprite.y + 'px';
+                cssProps.top = flySprite.y;
             } else {
-                cssProps.bottom = flySprite.y + 'px';
+                cssProps.bottom = flySprite.y;
             }
 
             //Calculate height
             if (typeof sprite.height === 'function') {
                 flySprite.height = sprite.height.apply(flySprite, [this.appContext.prefs.maxLookAroundDistortion, viewportDimensions.height, flySprites]);
-                flySprite.static = false;
+                flySprite.isStatic = false;
 
             } else if (typeof sprite.height === 'number') {
                 flySprite.height = sprite.height;
@@ -154,13 +159,15 @@ module ACV.Game {
             if (flySprites[this.handle] === undefined) {
                 flySprites[this.handle] = {};
             }
-            flySprites[this.handle][sprite.handle] = flySprite;
+            //TODO remove any cast
+            (<any>flySprites[this.handle])[sprite.handle] = flySprite;
 
             sprite.element.css(cssProps);
         }
 
-        private recalculateSpritePositions(viewportDimensions: ACV.View.ViewportDimensions, flySprites: {[handle:string]:FlySprite}) {
-            var spriteIndex, sprite;
+        private recalculateSpritePositions(viewportDimensions: ACV.View.ViewportDimensions, flySprites: {[handle:string]:IFlySprite}) {
+            var spriteIndex: any,
+                sprite: Sprite;
             this.info('Recalculating y positions of all sprites');
             for (spriteIndex in this.sprites) {
                 sprite = this.sprites[spriteIndex];
@@ -174,7 +181,7 @@ module ACV.Game {
         /**
          * @since 2014-03-18
          */
-        applyLookAroundDistortion(lookAroundDistortion: LookAroundDistortion) {
+        applyLookAroundDistortion(lookAroundDistortion: ILookAroundDistortion) {
 
             /*
              * We use Math.floor() instead of Math.round() to obtain a
@@ -185,8 +192,9 @@ module ACV.Game {
             this.lookAroundDistortion.y = Math.floor(lookAroundDistortion.y * this.prefs.speed);
 
             this.element.css({
-                top:  this.lookAroundDistortion.y + 'px',
-                left: (this.x + this.lookAroundDistortion.x) + 'px'
+                top:       this.lookAroundDistortion.y + 'px',
+                transform: 'translateX(' + (this.x + this.lookAroundDistortion.x) + 'px)'
+                //left: (this.x + this.lookAroundDistortion.x) + 'px'
             });
         }
     }

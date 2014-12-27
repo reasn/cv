@@ -5,6 +5,7 @@
   "author":          "Alexander Thiel <me@alexthiel.de>",
   "license":         "proprietary",
   "devDependencies": {
+    "del":                   "1.1.x",
     "event-stream":          "3.1.x",
     "gulp":                  "3.8.x",
     "gulp-autoprefixer":     "2.0.x",

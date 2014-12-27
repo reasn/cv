@@ -16,20 +16,16 @@ module ACV {
         };
 
         private appContext: AppContext = null;
-        prefs: any = null;
+        prefs: ACV.Data.IAppPrefs = null;
         scene: ACV.Game.Scene = null;
         hud: ACV.HUD.HeadsUpDisplay = null;
 
-        /**
-         *
-         * @param {Object} data
-         * @param {jQuery} container
-         */
-        init(data, container) {
-            var sceneElement, movementMethod, app, viewportManager;
-            app = this;
+        init(data: ACV.Data.IAppData, container: JQuery) {
+            var sceneElement: JQuery,
+                movementMethod: number,
+                viewportManager: ACV.View.ViewportManager;
 
-            this.prefs = data.app;
+            this.prefs = data.prefs;
             var totalDistance = this.prefs.totalDistance;
 
             if (ACV.Utils.isIE()) {
@@ -39,7 +35,7 @@ module ACV {
             //Initialize viewport manager
             if (ACV.Utils.isMobile()) {
                 movementMethod = ACV.View.ViewportManager.SCROLL_CLICK_AND_EDGE;
-                data.app.performanceSettings.lookAroundDistortion = false;
+                this.prefs.performanceSettings.lookAroundDistortion = false;
             } else if (navigator.userAgent.indexOf('WebKit') !== -1) {
                 /*
                  * WebKit renders the page with some flickering when using native scroll events.
@@ -56,7 +52,7 @@ module ACV {
             viewportManager = new ACV.View.ViewportManager(container, totalDistance, movementMethod);
             viewportManager.init();
 
-            this.appContext = new ACV.AppContext(viewportManager, data.app.prefs, data.app.performanceSettings);
+            this.appContext = new ACV.AppContext(viewportManager, data.prefs, data.prefs.performanceSettings);
 
             //Prepare HUD
             this.hud = ACV.HUD.HeadsUpDisplay.createFromData(this.appContext, data.hud);

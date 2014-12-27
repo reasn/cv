@@ -6,8 +6,8 @@ module ACV.View {
     export class NativeScrollMethod extends ACV.Core.AbstractObject implements ScrollMethod {
 
 
-        viewportManager: ViewportManager = null;
-        scrollableDistance = 0;
+        viewportManager: ViewportManager;
+        scrollableDistance: number;
         containerFixedToViewport = false;
         containerDistanceFromTop = 0;
 
@@ -17,7 +17,7 @@ module ACV.View {
             this.scrollableDistance = scrollableDistance;
         }
 
-        init(containerDistanceFromTop) {
+        init(containerDistanceFromTop: number) {
             this.containerDistanceFromTop = containerDistanceFromTop;
 
 
@@ -31,7 +31,7 @@ module ACV.View {
             return this.containerFixedToViewport;
         }
 
-        handleFixation(staticContainer) {
+        handleFixation(staticContainer: JQuery) {
 
             //Automatically start and stop to play when container touches top of the viewport
 

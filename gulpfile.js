@@ -1,17 +1,16 @@
 var gulp            = require('gulp'),
+    del             = require('del'),
     gulpLoadPlugins = require('gulp-load-plugins'),
     plugins         = gulpLoadPlugins({lazy: false});
-/*
- typescript   = require('gulp-typescript'),
- concat       = require('gulp-concat-sourcemap'),
- sourcemaps   = require('gulp-sourcemaps'),
- copy         = require('gulp-copy'),
- less         = require('gulp-less'),
- autoprefixer = require('gulp-autoprefixer'),
- minifycss    = require('gulp-minify-css'),
- rename       = require('gulp-rename'),
- eventStream  = require('event-stream');
- */
+
+
+gulp.task('default', ['clean'], function () {
+    gulp.start('style', 'script', 'assets', 'view');
+});
+
+gulp.task('clean', function (cb) {
+    del(['./dist/assets', './dist/css', './dist/js', './dist/index.html'], cb)
+});
 
 gulp.task('style', function () {
     gulp.src('./client/style/style.less')
@@ -25,7 +24,9 @@ gulp.task('style', function () {
 var tsProject = plugins.typescript.createProject({
     declarationFiles:  true,
     noExternalResolve: true,
-    sortOutput:        true
+    sortOutput:        true,
+    noImplicitAny:     true,
+    target:            'ES5'
 });
 
 gulp.task('script', function () {

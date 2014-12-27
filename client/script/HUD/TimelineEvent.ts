@@ -12,10 +12,10 @@ module ACV.HUD {
         playerX: number;
         private  timestamp: Date;
         private  type: string;
-        private  data: any;
+        private  data: ACV.Data.ITimelinePost;
         element: JQuery = null;
 
-        constructor(playerX: number, timestamp: Date, type: string, data: string) {
+        constructor(playerX: number, timestamp: Date, type: string, data: ACV.Data.ITimelinePost) {
             super('ACV.HUD.TimelineEvent');
             this.playerX = playerX;
             this.timestamp = timestamp;
@@ -23,12 +23,12 @@ module ACV.HUD {
             this.data = data;
         }
 
-        static createFromData(rawElement): TimelineEvent {
+        static createFromData(data: ACV.Data.ITimelineElementData): TimelineEvent {
             return new ACV.HUD.TimelineEvent(
-                rawElement.playerX,
-                new Date(rawElement.timestamp),
-                rawElement.type,
-                rawElement.data);
+                data.playerX,
+                new Date(data.timestamp),
+                data.type,
+                data.data);
         }
 
         removeFromDom() {
@@ -58,8 +58,9 @@ module ACV.HUD {
             }
         }
 
-        private render(type, message, body) {
-            var date, html;
+        private render(type: string, message: string, body: string) {
+            var date: string,
+                html: string;
 
             date = this.timestamp.toLocaleDateString('en-GB', {
                 weekday: "long",

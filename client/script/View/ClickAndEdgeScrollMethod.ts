@@ -15,7 +15,7 @@ module ACV.View {
         }
 
 
-        init(containerDistanceFromTop) {
+        init(containerDistanceFromTop: number) {
 
             var a = 0.3,
                 b = 0.5,
@@ -54,10 +54,10 @@ module ACV.View {
         }
 
 
-        handleFixation(staticContainer) {
+        handleFixation(staticContainer: JQuery) {
         }
 
-        private scrollToClickTarget(targetOffset) {
+        private scrollToClickTarget(targetOffset: number) {
 
             var vpm = this.viewportManager;
             var duration = ACV.Utils.calculateAnimationDuration(vpm.currentScrollOffset, targetOffset, 1);

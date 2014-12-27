@@ -21,17 +21,20 @@ module ACV.Game {
              this.debug(this.triggers);*/
         }
 
-        static createFromData(triggerData:any[], performanceSettings:ACV.IPerformanceSettings) {
-            var triggerIndex, triggers = [];
+        static createFromData(triggerData: ACV.Data.ITriggerData[], performanceSettings: ACV.Data.IPerformanceSettings) {
+            var triggerIndex: any,
+                triggers: Trigger[] = [];
 
             for (triggerIndex in triggerData) {
-                triggers.push(ACV.Game.Trigger.createFromData(triggerData[triggerIndex], performanceSettings));
+                triggers.push(Trigger.createFromData(triggerData[triggerIndex], performanceSettings));
             }
-            return new ACV.Game.TriggerManager(triggers);
+            return new TriggerManager(triggers);
         }
 
         check(playerX: number, playerXBefore: number, targetPlayerX: number, sceneX: number) {
-            var triggerIndex, trigger, action;
+            var triggerIndex: any,
+                trigger: Trigger,
+                action: ITriggerAction;
 
             //this.debug('PlayerX always: %s    %s', playerX, playerXBefore);
             for (triggerIndex in this.triggers) {
@@ -51,14 +54,11 @@ module ACV.Game {
          *
          * History:
          * 2014-03-01 Added player.jumpAndStay, sprite.show and sprite.hide
-         * @param {Object} action
-         * @returns {*}
-         * @private
          * @version 2014-03-01
          * @since 2013-11-24
          * @author Alexander Thiel
          */
-        private execute(action:any) {
+        private execute(action: ITriggerAction): void {
 
             switch (action.action) {
                 case 'sprite.show':

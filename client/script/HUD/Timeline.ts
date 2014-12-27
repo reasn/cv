@@ -21,12 +21,13 @@ module ACV.HUD {
 
 
         static createFromData(appContext: ACV.AppContext, data: any): Timeline {
-            var eventIndex, timelineElements = [];
+            var eventIndex: any,
+                timelineEvents: TimelineEvent[] = [];
 
             for (eventIndex in data.events) {
-                timelineElements.push(TimelineEvent.createFromData(data.events[eventIndex]));
+                timelineEvents.push(TimelineEvent.createFromData(data.events[eventIndex]));
             }
-            return new Timeline(appContext, data.prefs, timelineElements);
+            return new Timeline(appContext, data.prefs, timelineEvents);
         }
 
         init(hudElement: JQuery) {
@@ -46,7 +47,9 @@ module ACV.HUD {
         }
 
         private update(playerX: number, playerXBefore: number) {
-            var eventIndex, event, lastIndexRemoved = -1;
+            var eventIndex: any,
+                event: TimelineEvent,
+                lastIndexRemoved = -1;
 
             for (eventIndex in this.events) {
                 event = this.events[eventIndex];
@@ -103,7 +106,8 @@ module ACV.HUD {
         }
 
         private prepend(event: TimelineEvent) {
-            var eventElement;
+            var eventElement: JQuery;
+
             event.visible = true;
             this.numberOfEventsVisible++;
             eventElement = event.getElement();
@@ -123,7 +127,7 @@ module ACV.HUD {
         }
 
 
-        private append(event) {
+        private append(event: TimelineEvent) {
             event.visible = true;
             this.eventWrapper.append(event.getElement());
             this.numberOfEventsVisible++;

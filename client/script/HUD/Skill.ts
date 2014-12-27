@@ -8,16 +8,16 @@ module ACV.HUD {
 
         static levels: string[] = ['unknown', 'beginner', 'intermediate', 'expert', 'master'];
 
-        type = '';
+        type: string;
         level = 'unknown';
         private element: JQuery;
 
-        constructor(type) {
+        constructor(type: string) {
             super('ACV.HUD.Skill');
             this.type = type;
         }
 
-        init(basketElement) {
+        init(basketElement: JQuery) {
             this.element = $('<li class="' + this.level + '">' + this.type + '</li>');
             basketElement.append(this.element);
 

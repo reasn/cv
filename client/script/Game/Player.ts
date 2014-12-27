@@ -1,6 +1,6 @@
 module ACV.Game {
 
-    export interface PlayerMovementListener {
+    export interface IPlayerMovementListener {
         (playerX: number,
          payerXBefore: number,
          targetPlayerX?: number,
@@ -16,18 +16,18 @@ module ACV.Game {
         static JUMP_DURATION = 200;
         static JUMP_DISTANCE = 100;
 
-        prefs: any = null;
+        prefs: ACV.Data.IPlayerPrefs;
         width: number = 0;
 
         private element: JQuery = null;
         private x: number = 0;
-        private y: number = 0;
+        private y: number;
         private height: number = 0;
         private lastCoarseX: number;
-        private movementListeners: PlayerMovementListener[] = [];
+        private movementListeners: IPlayerMovementListener[] = [];
         private lastTriggeredX: number = 0;
 
-        constructor(prefs: any) {
+        constructor(prefs: ACV.Data.IPlayerPrefs) {
             super('AVG.Game.Player');
 
             this.prefs = prefs;
@@ -38,7 +38,7 @@ module ACV.Game {
          *
          * @param {jQuery} playerLayerElement
          */
-        init(playerLayerElement) {
+        init(playerLayerElement: JQuery) {
 
             this.debug('Initializing player');
 
@@ -50,24 +50,24 @@ module ACV.Game {
             this.debug('Player initialized');
         }
 
-        addMovementListener(callback: PlayerMovementListener) {
+        addMovementListener(callback: IPlayerMovementListener) {
             this.movementListeners.push(callback)
         }
 
         /**
          * @since 2013-11-24
          */
-        setAge(age: number) {
-            this.width = this.prefs.ages[age].width;
-            this.height = this.prefs.ages[age].height;
+        setAge(ageHandle: string) {
+            this.width = this.prefs.ages[ageHandle].width;
+            this.height = this.prefs.ages[ageHandle].height;
             this.element.css(
                 {
                     width:  this.width,
                     height: this.height
                 });
             this.element.removeClass(Object.keys(this.prefs.ages).join(' '));
-            this.element.addClass('' + age);
-            this.debug('Player\'s age set to %s.', age);
+            this.element.addClass('' + ageHandle);
+            this.debug('Player\'s age set to %s.', ageHandle);
         }
 
         setPosition(x: number) {
@@ -134,7 +134,9 @@ module ACV.Game {
         }
 
         updatePosition(sceneX: number, viewportDimensions: ACV.View.ViewportDimensions) {
-            var targetX, viewportPositionRatio, speed = 1;
+            var targetX: number,
+                viewportPositionRatio: number,
+                speed = 1;
 
             //Player is out of sight to the right. Set him right outside the left viewport boundary
             if (this.x < sceneX - this.width) {
@@ -157,7 +159,8 @@ module ACV.Game {
         }
 
         moveTo(targetX: number, sceneX: number, speed: number, viewportDimensions: ACV.View.ViewportDimensions) {
-            var classesToAdd, classesToRemove;
+            var classesToAdd: string,
+                classesToRemove: string;
 
             /*
              * Make player run faster if he was already moving (Not checking the animation queue
@@ -183,7 +186,8 @@ module ACV.Game {
                     duration: Math.abs(this.x - targetX) / speed,
                     queue:    'walk',
                     step:     (now) => {
-                        var coarseX, listenerIndex;
+                        var coarseX: number,
+                            listenerIndex: any;
 
                         coarseX = Math.floor(now / this.prefs.movementTriggerGranularity);
                         this.x = now;

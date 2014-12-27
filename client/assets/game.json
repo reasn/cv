@@ -1,11 +1,9 @@
 {
-    "app": {
+    "prefs": {
         "scrollVertical": true,
         "totalDistance": 5000,
-        "prefs": {
-            "assetPath": "assets",
-            "maxLookAroundDistortion": 50
-        },
+        "assetPath": "assets",
+        "maxLookAroundDistortion": 50,
         "ieFactor": 2,
         "performanceSettings": {
             "yearDisplay": true,

@@ -2,6 +2,13 @@
 
 module ACV.Game {
 
+    interface ISceneViewportDimensions {
+        width:         number;
+        height:        number;
+        widthChanged:  boolean;
+        heightChanged: boolean;
+    }
+
     /**
      * @since 2013-11-03
      */
@@ -19,26 +26,17 @@ module ACV.Game {
         private foregroundElement: JQuery = null;
         private triggerManager: TriggerManager = null;
         private levels: Level[] = [];
-
         private appContext: ACV.AppContext = null;
         private width: number = 0;
-        private sceneViewportDimensions = {
-            width:         0,
-            height:        0,
-            widthChanged:  false,
-            heightChanged: false
-        };
-        private lookAroundDistortion: LookAroundDistortion = {
-            x: 0,
-            y: 0
-        };
+        private sceneViewportDimensions: ISceneViewportDimensions;
+        private lookAroundDistortion: ILookAroundDistortion;
         private x: number = 0;
         private xBefore: number = 0;
         private element: JQuery;
 
         constructor(appContext: ACV.AppContext,
                     element: JQuery,
-                    prefs: any,
+                    prefs: ACV.Data.IScenePrefs,
                     levels: Level[],
                     playerLayer: PlayerLayer,
                     triggerManager: TriggerManager) {
@@ -52,16 +50,29 @@ module ACV.Game {
             this.triggerManager = triggerManager;
             this.triggerManager.scene = this;
             this.levels = levels;
+            this.sceneViewportDimensions = {
+                width:         0,
+                height:        0,
+                widthChanged:  false,
+                heightChanged: false
+            };
+            this.lookAroundDistortion = {
+                x: 0,
+                y: 0
+            };
         }
 
-        static createFromData(appContext: ACV.AppContext, element: JQuery, data: any): Scene {
-            var levels = [], playerLayer, triggerManager, levelIndex;
+        static createFromData(appContext: ACV.AppContext, element: JQuery, data: ACV.Data.ISceneData): Scene {
+            var levels: Level[] = [],
+                playerLayer: PlayerLayer,
+                triggerManager: TriggerManager,
+                levelIndex: any;
 
-            playerLayer = ACV.Game.PlayerLayer.createFromData(appContext, data.playerLayer);
+            playerLayer = PlayerLayer.createFromData(appContext, data.playerLayer);
 
             for (levelIndex in data.levels) {
                 if (data.levels[levelIndex].enabled) {
-                    levels.push(ACV.Game.Level.createFromPrefs(appContext, data.levels[levelIndex]));
+                    levels.push(Level.createFromPrefs(appContext, data.levels[levelIndex]));
                 }
             }
 
@@ -70,7 +81,7 @@ module ACV.Game {
         }
 
         init(hud: ACV.HUD.HeadsUpDisplay) {
-            var levelIndex, scene = this;
+            var levelIndex: any;
 
             this.sceneViewportDimensions.width = this.appContext.viewportManager.getDimensions().width;
             this.sceneViewportDimensions.height = this.appContext.viewportManager.getDimensions().height - hud.height;
@@ -94,34 +105,34 @@ module ACV.Game {
             this.element.append(this.backgroundElement);
             this.playerLayer.init(this.element, this.width, this.prefs.dynamicViewport.minHeight, this.lookAroundDistortion);
 
-            this.appContext.player.addMovementListener(function (playerX, playerXBefore, targetPlayerX, sceneX) {
+            this.appContext.player.addMovementListener((playerX, playerXBefore, targetPlayerX, sceneX)=> {
                 $('#playerX').text(Math.round(playerX));
-                scene.handleTriggers(playerX, playerXBefore, targetPlayerX, sceneX);
+                this.handleTriggers(playerX, playerXBefore, targetPlayerX, sceneX);
             });
 
-            if (scene.appContext.performanceSettings.lookAroundDistortion) {
-                this.appContext.viewportManager.listenToMouseMove(function (clientX, clientY, viewportDimensions) {
-                    scene.handleMouseMove(clientX, clientY, viewportDimensions);
+            if (this.appContext.performanceSettings.lookAroundDistortion) {
+                this.appContext.viewportManager.listenToMouseMove((clientX: number, clientY: number, viewportDimensions: ACV.View.ViewportDimensions) => {
+                    this.handleMouseMove(clientX, clientY, viewportDimensions);
                 });
             }
 
-            this.appContext.viewportManager.listenToMouseClick(function (clientX, clientY, viewportDimensions) {
-                scene.handleMouseClick(clientX);
+            this.appContext.viewportManager.listenToMouseClick((clientX, clientY, viewportDimensions)=> {
+                this.handleMouseClick(clientX);
             });
 
             //Sink events
-            this.appContext.viewportManager.listenToScroll(function (ratio, ratioBefore, viewportDimensions) {
-                scene.sceneViewportDimensions.width = viewportDimensions.width;
-                scene.sceneViewportDimensions.height = viewportDimensions.height - hud.height;
-                scene.sceneViewportDimensions.widthChanged = viewportDimensions.widthChanged;
-                scene.sceneViewportDimensions.heightChanged = viewportDimensions.heightChanged;
-                scene.updatePositions(ratio);
+            this.appContext.viewportManager.listenToScroll((ratio, ratioBefore, viewportDimensions)=> {
+                this.sceneViewportDimensions.width = viewportDimensions.width;
+                this.sceneViewportDimensions.height = viewportDimensions.height - hud.height;
+                this.sceneViewportDimensions.widthChanged = viewportDimensions.widthChanged;
+                this.sceneViewportDimensions.heightChanged = viewportDimensions.heightChanged;
+                this.updatePositions(ratio);
             });
 
             this.element.append(this.foregroundElement);
         }
 
-        handleMouseMove(clientX, clientY, appViewportDimensions) {
+        handleMouseMove(clientX: number, clientY: number, appViewportDimensions: ACV.View.ViewportDimensions) {
             /*
              * We use Math.floor() instead of Math.round() to obtain a
              * continuous distribution of the results and therefore
@@ -146,7 +157,7 @@ module ACV.Game {
          * @since 2014-03-18
          */
         applyLookAroundDistortion() {
-            var levelIndex;
+            var levelIndex: any;
 
             for (levelIndex in this.levels) {
                 if (this.levels[levelIndex].visible) {
@@ -158,7 +169,7 @@ module ACV.Game {
         }
 
         updatePositions(ratio: number) {
-            var levelIndex;
+            var levelIndex: any;
 
             //this.x must be at least 0. Therefore Math.max() is required to avoid unexpected behaviour if the screen is larger than the entire scene
             this.x = Math.max(0, ratio * (this.width - this.sceneViewportDimensions.width));
@@ -187,7 +198,9 @@ module ACV.Game {
         }
 
         private handleViewportChange() {
-            var levelIndex, layerIndex, elementsToAlter;
+            var levelIndex: any,
+                layerIndex: any,
+                elementsToAlter: JQuery;
 
 
             elementsToAlter = this.playerLayer.element;

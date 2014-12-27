@@ -1,12 +1,12 @@
 module ACV.View {
 
-    export interface ViewportScrollListener {
-        (lastRatio: number, ratioBefore: number, viewportDimensions: ViewportDimensions):void;
+    export interface IViewportScrollListener {
+        (lastRatio: number, ratioBefore: number, viewportDimensions: ViewportDimensions): void;
     }
-    export interface ViewportMouseClickListener {
+    export interface IViewportMouseClickListener {
         (clientX: number, clientY: number, viewportDimensions: ViewportDimensions):void;
     }
-    export interface ViewportMouseMoveListener {
+    export interface IViewportMouseMoveListener {
         (clientX: number, clientY: number, viewportDimensions: ViewportDimensions):void;
     }
 
@@ -22,9 +22,9 @@ module ACV.View {
         private staticContainer: JQuery;
         private scrollableDistance: number;
         currentScrollOffset: number = 0;
-        private scrollListeners: ViewportScrollListener[] = [];
-        private clickListeners: ViewportMouseClickListener[] = [];
-        private moveListeners: ViewportMouseMoveListener[] = [];
+        private scrollListeners: IViewportScrollListener[] = [];
+        private clickListeners: IViewportMouseClickListener[] = [];
+        private moveListeners: IViewportMouseMoveListener[] = [];
         private dimensions: ViewportDimensions = {
 
             width:         0,
@@ -45,7 +45,7 @@ module ACV.View {
 
         private containerDistanceFromTop: number;
 
-        private lastRatio:number;
+        private lastRatio: number;
 
         constructor(staticContainer: JQuery, scrollableDistance: number, moveMethod: number) {
             super('ACV.ViewportManager');
@@ -55,11 +55,8 @@ module ACV.View {
         }
 
         init() {
-            var vpm, w, body;
-
-            vpm = this;
-            w = $(window);
-            body = $('body');
+            var w = $(window),
+                body = $('body');
 
             this.containerDistanceFromTop = this.staticContainer.position().top;
 
@@ -78,27 +75,27 @@ module ACV.View {
 
             this.scrollMethod.init(this.containerDistanceFromTop);
 
-            w.on('resize', function () {
-                vpm.handleResize();
-                vpm.fire();
+            w.on('resize', () => {
+                this.handleResize();
+                this.fire();
             });
 
-            w.on('mousemove', function (event) {
-                var listenerIndex;
-                for (listenerIndex in vpm.moveListeners) {
-                    vpm.moveListeners[listenerIndex](event.clientX, event.clientY, vpm.dimensions);
+            w.on('mousemove', (event: JQueryEventObject) => {
+                var listenerIndex: any;
+                for (listenerIndex in this.moveListeners) {
+                    this.moveListeners[listenerIndex](event.clientX, event.clientY, this.dimensions);
                 }
             });
 
-            w.on('click', function (event) {
-                var listenerIndex;
-                for (listenerIndex in vpm.clickListeners) {
-                    vpm.clickListeners[listenerIndex](event.clientX, event.clientY, vpm.dimensions);
+            w.on('click', (event: JQueryEventObject)=> {
+                var listenerIndex: any;
+                for (listenerIndex in this.clickListeners) {
+                    this.clickListeners[listenerIndex](event.clientX, event.clientY, this.dimensions);
                 }
             });
 
-            vpm.dimensions.width = w.width();
-            vpm.dimensions.height = w.height();
+            this.dimensions.width = w.width();
+            this.dimensions.height = w.height();
 
             this.info('ViewportManager initialized');
         }
@@ -110,7 +107,7 @@ module ACV.View {
             this.fire();
         }
 
-        handleScroll(newOffset) {
+        handleScroll(newOffset: number) {
             this.currentScrollOffset = Math.min(this.scrollableDistance, newOffset);
             this.dimensions.widthChanged = false;
             this.dimensions.heightChanged = false;
@@ -153,7 +150,7 @@ module ACV.View {
         }
 
         private fire() {
-            var ratioBefore, listenerIndex, distance;
+            var ratioBefore: number, listenerIndex: any;
 
             ratioBefore = this.lastRatio;
             this.lastRatio = Math.max(0, Math.min(1, this.currentScrollOffset / Math.max(0, this.scrollableDistance - this.dimensions.height)));
@@ -164,15 +161,15 @@ module ACV.View {
         }
 
 
-        listenToScroll(callback: ViewportScrollListener) {
+        listenToScroll(callback: IViewportScrollListener) {
             this.scrollListeners.push(callback);
         }
 
-        listenToMouseClick(callback: ViewportMouseClickListener) {
+        listenToMouseClick(callback: IViewportMouseClickListener) {
             this.clickListeners.push(callback);
         }
 
-        listenToMouseMove(callback: ViewportMouseMoveListener) {
+        listenToMouseMove(callback: IViewportMouseMoveListener) {
             this.moveListeners.push(callback);
         }
 

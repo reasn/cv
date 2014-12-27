@@ -3,7 +3,7 @@ module ACV.Core {
 
         static FORCE_UNCACHED_DATA = true;
 
-        gameData = null;
+        gameData: ACV.Data.IAppData = null;
 
         constructor() {
             super('ACV.Core.PrefLoader');
@@ -18,9 +18,9 @@ module ACV.Core {
          * @since 2014-02-28
          * @author Alexander Thiel
          */
-        load(qFx) {
+        load(qFx: ()=>void) {
 
-            $.getJSON(this.createUrl('game.json'), (gameData) => {
+            $.getJSON(this.createUrl('game.json'), (gameData: ACV.Data.IAppData) => {
                 this.gameData = gameData;
 
                 this.loadLevels(gameData.scene.levels, function () {
@@ -40,7 +40,7 @@ module ACV.Core {
          * @since 2014-02-28
          * @author Alexander Thiel
          */
-        private createUrl(url) {
+        private createUrl(url: string) {
             url = 'assets/' + url;
             if (PrefLoader.FORCE_UNCACHED_DATA)
                 url += '?timestamp=' + (new Date()).getTime();
@@ -58,9 +58,10 @@ module ACV.Core {
          * @since 2014-02-28
          * @author Alexander Thiel
          */
-        private loadLevels(levels, qFx) {
-            var loadNextLevel,
+        private loadLevels(levels: ACV.Data.ILevelData[], qFx: ()=>void) {
+            var loadNextLevel: ()=>void,
                 levelIndex = 0;
+
             this.info('Loading ' + levels.length + ' levels.');
 
             loadNextLevel = () => {
@@ -88,7 +89,7 @@ module ACV.Core {
          * @since 2014-02-28
          * @author Alexander Thiel
          */
-        private loadLevel(level, qFx) {
+        private loadLevel(level: ACV.Data.ILevelData, qFx: ()=>void) {
             var filesToLoad = 4;
 
             if (!level.enabled) {
@@ -124,17 +125,14 @@ module ACV.Core {
         /**
          * Loads all trgiggers for a specific level.
          *
-         * @param {number} levelOffset
-         * @param {Array.<object>} triggers
-         * @param {function(this:ACV.Core.PrefLoader)} qFx
          * @returns void
          * @private
          * @version 2014-02-28
          * @since 2014-02-28
          * @author Alexander Thiel
          */
-        private loadTriggers(levelOffset, triggers, qFx) {
-            var triggerIndex;
+        private loadTriggers(levelOffset: number, triggers: ACV.Data.ITriggerData[], qFx: ()=>void) {
+            var triggerIndex: any;
             for (triggerIndex in triggers) {
                 this.gameData.scene.triggers.push(triggers[triggerIndex]);
             }
@@ -153,8 +151,8 @@ module ACV.Core {
          * @since 2014-02-28
          * @author Alexander Thiel
          */
-        private loadPowerUps(levelOffset, powerUps, qFx) {
-            var powerUpIndex;
+        private loadPowerUps(levelOffset: number, powerUps: ACV.Data.IPowerUpData[], qFx: ()=>void) {
+            var powerUpIndex: any;
             for (powerUpIndex in powerUps) {
                 this.gameData.scene.playerLayer.powerUps.push(powerUps[powerUpIndex]);
             }
@@ -171,9 +169,9 @@ module ACV.Core {
          * @since 2014-03-05
          * @author Alexander Thiel
          */
-        private loadAnimations(level: any, animationSource: string, qFx) {
+        private loadAnimations(level: ACV.Data.ILevelData, animationSource: string, qFx: ()=>void) {
             var customScope: Function,
-                animations;
+                animations: ACV.Game.Animation[];
 
             customScope = new Function(animationSource + 'return animations;');
             level.animations = customScope();

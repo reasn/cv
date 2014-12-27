@@ -4,17 +4,17 @@ module ACV.HUD {
      */
     export class HeightDisplay extends ACV.Core.AbstractObject {
 
-        private keyFrames: any[];
+        private keyFrames: {[key:string]:number};
         private lastHeight: number;
         private element: JQuery;
         private elementVisible: boolean;
 
-        constructor(keyFrames) {
+        constructor(keyFrames: {[key:string]:number}) {
             super('ACV.HUD.HeightDisplay');
             this.keyFrames = keyFrames;
         }
 
-        static createFromData(data): HeightDisplay {
+        static createFromData(data: ACV.Data.IHeightDisplayData): HeightDisplay {
             return new HeightDisplay(data.keyFrames);
         }
 

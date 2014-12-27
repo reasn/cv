@@ -5,9 +5,9 @@ module ACV.Core {
      */
     export class AbstractObject {
 
-        private className:string;
+        private className: string;
 
-        constructor(className) {
+        constructor(className: string) {
             this.className = className;
         }
 

@@ -6,25 +6,25 @@ module ACV.Game {
      */
     export class Level extends ACV.Core.AbstractObject {
 
-        backgroundLayers: ACV.Game.Layer[] = [];
-        foregroundLayers: ACV.Game.Layer[] = [];
+        backgroundLayers: ACV.Game.Layer[];
+        foregroundLayers: ACV.Game.Layer[];
         visible = false;
-        prefs: any = null;
+        prefs: ACV.Data.ILevelPrefs;
 
-        private handle: string = '';
-        private animations = [];
+        private handle: string;
+        private animations: Animation[];
         private x: number = 0;
         private xBefore: number = 0;
-        private lookAroundDistortion: LookAroundDistortion = null;
+        private lookAroundDistortion: ILookAroundDistortion = null;
 
-        private appContext: ACV.AppContext = null;
-        private flySprites: {[handle:string]:FlySprite} = {};
+        private appContext: ACV.AppContext;
+        private flySprites: {[hh:string]:{[handle:string]:IFlySprite}} = {};
         private foregroundElement: JQuery = null;
         private backgroundElement: JQuery = null;
 
         constructor(appContext: ACV.AppContext,
                     handle: string,
-                    prefs: any,
+                    prefs: ACV.Data.ILevelPrefs,
                     animations: Animation[],
                     backgroundLayers: ACV.Game.Layer[],
                     foregroundLayers: ACV.Game.Layer[]) {
@@ -39,15 +39,14 @@ module ACV.Game {
             this.foregroundLayers = foregroundLayers;
         }
 
-        /**
-         *
-         * @param {ACV.AppContext} appContext
-         * @param {Object} data
-         * @returns {ACV.Game.Level}
-         */
-        static createFromPrefs(appContext, data) {
+        static createFromPrefs(appContext: ACV.AppContext, data: ACV.Data.ILevelData): Level {
 
-            var backgroundLayers = [], foregroundLayers = [], layerIndex, layer, animationIndex, animations = [];
+            var backgroundLayers: Layer[] = [],
+                foregroundLayers: Layer[] = [],
+                layerIndex: any,
+                layer: Layer,
+                animationIndex: any,
+                animations: Animation[] = [];
 
             for (layerIndex in data.layers.background) {
                 layer = ACV.Game.Layer.createFromPrefs(appContext, data.layers.background[layerIndex]);
@@ -71,9 +70,10 @@ module ACV.Game {
              backgroundWrapper: JQuery,
              foregroundWrapper: JQuery,
              minHeight: number,
-             lookAroundDistortion: LookAroundDistortion,
+             lookAroundDistortion: ILookAroundDistortion,
              viewportDimensions: ACV.View.ViewportDimensions): void {
-            var layerIndex, animationIndex;
+            var layerIndex: any,
+                animationIndex: any;
 
             this.lookAroundDistortion = lookAroundDistortion;
 
@@ -119,17 +119,22 @@ module ACV.Game {
          * @private
          */
         private removeDynamicFlySprites() {
-            var layerHandles, layerHandleIndex, spriteHandles, spriteHandleIndex;
+            var layerHandles: string[],
+                layerHandleIndex: any,
+                spriteHandles: string[],
+                spriteHandleIndex: any,
+                sprites: {[handle:string]:IFlySprite},
+                spriteHandle: string;
 
             layerHandles = Object.keys(this.flySprites);
 
             for (layerHandleIndex in layerHandles) {
-                var sprites = this.flySprites[layerHandles[layerHandleIndex]];
-
+                sprites = this.flySprites[layerHandles[layerHandleIndex]];
                 spriteHandles = Object.keys(sprites);
 
                 for (spriteHandleIndex in spriteHandles) {
-                    if (sprites[spriteHandles[spriteHandleIndex]] !== null && !sprites[spriteHandles[spriteHandleIndex]].static) {
+                    spriteHandle = spriteHandles[spriteHandleIndex];
+                    if (sprites[spriteHandle] !== null && !sprites[spriteHandles[spriteHandleIndex]].isStatic) {
                         sprites[spriteHandles[spriteHandleIndex]] = null
                     }
                 }
@@ -141,7 +146,7 @@ module ACV.Game {
          * @since 2014-03-18
          */
         applyLookAroundDistortion() {
-            var layerIndex;
+            var layerIndex: any;
 
             for (layerIndex in this.foregroundLayers) {
                 this.foregroundLayers[layerIndex].applyLookAroundDistortion(this.lookAroundDistortion);
@@ -218,7 +223,8 @@ module ACV.Game {
          */
         private applyClippingAndUpdateLayerPositions(sceneX: number,
                                                      viewportDimensions: ACV.View.ViewportDimensions) {
-            var layerIndex, distanceBetweenLeftViewportMarginAndLevelBegin;
+            var layerIndex: any,
+                distanceBetweenLeftViewportMarginAndLevelBegin: number;
 
             distanceBetweenLeftViewportMarginAndLevelBegin = this.prefs.offset - sceneX + this.prefs.clip.x1;
 
@@ -252,7 +258,9 @@ module ACV.Game {
                                  sceneXBefore: number,
                                  viewportDimensions: ACV.View.ViewportDimensions,
                                  executeOutOfRangeAnimation: boolean) {
-            var animationIndex, animation, coarseLevelX;
+            var animationIndex: any,
+                animation: Animation,
+                coarseLevelX: number;
 
             //handle animations that are dependent on levelX
             for (animationIndex in this.animations) {

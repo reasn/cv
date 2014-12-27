@@ -13,17 +13,17 @@ module ACV.Game {
 
         static PATTERN = /([a-zA-Z\.]+)\(([^\)]+)\)/;
 
-        private range:number[] = [0, 0];
-        private before:string;
-        private after:string;
-        relativeTo:string = 'player';
+        private range: number[] = [0, 0];
+        private before: string;
+        private after: string;
+        relativeTo: string = 'player';
         private currentlyInsideRange = false;
         private fireOnEnter = false;
         private stateBefore = true;
         private in = false;
         private wasIn = false;
 
-        constructor(range:number[], before:string, after:string, relativeTo:string, fireOnEnter:boolean) {
+        constructor(range: number[], before: string, after: string, relativeTo: string, fireOnEnter: boolean) {
 
             super('ACV.Game.Trigger');
 
@@ -34,11 +34,11 @@ module ACV.Game {
             this.fireOnEnter = !!fireOnEnter;
         }
 
-        static createFromData(data:any, performanceSettings:ACV.IPerformanceSettings):Trigger {
+        static createFromData(data: ACV.Data.ITriggerData, performanceSettings: ACV.Data.IPerformanceSettings): Trigger {
 
             if (typeof data.playerX === 'number') {
                 return new ACV.Game.Trigger([data.playerX, data.playerX], data.before, data.after, 'player', false);
-            } else if (typeof(data.playerX === 'object')) {
+            } else if (typeof data.playerX === 'object') {
                 if (data.playerX.length !== 2 && data.playerX.length !== 3) {
                     throw 'A trigger\'s value declaration must be a number or an array consisting of two or three numbers. But is ' + JSON.stringify(data.playerX);
                 }
@@ -56,7 +56,7 @@ module ACV.Game {
          * @param {number} targetValue This value is required for ranged trigger animations (e.g. jumps).
          * @returns {?ITriggerAction}
          */
-        determineActionToBeExecuted(value:number, lastValue:number, targetValue:number):ITriggerAction {
+        determineActionToBeExecuted(value: number, lastValue: number, targetValue: number): ITriggerAction {
             var a = this.range[0];
             var b = this.range[this.range.length - 1];
             var m = this.range.length === 3 ? this.range[1] : null;
@@ -97,7 +97,7 @@ module ACV.Game {
             return null;
         }
 
-        private unpack(action:string):ITriggerAction {
+        private unpack(action: string): ITriggerAction {
 
             var matches = ACV.Game.Trigger.PATTERN.exec(action);
             if (matches.length < 2) {

@@ -5,31 +5,33 @@ module ACV.Game {
      */
     export class Animation extends ACV.Core.AbstractObject {
 
+        dependency: string = '';//string Can be levelX or playerX
+        enabledRange: any = 'auto';
+        granularity: number = 0;
+        action: () => void = null;//this: ACV.Game.Animation
+        levelX: number = 0;
+        levelXBefore: number = 0;
+        viewportDimensions: ACV.View.ViewportDimensions = null;
+
+        lastCoarseLevelX: number = -1;
+
         private name = '';
-        private dependency: string = '';//string Can be levelX or playerX
-        private enabledRange: any = 'auto';
-        private granularity: number = 0;
-        private action: ()=>void = null;//this: ACV.Game.Animation
         private level: ACV.Game.Level = null;
         private scene: ACV.Game.Scene = null;
-        private levelX: number = 0;
-        private levelXBefore: number = 0;
-        private viewportDimensions: ACV.View.ViewportDimensions = null;
 
-
-        constructor(data: any) {
+        constructor(data: ACV.Data.IAnimationData) {
 
             super('ACV.Game.Animation');
 
-            var keys = Object.keys(data),
-                keyIndex;
+            var keys: string[] = Object.keys(data),
+                keyIndex: any;
 
             for (keyIndex in keys) {
-                this[keys[keyIndex]] = data[keys[keyIndex]];
+                (<any>this)[keys[keyIndex]] = (<any>data)[keys[keyIndex]];
             }
         }
 
-        static createFromPrefs(data): Animation {
+        static createFromPrefs(data: ACV.Data.IAnimationData): Animation {
             return new ACV.Game.Animation(data);
         }
 

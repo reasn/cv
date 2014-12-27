@@ -8,7 +8,7 @@ module ACV.HUD {
      */
     export class HeadsUpDisplay extends ACV.Core.AbstractObject {
 
-        prefs: any;
+        prefs: ACV.Data.IHudPrefs;
         height: number;
         skillBasket: SkillBasket;
         yearDisplay: YearDisplay;
@@ -17,7 +17,8 @@ module ACV.HUD {
         private appContext: ACV.AppContext;
         private timeline: Timeline;
 
-        constructor(appContext: ACV.AppContext, prefs: any,
+        constructor(appContext: ACV.AppContext,
+                    prefs: ACV.Data.IHudPrefs,
                     skillBasket: SkillBasket,
                     yearDisplay: YearDisplay,
                     heightDisplay: HeightDisplay,
@@ -36,8 +37,8 @@ module ACV.HUD {
             this.timeline = timeline;
         }
 
-        static createFromData(appContext: ACV.AppContext, data): HeadsUpDisplay {
-            var skillBasket,
+        static createFromData(appContext: ACV.AppContext, data: ACV.Data.IHudData): HeadsUpDisplay {
+            var skillBasket: SkillBasket,
                 yearDisplay: YearDisplay = null,
                 heightDisplay: HeightDisplay = null,
                 timeline: Timeline;

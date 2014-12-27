@@ -5,7 +5,6 @@ module ACV.Game {
          viewportHeight: number,
          sprites: {[key:string]:{top: number; bottom: number}}):number;
     }
-
     /**
      * @since 2013-11-03
      */
@@ -34,6 +33,7 @@ module ACV.Game {
         private source: string = null;
         private color: string = null;
         private blurred = false;
+
 
         constructor(appContext: ACV.AppContext,
                     id: string,
@@ -66,9 +66,9 @@ module ACV.Game {
             this.blurred = blurred;
         }
 
-
-        static createFromPrefs(appContext: ACV.AppContext, data: any) {
-            var y, height;
+        static createFromPrefs(appContext: ACV.AppContext, data: ACV.Data.ISpriteData) {
+            var y: any,
+                height: any;
 
             y = Sprite.unpackDynamicExpression(appContext, data.y, data.handle, 'y');
             height = Sprite.unpackDynamicExpression(appContext, data.height, data.handle, 'height');
@@ -91,7 +91,7 @@ module ACV.Game {
             }
 
             //Reduces number of dynamic expressions
-            expression = expression.replace(/maxLookAroundDistortion/g, appContext.prefs.maxLookAroundDistortion);
+            expression = expression.replace(/maxLookAroundDistortion/g, '' + appContext.prefs.maxLookAroundDistortion);
             expression = expression.replace(' ', '');
 
             if (expression.match(/[^0-9\%px\-\+]+/) === null) {
@@ -118,10 +118,10 @@ module ACV.Game {
                 this.element.attr('id', this.id);
             }
             this.element.css({
-                left:   this.x,
-                //transform: 'translateX(' + this.x + 'px)',
-                width:  this.width + 'px',
-                height: this.height
+                //left:   this.x,
+                transform: 'translateX(' + this.x + 'px)',
+                width:     this.width + 'px',
+                height:    this.height
             });
 
             //TODO implement combined asset files

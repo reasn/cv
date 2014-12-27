@@ -5,10 +5,11 @@ module ACV.Game {
      */
     export class PowerUp extends ACV.Core.AbstractObject {
 
-        x: number = 0;
-        y: number = 0;
-        skillType: string = '';
+        x: number;
+        y: number;
+        skillType: string;
         element: JQuery = null;
+        collected = false;
 
         constructor(x: number, y: number, skillType: string) {
             super('ACV.Game.PowerUp');
@@ -23,13 +24,13 @@ module ACV.Game {
          *
          * @param {jQuery} playerLayerElement
          */
-        init(playerLayerElement) {
+        init(playerLayerElement: JQuery) {
             this.element = $('<div class="powerUp" />');
             this.element.css(
                 {
-                    //transform: 'translateX('  + this.x + 'px)',
-                    left:   this.x,
-                    bottom: this.y
+                    transform: 'translateX(' + this.x + 'px)',
+                    //left:   this.x,
+                    bottom:    this.y
                 });
             this.element.text(this.x);
 

@@ -8,24 +8,20 @@ module ACV.View {
 
 
         private viewportManager: ViewportManager;
-        private scrollableDistance = 0;
+        private scrollableDistance: number;
         private containerFixedToViewport = false;
         private containerDistanceFromTop = 0;
         private offset = 0;
 
-        constructor(viewportManager, scrollableDistance) {
+        constructor(viewportManager: ViewportManager, scrollableDistance: number) {
             super('ACV.View.WheelScrollMethod');
             this.viewportManager = viewportManager;
             this.scrollableDistance = scrollableDistance;
         }
 
-        init(containerDistanceFromTop) {
+        init(containerDistanceFromTop: number) {
 
             this.containerDistanceFromTop = containerDistanceFromTop;
-
-
-            console.log(containerDistanceFromTop);
-
 
             $('body').on('mousewheel DOMMouseScroll', (event: JQueryMouseEventObject) => {
                 var originalEvent: any = event.originalEvent,
@@ -39,7 +35,7 @@ module ACV.View {
             return this.containerFixedToViewport;
         }
 
-        handleFixation(staticContainer) {
+        handleFixation(staticContainer: JQuery) {
 
 //Automatically start and stop to play when container touches top of the viewport
 

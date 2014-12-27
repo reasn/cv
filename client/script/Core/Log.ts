@@ -25,14 +25,11 @@ module ACV.Core {
 
         /**
          * We could directly use the log method (e.g. console.error) as second argument which would be more elegant. But Chrome doesn't allow it -.-
-         * @param {Array.<*>} args
-         * @param {string} logLevel
-         * @private
          */
-        static add(args, logLevel) {
+        static add(args: any[], logLevel: string) {
 
-            var message,
-                replacementIndex,
+            var message: string,
+                replacementIndex: any,
                 len = Log.NAMESPACE_WIDTH,
                 className = args.shift();
 

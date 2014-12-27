@@ -5,17 +5,17 @@ module ACV.HUD {
      */
     export class YearDisplay extends ACV.Core.AbstractObject {
 
-        triggers: any[];
+        triggers: {[key:string]:number};
         year: number;
         private element: JQuery;
 
-        constructor(triggers: any[]) {
+        constructor(triggers: {[key:string]:number}) {
             super('ACV.HUD.YearDisplay');
             this.triggers = triggers;
             this.year = this.triggers[Object.keys(this.triggers)[0]];
         }
 
-        static createFromData(data): YearDisplay {
+        static createFromData(data: ACV.Data.IYearDisplayData): YearDisplay {
             return new YearDisplay(data.triggers);
         }
 

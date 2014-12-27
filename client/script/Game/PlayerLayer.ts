@@ -7,20 +7,20 @@ module ACV.Game {
 
         element: JQuery = null;
         skillBasket: ACV.HUD.SkillBasket;
-        player: Player = null;
-        powerUps: PowerUp[] = [];
+        player: Player;
+        powerUps: PowerUp[];
 
         private appContext: ACV.AppContext = null;
-        private prefs: any = null;
+        private prefs: ACV.Data.IPlayerLayerPrefs;
         private lastCollisionDetection: number = 0;
-        private lookAroundDistortion: LookAroundDistortion = {
+        private lookAroundDistortion: ILookAroundDistortion = {
             x: 0,
             y: 0
         };
         private x = 0;
 
 
-        constructor(appContext: ACV.AppContext, prefs: any, player: Player, powerUps: PowerUp[]) {
+        constructor(appContext: ACV.AppContext, prefs: ACV.Data.IPlayerLayerPrefs, player: Player, powerUps: PowerUp[]) {
 
             super('ACV.Game.PlayerLayer');
 
@@ -32,8 +32,10 @@ module ACV.Game {
             this.powerUps = powerUps;
         }
 
-        static createFromData(appContext, data) {
-            var player, powerUpIndex, powerUps = [];
+        static createFromData(appContext: ACV.AppContext, data: ACV.Data.IPlayerLayerData) {
+            var player: Player,
+                powerUpIndex: any,
+                powerUps: PowerUp[] = [];
 
             player = new ACV.Game.Player(data.player);
             for (powerUpIndex in data.powerUps) {
@@ -42,8 +44,8 @@ module ACV.Game {
             return new ACV.Game.PlayerLayer(appContext, data.prefs, player, powerUps);
         }
 
-        init(wrapperElement: JQuery, width: number, minHeight: number, lookAroundDistortion: LookAroundDistortion) {
-            var powerUpIndex;
+        init(wrapperElement: JQuery, width: number, minHeight: number, lookAroundDistortion: ILookAroundDistortion) {
+            var powerUpIndex: any;
 
             this.lookAroundDistortion = lookAroundDistortion;
 
@@ -102,8 +104,12 @@ module ACV.Game {
                                  playerXBefore: number,
                                  sceneX: number,
                                  viewportDimensions: ACV.View.ViewportDimensions) {
-            var testX, powerUpIndex, powerUp;
+            var testX: number,
+                powerUpIndex: any,
+                powerUp: PowerUp;
+
             testX = playerX + this.prefs.hitBox + .5 * this.player.width;
+
             for (powerUpIndex in this.powerUps) {
                 powerUp = this.powerUps[powerUpIndex];
                 if (!powerUp.collected && playerX > powerUp.x && playerXBefore < powerUp.x) {

@@ -19,9 +19,9 @@ module ACV.HUD {
             this.skills = skills;
         }
 
-        static createFromData(data: any, performanceSettings: ACV.IPerformanceSettings) {
+        static createFromData(data: ACV.Data.ISkillBasketData, performanceSettings: ACV.Data.IPerformanceSettings) {
 
-            var skills = [];
+            var skills: Skill[] = [];
             for (var i in data.skills) {
                 skills.push(new Skill(data.skills[i]));
             }
@@ -29,7 +29,7 @@ module ACV.HUD {
         }
 
 
-        init(hudElement) {
+        init(hudElement: JQuery) {
             this.element = $('<ul class="skill-basket" />');
 
             for (var i in this.skills) {
@@ -47,7 +47,7 @@ module ACV.HUD {
 
             //Remove element from scene, adjust CSS and add it to HUD to have it fly towards this skill basket
             powerUp.element.remove().css({
-                //transform: 'none',
+                transform: 'none',
                 left:      powerUp.x - sceneX,
                 bottom:    viewportDimensions.height - powerUp.y
             }).prependTo(this.element.parent());
@@ -74,7 +74,7 @@ module ACV.HUD {
             });
         }
 
-        private improve(skillType) {
+        private improve(skillType: string) {
             for (var i in this.skills) {
                 if (this.skills[i].type === skillType) {
                     this.skills[i].improve();
@@ -83,7 +83,7 @@ module ACV.HUD {
             }
         }
 
-        getPowerUpAnimationTarget() {
+        getPowerUpAnimationTarget(): {left: number; bottom: number} {
             return ({
                 left:   this.element.position().left + .5 * this.element.width(),
                 bottom: this.hud.height - 50
