@@ -41,7 +41,7 @@ module ACV.HUD {
         }
 
 
-        collectPowerUp(powerUp: ACV.Game.PowerUp, sceneX: number, viewportDimensions: ACV.View.ViewportDimensions) {
+        collectPowerUp(powerUp: ACV.Game.PowerUp, sceneX: number, viewportDimensions: ACV.View.IViewportDimensions) {
 
             //   var position = powerUp.element.position();
 

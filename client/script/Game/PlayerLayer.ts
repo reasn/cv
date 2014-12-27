@@ -68,7 +68,7 @@ module ACV.Game {
                                              playerXBefore: number,
                                              targetPlayerX: number,
                                              sceneX: number,
-                                             viewportDimensions: ACV.View.ViewportDimensions) => {
+                                             viewportDimensions: ACV.View.IViewportDimensions) => {
                 this.detectCollisions(playerX, playerXBefore, sceneX, viewportDimensions);
             });
 
@@ -77,7 +77,7 @@ module ACV.Game {
         }
 
         updatePositions(sceneX: number,
-                        viewportDimensions: ACV.View.ViewportDimensions) {
+                        viewportDimensions: ACV.View.IViewportDimensions) {
 //    var granularSceneX = Math.round(sceneX / this.prefs.collisionDetectionGridSize);
 
             //Set wrapper position to have the player stay at the same point of the scrolling scenery
@@ -103,7 +103,7 @@ module ACV.Game {
         private detectCollisions(playerX: number,
                                  playerXBefore: number,
                                  sceneX: number,
-                                 viewportDimensions: ACV.View.ViewportDimensions) {
+                                 viewportDimensions: ACV.View.IViewportDimensions) {
             var testX: number,
                 powerUpIndex: any,
                 powerUp: PowerUp;

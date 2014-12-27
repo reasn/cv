@@ -1,15 +1,5 @@
 module ACV.View {
 
-    export interface IViewportScrollListener {
-        (lastRatio: number, ratioBefore: number, viewportDimensions: ViewportDimensions): void;
-    }
-    export interface IViewportMouseClickListener {
-        (clientX: number, clientY: number, viewportDimensions: ViewportDimensions):void;
-    }
-    export interface IViewportMouseMoveListener {
-        (clientX: number, clientY: number, viewportDimensions: ViewportDimensions):void;
-    }
-
     /**
      * @since 2013-11-03
      */
@@ -25,7 +15,7 @@ module ACV.View {
         private scrollListeners: IViewportScrollListener[] = [];
         private clickListeners: IViewportMouseClickListener[] = [];
         private moveListeners: IViewportMouseMoveListener[] = [];
-        private dimensions: ViewportDimensions = {
+        private dimensions: IViewportDimensions = {
 
             width:         0,
             height:        0,
@@ -41,7 +31,7 @@ module ACV.View {
             virtualPosition: 0,
             lastY:           null
         };
-        private scrollMethod: ScrollMethod = null;
+        private scrollMethod: IScrollMethod = null;
 
         private containerDistanceFromTop: number;
 
@@ -176,7 +166,7 @@ module ACV.View {
         /**
          * @since 2014-03-25
          */
-        getDimensions(): ViewportDimensions {
+        getDimensions(): IViewportDimensions {
             return this.dimensions;
         }
     }

@@ -1,10 +1,4 @@
 module ACV.Game {
-
-    export interface ISpriteCallback {
-        (maxLookAroundDistortion: number,
-         viewportHeight: number,
-         sprites: {[key:string]:{top: number; bottom: number}}):number;
-    }
     /**
      * @since 2013-11-03
      */

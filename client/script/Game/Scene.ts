@@ -111,7 +111,7 @@ module ACV.Game {
             });
 
             if (this.appContext.performanceSettings.lookAroundDistortion) {
-                this.appContext.viewportManager.listenToMouseMove((clientX: number, clientY: number, viewportDimensions: ACV.View.ViewportDimensions) => {
+                this.appContext.viewportManager.listenToMouseMove((clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions) => {
                     this.handleMouseMove(clientX, clientY, viewportDimensions);
                 });
             }
@@ -132,7 +132,7 @@ module ACV.Game {
             this.element.append(this.foregroundElement);
         }
 
-        handleMouseMove(clientX: number, clientY: number, appViewportDimensions: ACV.View.ViewportDimensions) {
+        handleMouseMove(clientX: number, clientY: number, appViewportDimensions: ACV.View.IViewportDimensions) {
             /*
              * We use Math.floor() instead of Math.round() to obtain a
              * continuous distribution of the results and therefore

@@ -11,7 +11,7 @@ module ACV.Game {
         action: () => void = null;//this: ACV.Game.Animation
         levelX: number = 0;
         levelXBefore: number = 0;
-        viewportDimensions: ACV.View.ViewportDimensions = null;
+        viewportDimensions: ACV.View.IViewportDimensions = null;
 
         lastCoarseLevelX: number = -1;
 

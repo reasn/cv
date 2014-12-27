@@ -3,7 +3,7 @@ module ACV.View {
     /**
      * @since 2014-03-26
      */
-    export class ClickAndEdgeScrollMethod extends ACV.Core.AbstractObject implements ScrollMethod {
+    export class ClickAndEdgeScrollMethod extends ACV.Core.AbstractObject implements IScrollMethod {
         private clickAnimationSocket: JQuery = null;
         private viewportManager: ViewportManager;
         private scrollableDistance: number;

@@ -1,12 +1,5 @@
 module ACV.Game {
 
-    export interface IPlayerMovementListener {
-        (playerX: number,
-         payerXBefore: number,
-         targetPlayerX?: number,
-         sceneX?: number,
-         viewportDimensions?: ACV.View.ViewportDimensions): void;
-    }
     /**
      * @since 2013-11-03
      */
@@ -133,7 +126,7 @@ module ACV.Game {
                 }).dequeue('jump');
         }
 
-        updatePosition(sceneX: number, viewportDimensions: ACV.View.ViewportDimensions) {
+        updatePosition(sceneX: number, viewportDimensions: ACV.View.IViewportDimensions) {
             var targetX: number,
                 viewportPositionRatio: number,
                 speed = 1;
@@ -158,7 +151,7 @@ module ACV.Game {
             }
         }
 
-        moveTo(targetX: number, sceneX: number, speed: number, viewportDimensions: ACV.View.ViewportDimensions) {
+        moveTo(targetX: number, sceneX: number, speed: number, viewportDimensions: ACV.View.IViewportDimensions) {
             var classesToAdd: string,
                 classesToRemove: string;
 

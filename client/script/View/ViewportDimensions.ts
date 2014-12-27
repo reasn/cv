@@ -1,6 +1,6 @@
 module ACV.View {
 
-    export interface ViewportDimensions {
+    export interface IViewportDimensions {
 
         width: number; //the viewport's width
         height :number; //the viewport's height

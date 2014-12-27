@@ -71,7 +71,7 @@ module ACV.Game {
              foregroundWrapper: JQuery,
              minHeight: number,
              lookAroundDistortion: ILookAroundDistortion,
-             viewportDimensions: ACV.View.ViewportDimensions): void {
+             viewportDimensions: ACV.View.IViewportDimensions): void {
             var layerIndex: any,
                 animationIndex: any;
 
@@ -160,10 +160,10 @@ module ACV.Game {
          *
          * @param {!number} sceneX The amount of pixels that already left the viewport on the left side. Positive integer
          * @param {!number} sceneXBefore
-         * @param {ViewportDimensions} viewportDimensions
+         * @param {IViewportDimensions} viewportDimensions
          * @returns void
          */
-        updatePositions(sceneX: number, sceneXBefore: number, viewportDimensions: ACV.View.ViewportDimensions) {
+        updatePositions(sceneX: number, sceneXBefore: number, viewportDimensions: ACV.View.IViewportDimensions) {
 
             this.x = sceneX - this.prefs.offset;
             //TODO before the refactoring XBefore was set:
@@ -183,14 +183,14 @@ module ACV.Game {
          *
          * @param {!number} sceneX The amount of pixels that already left the viewport on the left side. Positive integer
          * @param {!number} sceneXBefore
-         * @param {ViewportDimensions} viewportDimensions
+         * @param {IViewportDimensions} viewportDimensions
          * @returns void
          * @private
          * @version 2014-03-05
          * @since 2014-03-05
          * @author Alexander Thiel
          */
-        private updateVisibility(sceneX: number, sceneXBefore: number, viewportDimensions: ACV.View.ViewportDimensions) {
+        private updateVisibility(sceneX: number, sceneXBefore: number, viewportDimensions: ACV.View.IViewportDimensions) {
             var showLevelSceneX = this.prefs.offset + this.prefs.visibility.x1;
             var hideLevelSceneX = this.prefs.offset + this.prefs.visibility.x2;
 
@@ -214,7 +214,7 @@ module ACV.Game {
         /**
          * Apply clipping to the left and right
          * @param {!number} sceneX The amount of pixels that already left the viewport on the left side. Positive integer
-         * @param {!ViewportDimensions} viewportDimensions
+         * @param {!IViewportDimensions} viewportDimensions
          * @returns void
          * @private
          * @version 2014-03-05
@@ -222,7 +222,7 @@ module ACV.Game {
          * @author Alexander Thiel
          */
         private applyClippingAndUpdateLayerPositions(sceneX: number,
-                                                     viewportDimensions: ACV.View.ViewportDimensions) {
+                                                     viewportDimensions: ACV.View.IViewportDimensions) {
             var layerIndex: any,
                 distanceBetweenLeftViewportMarginAndLevelBegin: number;
 
@@ -246,7 +246,7 @@ module ACV.Game {
          *
          * @param {!number} sceneX The amount of pixels that already left the viewport on the left side. Positive integer
          * @param {!number} sceneXBefore
-         * @param {!ViewportDimensions} viewportDimensions
+         * @param {!IViewportDimensions} viewportDimensions
          * @param {!boolean} executeOutOfRangeAnimation Set to true to suppress all animation's range checks (useful to have all animations triggered when the level is added to the DOM).
          * @returns void
          * @private
@@ -256,7 +256,7 @@ module ACV.Game {
          */
         private handleAnimations(sceneX: number,
                                  sceneXBefore: number,
-                                 viewportDimensions: ACV.View.ViewportDimensions,
+                                 viewportDimensions: ACV.View.IViewportDimensions,
                                  executeOutOfRangeAnimation: boolean) {
             var animationIndex: any,
                 animation: Animation,

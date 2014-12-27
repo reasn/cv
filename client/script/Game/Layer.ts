@@ -2,19 +2,6 @@ module ACV.Game {
     /**
      * @since 2013-11-03
      */
-
-    export interface ILookAroundDistortion {
-        x: number;// - Between -50 and +50
-        y: number;// - Between -50 and +50
-    }
-
-    export interface IFlySprite {
-        y?: number;
-        height?: number;
-        isStatic?: boolean;
-    }
-
-
     export class Layer extends ACV.Core.AbstractObject {
         element: JQuery = null;
 
@@ -55,7 +42,7 @@ module ACV.Game {
 
         init(sceneElement: JQuery,
              minHeight: number,
-             viewportDimensions: ACV.View.ViewportDimensions,
+             viewportDimensions: ACV.View.IViewportDimensions,
              flySprites: {[handle:string]:IFlySprite}) {
 
             var spriteIndex: any,
@@ -89,14 +76,14 @@ module ACV.Game {
          * @param {!number} levelXBefore
          * @param {!number} levelClipOffset
          * @param {!Array<IFlySprite>} flySprites
-         * @param {!ViewportDimensions}  viewportDimensions
+         * @param {!IViewportDimensions}  viewportDimensions
          * @version 2014-03-05
          */
         updatePositions(levelOffset: number,
                         levelX: number,
                         levelXBefore: number,
                         levelClipOffset: number,
-                        viewportDimensions: ACV.View.ViewportDimensions,
+                        viewportDimensions: ACV.View.IViewportDimensions,
                         flySprites: {[handle:string]:IFlySprite}) {
 
             if (viewportDimensions.heightChanged) {
@@ -111,7 +98,7 @@ module ACV.Game {
          * Is only invoked once for static sprites (from init()).
          */
         private positionSprite(sprite: ACV.Game.Sprite,
-                               viewportDimensions: ACV.View.ViewportDimensions,
+                               viewportDimensions: ACV.View.IViewportDimensions,
                                flySprites: {[handle:string]:IFlySprite}) {
 
             /* flySprite is a flyweight representation of a Sprite */
@@ -165,7 +152,7 @@ module ACV.Game {
             sprite.element.css(cssProps);
         }
 
-        private recalculateSpritePositions(viewportDimensions: ACV.View.ViewportDimensions, flySprites: {[handle:string]:IFlySprite}) {
+        private recalculateSpritePositions(viewportDimensions: ACV.View.IViewportDimensions, flySprites: {[handle:string]:IFlySprite}) {
             var spriteIndex: any,
                 sprite: Sprite;
             this.info('Recalculating y positions of all sprites');

@@ -3,7 +3,7 @@ module ACV.View {
     /**
      * @since 2014-03-26
      */
-    export class NativeScrollMethod extends ACV.Core.AbstractObject implements ScrollMethod {
+    export class NativeScrollMethod extends ACV.Core.AbstractObject implements IScrollMethod {
 
 
         viewportManager: ViewportManager;

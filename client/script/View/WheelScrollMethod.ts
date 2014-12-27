@@ -4,7 +4,7 @@ module ACV.View {
      * @since 2014-03-26
      */
 
-    export class WheelScrollMethod extends ACV.Core.AbstractObject implements ScrollMethod {
+    export class WheelScrollMethod extends ACV.Core.AbstractObject implements IScrollMethod {
 
 
         private viewportManager: ViewportManager;
