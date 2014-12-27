@@ -41,7 +41,7 @@ module ACV.Game {
             this.sprites = sprites;
         }
 
-        static createFromPrefs(appContext, data) {
+        static createFromPrefs(appContext: ACV.AppContext, data: any) {
             var spriteIndex, sprites = [];
             for (spriteIndex in data.sprites) {
                 sprites.push(ACV.Game.Sprite.createFromPrefs(appContext, data.sprites[spriteIndex]));
@@ -50,7 +50,11 @@ module ACV.Game {
         }
 
 
-        init(sceneElement, minHeight, viewportDimensions, flySprites) {
+        init(sceneElement: JQuery,
+             minHeight: number,
+             viewportDimensions: ACV.View.ViewportDimensions,
+             flySprites: {[handle:string]:FlySprite}) {
+
             var spriteIndex, spriteWrapper;
 
             //TODO remove handles in productive environment
@@ -84,7 +88,12 @@ module ACV.Game {
          * @param {!ViewportDimensions}  viewportDimensions
          * @version 2014-03-05
          */
-        updatePositions(levelOffset, levelX, levelXBefore, levelClipOffset, viewportDimensions, flySprites) {
+        updatePositions(levelOffset: number,
+                        levelX: number,
+                        levelXBefore: number,
+                        levelClipOffset: number,
+                        viewportDimensions: ACV.View.ViewportDimensions,
+                        flySprites: {[handle:string]:FlySprite}) {
 
             if (viewportDimensions.heightChanged) {
                 this.recalculateSpritePositions(viewportDimensions, flySprites);
@@ -96,9 +105,9 @@ module ACV.Game {
         /**
          * Is only invoked once for static sprites (from init()).
          */
-        private positionSprite = function (sprite: ACV.Game.Sprite,
-                                           viewportDimensions: ACV.View.ViewportDimensions,
-                                           flySprites: FlySprite[]) {
+        private positionSprite(sprite: ACV.Game.Sprite,
+                               viewportDimensions: ACV.View.ViewportDimensions,
+                               flySprites: {[handle:string]:FlySprite}) {
 
             /* flySprite is a flyweight representation of a Sprite */
             var cssProps: any = {},
@@ -148,10 +157,9 @@ module ACV.Game {
             flySprites[this.handle][sprite.handle] = flySprite;
 
             sprite.element.css(cssProps);
-        };
+        }
 
-
-        private recalculateSpritePositions(viewportDimensions: ACV.View.ViewportDimensions, flySprites: FlySprite[]) {
+        private recalculateSpritePositions(viewportDimensions: ACV.View.ViewportDimensions, flySprites: {[handle:string]:FlySprite}) {
             var spriteIndex, sprite;
             this.info('Recalculating y positions of all sprites');
             for (spriteIndex in this.sprites) {
@@ -164,7 +172,6 @@ module ACV.Game {
         }
 
         /**
-         *
          * @since 2014-03-18
          */
         applyLookAroundDistortion(lookAroundDistortion: LookAroundDistortion) {

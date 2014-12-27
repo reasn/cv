@@ -25,7 +25,7 @@ module ACV {
          * @param {number} targetValue
          * @param {number} speed In distance units per millisecond
          */
-        static calculateAnimationDuration = function (value: number, targetValue: number, speed: number): number {
+        static calculateAnimationDuration(value: number, targetValue: number, speed: number): number {
             return Math.abs(targetValue - value) / speed;
         }
     }

@@ -74,7 +74,9 @@ module ACV.Game {
             this.element.stop('walk', true);
 
             if (x > 0 || x < 0) {
-                this.element.css('left', this.x = x);
+                this.x = x;
+                //this.element.css('transform', 'translateX(' + x + 'px)');
+                this.element.css('left', x);
             }
         }
 

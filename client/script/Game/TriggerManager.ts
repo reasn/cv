@@ -5,10 +5,10 @@ module ACV.Game {
      */
     export class TriggerManager extends ACV.Core.AbstractObject {
 
-        scene:ACV.Game.Scene = null;
-        triggers:ACV.Game.Trigger[] = [];
+        scene: ACV.Game.Scene = null;
+        triggers: ACV.Game.Trigger[] = [];
 
-        constructor(triggers:Trigger[]) {
+        constructor(triggers: Trigger[]) {
             super('ACV.Game.TriggerManager');
             this.triggers = triggers;
             /*  this.triggers.sort(function(a, b) {
@@ -21,7 +21,7 @@ module ACV.Game {
              this.debug(this.triggers);*/
         }
 
-        static createFromData(triggerData, performanceSettings) {
+        static createFromData(triggerData:any[], performanceSettings:ACV.IPerformanceSettings) {
             var triggerIndex, triggers = [];
 
             for (triggerIndex in triggerData) {
@@ -30,14 +30,7 @@ module ACV.Game {
             return new ACV.Game.TriggerManager(triggers);
         }
 
-        /**
-         *
-         * @param {number} playerX
-         * @param {number} playerXBefore
-         * @param {number} targetPlayerX
-         * @param {number} sceneX
-         */
-        check(playerX, playerXBefore, targetPlayerX, sceneX) {
+        check(playerX: number, playerXBefore: number, targetPlayerX: number, sceneX: number) {
             var triggerIndex, trigger, action;
 
             //this.debug('PlayerX always: %s    %s', playerX, playerXBefore);
@@ -65,7 +58,7 @@ module ACV.Game {
          * @since 2013-11-24
          * @author Alexander Thiel
          */
-        private execute(action) {
+        private execute(action:any) {
 
             switch (action.action) {
                 case 'sprite.show':

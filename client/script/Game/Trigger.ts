@@ -1,6 +1,6 @@
 module ACV.Game {
 
-    export interface TriggerAction {
+    export interface ITriggerAction {
         action: string; //The action to take (e.g. "player.setAge")
         args: string[]; //The arguments to accompany the action
     }
@@ -34,7 +34,7 @@ module ACV.Game {
             this.fireOnEnter = !!fireOnEnter;
         }
 
-        static createFromData(data:any, performanceSettings):Trigger {
+        static createFromData(data:any, performanceSettings:ACV.IPerformanceSettings):Trigger {
 
             if (typeof data.playerX === 'number') {
                 return new ACV.Game.Trigger([data.playerX, data.playerX], data.before, data.after, 'player', false);
@@ -54,9 +54,9 @@ module ACV.Game {
          * @param {number} value
          * @param {number} lastValue
          * @param {number} targetValue This value is required for ranged trigger animations (e.g. jumps).
-         * @returns {?TriggerAction}
+         * @returns {?ITriggerAction}
          */
-        determineActionToBeExecuted(value:number, lastValue:number, targetValue:number):TriggerAction {
+        determineActionToBeExecuted(value:number, lastValue:number, targetValue:number):ITriggerAction {
             var a = this.range[0];
             var b = this.range[this.range.length - 1];
             var m = this.range.length === 3 ? this.range[1] : null;
@@ -97,7 +97,7 @@ module ACV.Game {
             return null;
         }
 
-        private unpack(action:string):TriggerAction {
+        private unpack(action:string):ITriggerAction {
 
             var matches = ACV.Game.Trigger.PATTERN.exec(action);
             if (matches.length < 2) {

@@ -1,6 +1,6 @@
 module ACV.Game {
 
-    export interface SpriteCallback {
+    export interface ISpriteCallback {
         (maxLookAroundDistortion: number,
          viewportHeight: number,
          sprites: {[key:string]:{top: number; bottom: number}}):number;
@@ -67,7 +67,7 @@ module ACV.Game {
         }
 
 
-        static createFromPrefs(appContext: ACV.AppContext, data) {
+        static createFromPrefs(appContext: ACV.AppContext, data: any) {
             var y, height;
 
             y = Sprite.unpackDynamicExpression(appContext, data.y, data.handle, 'y');
@@ -77,7 +77,7 @@ module ACV.Game {
         }
 
         /**
-         * @returns {string|number|SpriteCallback}
+         * @returns {string|number|ISpriteCallback}
          */
         private static unpackDynamicExpression(appContext: ACV.AppContext,
                                                expression: string,
@@ -112,13 +112,14 @@ module ACV.Game {
             return new Function('maxLookAroundDistortion', 'viewportHeight', 'sprites', code);
         }
 
-        init = function (layerElement: JQuery) {
+        init(layerElement: JQuery) {
             this.element = $('<div class="sprite" data-handle="' + this.handle + '" />');
             if (this.id) {
                 this.element.attr('id', this.id);
             }
             this.element.css({
-                left:   this.x + 'px',
+                left:   this.x,
+                //transform: 'translateX(' + this.x + 'px)',
                 width:  this.width + 'px',
                 height: this.height
             });

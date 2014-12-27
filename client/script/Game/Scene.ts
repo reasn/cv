@@ -54,7 +54,7 @@ module ACV.Game {
             this.levels = levels;
         }
 
-        static createFromData = function (appContext: ACV.AppContext, element: JQuery, data: any): Scene {
+        static createFromData(appContext: ACV.AppContext, element: JQuery, data: any): Scene {
             var levels = [], playerLayer, triggerManager, levelIndex;
 
             playerLayer = ACV.Game.PlayerLayer.createFromData(appContext, data.playerLayer);
@@ -134,11 +134,7 @@ module ACV.Game {
             this.applyLookAroundDistortion();
         }
 
-        /**
-         *
-         * @param {number} clientX
-         */
-        handleMouseClick(clientX) {
+        handleMouseClick(clientX: number) {
             var targetX = this.x + clientX;
 
             this.info('User clicked, player will walk to %s', targetX);

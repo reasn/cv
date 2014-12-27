@@ -19,7 +19,7 @@ module ACV.HUD {
             this.skills = skills;
         }
 
-        static createFromData(data, performanceSettings) {
+        static createFromData(data: any, performanceSettings: ACV.IPerformanceSettings) {
 
             var skills = [];
             for (var i in data.skills) {
@@ -43,17 +43,17 @@ module ACV.HUD {
 
         collectPowerUp(powerUp: ACV.Game.PowerUp, sceneX: number, viewportDimensions: ACV.View.ViewportDimensions) {
 
-            var position = powerUp.element.position();
+            //   var position = powerUp.element.position();
 
             //Remove element from scene, adjust CSS and add it to HUD to have it fly towards this skill basket
             powerUp.element.remove().css({
-
-                left:   position.left - sceneX,
-                bottom: viewportDimensions.height - position.top
+                //transform: 'none',
+                left:      powerUp.x - sceneX,
+                bottom:    viewportDimensions.height - powerUp.y
             }).prependTo(this.element.parent());
 
             powerUp.element.animate({
-                bottom: [viewportDimensions.height - position.top + 100, 'easeOutQuad']
+                bottom: [viewportDimensions.height - powerUp.y + 100, 'easeOutQuad']
             }, {
                 duration: 200,
                 complete: ()=> {
