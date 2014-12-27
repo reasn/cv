@@ -6,13 +6,13 @@ module ACV.HUD {
     export class Timeline extends ACV.Core.AbstractObject {
 
         private eventWrapper: JQuery;
-        private prefs: any;
+        private prefs: ACV.Data.ITimelinePrefs;
         private appContext: AppContext;
         private events: TimelineEvent[];
         private element: JQuery;
         private numberOfEventsVisible: number = 0;
 
-        constructor(appContext: ACV.AppContext, prefs: any, events: TimelineEvent[]) {
+        constructor(appContext: ACV.AppContext, prefs: ACV.Data.ITimelinePrefs, events: TimelineEvent[]) {
             super('ACV.HUD.Timeline');
             this.appContext = appContext;
             this.prefs = prefs;
@@ -20,7 +20,7 @@ module ACV.HUD {
         }
 
 
-        static createFromData(appContext: ACV.AppContext, data: any): Timeline {
+        static createFromData(appContext: ACV.AppContext, data: ACV.Data.ITimelineData): Timeline {
             var eventIndex: any,
                 timelineEvents: TimelineEvent[] = [];
 

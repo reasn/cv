@@ -23,7 +23,7 @@ module ACV.HUD {
             this.data = data;
         }
 
-        static createFromData(data: ACV.Data.ITimelineElementData): TimelineEvent {
+        static createFromData(data: ACV.Data.ITimelineEventData): TimelineEvent {
             return new ACV.HUD.TimelineEvent(
                 data.playerX,
                 new Date(data.timestamp),
