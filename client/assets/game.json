@@ -49,7 +49,9 @@
                     }
                 }
             },
-            "prefs": {},
+            "prefs": {
+                "hitBox": 50
+            },
             "powerUps": []
         },
         "levels": [

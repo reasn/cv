@@ -78,11 +78,11 @@ module ACV.Game {
 
         updatePositions(sceneX: number,
                         viewportDimensions: ACV.View.IViewportDimensions) {
-//    var granularSceneX = Math.round(sceneX / this.prefs.collisionDetectionGridSize);
+            //var granularSceneX = Math.round(sceneX / this.prefs.collisionDetectionGridSize);
 
             //Set wrapper position to have the player stay at the same point of the scrolling scenery
             this.x = -sceneX;
-            this.element.css('left', (this.x + this.lookAroundDistortion.x) + 'px');
+            this.element.css('x', (this.x + this.lookAroundDistortion.x) + 'px');
             this.player.updatePosition(sceneX, viewportDimensions);
         }
 
@@ -94,8 +94,9 @@ module ACV.Game {
         applyLookAroundDistortion() {
 
             this.element.css({
-                top:  this.lookAroundDistortion.y + 'px',
-                left: (this.x + this.lookAroundDistortion.x) + 'px'
+                y: this.lookAroundDistortion.y + 'px',
+                //left: (this.x + this.lookAroundDistortion.x) + 'px'
+                x: (this.x + this.lookAroundDistortion.x) + 'px'
             });
         }
 
@@ -106,11 +107,13 @@ module ACV.Game {
                                  viewportDimensions: ACV.View.IViewportDimensions) {
             var powerUpIndex: any,
                 powerUp: PowerUp,
+                testX: number,
                 collected: PowerUp[] = [];
 
             for (powerUpIndex in this.powerUps) {
                 powerUp = this.powerUps[powerUpIndex];
-                if (!powerUp.collected && playerX > powerUp.x && playerXBefore < powerUp.x) {
+                testX = powerUp.x - this.prefs.hitBox;
+                if (!powerUp.collected && playerX > testX && playerXBefore < testX) {
                     collected.push(powerUp);
                 }
             }
@@ -118,7 +121,6 @@ module ACV.Game {
                 this.skillBasket.collectPowerUp(collected[powerUpIndex], sceneX, viewportDimensions);
                 ACV.Utils.removeFromArray(this.powerUps, collected[powerUpIndex]);
             }
-
         }
     }
 }

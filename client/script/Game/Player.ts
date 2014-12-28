@@ -70,7 +70,7 @@ module ACV.Game {
                 this.x = x;
                 //this.element.css('transform', 'translateX(' + x + 'px)');
                 //this.element.transition({x: x});
-                this.element.css({left: x});
+                this.element.css({x: x});
             }
         }
 
@@ -182,25 +182,25 @@ module ACV.Game {
             distance = Math.abs(this.x - targetX);
             duration = distance / speed;
             var startX = this.x;
-            clearInterval(this.movementIntervalResource);
-
-            this.movementIntervalResource = setInterval(()=> {
-
-                elapsedTime += this.prefs.movementTriggerInterval;
-                this.handleMovement(startX, targetX, elapsedTime / duration, sceneX, viewportDimensions);
-            }, this.prefs.movementTriggerInterval);
-
-            this.element.stop('walk', true).removeClass(classesToRemove).addClass(classesToAdd).transition(
+            /*
+             * This animation does not rely on CSS transitions because it is imperative that
+             * the "step" events are fired correctly. That is not possible with transitions
+             * because intervals tend to not fire in time when the browser is busy animating.
+             */
+            //Does not CSS transitions buse transit because there seems to be a bug with dequeuing/queueing resulting in invalid positions
+            this.element.stop('walk', true).removeClass(classesToRemove).addClass(classesToAdd).animate(
                 {
-                    left: targetX
-                },d
+                    x: targetX
+                },
                 {
                     duration: duration,
                     queue:    'walk',
+                    step:     (now: number)=> {
+                        this.handleMovement(startX, targetX, now, sceneX, viewportDimensions);
+                    },
                     complete: () => {
-                        clearInterval(this.movementIntervalResource);
                         this.lastCoarseX = -1;
-                        this.handleMovement(startX, targetX, 1, sceneX, viewportDimensions);
+                        //this.handleMovement(startX, targetX, targetX, sceneX, viewportDimensions);
                         this.element.removeClass('walking');
                     }
                 }).dequeue('walk');
@@ -208,14 +208,13 @@ module ACV.Game {
 
         private handleMovement(startX: number,
                                targetX: number,
-                               completedRatio: number,
+                               now: number,
                                sceneX: number,
                                viewportDimensions: ACV.View.IViewportDimensions) {
 
             //console.log(Math.round(completedRatio * 100) + '%');
 
-            var now = startX + completedRatio * (targetX - startX),
-                coarseX: number,
+            var coarseX: number,
                 listenerIndex: any;
 
             coarseX = Math.floor(now / this.prefs.movementTriggerGranularity);
@@ -223,7 +222,7 @@ module ACV.Game {
 
             if (coarseX !== this.lastCoarseX) {
                 this.lastCoarseX = coarseX;
-              //  this.debug('Triggering movement listeners at %s (before %s):', Math.round(this.x), Math.round(this.lastTriggeredX));
+                //  this.debug('Triggering movement listeners at %s (before %s):', Math.round(this.x), Math.round(this.lastTriggeredX));
                 for (listenerIndex in this.movementListeners) {
                     this.movementListeners[listenerIndex](this.x, this.lastTriggeredX, targetX, sceneX, viewportDimensions);
                 }
