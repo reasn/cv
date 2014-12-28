@@ -8,7 +8,7 @@ var gulp            = require('gulp'),
 
 
 gulp.task('default', ['clean'], function () {
-    gulp.start('script', 'vendor-script', 'style', 'view', 'assets');
+    gulp.start('script', 'bower', 'style', 'view', 'assets');
 });
 
 gulp.task('clean', function (cb) {
@@ -50,7 +50,7 @@ gulp.task('script', function () {
         .pipe(plugins.notify({message: 'Scripts task complete'}));
 });
 
-gulp.task("vendor-script", function () {
+gulp.task("bower", function () {
     gulp.src(plugins.mainBowerFiles())
         .pipe(plugins.concat('vendor.js'))
         .pipe(gulp.dest("./dist/js"))
@@ -70,7 +70,7 @@ gulp.task('assets', function () {
 gulp.task('watch', ['default'], function () {
     gulp.watch('./gulpfile.js', ['watch']);
 
-    gulp.watch('bower_components/**/*.*', ['vendor-script']);
+    gulp.watch(['bower_components/**/*.*', '.bowerrec', 'bower.json'], ['bower']);
 
     gulp.watch('client/script/**/*.ts', ['script']);
     gulp.watch('client/style/**/*.less', ['style']);

@@ -20,7 +20,7 @@ module ACV.Game {
         private x = 0;
 
 
-        constructor(appContext: ACV.AppContext, prefs: ACV.Data.IPlayerLayerPrefs, player: Player, powerUps: PowerUp[]) {
+        constructor( appContext: ACV.AppContext, prefs: ACV.Data.IPlayerLayerPrefs, player: Player, powerUps: PowerUp[] ) {
 
             super('ACV.Game.PlayerLayer');
 
@@ -32,7 +32,7 @@ module ACV.Game {
             this.powerUps = powerUps;
         }
 
-        static createFromData(appContext: ACV.AppContext, data: ACV.Data.IPlayerLayerData) {
+        static createFromData( appContext: ACV.AppContext, data: ACV.Data.IPlayerLayerData ) {
             var player: Player,
                 powerUpIndex: any,
                 powerUps: PowerUp[] = [];
@@ -44,7 +44,7 @@ module ACV.Game {
             return new ACV.Game.PlayerLayer(appContext, data.prefs, player, powerUps);
         }
 
-        init(wrapperElement: JQuery, width: number, minHeight: number, lookAroundDistortion: ILookAroundDistortion) {
+        init( wrapperElement: JQuery, width: number, minHeight: number, lookAroundDistortion: ILookAroundDistortion ) {
             var powerUpIndex: any;
 
             this.lookAroundDistortion = lookAroundDistortion;
@@ -64,11 +64,11 @@ module ACV.Game {
 
             this.player.init(this.element);
 
-            this.player.addMovementListener((playerX: number,
-                                             playerXBefore: number,
-                                             targetPlayerX: number,
-                                             sceneX: number,
-                                             viewportDimensions: ACV.View.IViewportDimensions) => {
+            this.player.addMovementListener(( playerX: number,
+                                              playerXBefore: number,
+                                              targetPlayerX: number,
+                                              sceneX: number,
+                                              viewportDimensions: ACV.View.IViewportDimensions ) => {
                 this.detectCollisions(playerX, playerXBefore, sceneX, viewportDimensions);
             });
 
@@ -76,13 +76,13 @@ module ACV.Game {
             wrapperElement.append(this.element);
         }
 
-        updatePositions(sceneX: number,
-                        viewportDimensions: ACV.View.IViewportDimensions) {
+        updatePositions( sceneX: number,
+                         viewportDimensions: ACV.View.IViewportDimensions ) {
             //var granularSceneX = Math.round(sceneX / this.prefs.collisionDetectionGridSize);
 
             //Set wrapper position to have the player stay at the same point of the scrolling scenery
             this.x = -sceneX;
-            this.element.css('x', (this.x + this.lookAroundDistortion.x) + 'px');
+            this.element.css('transform', 'translate(' + (this.x + this.lookAroundDistortion.x) + 'px, ' + this.lookAroundDistortion.y + 'px)');
             this.player.updatePosition(sceneX, viewportDimensions);
         }
 
@@ -92,19 +92,14 @@ module ACV.Game {
          * @since 2014-03-18
          */
         applyLookAroundDistortion() {
-
-            this.element.css({
-                y: this.lookAroundDistortion.y + 'px',
-                //left: (this.x + this.lookAroundDistortion.x) + 'px'
-                x: (this.x + this.lookAroundDistortion.x) + 'px'
-            });
+            this.element.css('transform', 'translate(' + (this.x + this.lookAroundDistortion.x) + 'px, ' + this.lookAroundDistortion.y + 'px)');
         }
 
 
-        private detectCollisions(playerX: number,
-                                 playerXBefore: number,
-                                 sceneX: number,
-                                 viewportDimensions: ACV.View.IViewportDimensions) {
+        private detectCollisions( playerX: number,
+                                  playerXBefore: number,
+                                  sceneX: number,
+                                  viewportDimensions: ACV.View.IViewportDimensions ) {
             var powerUpIndex: any,
                 powerUp: PowerUp,
                 testX: number,

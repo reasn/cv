@@ -178,7 +178,7 @@ module ACV.Game {
 
             this.info('User clicked, player will walk to %s', targetX);
             this.playerLayer.player.moveTo(targetX, this.x, 0.5, this.sceneViewportDimensions);
-            this.selectSprites(clientX, clientY, viewportDimensions);
+            //this.selectSprites(clientX, clientY, viewportDimensions);
         }
 
         /**
@@ -246,12 +246,12 @@ module ACV.Game {
 
             if (this.sceneViewportDimensions.height < this.prefs.dynamicViewport.minHeight) {
                 this.dynamicTopViewportTranslation = Math.round(-.5 * (this.prefs.dynamicViewport.minHeight - this.sceneViewportDimensions.height));
-                elementsToAlter.css('y', this.dynamicTopViewportTranslation + 'px');
+              //  elementsToAlter.css('y', this.dynamicTopViewportTranslation + 'px');
 
             } else {
                 this.dynamicTopViewportTranslation = 0;
             }
-            elementsToAlter.css('y', this.dynamicTopViewportTranslation);
+          //  elementsToAlter.css('y', this.dynamicTopViewportTranslation);
         }
 
         private dynamicTopViewportTranslation: number = 0;

@@ -20,7 +20,7 @@ module ACV.Game {
         private movementListeners: IPlayerMovementListener[] = [];
         private lastTriggeredX: number = 0;
 
-        constructor(prefs: ACV.Data.IPlayerPrefs) {
+        constructor( prefs: ACV.Data.IPlayerPrefs ) {
             super('ACV.Game.Player');
 
             this.prefs = prefs;
@@ -31,7 +31,7 @@ module ACV.Game {
          *
          * @param {jQuery} playerLayerElement
          */
-        init(playerLayerElement: JQuery) {
+        init( playerLayerElement: JQuery ) {
 
             this.debug('Initializing player');
 
@@ -43,14 +43,14 @@ module ACV.Game {
             this.debug('Player initialized');
         }
 
-        addMovementListener(callback: IPlayerMovementListener) {
+        addMovementListener( callback: IPlayerMovementListener ) {
             this.movementListeners.push(callback)
         }
 
         /**
          * @since 2013-11-24
          */
-        setAge(ageHandle: string) {
+        setAge( ageHandle: string ) {
             this.width = this.prefs.ages[ageHandle].width;
             this.height = this.prefs.ages[ageHandle].height;
             this.element.css(
@@ -63,21 +63,21 @@ module ACV.Game {
             this.debug('Player\'s age set to %s.', ageHandle);
         }
 
-        setPosition(x: number) {
+        setPosition( x: number ) {
             this.element.stop('walk', true);
 
             if (x > 0 || x < 0) {
                 this.x = x;
                 //this.element.css('transform', 'translateX(' + x + 'px)');
                 //this.element.transition({x: x});
-                this.element.css({x: x});
+                this.element.css('transform', 'translateX(' + x + 'px)');
             }
         }
 
         /**
          * @since 2014-03-01
          */
-        jumpAndStay(targetY: number) {
+        jumpAndStay( targetY: number ) {
             this.debug('Jumping from %s to %s to stay there', this.y, targetY);
             this.jump(targetY);
         }
@@ -100,7 +100,7 @@ module ACV.Game {
          * @return void
          * @version 2014-03-01
          */
-        private jump(targetY: number) {
+        private jump( targetY: number ) {
 
             this.element.stop('jump', true).animate(
                 {
@@ -127,7 +127,7 @@ module ACV.Game {
                 }).dequeue('jump');
         }
 
-        updatePosition(sceneX: number, viewportDimensions: ACV.View.IViewportDimensions) {
+        updatePosition( sceneX: number, viewportDimensions: ACV.View.IViewportDimensions ) {
             var targetX: number,
                 viewportPositionRatio: number,
                 speed = 1;
@@ -152,12 +152,11 @@ module ACV.Game {
             }
         }
 
-        moveTo(targetX: number, sceneX: number, speed: number, viewportDimensions: ACV.View.IViewportDimensions) {
+        moveTo( targetX: number, sceneX: number, speed: number, viewportDimensions: ACV.View.IViewportDimensions ) {
             var classesToAdd: string,
                 classesToRemove: string,
                 duration: number,
-                distance: number,
-                elapsedTime: number;
+                distance: number;
 
             /*
              * Make player run faster if he was already moving (Not checking the animation queue
@@ -176,7 +175,6 @@ module ACV.Game {
                 classesToAdd = 'walking backwards';
             }
 
-            elapsedTime = 0;
             distance = Math.abs(this.x - targetX);
             duration = distance / speed;
             var startX = this.x;
@@ -186,14 +184,16 @@ module ACV.Game {
              * because intervals tend to not fire in time when the browser is busy animating.
              */
             //Does not CSS transitions buse transit because there seems to be a bug with dequeuing/queueing resulting in invalid positions
+            this.element.css('borderSpacing', this.x);
             this.element.stop('walk', true).removeClass(classesToRemove).addClass(classesToAdd).animate(
                 {
-                    x: targetX
+                    borderSpacing: targetX
                 },
                 {
                     duration: duration,
                     queue:    'walk',
-                    step:     (now: number)=> {
+                    step:     ( now: number )=> {
+                        this.element.css('transform', 'translateX(' + now + 'px)');
                         this.handleMovement(startX, targetX, now, sceneX, viewportDimensions);
                     },
                     complete: () => {
@@ -204,11 +204,11 @@ module ACV.Game {
                 }).dequeue('walk');
         }
 
-        private handleMovement(startX: number,
-                               targetX: number,
-                               now: number,
-                               sceneX: number,
-                               viewportDimensions: ACV.View.IViewportDimensions) {
+        private handleMovement( startX: number,
+                                targetX: number,
+                                now: number,
+                                sceneX: number,
+                                viewportDimensions: ACV.View.IViewportDimensions ) {
 
             //console.log(Math.round(completedRatio * 100) + '%');
 
