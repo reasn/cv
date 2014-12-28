@@ -2,7 +2,7 @@ module ACV.Game {
 
 
     interface IFlySpriteCssProps {
-        transform?:number;
+        transform?:string;
         height?:number;
     }
 

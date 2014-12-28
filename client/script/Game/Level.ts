@@ -72,6 +72,7 @@ module ACV.Game {
              minHeight: number,
              lookAroundDistortion: ILookAroundDistortion,
              viewportDimensions: ACV.View.IViewportDimensions): void {
+
             var layerIndex: any,
                 animationIndex: any;
 
@@ -228,8 +229,12 @@ module ACV.Game {
 
             distanceBetweenLeftViewportMarginAndLevelBegin = this.prefs.offset - sceneX + this.prefs.clip.x1;
 
-            this.backgroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
-            this.foregroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
+            //this.backgroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
+            //this.foregroundElement.css('margin-left', distanceBetweenLeftViewportMarginAndLevelBegin + 'px');
+
+            this.backgroundElement.css('transform', 'translateX(' + distanceBetweenLeftViewportMarginAndLevelBegin + 'px)');
+            this.foregroundElement.css('transform', 'translateX(' + distanceBetweenLeftViewportMarginAndLevelBegin + 'px)');
+
 
             this.removeDynamicFlySprites();
             for (layerIndex in this.backgroundLayers) {
