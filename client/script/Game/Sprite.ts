@@ -22,7 +22,7 @@ module ACV.Game {
 
         private appContext: ACV.AppContext;
         private id: string = null;
-        private x: number = 0;
+        x: number = 0;
         private width: number = 0;
         private source: string = null;
         private color: string = null;
@@ -100,9 +100,9 @@ module ACV.Game {
                 return expression;
             }
 
-            code = ACV.Game.Sprite.CODE_WRAPPER.replace(/\%expression/g, expression);
-            code = code.replace(/\%handle/, spriteHandle);
-            code = code.replace(/\%property/, propertyName);
+            code = ACV.Game.Sprite.CODE_WRAPPER.replace(/%expression/g, expression);
+            code = code.replace(/%handle/, spriteHandle);
+            code = code.replace(/%property/, propertyName);
             return new Function('maxLookAroundDistortion', 'viewportHeight', 'sprites', code);
         }
 
@@ -111,12 +111,17 @@ module ACV.Game {
             if (this.id) {
                 this.element.attr('id', this.id);
             }
-            this.element.css({
+            var cssProps: any = {
                 //left:   this.x,
                 transform: 'translateX(' + this.x + 'px)',
-                width:     this.width + 'px',
-                height:    this.height
-            });
+                width:     this.width + 'px'
+            };
+            if (this.topAligned) {
+                cssProps.top = 0;
+            } else {
+                cssProps.bottom = 0;
+            }
+            this.element.css(cssProps);
 
             //TODO implement combined asset files
             if (typeof (this.source) === 'string') {

@@ -1,4 +1,11 @@
 module ACV.Game {
+
+
+    interface IFlySpriteCssProps {
+        transform?:number;
+        height?:number;
+    }
+
     /**
      * @since 2013-11-03
      */
@@ -102,7 +109,7 @@ module ACV.Game {
                                flySprites: {[handle:string]:IFlySprite}) {
 
             /* flySprite is a flyweight representation of a Sprite */
-            var cssProps: {top?:number; bottom?:number; height?:number;} = {},
+            var cssProps: IFlySpriteCssProps = {},
                 flySprite: IFlySprite = {
                     isStatic: true
                 };
@@ -124,24 +131,27 @@ module ACV.Game {
             }
 
             if (sprite.topAligned) {
-                cssProps.top = flySprite.y;
+                //cssProps.top = flySprite.y;
+                cssProps.transform = 'translate(' + sprite.x + 'px, ' + flySprite.y + 'px)';
             } else {
-                cssProps.bottom = flySprite.y;
+                //cssProps.bottom = flySprite.y;
+                cssProps.transform = 'translate(' + sprite.x + 'px, ' + -1 * flySprite.y + 'px)';
             }
 
             //Calculate height
-            if (typeof sprite.height === 'function') {
-                flySprite.height = sprite.height.apply(flySprite, [this.appContext.prefs.maxLookAroundDistortion, viewportDimensions.height, flySprites]);
-                flySprite.isStatic = false;
-
-            } else if (typeof sprite.height === 'number') {
-                flySprite.height = sprite.height;
-
-            } else {
-                flySprite.height = sprite.height.indexOf('%') === -1 ? parseInt(sprite.height) : viewportDimensions.height / 100 * parseInt(sprite.height);
+            switch (typeof sprite.height) {
+                case 'function':
+                    flySprite.height = sprite.height.apply(flySprite, [this.appContext.prefs.maxLookAroundDistortion, viewportDimensions.height, flySprites]);
+                    flySprite.isStatic = false;
+                    cssProps.height = flySprite.height;
+                    break;
+                case 'number':
+                    flySprite.height = sprite.height;
+                    break;
+                default:
+                    flySprite.height = sprite.height.indexOf('%') === -1 ? parseInt(sprite.height) : viewportDimensions.height / 100 * parseInt(sprite.height);
+                    cssProps.height = flySprite.height;
             }
-
-            cssProps.height = flySprite.height;
 
             if (flySprites[this.handle] === undefined) {
                 flySprites[this.handle] = {};
@@ -179,8 +189,10 @@ module ACV.Game {
             this.lookAroundDistortion.y = Math.floor(lookAroundDistortion.y * this.prefs.speed);
 
             this.element.css({
-                top:       this.lookAroundDistortion.y + 'px',
-                transform: 'translateX(' + (this.x + this.lookAroundDistortion.x) + 'px)'
+                //   top:       this.lookAroundDistortion.y + 'px',
+                transform: 'translate(' +
+                           (this.x + this.lookAroundDistortion.x) + 'px, ' +
+                           this.lookAroundDistortion.y + 'px)'
                 //left: (this.x + this.lookAroundDistortion.x) + 'px'
             });
         }
