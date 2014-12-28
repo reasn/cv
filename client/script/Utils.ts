@@ -9,6 +9,16 @@ module ACV {
             return navigator.userAgent.indexOf('Trident') > 0;
         }
 
+        static removeFromArray<T>(array: T[], element: T):void {
+            var index: any;
+            for (index in array) {
+                if (array[index] === element) {
+                    array.splice(index, 1);
+                    return;
+                }
+            }
+        }
+
         /**
          * Happily taken from http://detectmobilebrowsers.com
          * @author Chad Smith, http://twitter.com/chadsmith

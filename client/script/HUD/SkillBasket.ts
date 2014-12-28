@@ -50,6 +50,7 @@ module ACV.HUD {
                 transform: 'none',
                 left:      powerUp.x - sceneX,
                 bottom:    viewportDimensions.height - powerUp.y
+                //transform: 'translate(' + (powerUp.x - sceneX) + 'px, ' + -1 * (viewportDimensions.height - powerUp.y) + 'px)',
             }).prependTo(this.element.parent());
 
             powerUp.element.animate({

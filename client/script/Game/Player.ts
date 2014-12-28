@@ -21,7 +21,7 @@ module ACV.Game {
         private lastTriggeredX: number = 0;
 
         constructor(prefs: ACV.Data.IPlayerPrefs) {
-            super('AVG.Game.Player');
+            super('ACV.Game.Player');
 
             this.prefs = prefs;
             this.y = prefs.position.y;
@@ -69,7 +69,8 @@ module ACV.Game {
             if (x > 0 || x < 0) {
                 this.x = x;
                 //this.element.css('transform', 'translateX(' + x + 'px)');
-                this.element.css('left', x);
+                //this.element.transition({x: x});
+                this.element.css({left: x});
             }
         }
 
@@ -151,9 +152,14 @@ module ACV.Game {
             }
         }
 
+        private movementIntervalResource: number = null;
+
         moveTo(targetX: number, sceneX: number, speed: number, viewportDimensions: ACV.View.IViewportDimensions) {
             var classesToAdd: string,
-                classesToRemove: string;
+                classesToRemove: string,
+                duration: number,
+                distance: number,
+                elapsedTime: number;
 
             /*
              * Make player run faster if he was already moving (Not checking the animation queue
@@ -171,32 +177,58 @@ module ACV.Game {
                 classesToRemove = 'forward';
                 classesToAdd = 'walking backwards';
             }
-            this.element.stop('walk', true).removeClass(classesToRemove).addClass(classesToAdd).animate(
+
+            elapsedTime = 0;
+            distance = Math.abs(this.x - targetX);
+            duration = distance / speed;
+            var startX = this.x;
+            clearInterval(this.movementIntervalResource);
+
+            this.movementIntervalResource = setInterval(()=> {
+
+                elapsedTime += this.prefs.movementTriggerInterval;
+                this.handleMovement(startX, targetX, elapsedTime / duration, sceneX, viewportDimensions);
+            }, this.prefs.movementTriggerInterval);
+
+            this.element.stop('walk', true).removeClass(classesToRemove).addClass(classesToAdd).transition(
                 {
                     left: targetX
-                },
+                },d
                 {
-                    duration: Math.abs(this.x - targetX) / speed,
+                    duration: duration,
                     queue:    'walk',
-                    step:     (now) => {
-                        var coarseX: number,
-                            listenerIndex: any;
-
-                        coarseX = Math.floor(now / this.prefs.movementTriggerGranularity);
-                        this.x = now;
-
-                        if (coarseX !== this.lastCoarseX) {
-                            this.lastCoarseX = coarseX;
-                            for (listenerIndex in this.movementListeners) {
-                                this.movementListeners[listenerIndex].apply(this, [this.x, this.lastTriggeredX, targetX, sceneX, viewportDimensions]);
-                            }
-                            this.lastTriggeredX = this.x;
-                        }
-                    },
                     complete: () => {
+                        clearInterval(this.movementIntervalResource);
+                        this.lastCoarseX = -1;
+                        this.handleMovement(startX, targetX, 1, sceneX, viewportDimensions);
                         this.element.removeClass('walking');
                     }
                 }).dequeue('walk');
+        }
+
+        private handleMovement(startX: number,
+                               targetX: number,
+                               completedRatio: number,
+                               sceneX: number,
+                               viewportDimensions: ACV.View.IViewportDimensions) {
+
+            //console.log(Math.round(completedRatio * 100) + '%');
+
+            var now = startX + completedRatio * (targetX - startX),
+                coarseX: number,
+                listenerIndex: any;
+
+            coarseX = Math.floor(now / this.prefs.movementTriggerGranularity);
+            this.x = now;
+
+            if (coarseX !== this.lastCoarseX) {
+                this.lastCoarseX = coarseX;
+              //  this.debug('Triggering movement listeners at %s (before %s):', Math.round(this.x), Math.round(this.lastTriggeredX));
+                for (listenerIndex in this.movementListeners) {
+                    this.movementListeners[listenerIndex](this.x, this.lastTriggeredX, targetX, sceneX, viewportDimensions);
+                }
+                this.lastTriggeredX = this.x;
+            }
         }
     }
 }

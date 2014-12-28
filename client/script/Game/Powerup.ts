@@ -28,11 +28,11 @@ module ACV.Game {
             this.element = $('<div class="powerUp" />');
             this.element.css(
                 {
-                    transform: 'translateX(' + this.x + 'px)',
+                    transform: 'translate(' + this.x + 'px, ' + -1 * this.y + 'px)',
                     //left:   this.x,
-                    bottom:    this.y
+                    bottom:    0//this.y
                 });
-            this.element.text(this.x);
+            this.element.html(this.skillType + '<br />' + this.x);
 
             playerLayerElement.append(this.element);
 

@@ -12,19 +12,19 @@ module ACV.Core {
         }
 
         debug(...args: any[]) {
-            Log.add([this.className].concat(args), 'd');
+            Log.add(this.className, args, 'd');
         }
 
         info(...args: any[]) {
-            Log.add([this.className].concat(args), 'i');
+            Log.add(this.className, args, 'i');
         }
 
         warn(...args: any[]) {
-            Log.add([this.className].concat(args), 'w');
+            Log.add(this.className, args, 'w');
         }
 
         error(...args: any[]) {
-            Log.add([this.className].concat(args), 'e');
+            Log.add(this.className, args, 'e');
         }
     }
 }

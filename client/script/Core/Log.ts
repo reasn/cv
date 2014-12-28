@@ -7,37 +7,14 @@ module ACV.Core {
         static NAMESPACE_WIDTH = 25;
         private static indent = 0;
 
-        static debug() {
-            Log.add(Array.prototype.slice.call(arguments), 'd');
-        }
-
-        static info() {
-            Log.add(Array.prototype.slice.call(arguments), 'i');
-        }
-
-        static warn() {
-            Log.add(Array.prototype.slice.call(arguments), 'w');
-        }
-
-        static error() {
-            Log.add(Array.prototype.slice.call(arguments), 'e');
-        }
-
         /**
          * We could directly use the log method (e.g. console.error) as second argument which would be more elegant. But Chrome doesn't allow it -.-
          */
-        static add(args: any[], logLevel: string) {
+        static add(className: string, args: any[], logLevel: string) {
 
             var message: string,
                 replacementIndex: any,
-                len = Log.NAMESPACE_WIDTH,
-                className = args.shift();
-
-            if (className.indexOf('ACV.') === -1) {
-                //No class name present, supposed class name is message
-                args.unshift(className);
-                className = 'unknown';
-            }
+                len = Log.NAMESPACE_WIDTH;
 
             //Beautify namespace and class name
             if (className.length > len) {

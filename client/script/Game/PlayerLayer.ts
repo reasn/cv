@@ -104,19 +104,21 @@ module ACV.Game {
                                  playerXBefore: number,
                                  sceneX: number,
                                  viewportDimensions: ACV.View.IViewportDimensions) {
-            var testX: number,
-                powerUpIndex: any,
-                powerUp: PowerUp;
-
-            testX = playerX + this.prefs.hitBox + .5 * this.player.width;
+            var powerUpIndex: any,
+                powerUp: PowerUp,
+                collected: PowerUp[] = [];
 
             for (powerUpIndex in this.powerUps) {
                 powerUp = this.powerUps[powerUpIndex];
                 if (!powerUp.collected && playerX > powerUp.x && playerXBefore < powerUp.x) {
-                    this.skillBasket.collectPowerUp(this.powerUps.splice(powerUpIndex, 1)[0], sceneX, viewportDimensions);
-                    powerUpIndex--;
+                    collected.push(powerUp);
                 }
             }
+            for (powerUpIndex in collected) {
+                this.skillBasket.collectPowerUp(collected[powerUpIndex], sceneX, viewportDimensions);
+                ACV.Utils.removeFromArray(this.powerUps, collected[powerUpIndex]);
+            }
+
         }
     }
 }

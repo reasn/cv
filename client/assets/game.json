@@ -27,6 +27,7 @@
                     "y": 150
                 },
                 "fastWalkMultiplicator": 1.5,
+                "movementTriggerInterval": 50,
                 "movementTriggerGranularity": 20,
                 "initialAge": "baby",
                 "ages": {
@@ -48,10 +49,7 @@
                     }
                 }
             },
-            "prefs": {
-                "collisionDetectionGridSize": 10,
-                "hitBox": 50
-            },
+            "prefs": {},
             "powerUps": []
         },
         "levels": [

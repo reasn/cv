@@ -143,6 +143,7 @@ module ACV.Game {
             this.lookAroundDistortion.x = -Math.floor(this.appContext.prefs.maxLookAroundDistortion * 2 * (clientX / appViewportDimensions.width - .5));
             this.lookAroundDistortion.y = -Math.floor(this.appContext.prefs.maxLookAroundDistortion * 2 * (clientY / appViewportDimensions.height - .5));
             this.applyLookAroundDistortion();
+            $('#mouseX').text(Math.round(this.x + clientX));
         }
 
         handleMouseClick(clientX: number) {

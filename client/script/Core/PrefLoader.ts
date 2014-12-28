@@ -23,7 +23,7 @@ module ACV.Core {
             $.getJSON(this.createUrl('game.json'), (gameData: ACV.Data.IAppData) => {
                 this.gameData = gameData;
 
-                this.loadLevels(gameData.scene.levels, function () {
+                this.loadLevels(gameData.scene.levels, () => {
                     this.info('Preferences and levels loaded.');
                     qFx.apply(this, [this.gameData]);
                 });
