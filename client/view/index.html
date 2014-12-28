@@ -1,80 +1,88 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>CV Test</title>
-        <link href="css/style.css" type="text/css" rel="stylesheet">
-        <script src="bower_components/jquery/dist/jquery.min.js"></script>
-        <script defer="defer" src="assets/unmanaged-scripts/jquery-ui-1.10.3.custom.min.js"></script>
-        <!--<script defer="defer" src="assets/unmanaged-scripts/jquery.transform2d.js"></script>-->
-        <script defer="defer" src="bower_components/jquery.transit/jquery.transit.js"></script>
-        <script defer="defer" src="js/cv.js"></script>
-        <script defer="defer" type="text/javascript">
-            (function() {
-                $(function load() {
-                    if(typeof ACV.App === 'undefined'){
-                        window.setTimeout(load, 100);
-                        return;
-                    }
-                    var app = new ACV.App();
-                    (new ACV.Core.PrefLoader()).load(function(gameData) {
-                        app.init(gameData, $('.game-container'));
-                    });
-
-                    //TODO remove the next line
-                    window.testableApp = app;
+<head>
+    <meta charset="UTF-8">
+    <title>CV Test</title>
+    <link href="css/style.css" type="text/css" rel="stylesheet">
+    <script src="js/vendor.js"></script>
+    <script defer="defer" src="assets/unmanaged-scripts/jquery-ui-1.10.3.custom.min.js"></script>
+    <script defer="defer" src="js/cv.js"></script>
+    <script defer="defer" type="text/javascript">
+        (function () {
+            $(function load() {
+                if (typeof ACV.App === 'undefined') {
+                    window.setTimeout(load, 100);
+                    return;
+                }
+                var app = new ACV.App();
+                (new ACV.Core.PrefLoader()).load(function (gameData) {
+                    app.init(gameData, $('.game-container'));
                 });
-            })();
 
-        </script>
-    </head>
-    <body>
-        <div class="welcome-container">
-            <h1>Hello World</h1>
-            <p>This will be a short introductory text.</p>
-            <p>This is an image. It was linked without permission and should simply take up some space for the time being.</p>
-            <p><a href="http://dvdp.tumblr.com/"><img src="http://24.media.tumblr.com/7823280e24d6a76bf545b4972b24a28c/tumblr_n2hvqu88321qzt4vjo1_r3_500.gif" /></a></p>
-            <h2>Idea collection (Just a dump, don't take it too seriously)</h2>
-            <ul>
-                <li>Look into google closure compiler</li>
-                <li>look around distortion synchronized to a beat</li>
-                <li>Player shows speech bubble after inactivity: "Scroll the page!"</li>
-                <li>The text area above the actual game could evolve its style from cheap early 90ies towards a more sophisticated style when scrolling down to the game (parable for the development of the web during the last decades)</li>
-            </ul>
-        </div>
-        <div class="game-container">
-            <div class="scene"></div>
-            <div class="hud">
-                <ul class="dev-info">
-                    <li>
-                        Ratio: <span id="scrollpos">N/A</span>
-                    </li>
-                    <li>
-                        sceneX: <span id="sceneX">N/A</span>
-                    </li>
-                    <li>
-                        playerX: <span id="playerX">N/A</span>
-                    </li>
-                    <li>mouseX: <span id="mouseX">N/A</span></li>
-                </ul>
-                <ul class="skill-basket skill-basket-info">
-                    <li class="beginner">
-                        beginner
-                    </li>
-                    <li class="intermediate">
-                        intermediate
-                    </li>
-                    <li class="expert">
-                        expert
-                    </li>
-                    <li class="master">
-                        master
-                    </li>
-                </ul>
-            </div>
-        </div>
-    <p>
-        <a id="github-ribbon" href="https://github.com/reasn/cv"><img src="assets/graphics/github-ribbon.png" alt="Fork me on GitHub"></a>
+                //TODO remove the next line
+                window.testableApp = app;
+            });
+        })();
+
+    </script>
+</head>
+<body>
+<div class="welcome-container">
+    <h1>Hello World</h1>
+
+    <p>This will be a short introductory text.</p>
+
+    <p>This is an image. It was linked without permission and should simply take up some space for the time being.</p>
+
+    <p><a href="http://dvdp.tumblr.com/"><img
+            src="http://24.media.tumblr.com/7823280e24d6a76bf545b4972b24a28c/tumblr_n2hvqu88321qzt4vjo1_r3_500.gif" /></a>
     </p>
-    </body>
+
+    <h2>Idea collection (Just a dump, don't take it too seriously)</h2>
+    <ul>
+        <li>Look into google closure compiler</li>
+        <li>look around distortion synchronized to a beat</li>
+        <li>Player shows speech bubble after inactivity: "Scroll the page!"</li>
+        <li>The text area above the actual game could evolve its style from cheap early 90ies towards a more
+            sophisticated style when scrolling down to the game (parable for the development of the web during the last
+            decades)
+        </li>
+    </ul>
+</div>
+<div class="game-container">
+    <div class="scene"></div>
+    <div class="hud">
+        <ul class="dev-info">
+            <li>
+                Ratio: <span id="scrollpos">N/A</span>
+            </li>
+            <li>
+                sceneX: <span id="sceneX">N/A</span>
+            </li>
+            <li>
+                playerX: <span id="playerX">N/A</span>
+            </li>
+            <li>mouseX: <span id="mouseX">N/A</span></li>
+        </ul>
+        <ul class="skill-basket skill-basket-info">
+            <li class="beginner">
+                beginner
+            </li>
+            <li class="intermediate">
+                intermediate
+            </li>
+            <li class="expert">
+                expert
+            </li>
+            <li class="master">
+                master
+            </li>
+        </ul>
+    </div>
+</div>
+<p>
+    <a id="github-ribbon" href="https://github.com/reasn/cv"><img src="assets/graphics/github-ribbon.png"
+                                                                  alt="Fork me on GitHub"></a>
+</p>
+</body>
 </html>

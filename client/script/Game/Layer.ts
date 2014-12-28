@@ -19,7 +19,7 @@ module ACV.Game {
         private x: number = 0;
         private lookAroundDistortion: ILookAroundDistortion;
 
-        constructor(appContext: ACV.AppContext, handle: string, prefs: ACV.Data.ILayerPrefs, sprites: ACV.Game.Sprite[]) {
+        constructor( appContext: ACV.AppContext, handle: string, prefs: ACV.Data.ILayerPrefs, sprites: ACV.Game.Sprite[] ) {
 
             super('ACV.Game.Layer');
 
@@ -36,7 +36,7 @@ module ACV.Game {
             };
         }
 
-        static createFromPrefs(appContext: ACV.AppContext, data: ACV.Data.ILayerData) {
+        static createFromPrefs( appContext: ACV.AppContext, data: ACV.Data.ILayerData ) {
             var spriteIndex: any,
                 sprites: Sprite[] = [];
 
@@ -47,10 +47,10 @@ module ACV.Game {
         }
 
 
-        init(sceneElement: JQuery,
-             minHeight: number,
-             viewportDimensions: ACV.View.IViewportDimensions,
-             flySprites: {[handle:string]:IFlySprite}) {
+        init( sceneElement: JQuery,
+              minHeight: number,
+              viewportDimensions: ACV.View.IViewportDimensions,
+              flySprites: {[handle:string]:IFlySprite} ) {
 
             var spriteIndex: any,
                 spriteWrapper: JQuery;
@@ -86,12 +86,12 @@ module ACV.Game {
          * @param {!IViewportDimensions}  viewportDimensions
          * @version 2014-03-05
          */
-        updatePositions(levelOffset: number,
-                        levelX: number,
-                        levelXBefore: number,
-                        levelClipOffset: number,
-                        viewportDimensions: ACV.View.IViewportDimensions,
-                        flySprites: {[handle:string]:IFlySprite}) {
+        updatePositions( levelOffset: number,
+                         levelX: number,
+                         levelXBefore: number,
+                         levelClipOffset: number,
+                         viewportDimensions: ACV.View.IViewportDimensions,
+                         flySprites: {[handle:string]:IFlySprite} ) {
 
             if (viewportDimensions.heightChanged) {
                 this.recalculateSpritePositions(viewportDimensions, flySprites);
@@ -101,30 +101,38 @@ module ACV.Game {
             //this.element.css('left', (this.x + this.lookAroundDistortion.x) + 'px');
         }
 
-        getHitSprites(levelRelativeX: number,
-                      y: number,
-                      flySprites: {[layerHandle:string]:{[spriteHandle:string]:IFlySprite}},
-                      viewportDimensions: ACV.View.IViewportDimensions): Sprite[] {
+        getHitSprites( levelRelativeX: number,
+                       y: number,
+                       flySprites: {[layerHandle:string]:{[spriteHandle:string]:IFlySprite}},
+                       viewportDimensions: ACV.View.IViewportDimensions ): Sprite[] {
 
             var sprites: Sprite[] = [],
                 spriteIndex: any,
                 sprite: Sprite,
                 flySprite: IFlySprite,
-                testX: number;
+                testX: number,
+                adjustedY: number;
 
             for (spriteIndex in this.sprites) {
                 sprite = this.sprites[spriteIndex];
-                testX = this.prefs.offset + sprite.x;
+                testX = this.prefs.offset + this.x + sprite.x + this.lookAroundDistortion.x;
                 if (levelRelativeX >= testX && levelRelativeX <= testX + sprite.width) {
 
-                  //  sprite.element.css('background', '#ff0000');
+                    //  sprite.element.css('background', '#ff0000');
                     flySprite = flySprites[this.handle][sprite.handle];
                     if (flySprite === null) {
                         this.positionSprite(sprite, viewportDimensions, flySprites);
                         flySprite = flySprites[this.handle][sprite.handle];
                     }
-                    console.log(y, flySprite, sprite.handle);
-                    if (y >= flySprite.y && y <= flySprite.y + flySprite.height) {
+                    if (sprite.topAligned) {
+                        adjustedY = y;
+                    } else {
+                        adjustedY = this.element.height() - y;
+                    }
+                    adjustedY += this.lookAroundDistortion.y;
+
+                    // console.log(adjustedY, flySprite, flySprite.height, sprite.handle, sprite.element);
+                    if (adjustedY >= flySprite.y && adjustedY <= flySprite.y + flySprite.height) {
                         sprites.push(sprite);
                     }
                 }
@@ -135,9 +143,9 @@ module ACV.Game {
         /**
          * Is only invoked once for static sprites (from init()).
          */
-        private positionSprite(sprite: ACV.Game.Sprite,
-                               viewportDimensions: ACV.View.IViewportDimensions,
-                               flySprites: {[handle:string]:IFlySprite}) {
+        private positionSprite( sprite: ACV.Game.Sprite,
+                                viewportDimensions: ACV.View.IViewportDimensions,
+                                flySprites: {[handle:string]:IFlySprite} ) {
 
             /* flySprite is a flyweight representation of a Sprite */
             var cssProps: IFlySpriteCssProps = {},
@@ -195,7 +203,7 @@ module ACV.Game {
             sprite.element.css(cssProps);
         }
 
-        private recalculateSpritePositions(viewportDimensions: ACV.View.IViewportDimensions, flySprites: {[handle:string]:IFlySprite}) {
+        private recalculateSpritePositions( viewportDimensions: ACV.View.IViewportDimensions, flySprites: {[handle:string]:IFlySprite} ) {
             var spriteIndex: any,
                 sprite: Sprite;
             this.info('Recalculating y positions of all sprites');
@@ -211,7 +219,7 @@ module ACV.Game {
         /**
          * @since 2014-03-18
          */
-        applyLookAroundDistortion(lookAroundDistortion: ILookAroundDistortion) {
+        applyLookAroundDistortion( lookAroundDistortion: ILookAroundDistortion ) {
 
             /*
              * We use Math.floor() instead of Math.round() to obtain a

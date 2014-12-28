@@ -34,12 +34,12 @@ module ACV.Game {
         private xBefore: number = 0;
         private element: JQuery;
 
-        constructor(appContext: ACV.AppContext,
-                    element: JQuery,
-                    prefs: ACV.Data.IScenePrefs,
-                    levels: Level[],
-                    playerLayer: PlayerLayer,
-                    triggerManager: TriggerManager) {
+        constructor( appContext: ACV.AppContext,
+                     element: JQuery,
+                     prefs: ACV.Data.IScenePrefs,
+                     levels: Level[],
+                     playerLayer: PlayerLayer,
+                     triggerManager: TriggerManager ) {
 
             super('ACV.Game.Scene');
 
@@ -62,7 +62,7 @@ module ACV.Game {
             };
         }
 
-        static createFromData(appContext: ACV.AppContext, element: JQuery, data: ACV.Data.ISceneData): Scene {
+        static createFromData( appContext: ACV.AppContext, element: JQuery, data: ACV.Data.ISceneData ): Scene {
             var levels: Level[] = [],
                 playerLayer: PlayerLayer,
                 triggerManager: TriggerManager,
@@ -80,7 +80,7 @@ module ACV.Game {
             return new Scene(appContext, element, data.prefs, levels, playerLayer, triggerManager);
         }
 
-        init(hud: ACV.HUD.HeadsUpDisplay) {
+        init( hud: ACV.HUD.HeadsUpDisplay ) {
             var levelIndex: any;
 
             this.sceneViewportDimensions.width = this.appContext.viewportManager.getDimensions().width;
@@ -105,23 +105,23 @@ module ACV.Game {
             this.element.append(this.backgroundElement);
             this.playerLayer.init(this.element, this.width, this.prefs.dynamicViewport.minHeight, this.lookAroundDistortion);
 
-            this.appContext.player.addMovementListener((playerX, playerXBefore, targetPlayerX, sceneX)=> {
+            this.appContext.player.addMovementListener(( playerX, playerXBefore, targetPlayerX, sceneX )=> {
                 $('#playerX').text(Math.round(playerX));
                 this.handleTriggers(playerX, playerXBefore, targetPlayerX, sceneX);
             });
 
             if (this.appContext.performanceSettings.lookAroundDistortion) {
-                this.appContext.viewportManager.listenToMouseMove((clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions) => {
+                this.appContext.viewportManager.listenToMouseMove(( clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions ) => {
                     this.handleMouseMove(clientX, clientY, viewportDimensions);
                 });
             }
 
-            this.appContext.viewportManager.listenToMouseClick((clientX, clientY, viewportDimensions)=> {
+            this.appContext.viewportManager.listenToMouseClick(( clientX, clientY, viewportDimensions )=> {
                 this.handleMouseClick(clientX, clientY, viewportDimensions);
             });
 
             //Sink events
-            this.appContext.viewportManager.listenToScroll((ratio, ratioBefore, viewportDimensions)=> {
+            this.appContext.viewportManager.listenToScroll(( ratio, ratioBefore, viewportDimensions )=> {
                 this.sceneViewportDimensions.width = viewportDimensions.width;
                 this.sceneViewportDimensions.height = viewportDimensions.height - hud.height;
                 this.sceneViewportDimensions.widthChanged = viewportDimensions.widthChanged;
@@ -132,7 +132,7 @@ module ACV.Game {
             this.element.append(this.foregroundElement);
         }
 
-        private handleMouseMove(clientX: number, clientY: number, appViewportDimensions: ACV.View.IViewportDimensions) {
+        private handleMouseMove( clientX: number, clientY: number, appViewportDimensions: ACV.View.IViewportDimensions ) {
             /*
              * We use Math.floor() instead of Math.round() to obtain a
              * continuous distribution of the results and therefore
@@ -154,23 +154,26 @@ module ACV.Game {
              */
         }
 
-        private selectSprites(clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions) {
+        private selectSprites( clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions ) {
             var selectedSprites: Sprite[] = [],
                 levelRelativeX: number,
                 adjustedY = clientY + this.dynamicTopViewportTranslation;
             for (var i in this.levels) {
                 levelRelativeX = clientX + this.x - this.levels[i].prefs.offset;
-                selectedSprites = selectedSprites.concat(this.levels[i].getHitSprites(levelRelativeX, adjustedY, viewportDimensions));
+                if (levelRelativeX > 0 && levelRelativeX < this.levels[i].prefs.clip.x2) {
+                    //console.log(i, levelRelativeX);
+                    selectedSprites = selectedSprites.concat(this.levels[i].getHitSprites(levelRelativeX, adjustedY, viewportDimensions));
+                }
             }
             $('.sprite').removeClass('selected');
             this.info('Player selected %s sprites via click', selectedSprites.length);
             for (var j in selectedSprites) {
-                console.log(selectedSprites[j].element);
+                //console.log(selectedSprites[j].element);
                 selectedSprites[j].element.addClass('selected');
             }
         }
 
-        handleMouseClick(clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions) {
+        handleMouseClick( clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions ) {
             var targetX = this.x + clientX;
 
             this.info('User clicked, player will walk to %s', targetX);
@@ -194,7 +197,7 @@ module ACV.Game {
             this.playerLayer.applyLookAroundDistortion()
         }
 
-        updatePositions(ratio: number) {
+        updatePositions( ratio: number ) {
             var levelIndex: any;
 
             //this.x must be at least 0. Therefore Math.max() is required to avoid unexpected behaviour if the screen is larger than the entire scene
@@ -219,7 +222,7 @@ module ACV.Game {
             $('#sceneX').text(Math.round(this.x));
         }
 
-        handleTriggers(playerX: number, playerXBefore: number, targetPlayerX: number, sceneX: number) {
+        handleTriggers( playerX: number, playerXBefore: number, targetPlayerX: number, sceneX: number ) {
             this.triggerManager.check(playerX, playerXBefore, targetPlayerX, sceneX);
         }
 

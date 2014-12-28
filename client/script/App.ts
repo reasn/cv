@@ -61,7 +61,7 @@ module ACV {
             this.scene = ACV.Game.Scene.createFromData(this.appContext, container.children('.scene'), data.scene);
 
             //Initialize HUD and scene
-            this.hud.init(container.children('.hud'));
+            this.hud.init(container.children('.hud'), this.scene);
             this.scene.init(this.hud);
 
             viewportManager.start();

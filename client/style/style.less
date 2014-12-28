@@ -101,8 +101,8 @@ body {
 
                         .sprite {
                             position: absolute;
-                            outline:  5px dashed rgba(0, 0, 255, .5);
-                            &.selected { outline-color: #72ff00; }
+                            //outline:  5px dashed rgba(0, 0, 255, .5);
+                            &.selected { outline: 5px dashed rgba(0, 0, 255, .5) }
 
                             &.image-background {
                                 background-size: contain
@@ -277,6 +277,14 @@ body {
             height:  160px;
             margin:  0px;
             padding: 20px;
+        }
+        .scene-debugger {
+            position:         fixed;
+            right:            0;
+            top:              0;
+            width:            200px;
+            height:           200px;
+            background-color: #000000;
         }
         .timeline {
             right:            0;

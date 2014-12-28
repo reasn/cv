@@ -1,14 +1,15 @@
 {
-  "name": "cv",
-  "version": "0.0.0",
-  "homepage": "https://github.com/reasn/cv",
-  "authors": [
+  "name":         "cv",
+  "version":      "0.0.0",
+  "homepage":     "https://github.com/reasn/cv",
+  "authors":      [
     "Alexander Thiel <me@alexthiel.de>"
   ],
-  "license": "proprietary",
-  "private": true,
+  "license":      "proprietary",
+  "private":      true,
   "dependencies": {
-    "jquery": "2.1.x",
-    "jquery.transit": "~0.9.12"
+    "jquery":         "2.1.x",
+    "jquery.transit": "0.9.x",
+    "angular":        "1.3.x"
   }
 }

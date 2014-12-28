@@ -13,16 +13,18 @@ module ACV.HUD {
         skillBasket: SkillBasket;
         yearDisplay: YearDisplay;
         heightDisplay: HeightDisplay;
+        private sceneDebugger: SceneDebugger;
         private element: JQuery;
         private appContext: ACV.AppContext;
         private timeline: Timeline;
 
-        constructor(appContext: ACV.AppContext,
-                    prefs: ACV.Data.IHudPrefs,
-                    skillBasket: SkillBasket,
-                    yearDisplay: YearDisplay,
-                    heightDisplay: HeightDisplay,
-                    timeline: Timeline) {
+        constructor( appContext: ACV.AppContext,
+                     prefs: ACV.Data.IHudPrefs,
+                     skillBasket: SkillBasket,
+                     yearDisplay: YearDisplay,
+                     heightDisplay: HeightDisplay,
+                     sceneDebugger: SceneDebugger,
+                     timeline: Timeline ) {
 
             super('ACV.HUD');
 
@@ -33,14 +35,15 @@ module ACV.HUD {
             this.skillBasket.hud = this;
             this.yearDisplay = yearDisplay;
             this.heightDisplay = heightDisplay;
-            this.appContext = appContext;
+            this.sceneDebugger = sceneDebugger;
             this.timeline = timeline;
         }
 
-        static createFromData(appContext: ACV.AppContext, data: ACV.Data.IHudData): HeadsUpDisplay {
+        static createFromData( appContext: ACV.AppContext, data: ACV.Data.IHudData ): HeadsUpDisplay {
             var skillBasket: SkillBasket,
-                yearDisplay: YearDisplay = null,
-                heightDisplay: HeightDisplay = null,
+                yearDisplay: YearDisplay,
+                heightDisplay: HeightDisplay,
+                sceneDebugger: SceneDebugger,
                 timeline: Timeline;
 
             skillBasket = ACV.HUD.SkillBasket.createFromData(data.skillBasket, appContext.performanceSettings);
@@ -53,10 +56,12 @@ module ACV.HUD {
 
             timeline = ACV.HUD.Timeline.createFromData(appContext, data.timeline);
 
-            return new HeadsUpDisplay(appContext, data.prefs, skillBasket, yearDisplay, heightDisplay, timeline);
+            sceneDebugger = SceneDebugger.create();
+
+            return new HeadsUpDisplay(appContext, data.prefs, skillBasket, yearDisplay, heightDisplay, sceneDebugger, timeline);
         }
 
-        init(element: JQuery) {
+        init( element: JQuery, scene: ACV.Game.Scene ) {
 
             this.element = element;
             /* TODO remove height-property or use for responsiveness
@@ -73,16 +78,17 @@ module ACV.HUD {
                 this.heightDisplay.init(this.element);
             }
 
-            this.appContext.viewportManager.listenToScroll((ratio, ratioBefore, viewportDimensions)=> {
+            this.appContext.viewportManager.listenToScroll(( ratio, ratioBefore, viewportDimensions )=> {
                 this.updateGameRatio(ratio, ratioBefore);
             });
 
+            this.sceneDebugger.init(this.element, scene);
             this.timeline.init(this.element);
 
             this.debug('HUD initialized');
         }
 
-        updateGameRatio(ratio: number, ratioBefore: number) {
+        updateGameRatio( ratio: number, ratioBefore: number ) {
             if (this.yearDisplay !== null) {
                 this.yearDisplay.update(ratio);
             }

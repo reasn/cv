@@ -1,3 +1,5 @@
+/// <reference path="../Game/Animation"/>
+
 module ACV.Core {
     export class PrefLoader extends ACV.Core.AbstractObject {
 
@@ -142,11 +144,6 @@ module ACV.Core {
         /**
          * Loads all power ups for a specific level.
          *
-         * @param {number} levelOffset
-         * @param {Array.<object>} powerUps
-         * @param {function(this:ACV.Core.PrefLoader)} qFx
-         * @returns void
-         * @private
          * @version 2014-02-28
          * @since 2014-02-28
          * @author Alexander Thiel
