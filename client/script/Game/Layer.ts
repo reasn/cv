@@ -15,7 +15,7 @@ module ACV.Game {
         prefs: ACV.Data.ILayerPrefs;
         private sprites: ACV.Game.Sprite[] = [];
         private appContext: ACV.AppContext;
-        private handle: string;
+        handle: string;
         private x: number = 0;
         private lookAroundDistortion: ILookAroundDistortion;
 
@@ -101,6 +101,37 @@ module ACV.Game {
             //this.element.css('left', (this.x + this.lookAroundDistortion.x) + 'px');
         }
 
+        getHitSprites(levelRelativeX: number,
+                      y: number,
+                      flySprites: {[layerHandle:string]:{[spriteHandle:string]:IFlySprite}},
+                      viewportDimensions: ACV.View.IViewportDimensions): Sprite[] {
+
+            var sprites: Sprite[] = [],
+                spriteIndex: any,
+                sprite: Sprite,
+                flySprite: IFlySprite,
+                testX: number;
+
+            for (spriteIndex in this.sprites) {
+                sprite = this.sprites[spriteIndex];
+                testX = this.prefs.offset + sprite.x;
+                if (levelRelativeX >= testX && levelRelativeX <= testX + sprite.width) {
+
+                  //  sprite.element.css('background', '#ff0000');
+                    flySprite = flySprites[this.handle][sprite.handle];
+                    if (flySprite === null) {
+                        this.positionSprite(sprite, viewportDimensions, flySprites);
+                        flySprite = flySprites[this.handle][sprite.handle];
+                    }
+                    console.log(y, flySprite, sprite.handle);
+                    if (y >= flySprite.y && y <= flySprite.y + flySprite.height) {
+                        sprites.push(sprite);
+                    }
+                }
+            }
+            return sprites;
+        }
+
         /**
          * Is only invoked once for static sprites (from init()).
          */
@@ -110,10 +141,13 @@ module ACV.Game {
 
             /* flySprite is a flyweight representation of a Sprite */
             var cssProps: IFlySpriteCssProps = {},
-                flySprite: IFlySprite = {
-                    isStatic: true
-                };
+                flySprite: IFlySprite = flySprites[sprite.handle];
 
+            if (!flySprite) {
+                flySprite = {
+                    isStatic: typeof sprite.y !== 'function'
+                };
+            }
 
             if (typeof sprite.y === 'function') {
                 flySprite.y = sprite.y.apply(flySprite, [
@@ -121,7 +155,6 @@ module ACV.Game {
                     viewportDimensions.height,
                     flySprites
                 ]);
-                flySprite.isStatic = false;
 
             } else if (typeof sprite.y === 'number') {
                 flySprite.y = sprite.y;

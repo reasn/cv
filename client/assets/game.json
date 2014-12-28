@@ -27,8 +27,7 @@
                     "y": 150
                 },
                 "fastWalkMultiplicator": 1.5,
-                "movementTriggerInterval": 50,
-                "movementTriggerGranularity": 20,
+                "movementTriggerGranularity": 40,
                 "initialAge": "baby",
                 "ages": {
                     "baby": {

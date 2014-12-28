@@ -152,8 +152,6 @@ module ACV.Game {
             }
         }
 
-        private movementIntervalResource: number = null;
-
         moveTo(targetX: number, sceneX: number, speed: number, viewportDimensions: ACV.View.IViewportDimensions) {
             var classesToAdd: string,
                 classesToRemove: string,

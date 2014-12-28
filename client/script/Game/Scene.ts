@@ -117,7 +117,7 @@ module ACV.Game {
             }
 
             this.appContext.viewportManager.listenToMouseClick((clientX, clientY, viewportDimensions)=> {
-                this.handleMouseClick(clientX);
+                this.handleMouseClick(clientX, clientY, viewportDimensions);
             });
 
             //Sink events
@@ -132,25 +132,50 @@ module ACV.Game {
             this.element.append(this.foregroundElement);
         }
 
-        handleMouseMove(clientX: number, clientY: number, appViewportDimensions: ACV.View.IViewportDimensions) {
+        private handleMouseMove(clientX: number, clientY: number, appViewportDimensions: ACV.View.IViewportDimensions) {
             /*
              * We use Math.floor() instead of Math.round() to obtain a
              * continuous distribution of the results and therefore
              * reduce (probably invisible) micro-flickering.
              */
-            //scene.lookAroundDistortion.x = -Math.floor(scene.appContext.prefs.maxLookAroundDistortion * 2 * (event.clientX / scene.sceneViewportDimensions.width - .5));
-            //scene.lookAroundDistortion.y = -Math.floor(scene.appContext.prefs.maxLookAroundDistortion * 2 * (event.clientY / scene.sceneViewportDimensions.height - .5));
             this.lookAroundDistortion.x = -Math.floor(this.appContext.prefs.maxLookAroundDistortion * 2 * (clientX / appViewportDimensions.width - .5));
             this.lookAroundDistortion.y = -Math.floor(this.appContext.prefs.maxLookAroundDistortion * 2 * (clientY / appViewportDimensions.height - .5));
             this.applyLookAroundDistortion();
             $('#mouseX').text(Math.round(this.x + clientX));
+            /*
+             for(var i in this.levels) {
+             for(var layerHandle in this.levels[i].flySprites) {
+             for(var spriteHandle in this.levels[i].flySprites[layerHandle]) {
+             var s:IFlySprite = this.levels[i].flySprites[layerHandle][spriteHandle];
+
+             }
+             }
+             }
+             */
         }
 
-        handleMouseClick(clientX: number) {
+        private selectSprites(clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions) {
+            var selectedSprites: Sprite[] = [],
+                levelRelativeX: number,
+                adjustedY = clientY + this.dynamicTopViewportTranslation;
+            for (var i in this.levels) {
+                levelRelativeX = clientX + this.x - this.levels[i].prefs.offset;
+                selectedSprites = selectedSprites.concat(this.levels[i].getHitSprites(levelRelativeX, adjustedY, viewportDimensions));
+            }
+            $('.sprite').removeClass('selected');
+            this.info('Player selected %s sprites via click', selectedSprites.length);
+            for (var j in selectedSprites) {
+                console.log(selectedSprites[j].element);
+                selectedSprites[j].element.addClass('selected');
+            }
+        }
+
+        handleMouseClick(clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions) {
             var targetX = this.x + clientX;
 
             this.info('User clicked, player will walk to %s', targetX);
             this.playerLayer.player.moveTo(targetX, this.x, 0.5, this.sceneViewportDimensions);
+            this.selectSprites(clientX, clientY, viewportDimensions);
         }
 
         /**
@@ -217,11 +242,15 @@ module ACV.Game {
             }
 
             if (this.sceneViewportDimensions.height < this.prefs.dynamicViewport.minHeight) {
-                elementsToAlter.css('top', Math.round(-.5 * (this.prefs.dynamicViewport.minHeight - this.sceneViewportDimensions.height)) + 'px');
+                this.dynamicTopViewportTranslation = Math.round(-.5 * (this.prefs.dynamicViewport.minHeight - this.sceneViewportDimensions.height));
+                elementsToAlter.css('y', this.dynamicTopViewportTranslation + 'px');
 
             } else {
-                elementsToAlter.css('top', 0);
+                this.dynamicTopViewportTranslation = 0;
             }
+            elementsToAlter.css('y', this.dynamicTopViewportTranslation);
         }
+
+        private dynamicTopViewportTranslation: number = 0;
     }
 }

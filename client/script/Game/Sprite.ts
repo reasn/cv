@@ -23,7 +23,7 @@ module ACV.Game {
         private appContext: ACV.AppContext;
         private id: string = null;
         x: number = 0;
-        private width: number = 0;
+        width: number;
         private source: string = null;
         private color: string = null;
         private blurred = false;
@@ -111,6 +111,13 @@ module ACV.Game {
             if (this.id) {
                 this.element.attr('id', this.id);
             }
+
+          //  this.element.on('click', (event: JQueryMouseEventObject)=> {
+          //      this.element.toggleClass('selected');
+          //      event.stopPropagation();
+          //      event.preventDefault();
+          //  });
+
             var cssProps: any = {
                 //left:   this.x,
                 transform: 'translateX(' + this.x + 'px)',

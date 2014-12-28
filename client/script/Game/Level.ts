@@ -18,7 +18,7 @@ module ACV.Game {
         private lookAroundDistortion: ILookAroundDistortion = null;
 
         private appContext: ACV.AppContext;
-        private flySprites: {[hh:string]:{[handle:string]:IFlySprite}} = {};
+        flySprites: {[layerHandle:string]:{[spriteHandle:string]:IFlySprite}} = {};
         private foregroundElement: JQuery = null;
         private backgroundElement: JQuery = null;
 
@@ -111,32 +111,47 @@ module ACV.Game {
             return this.prefs.clip.x2 - this.prefs.clip.x1;
         }
 
+        getHitSprites(levelRelativeX: number, y: number, viewportDimensions: ACV.View.IViewportDimensions): Sprite[] {
+            var sprites: Sprite[] = [],
+                layerIndex: any,
+                layer: Layer;
+
+            for (layerIndex in this.backgroundLayers) {
+                layer = this.backgroundLayers[layerIndex];
+                sprites = sprites.concat(layer.getHitSprites(levelRelativeX, y, this.flySprites, viewportDimensions));
+            }
+            for (layerIndex in this.foregroundLayers) {
+                layer = this.foregroundLayers[layerIndex];
+                sprites = sprites.concat(layer.getHitSprites(levelRelativeX, y, this.flySprites, viewportDimensions));
+            }
+            return sprites;
+        }
+
         /**
          * Filter out dynamic fly sprites to reduce memory usage.
          *
          * More important purpose: ensures that no invalid dependencies occur where sprite A is positioned relative to sprite B's position before sprite B is repositioned.
          * In that case this method makes sure sprite A has no invalid/outdated position because it makes sure that sprites can only access other sprites dynamic positions
          * within the same recalculation call.
-         * @private
          */
         private removeDynamicFlySprites() {
             var layerHandles: string[],
                 layerHandleIndex: any,
                 spriteHandles: string[],
                 spriteHandleIndex: any,
-                sprites: {[handle:string]:IFlySprite},
+                flySprites: {[handle:string]:IFlySprite},
                 spriteHandle: string;
 
             layerHandles = Object.keys(this.flySprites);
 
             for (layerHandleIndex in layerHandles) {
-                sprites = this.flySprites[layerHandles[layerHandleIndex]];
-                spriteHandles = Object.keys(sprites);
+                flySprites = this.flySprites[layerHandles[layerHandleIndex]];
+                spriteHandles = Object.keys(flySprites);
 
                 for (spriteHandleIndex in spriteHandles) {
                     spriteHandle = spriteHandles[spriteHandleIndex];
-                    if (sprites[spriteHandle] !== null && !sprites[spriteHandles[spriteHandleIndex]].isStatic) {
-                        sprites[spriteHandles[spriteHandleIndex]] = null
+                    if (flySprites[spriteHandle] !== null && !flySprites[spriteHandles[spriteHandleIndex]].isStatic) {
+                        flySprites[spriteHandles[spriteHandleIndex]] = null
                     }
                 }
             }

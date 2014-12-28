@@ -101,6 +101,8 @@ body {
 
                         .sprite {
                             position: absolute;
+                            outline:  5px dashed rgba(0, 0, 255, .5);
+                            &.selected { outline-color: #72ff00; }
 
                             &.image-background {
                                 background-size: contain
@@ -168,9 +170,6 @@ body {
             .player {
                 position:          absolute;
                 background-repeat: no-repeat;
-            //    width:             100px !important;
-             //   height:            100px !important;
-            //    background:        #ff0084 !important;
                 .statefulAge(@theme, @state) {
                     background: url("../assets/graphics/scene/player/@{theme}/@{state}.gif");
                 }

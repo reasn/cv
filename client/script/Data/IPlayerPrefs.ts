@@ -8,7 +8,6 @@ module ACV.Data {
             target:number;
         }
         fastWalkMultiplicator: number;
-        movementTriggerInterval: number;
         movementTriggerGranularity: number;
         initialAge: string;
         ages: {[handle:string]: IPlayerAgePref};
