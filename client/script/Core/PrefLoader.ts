@@ -148,6 +148,7 @@ module ACV.Core {
         private loadPowerUps( levelOffset: number, powerUps: ACV.Data.IPowerUpData[], qFx: ()=>void ) {
             var powerUpIndex: any;
             for (powerUpIndex in powerUps) {
+                powerUps[powerUpIndex].x += levelOffset;
                 this.gameData.scene.playerLayer.powerUps.push(powerUps[powerUpIndex]);
             }
             qFx.apply(this);

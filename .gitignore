@@ -6,4 +6,5 @@ dist
 typings
 
 
-/client/style/colors.generated.less
+/client/style/generated/*
+!/client/style/generated/.gitkeep

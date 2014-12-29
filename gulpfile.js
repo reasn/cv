@@ -1,8 +1,9 @@
 var gulp            = require('gulp'),
     del             = require('del'),
     fs              = require('fs'),
-    stripAnsi       = require('strip-ansi'),
+    mergeStream     = require('merge-stream'),
     gulpLoadPlugins = require('gulp-load-plugins'),
+    pngquant        = require('imagemin-pngquant'),
     plugins         = gulpLoadPlugins({
         lazy:    false,
         pattern: '*'
@@ -10,7 +11,7 @@ var gulp            = require('gulp'),
 
 
 gulp.task('default', ['clean'], function () {
-    gulp.start('script', 'bower', 'style', 'view', 'assets');
+    gulp.start('script', 'bower', 'style', 'view', 'assets', 'assets-transformable');
 });
 
 gulp.task('clean', function (cb) {
@@ -29,14 +30,27 @@ gulp.task('style-colors', function () {
         vars.push(varName + ': ' + colors[colorName] + ';');
         rules.push('.' + colorName + ' { color: ' + varName + '; background-color:' + varName + '}');
     }
-    fs.writeFileSync('./client/style/colors-generated.less', vars.join("\n") + "\n\n" + rules.join("\n"));
+    fs.writeFileSync('./client/style/generated/colors.less', vars.join("\n") + "\n\n" + rules.join("\n"));
 });
 
-gulp.task('style', ['style-colors'], function () {
+gulp.task('style-skills', function () {
+    var rules = [];
+    fs.readdirSync('./client/assets-transformable/graphics/skills').forEach(function (fileName) {
+        var name = fileName.replace(/\..*$/, '');
+        rules.push('.skill-' + name + ' { background-image: url("../assets/graphics/skills/' + name + '.png") }');
+    });
+    fs.writeFileSync('./client/style/generated/skills.less', rules.join("\n"));
+});
+
+gulp.task('style', ['style-colors', 'style-skills'], function () {
 
     gulp.src('./client/style/style.less')
         .pipe(plugins.less({
-            paths: [ './client/style' ]
+            paths: ['./client/style']
+        }))
+        .on('error', plugins.notify.onError(function (error) {
+            console.error(error.message);
+            return 'Could not compile LESS.';
         }))
         .pipe(plugins.autoprefixer('> 5%', 'last 2 versions'))
         .pipe(gulp.dest('./dist/css'))
@@ -44,6 +58,7 @@ gulp.task('style', ['style-colors'], function () {
         .pipe(plugins.minifyCss())
         .pipe(gulp.dest('./dist/css'));
 });
+
 var tsProject = plugins.typescript.createProject({
     declarationFiles:  true,
     noExternalResolve: true,
@@ -93,6 +108,30 @@ gulp.task('view', function () {
     gulp.src('./client/view/index.html')
         .pipe(plugins.copy('./dist', {prefix: 2}));
 });
+gulp.task('assets-transformable', ['transformable-skills']);
+
+gulp.task('transformable-skills', function () {
+
+    var s1 = gulp.src('./client/assets-transformable/graphics/skills/*.svg')
+        .pipe(plugins.svg2png());
+
+    var s2 = gulp.src('./client/assets-transformable/graphics/skills/*.png');
+
+    mergeStream(s1, s2)
+        .pipe(plugins.imageResize({
+            width:       100,
+            height:      100,
+            crop:        false,
+            upscale:     false,
+            imageMagick: true
+        }))
+        .pipe(plugins.imagemin({
+            progressive: true
+        }))
+        .pipe(gulp.dest('./dist/assets/graphics/skills/'));
+});
+
+
 gulp.task('assets', function () {
     gulp.src('./client/assets/**/*.*')
         .pipe(plugins.copy('./dist/assets', {prefix: 2}));
@@ -106,4 +145,5 @@ gulp.task('watch', ['default'], function () {
     gulp.watch('client/style/**/*.less', ['style']);
     gulp.watch('client/view/**/*.*', ['view']);
     gulp.watch('client/assets/**/*', ['assets']);
+    gulp.watch('client/assets-transformable/**/*', ['assets-transformable', 'style-skills']);
 });

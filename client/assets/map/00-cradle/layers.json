@@ -89,7 +89,7 @@
         {
           "handle":     "lawn",
           "x":          -150,
-          "y":          ".5 * (viewportHeight - 535) - 130",
+          "y":          ".5 * (viewportHeight - 535) - 230",
           "topAligned": true,
           "width":      300,
           "height":     "300px",
@@ -111,7 +111,7 @@
         {
           "handle":     "rearWindow",
           "x":          1100,
-          "y":          ".5 * (viewportHeight - 635)",
+          "y":          ".5 * (viewportHeight - 635) -40",
           "topAligned": true,
           "width":      535,
           "height":     "500px",
@@ -127,7 +127,7 @@
           "y":          "-maxLookAroundDistortion",
           "topAligned": true,
           "width":      535,
-          "height":     "maxLookAroundDistortion + sprites.backgroundWall.rearWindow.y + 100",
+          "height":     "maxLookAroundDistortion + sprites.backgroundWall.rearWindow.y + 130",
           "color":      "orange"
         },
         {
@@ -142,7 +142,7 @@
         {
           "handle":     "bottomWall",
           "x":          1100,
-          "y":          "sprites.backgroundWall.rearWindow.y + sprites.backgroundWall.rearWindow.height - 130",
+          "y":          "sprites.backgroundWall.rearWindow.y + sprites.backgroundWall.rearWindow.height - 100",
           "topAligned": true,
           "width":      535,
           "height":     "viewportHeight - this.y + maxLookAroundDistortion",

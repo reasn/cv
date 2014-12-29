@@ -11,7 +11,7 @@ module ACV.Game {
         element: JQuery = null;
         collected = false;
 
-        constructor(x: number, y: number, skillType: string) {
+        constructor( x: number, y: number, skillType: string ) {
             super('ACV.Game.PowerUp');
 
             this.x = x;
@@ -24,15 +24,14 @@ module ACV.Game {
          *
          * @param {jQuery} playerLayerElement
          */
-        init(playerLayerElement: JQuery) {
-            this.element = $('<div class="powerUp" />');
+        init( playerLayerElement: JQuery ) {
+            this.element = $('<div class="power-up skill-' + ACV.HUD.Skill.mapType(this.skillType) + '" />');
             this.element.css(
                 {
                     transform: 'translate(' + this.x + 'px, ' + -1 * this.y + 'px)',
-                    //left:   this.x,
                     bottom:    0//this.y
                 });
-            this.element.html(this.skillType + '<br />' + this.x);
+            //this.element.html(this.skillType + '<br />' + this.x);
 
             playerLayerElement.append(this.element);
 

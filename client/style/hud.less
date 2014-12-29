@@ -1,0 +1,139 @@
+@import "imports";
+
+#hud {
+    @height: 160px;
+    z-index:  @zHud;
+    top:      0;
+    right:    0;
+    bottom:   0;
+    left:     0;
+    position: absolute;
+
+    .power-up { .powerUp() }
+
+    .dev-info {
+        cursor:           pointer;
+        position:         absolute;
+        right:            0;
+        width:            130px;
+        bottom:           40%;
+        background-color: #000000;
+        font-family:      monospace, sans-serif;
+        padding:          20px 0 20px 30px;
+    }
+
+    .skill-basket {
+        @padding: 2px;
+        display:          block;
+        position:         absolute;
+        bottom:           0;
+        background-color: #000000;
+        left:             0;
+        height:           @height - 2 * @padding;
+        width:            60%;
+        margin:           0;
+        padding:          @padding 0 0 @padding;
+        vertical-align:   top;
+
+        li {
+            @tileSize: (@height - 3*@padding) / 2 / 2;
+            @borderSize: @tileSize / 4;
+            margin:              0 @padding @padding 0;
+            display:             inline-block;
+            line-height:         @tileSize;
+            text-align:          center;
+            transition-duration: 500ms;
+            transition-property: height, width, font-size;
+            background-repeat:   no-repeat;
+            background-color:    @cYellow;
+            background-position: center;
+            background-size:     contain;
+            border:              @borderSize solid @cYellow;
+            overflow:            hidden;
+            font-size:           10px;
+            &.unknown {
+                display: none;
+                width:   0;
+                height:  0;
+            }
+            &.beginner {
+                width:  @tileSize - @borderSize;
+                height: @tileSize - @borderSize;
+                color:  @cMainGreen;
+            }
+            &.intermediate {
+                width:       @tileSize - @borderSize;
+                height:      @tileSize*2 - @borderSize;
+                line-height: @tileSize*2 - @borderSize;
+            }
+            &.expert {
+                font-size:   20px;
+                width:       @tileSize*2-@borderSize;
+                height:      @tileSize*2-@borderSize;
+                line-height: @tileSize*2-@borderSize;
+            }
+        }
+    }
+
+    .scene-debugger {
+        position:         fixed;
+        right:            0;
+        top:              0;
+        width:            200px;
+        height:           200px;
+        background-color: #000000;
+    }
+    .timeline {
+        right:            0;
+        width:            40%;
+        height:           @height;
+        padding:          0;
+        bottom:           0;
+        position:         absolute;
+        background-color: #000000;
+
+        .event-wrapper {
+            .event {
+                margin:           20px 0;
+                background-color: #000000;
+                font-family:      sans-serif;
+                font-weight:      normal;
+                background:       url("../assets/graphics/hud/timeline/timeline-avatar-01.gif") no-repeat 0 0;
+
+                h3 {
+                    margin:      0 0 0 50px;
+                    padding:     0;
+                    font-weight: normal;
+                    .name { font-weight: bold; color: #00a2ff }
+                }
+                p.timestamp {
+                    margin:  0 0 0 50px;
+                    padding: 0;
+                    color:   #999999;
+                }
+                p.message {
+                    margin:  0;
+                    padding: 5px 0;
+                    color:   #ffffff;
+                }
+            }
+        }
+    }
+    .year-display {
+        position:    absolute;
+        top:         10px;
+        left:        10px;
+        font-size:   100px;
+        font-weight: bold;
+    }
+    .height-display {
+        position:    absolute;
+        top:         150px;
+        left:        10px;
+        font-size:   100px;
+        font-weight: bold;
+        &:after {
+            content: 'cm'
+        }
+    }
+}

@@ -1,4 +1,11 @@
-//@import "colors-generated";
+@import "imports";
+@import "hud";
+@import "scene";
+
+
+@import "fonts";
+
+
 
 @cMainBlue: #00a2ff;
 @cMainGreen: #72ff00;
@@ -12,8 +19,6 @@
 @cMatteBlue: #15a2c1;
 @cMatteGreen: #8dc45c;
 
-@zHud: 90;
-@zGithub: 100;
 
 .backgroundPattern(@colorName) {
     background-image: url("../assets/graphics/scene/world/matte/patterns/@{colorName}.jpg");
@@ -22,6 +27,7 @@
 body {
     margin:  0;
     padding: 0;
+    font-family: Noto-Sans;
 }
 
 #github-ribbon {
@@ -53,246 +59,6 @@ body {
     background-image:  url("../assets/graphics/scene/world/matte/patterns/blue.jpg");
     background-repeat: repeat;
 
-    .powerUp() {
-        position:         absolute;
-        color:            black;
-        width:            50px;
-        height:           50px;
-        background-color: #ffff00;
-    }
-}
-
-#scene {
-    top:      0;
-    // right    : 0;
-    bottom:   0;
-    left:     0;
-    position: absolute;
-
-    .level-wrapper {
-
-        .level {
-            top:      0;
-            right:    0;
-            bottom:   0;
-            left:     0;
-            position: absolute;
-            display:  none;
-            overflow: hidden;
-
-            &.visible {
-                display: block
-            }
-
-            .layer {
-                position: absolute;
-                height:   100%;
-                //top: 0px !important;
-
-                .sprite-wrapper {
-                    position: relative;
-                    width:    100%;
-                    height:   100%;
-
-                    .sprite {
-                        position: absolute;
-                        //outline:  5px dashed rgba(0, 0, 255, .5);
-                        &.selected { outline: 5px dashed rgba(0, 0, 255, .9) }
-
-                        &.image-background {
-                            background-size: contain
-                        }
-                        &.font-symbol {
-                            &:before, &:after {
-                                font-family: Flaticon;
-                                font-size:   inherit;
-                                font-style:  normal;
-                            }
-                            background:  none;
-                            text-shadow: 0 0 5px rgba(100, 100, 100, 0.5);
-                            &.blurred { color: transparent }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    .player-layer {
-        position: relative;
-        height:   100%;
-
-        .player {
-            position:          absolute;
-            background-repeat: no-repeat;
-            .statefulAge(@theme, @state) {
-                background: url("../assets/graphics/scene/player/@{theme}/@{state}.gif");
-            }
-            .age(@name) {
-                .statefulAge(@name, "stand");
-                &.walking {
-                    .statefulAge(@name, "walk-forward");
-                }
-                &.walking.backwards {
-                    .statefulAge(@name, "walk-backwards");
-                }
-            }
-            &.baby {
-                .age("baby");
-            }
-            &.child {
-                .age("child");
-            }
-            &.teen {
-                .age("teen");
-            }
-            &.adult {
-                .age("adult");
-            }
-
-        }
-        .powerUp { .powerUp() }
-    }
-}
-
-#hud {
-    z-index:  @zHud;
-    top:      0;
-    right:    0;
-    bottom:   0;
-    left:     0;
-    position: absolute;
-
-    .skill() {
-        margin:     2px;
-        display:    inline-block;
-        padding:    0 0 0 13px;
-        transition: font-size 500ms;
-        background: url("../assets/graphics/hud/skills/levels/beginner.gif") 0px 50% no-repeat;
-
-        &.unknown {
-            font-size: 0;
-            height:    0;
-            width:     0;
-            display:   none
-        }
-        &.beginner {
-            font-size: 10px;
-            color:     @cMainGreen;
-        }
-        &.intermediate {
-            font-size:        20px;
-            background-image: url("../assets/graphics/hud/skills/levels/intermediate.gif");
-            padding-left:     20px;
-            color:            @cMainBlue;
-        }
-        &.expert {
-            font-size:        30px;
-            background-image: url("../assets/graphics/hud/skills/levels/expert.gif");
-            padding-left:     34px;
-            color:            @cMainYellow;
-        }
-        &.master {
-            font-size:        40px;
-            background-image: url("../assets/graphics/hud/skills/levels/master.gif");
-            padding-left:     46px;
-            color:            @cMainPink;
-        }
-    }
-
-    .powerUp { .powerUp() }
-
-    .dev-info {
-        cursor:           pointer;
-        position:         absolute;
-        right:            0;
-        width:            130px;
-        bottom:           40%;
-        background-color: #000000;
-        font-family:      monospace, sans-serif;
-        padding:          20px 0 20px 30px;
-    }
-
-    .skill-basket {
-        display:          block;
-        position:         absolute;
-        bottom:           0;
-        background-color: #000000;
-        left:             15%;
-        height:           200px;
-        width:            45%;
-        margin:           0;
-        padding:          0;
-
-        li { .skill() }
-    }
-    .skill-basket-info {
-        left:    0;
-        bottom:  0;
-        width:   15%;
-        height:  160px;
-        margin:  0px;
-        padding: 20px;
-    }
-    .scene-debugger {
-        position:         fixed;
-        right:            0;
-        top:              0;
-        width:            200px;
-        height:           200px;
-        background-color: #000000;
-    }
-    .timeline {
-        right:            0;
-        width:            40%;
-        height:           200px;
-        padding:          0;
-        bottom:           0;
-        position:         absolute;
-        background-color: #000000;
-
-        .event-wrapper {
-            .event {
-                margin:           20px 0;
-                background-color: #000000;
-                font-family:      sans-serif;
-                font-weight:      normal;
-                background:       url("../assets/graphics/hud/timeline/timeline-avatar-01.gif") no-repeat 0 0;
-
-                h3 {
-                    margin:      0 0 0 50px;
-                    padding:     0;
-                    font-weight: normal;
-                    .name { font-weight: bold; color: #00a2ff }
-                }
-                p.timestamp {
-                    margin:  0 0 0 50px;
-                    padding: 0;
-                    color:   #999999;
-                }
-                p.message {
-                    margin:  0;
-                    padding: 5px 0;
-                }
-            }
-        }
-    }
-    .year-display {
-        position:    absolute;
-        top:         10px;
-        left:        10px;
-        font-size:   100px;
-        font-weight: bold;
-    }
-    .height-display {
-        position:    absolute;
-        top:         150px;
-        left:        10px;
-        font-size:   100px;
-        font-weight: bold;
-        &:after {
-            content: 'cm'
-        }
-    }
 }
 
 .tag-cloud {

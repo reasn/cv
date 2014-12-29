@@ -1,0 +1,93 @@
+@import "imports";
+
+#scene {
+    top:      0;
+    // right    : 0;
+    bottom:   0;
+    left:     0;
+    position: absolute;
+
+    .level-wrapper {
+
+        .level {
+            top:      0;
+            right:    0;
+            bottom:   0;
+            left:     0;
+            position: absolute;
+            display:  none;
+            overflow: hidden;
+
+            &.visible {
+                display: block
+            }
+
+            .layer {
+                position: absolute;
+                height:   100%;
+                //top: 0px !important;
+
+                .sprite-wrapper {
+                    position: relative;
+                    width:    100%;
+                    height:   100%;
+
+                    .sprite {
+                        position: absolute;
+                        //outline:  5px dashed rgba(0, 0, 255, .5);
+                        &.selected { outline: 5px dashed rgba(0, 0, 255, .9) }
+
+                        &.image-background {
+                            background-size: contain
+                        }
+                        &.font-symbol {
+                            &:before, &:after {
+                                font-family: Flaticon;
+                                font-size:   inherit;
+                                font-style:  normal;
+                            }
+                            background:  none;
+                            text-shadow: 0 0 5px rgba(100, 100, 100, 0.5);
+                            &.blurred { color: transparent }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .player-layer {
+        position: relative;
+        height:   100%;
+
+        .player {
+            position:          absolute;
+            background-repeat: no-repeat;
+            .statefulAge(@theme, @state) {
+                background: url("../assets/graphics/scene/player/@{theme}/@{state}.gif");
+            }
+            .age(@name) {
+                .statefulAge(@name, "stand");
+                &.walking {
+                    .statefulAge(@name, "walk-forward");
+                }
+                &.walking.backwards {
+                    .statefulAge(@name, "walk-backwards");
+                }
+            }
+            &.baby {
+                .age("baby");
+            }
+            &.child {
+                .age("child");
+            }
+            &.teen {
+                .age("teen");
+            }
+            &.adult {
+                .age("adult");
+            }
+
+        }
+        .power-up { .powerUp() }
+    }
+}

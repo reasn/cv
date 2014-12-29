@@ -6,30 +6,37 @@ module ACV.HUD {
      */
     export class Skill extends ACV.Core.AbstractObject {
 
-        static levels: string[] = ['unknown', 'beginner', 'intermediate', 'expert', 'master'];
+        static levels: string[] = ['unknown', 'beginner', 'intermediate', 'expert'];
 
         type: string;
-        level = 'unknown';
+        private level = 'unknown';
         private element: JQuery;
 
-        constructor(type: string) {
+        constructor( type: string ) {
             super('ACV.HUD.Skill');
             this.type = type;
         }
 
-        init(basketElement: JQuery) {
-            this.element = $('<li class="' + this.level + '">' + this.type + '</li>');
+        init( basketElement: JQuery ) {
+            var className = Skill.mapType(this.type);
+            this.element = $('<li class="skill-' + className + ' ' + this.level + '">&nbsp;</li>');
             basketElement.append(this.element);
 
             this.debug('Skill initialized');
+        }
+
+        static mapType( skillType: string ) {
+            return skillType.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
         }
 
         improve() {
             //Increment level
             var nextLevel = Skill.levels[Skill.levels.indexOf(this.level) + 1];
 
-            if (typeof (nextLevel) === 'undefined')
-                this.error('Tried to increase skill %s that already was at master level.', this.type);
+            if (typeof (nextLevel) === 'undefined') {
+                this.warn('Tried to increase skill %s that already was at expert level.', this.type);
+                return;
+            }
 
             //Update element
             this.element.removeClass(this.level).addClass(nextLevel);
