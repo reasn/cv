@@ -6,5 +6,6 @@ module ACV.Data {
         maxLookAroundDistortion: number;
         assetPath: string;
         performanceSettings: IPerformanceSettings;
+        colors: {[name:string]:string};
     }
 }

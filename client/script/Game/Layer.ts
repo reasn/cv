@@ -99,7 +99,7 @@ module ACV.Game {
                 this.recalculateSpritePositions(viewportDimensions, flySprites);
             }
             this.x = -1 * (levelOffset + levelClipOffset + this.prefs.speed * levelX - this.prefs.offset);
-            this.element.css('transform', 'translateX(' + (this.x + this.lookAroundDistortion.x) + 'px)');
+            this.element.css('transform', 'translate(' + (this.x + this.lookAroundDistortion.x) + 'px, ' + this.lookAroundDistortion.y + 'px)');
             //this.element.css('left', (this.x + this.lookAroundDistortion.x) + 'px');
         }
 

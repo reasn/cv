@@ -4,3 +4,6 @@ vendor
 node_modules
 dist
 typings
+
+
+/client/style/colors.generated.less

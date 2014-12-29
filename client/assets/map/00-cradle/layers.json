@@ -3,18 +3,101 @@
     {
       "handle":  "backgroundOutside",
       "prefs":   {
-        "offset": 760,
-        "speed":  0.4
+        "offset":     800,
+        "speed":      0.4,
+        "background": "blue"
       },
       "sprites": [
         {
-          "handle":     "skyAndMountains",
-          "x":          0,
-          "y":          ".5 * (viewportHeight - 535) + 100",
+          "handle":     "mountain-pointed",
+          "x":          360,
+          "y":          ".5 * (viewportHeight - 535) + 80",
           "topAligned": true,
-          "width":      740,
+          "width":      300,
           "height":     "300px",
-          "source":     "graphics/scene/world/01-cradle/background.jpg"
+          "fontSymbol": {
+            "name": "mountain13",
+            "size": 200
+          },
+          "color":      "gray"
+        },
+        {
+          "handle":     "mountain-round",
+          "x":          250,
+          "y":          ".5 * (viewportHeight - 535) + 160",
+          "topAligned": true,
+          "width":      300,
+          "height":     "300px",
+          "fontSymbol": {
+            "name": "moutain",
+            "size": 100
+          },
+          "color":      "gray"
+        },
+        {
+          "handle":     "cloud-00",
+          "x":          220,
+          "y":          ".5 * (viewportHeight - 535) + 130",
+          "topAligned": true,
+          "width":      300,
+          "height":     "300px",
+          "fontSymbol": {
+            "name": "cloudstorage",
+            "size": 30
+          },
+          "color":      "blue-gray-50"
+        },
+        {
+          "handle":     "cloud-01",
+          "x":          320,
+          "y":          ".5 * (viewportHeight - 535) + 70",
+          "topAligned": true,
+          "width":      300,
+          "height":     "300px",
+          "fontSymbol": {
+            "name": "cloud316",
+            "size": 60
+          },
+          "color":      "blue-gray-50"
+        },
+        {
+          "handle":     "cloud-02",
+          "x":          420,
+          "y":          ".5 * (viewportHeight - 535) + 150",
+          "topAligned": true,
+          "width":      300,
+          "height":     "300px",
+          "fontSymbol": {
+            "name": "cloudstorage",
+            "size": 30
+          },
+          "color":      "blue-gray-50"
+        },
+        {
+          "handle":     "cloud-03",
+          "x":          500,
+          "y":          ".5 * (viewportHeight - 535) + 70",
+          "topAligned": true,
+          "width":      300,
+          "height":     "300px",
+          "fontSymbol": {
+            "name": "cloud316",
+            "size": 40
+          },
+          "color":      "blue-gray-50"
+        },
+        {
+          "handle":     "lawn",
+          "x":          -150,
+          "y":          ".5 * (viewportHeight - 535) - 130",
+          "topAligned": true,
+          "width":      300,
+          "height":     "300px",
+          "fontSymbol": {
+            "name": "spain",
+            "size": 1200
+          },
+          "color":      "green-800"
         }
       ]
     },
@@ -28,11 +111,15 @@
         {
           "handle":     "rearWindow",
           "x":          1100,
-          "y":          ".5 * (viewportHeight - 535)",
+          "y":          ".5 * (viewportHeight - 635)",
           "topAligned": true,
           "width":      535,
           "height":     "500px",
-          "source":     "graphics/scene/world/01-cradle/window.png"
+          "fontSymbol": {
+            "name": "blank32",
+            "size": 400
+          },
+          "color":      "orange"
         },
         {
           "handle":     "topWall",
@@ -40,12 +127,12 @@
           "y":          "-maxLookAroundDistortion",
           "topAligned": true,
           "width":      535,
-          "height":     "maxLookAroundDistortion + sprites.backgroundWall.rearWindow.y",
+          "height":     "maxLookAroundDistortion + sprites.backgroundWall.rearWindow.y + 100",
           "color":      "orange"
         },
         {
           "handle":     "rightWall",
-          "x":          1635,
+          "x":          1430,
           "y":          "-maxLookAroundDistortion",
           "topAligned": true,
           "width":      1800,
@@ -55,7 +142,7 @@
         {
           "handle":     "bottomWall",
           "x":          1100,
-          "y":          "sprites.backgroundWall.rearWindow.y + sprites.backgroundWall.rearWindow.height",
+          "y":          "sprites.backgroundWall.rearWindow.y + sprites.backgroundWall.rearWindow.height - 130",
           "topAligned": true,
           "width":      535,
           "height":     "viewportHeight - this.y + maxLookAroundDistortion",
@@ -66,27 +153,9 @@
           "x":          -50,
           "y":          "-maxLookAroundDistortion",
           "topAligned": true,
-          "width":      1150,
+          "width":      1220,
           "height":     "viewportHeight",
           "color":      "orange"
-        }
-      ]
-    },
-    {
-      "handle":  "bookshelf",
-      "prefs":   {
-        "offset": 0,
-        "speed":  0.8
-      },
-      "sprites": [
-        {
-          "handle":     "bookshelf",
-          "x":          400,
-          "y":          190,
-          "topAligned": false,
-          "width":      800,
-          "height":     "Math.max(400, Math.min(1200, .4 * viewportHeight))",
-          "color":      "pink"
         }
       ]
     },
@@ -107,31 +176,56 @@
           "color":      "blue"
         },
         {
-          "handle":     "greenBall",
+          "handle":     "wardrobe",
+          "x":          400,
+          "y":          290,
+          "topAligned": false,
+          "width":      800,
+          "height":     "Math.max(400, Math.min(1200, .4 * viewportHeight))",
+          "fontSymbol": {
+            "name": "bedroom2",
+            "size": 500
+          },
+          "color":      "purple"
+        },
+        {
+          "handle":     "teddy",
           "x":          800,
           "y":          "120px",
           "topAligned": false,
           "width":      150,
           "height":     "149px",
-          "source":     "graphics/scene/world/01-cradle/ball01.png"
+          "fontSymbol": {
+            "name": "teddy",
+            "size": 100
+          },
+          "color":      "yellow"
         },
         {
-          "handle":     "blueBall",
+          "handle":     "number-blocks",
           "x":          800,
           "y":          "100px",
           "topAligned": false,
           "width":      120,
           "height":     "118px",
-          "source":     "graphics/scene/world/01-cradle/ball02.png"
+          "fontSymbol": {
+            "name": "number19",
+            "size": 100
+          },
+          "color":      "orange"
         },
         {
-          "handle":     "yellowBox",
+          "handle":     "basketball",
           "x":          1900,
           "y":          "180px",
           "topAligned": false,
           "width":      100,
           "height":     "88px",
-          "source":     "graphics/scene/world/01-cradle/box01.png"
+          "fontSymbol": {
+            "name": "ball23",
+            "size": 100
+          },
+          "color":      "purple"
         }
       ]
     },
@@ -139,17 +233,21 @@
       "handle":  "cradleBackground",
       "prefs":   {
         "offset": 0,
-        "speed":  1.05
+        "speed":  1.1
       },
       "sprites": [
         {
-          "handle":     "yellowBall",
+          "handle":     "ginger-man",
           "x":          750,
           "y":          "90px",
           "topAligned": false,
           "width":      100,
           "height":     "100px",
-          "source":     "graphics/scene/world/01-cradle/ball03.png"
+          "fontSymbol": {
+            "name": "gingerbread3",
+            "size": 100
+          },
+          "color":      "purple"
         },
         {
           "handle":     "sleepingBaby",
@@ -162,11 +260,11 @@
         },
         {
           "handle":     "cradleBackground",
-          "x":          1100,
-          "y":          "140px",
+          "x":          1150,
+          "y":          "170px",
           "topAligned": false,
-          "width":      416,
-          "height":     "130px",
+          "width":      316,
+          "height":     "100px",
           "color":      "green"
         },
         {
@@ -202,84 +300,109 @@
   ],
   "foreground": [
     {
-      "handle":  "cradleBars",
-      "prefs":   {
-        "offset": 1100,
-        "speed":  1.05
-      },
-      "sprites": [
-        {
-          "handle":     "cradleBars",
-          "x":          0,
-          "y":          "140px",
-          "topAligned": false,
-          "width":      416,
-          "height":     "266px",
-          "source":     "graphics/scene/world/01-cradle/cradle-front.gif"
-        }
-      ]
-    },
-    {
-      "handle":  "ballsAndBoxesInFrontOfCradle",
+      "handle":  "cradle-and-toys",
       "prefs":   {
         "offset": 0,
         "speed":  1.1
       },
       "sprites": [
         {
-          "handle":     "pinkBox",
+          "handle":     "cradleBars",
           "x":          1000,
-          "y":          "20px",
+          "y":          "350px",
           "topAligned": false,
-          "width":      74,
-          "height":     "75px",
-          "source":     "graphics/scene/world/01-cradle/box04.png"
+          "width":      416,
+          "height":     "266px",
+          "fontSymbol": {
+            "name": "cradle1",
+            "size": 600
+          },
+          "color":      "yellow"
         },
         {
-          "handle":     "blueBox",
+          "handle":     "baby-bike",
+          "x":          1000,
+          "y":          "120px",
+          "topAligned": false,
+          "width":      74,
+          "height":     "125px",
+          "fontSymbol": {
+            "name": "baby91",
+            "size": 200
+          },
+          "color":      "purple"
+        },
+        {
+          "handle":     "rubix",
           "x":          2650,
-          "y":          "68px",
+          "y":          "48px",
           "topAligned": false,
           "width":      154,
           "height":     "150px",
-          "source":     "graphics/scene/world/01-cradle/box03.png"
+          "fontSymbol": {
+            "name": "rubix",
+            "size": 50
+          },
+          "color":      "orange"
+        },
+        {
+          "handle":     "toy-box",
+          "x":          1200,
+          "y":          "160px",
+          "topAligned": false,
+          "width":      74,
+          "height":     "75px",
+          "fontSymbol": {
+            "name": "children1",
+            "size": 300
+          },
+          "color":      "orange"
         }
       ]
     },
     {
       "handle":  "foregroundLamp",
       "prefs":   {
-        "offset": 2200,
-        "speed":  0.8
+        "offset": 2300,
+        "speed":  1.2
       },
       "sprites": [
         {
           "handle":     "lamp",
           "x":          0,
-          "y":          "-maxLookAroundDistortion",
+          "y":          "-2*maxLookAroundDistortion",
           "topAligned": true,
           "width":      329,
           "height":     "363px",
-          "source":     "graphics/scene/world/01-cradle/lamp.png"
+          "fontSymbol": {
+            "name": "livingroom12",
+            "size": 420,
+            "blur": 30
+          },
+          "color":      "purple"
         }
       ]
     },
     {
-      "handle":  "foregroundWardrobe",
+      "handle":  "blurred-stuff",
       "prefs":   {
         "offset": 0,
         "speed":  1.5
       },
       "sprites": [
         {
-          "handle":     "wardrobe",
+          "handle":     "desk",
           "x":          1600,
-          "y":          "-80px",
+          "y":          "280px",
           "topAligned": false,
           "width":      1000,
-          "height":     "50px",
-          "color":      "yellow",
-          "blurred":    true
+          "height":     "150px",
+          "fontSymbol": {
+            "name": "media26",
+            "size": 1000,
+            "blur": 30
+          },
+          "color":      "orange"
         },
         {
           "handle":     "bottle",
@@ -288,7 +411,12 @@
           "topAligned": false,
           "width":      157,
           "height":     "297px",
-          "source":     "graphics/scene/world/01-cradle/bottle.png"
+          "fontSymbol": {
+            "name": "softdrinks1",
+            "size": 200,
+            "blur": 30
+          },
+          "color":      "purple"
         }
       ]
     }

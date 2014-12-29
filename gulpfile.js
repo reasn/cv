@@ -17,9 +17,27 @@ gulp.task('clean', function (cb) {
     del(['./dist/assets', './dist/css', './dist/js', './dist/index.html'], cb)
 });
 
-gulp.task('style', function () {
+gulp.task('style-colors', function () {
+    var colors = JSON.parse(fs.readFileSync('./client/assets/game.json')).prefs.colors,
+        colorName,
+        varName,
+        vars = [],
+        rules = [];
+
+    for (colorName in colors) {
+        varName = '@c' + colorName.charAt(0).toUpperCase() + colorName.slice(1);
+        vars.push(varName + ': ' + colors[colorName] + ';');
+        rules.push('.' + colorName + ' { color: ' + varName + '; background-color:' + varName + '}');
+    }
+    fs.writeFileSync('./client/style/colors-generated.less', vars.join("\n") + "\n\n" + rules.join("\n"));
+});
+
+gulp.task('style', ['style-colors'], function () {
+
     gulp.src('./client/style/style.less')
-        .pipe(plugins.less({}))
+        .pipe(plugins.less({
+            paths: [ './client/style' ]
+        }))
         .pipe(plugins.autoprefixer('> 5%', 'last 2 versions'))
         .pipe(gulp.dest('./dist/css'))
         .pipe(plugins.rename({suffix: '.min'}))

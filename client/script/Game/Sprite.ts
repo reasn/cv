@@ -14,6 +14,16 @@ module ACV.Game {
         static mockColors = ['#9932CC', '#8B0000', '#E9967A', '#8FBC8F', '#483D8B', '#2F4F4F', '#00CED1', '#9400D3', '#FF1493', '#00BFFF', '#696969', '#1E90FF', '#B22222', '#FFFAF0', '#228B22', '#FF00FF', '#DCDCDC', '#F8F8FF', '#FFD700', '#DAA520', '#808080', '#008000', '#ADFF2F', '#F0FFF0', '#FF69B4'];
         static mockColorIndex = 0;
 
+        static COLORS: {[name:string]:string} = {
+            'green-800':    '#2e7d32',
+            'blue-gray-50': '#eceff1',
+            'blue':         '#2196f3',
+            'gray':         '#9e9e9e',
+            'yellow':       '#ffeb3b',
+            'orange':       '#ff9800',
+            'purple':       '#ab47bc'
+        };
+
         y: any = 0;
         topAligned: boolean;
         handle: string;
@@ -24,9 +34,10 @@ module ACV.Game {
         private id: string = null;
         x: number = 0;
         width: number;
-        private source: string = null;
-        private color: string = null;
+        private source: string;
+        private color: string;
         private blurred = false;
+        private fontSymbol: ACV.Data.ISpriteFontSymbol;
 
 
         constructor( appContext: ACV.AppContext,
@@ -39,6 +50,7 @@ module ACV.Game {
                      topAligned: boolean,
                      source: string,
                      color: string,
+                     fontSymbol: ACV.Data.ISpriteFontSymbol,
                      blurred: boolean ) {
 
             super('ACV.Game.Sprite');
@@ -57,6 +69,7 @@ module ACV.Game {
             this.height = height;
             this.source = source;
             this.color = color;
+            this.fontSymbol = fontSymbol;
             this.blurred = blurred;
         }
 
@@ -67,7 +80,7 @@ module ACV.Game {
             y = Sprite.unpackDynamicExpression(appContext, data.y, data.handle, 'y');
             height = Sprite.unpackDynamicExpression(appContext, data.height, data.handle, 'height');
 
-            return new Sprite(appContext, data.id, data.handle, data.x, y, data.width, height, data.topAligned, data.source, data.color, data.blurred);
+            return new Sprite(appContext, data.id, data.handle, data.x, y, data.width, height, data.topAligned, data.source, data.color, data.fontSymbol, data.blurred);
         }
 
         /**
@@ -108,9 +121,8 @@ module ACV.Game {
 
         init( levelHandle: string, layerHandle: string, layerElement: JQuery ) {
 
-            var id = 'sprite-' + levelHandle + '-' + layerHandle + '-' + this.handle;
-
-            this.element = $('<div class="sprite" id="' + id + '" />');
+            var id = 'sprite-' + levelHandle + '-' + layerHandle + '-' + this.handle,
+                classes = ['sprite'];
 
             var cssProps: any = {
                 transform: 'translateX(' + this.x + 'px)',
@@ -126,18 +138,32 @@ module ACV.Game {
             //TODO implement combined asset files
             if (typeof (this.source) === 'string') {
                 cssProps.backgroundImage = 'url("' + this.appContext.prefs.assetPath + '/' + this.source + '")';
-                this.element.addClass('image-background')
-            } else if (typeof(this.color) === 'string') {
-                this.element.addClass('colored').addClass(this.color);
+                classes.push('image-background')
+            } else if (this.fontSymbol) {
+                classes.push('font-symbol');
+                classes.push(this.color);
+                classes.push('flaticon-' + this.fontSymbol.name);
+                cssProps.fontSize = this.fontSymbol.size;
+                if (this.fontSymbol.blur) {
+                    classes.push('blurred');
+                    cssProps.textShadow = '0 0 ' + this.fontSymbol.blur + 'px ' + Sprite.COLORS[this.color];
+                }
             } else {
-                cssProps.backgroundColor = ACV.Game.Sprite.mockColors[ACV.Game.Sprite.mockColorIndex++];
+                classes.push('colored');
+                classes.push(this.color);
             }
+            if (this.color) {
+                classes.push(this.color);
+            }
+
+            if (this.blurred) {
+                classes.push('blurred');
+            }
+
+            this.element = $('<div class="' + classes.join(' ') + '" id="' + id + '" />');
 
             this.element.css(cssProps);
 
-            if (this.blurred) {
-                this.element.addClass('blurred');
-            }
 
             layerElement.append(this.element);
 

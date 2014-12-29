@@ -1,227 +1,252 @@
 {
-    "prefs": {
-        "scrollVertical": true,
-        "totalDistance": 5000,
-        "assetPath": "assets",
-        "maxLookAroundDistortion": 50,
-        "ieFactor": 2,
-        "performanceSettings": {
-            "yearDisplay": true,
-            "heightDisplay": true,
-            "lookAroundDistortion": true
-        }
+  "prefs": {
+    "scrollVertical":          true,
+    "totalDistance":           5000,
+    "assetPath":               "assets",
+    "maxLookAroundDistortion": 50,
+    "ieFactor":                2,
+    "performanceSettings":     {
+      "yearDisplay":          true,
+      "heightDisplay":        true,
+      "lookAroundDistortion": true
     },
-    "scene": {
-        "prefs": {
-            "width": 10284,
-            "dynamicViewport": {
-                "minHeight": 500
-            }
-        },
-        "playerLayer": {
-            "player": {
-                "position": {
-                    "min": 0.2,
-                    "max": 0.7,
-                    "target": 0.38,
-                    "y": 150
-                },
-                "fastWalkMultiplicator": 1.5,
-                "movementTriggerGranularity": 40,
-                "initialAge": "baby",
-                "ages": {
-                    "baby": {
-                        "width": 1,
-                        "height": 1
-                    },
-                    "child": {
-                        "width": 48,
-                        "height": 80
-                    },
-                    "teen": {
-                        "width": 84,
-                        "height": 140
-                    },
-                    "adult": {
-                        "width": 108,
-                        "height": 180
-                    }
-                }
-            },
-            "prefs": {
-                "hitBox": 50
-            },
-            "powerUps": []
-        },
-        "levels": [
-            {
-                "handle": "cradle",
-                "enabled": true,
-                "prefs": {
-                    "offset": 0,
-                    "clip": {
-                        "x1": 0,
-                        "x2": 3400
-                    },
-                    "visibility": {
-                        "x1": 0,
-                        "x2": 3600
-                    }
-                }
-            },
-            {
-                "handle": "way-to-school",
-                "enabled": true,
-                "prefs": {
-                    "_offset": 0,
-                    "offset": 3400,
-                    "clip": {
-                        "x1": 0,
-                        "x2": 4000
-                    },
-                    "visibility": {
-                        "x1": -3500,
-                        "x2": 7000
-                    }
-                }
-            },
-            {
-                "handle": "heidelberg",
-                "enabled": true,
-                "prefs": {
-                    "_offset": 0,
-                    "offset": 7400,
-                    "clip": {
-                        "x1": 0,
-                        "x2": 10000
-                    },
-                    "visibility": {
-                        "x1": -3500,
-                        "x2": 12000
-                    }
-                }
-            }
-        ],
-        "layers": {
-            "background": [],
-            "foreground": []
-        },
-        "triggers": []
-    },
-    "hud": {
-        "prefs": {
-            "height": 200
-        },
-        "skillBasket": {
-            "skills": [ "HTML", "CSS", "Dreamweaver", "Word", "Excel", "Photoshop",
-                "InDesign", "Linux", "Windows", "QuickBasic", "C/C++", "Java", "Mercurial",
-                "Git", "Windows", "Powerpoint", "PHP" ]
-        },
-        "yearDisplay": {
-            "triggers": {
-                "0.00": 1987,
-                "0.01": 1988,
-                "0.02": 1989,
-                "0.03": 1990,
-                "0.04": 1991,
-                "0.05": 1992,
-                "0.06": 1993,
-                "0.08": 1994,
-                "0.10": 1995,
-                "0.12": 1996,
-                "0.15": 1997,
-                "0.18": 1998,
-                "0.21": 1999,
-                "0.25": 2000,
-                "0.28": 2001,
-                "0.31": 2002,
-                "0.35": 2003,
-                "0.38": 2004,
-                "0.42": 2005,
-                "0.46": 2006,
-                "0.53": 2007,
-                "0.60": 2008,
-                "0.65": 2009,
-                "0.70": 2010,
-                "0.75": 2011,
-                "0.80": 2012,
-                "0.90": 2013,
-                "1.00": 2014
-            }
-        },
-        "heightDisplay": {
-            "keyFrames": {
-                "0.00": 50,
-                "0.02": 80,
-                "0.04": 100,
-                "0.10": 126,
-                "0.18": 140,
-                "0.21": 148,
-                "0.28": 160,
-                "0.31": 166,
-                "0.35": 173,
-                "0.46": 178,
-                "0.47": 178
-            }
-        },
-        "timeline": {
-            "comment": "the events must be in strict ascending ordered (by playerX)",
-            "prefs": {
-                "minVisibleEvents": 3,
-                "maxVisibleEvents": 5
-            },
-            "events": [
-                {
-                    "playerX": 500,
-                    "timestamp": "1987-09-18",
-                    "type": "post",
-                    "data": {
-                        "author": "Dr. Ulla Thiel",
-                        "message": "Great, there comes the baby!"
-                    }
-                },
-                {
-                    "playerX": 1000,
-                    "timestamp": "1989-11-09",
-                    "type": "activity",
-                    "data": {
-                        "message": "[Cold War] ends."
-                    }
-                },
-                {
-                    "playerX": 2000,
-                    "timestamp": "1999-08-24",
-                    "type": "post",
-                    "data": {
-                        "author": "Alexander Thiel",
-                        "message": "Oh wow, my first computer! Thanks [mom]. I will start programming right away. But maybe play a bit first. Don't want to end up being too nerdy ;-)"
-                    }
-                },
-                {
-                    "playerX": 3000,
-                    "timestamp": "1999-08-24",
-                    "type": "activity",
-                    "data": {
-                        "message": "[Tobias] bashes [Alexander] during a Wasserschlacht."
-                    }
-                },
-                {
-                    "playerX": 4000,
-                    "timestamp": "2006-06-14",
-                    "type": "activity",
-                    "data": {
-                        "message": "[Alexander] gets his Abitur."
-                    }
-                },
-                {
-                    "playerX": 5000,
-                    "timestamp": "2014-02-21",
-                    "type": "activity",
-                    "data": {
-                        "message": "[Alexander Thiel] happily joins [Burning Man 2014]"
-                    }
-                }
-            ]
-        }
+    "colors":                  {
+      "yellow":       "#ffeb3b",
+      "orange":       "#ff9800",
+      "blue":         "#2196f3",
+      "purple":       "#ab47bc",
+      "blue-gray-50": "#eceff1",
+      "green-800":    "#2e7d32",
+      "gray":         "#9e9e9e"
     }
+  },
+  "scene": {
+    "prefs":       {
+      "width":           10284,
+      "dynamicViewport": {
+        "minHeight": 500
+      }
+    },
+    "playerLayer": {
+      "player":   {
+        "position":                   {
+          "min":    0.2,
+          "max":    0.7,
+          "target": 0.38,
+          "y":      150
+        },
+        "fastWalkMultiplicator":      1.5,
+        "movementTriggerGranularity": 40,
+        "initialAge":                 "baby",
+        "ages":                       {
+          "baby":  {
+            "width":  1,
+            "height": 1
+          },
+          "child": {
+            "width":  48,
+            "height": 80
+          },
+          "teen":  {
+            "width":  84,
+            "height": 140
+          },
+          "adult": {
+            "width":  108,
+            "height": 180
+          }
+        }
+      },
+      "prefs":    {
+        "hitBox": 50
+      },
+      "powerUps": []
+    },
+    "levels":      [
+      {
+        "handle":  "cradle",
+        "enabled": true,
+        "prefs":   {
+          "offset":     0,
+          "clip":       {
+            "x1": 0,
+            "x2": 3400
+          },
+          "visibility": {
+            "x1": 0,
+            "x2": 3600
+          }
+        }
+      },
+      {
+        "handle":  "way-to-school",
+        "enabled": true,
+        "prefs":   {
+          "_offset":    0,
+          "offset":     3400,
+          "clip":       {
+            "x1": 0,
+            "x2": 4000
+          },
+          "visibility": {
+            "x1": -3500,
+            "x2": 7000
+          }
+        }
+      },
+      {
+        "handle":  "heidelberg",
+        "enabled": true,
+        "prefs":   {
+          "_offset":    0,
+          "offset":     7400,
+          "clip":       {
+            "x1": 0,
+            "x2": 10000
+          },
+          "visibility": {
+            "x1": -3500,
+            "x2": 12000
+          }
+        }
+      }
+    ],
+    "layers":      {
+      "background": [],
+      "foreground": []
+    },
+    "triggers":    []
+  },
+  "hud":   {
+    "prefs":         {
+      "height": 200
+    },
+    "skillBasket":   {
+      "skills": [
+        "HTML",
+        "CSS",
+        "Dreamweaver",
+        "Word",
+        "Excel",
+        "Photoshop",
+        "InDesign",
+        "Linux",
+        "Windows",
+        "QuickBasic",
+        "C/C++",
+        "Java",
+        "Mercurial",
+        "Git",
+        "Windows",
+        "Powerpoint",
+        "PHP"
+      ]
+    },
+    "yearDisplay":   {
+      "triggers": {
+        "0.00": 1987,
+        "0.01": 1988,
+        "0.02": 1989,
+        "0.03": 1990,
+        "0.04": 1991,
+        "0.05": 1992,
+        "0.06": 1993,
+        "0.08": 1994,
+        "0.10": 1995,
+        "0.12": 1996,
+        "0.15": 1997,
+        "0.18": 1998,
+        "0.21": 1999,
+        "0.25": 2000,
+        "0.28": 2001,
+        "0.31": 2002,
+        "0.35": 2003,
+        "0.38": 2004,
+        "0.42": 2005,
+        "0.46": 2006,
+        "0.53": 2007,
+        "0.60": 2008,
+        "0.65": 2009,
+        "0.70": 2010,
+        "0.75": 2011,
+        "0.80": 2012,
+        "0.90": 2013,
+        "1.00": 2014
+      }
+    },
+    "heightDisplay": {
+      "keyFrames": {
+        "0.00": 50,
+        "0.02": 80,
+        "0.04": 100,
+        "0.10": 126,
+        "0.18": 140,
+        "0.21": 148,
+        "0.28": 160,
+        "0.31": 166,
+        "0.35": 173,
+        "0.46": 178,
+        "0.47": 178
+      }
+    },
+    "timeline":      {
+      "comment": "the events must be in strict ascending ordered (by playerX)",
+      "prefs":   {
+        "minVisibleEvents": 3,
+        "maxVisibleEvents": 5
+      },
+      "events":  [
+        {
+          "playerX":   500,
+          "timestamp": "1987-09-18",
+          "type":      "post",
+          "data":      {
+            "author":  "Dr. Ulla Thiel",
+            "message": "Great, there comes the baby!"
+          }
+        },
+        {
+          "playerX":   1000,
+          "timestamp": "1989-11-09",
+          "type":      "activity",
+          "data":      {
+            "message": "[Cold War] ends."
+          }
+        },
+        {
+          "playerX":   2000,
+          "timestamp": "1999-08-24",
+          "type":      "post",
+          "data":      {
+            "author":  "Alexander Thiel",
+            "message": "Oh wow, my first computer! Thanks [mom]. I will start programming right away. But maybe play a bit first. Don't want to end up being too nerdy ;-)"
+          }
+        },
+        {
+          "playerX":   3000,
+          "timestamp": "1999-08-24",
+          "type":      "activity",
+          "data":      {
+            "message": "[Tobias] bashes [Alexander] during a Wasserschlacht."
+          }
+        },
+        {
+          "playerX":   4000,
+          "timestamp": "2006-06-14",
+          "type":      "activity",
+          "data":      {
+            "message": "[Alexander] gets his Abitur."
+          }
+        },
+        {
+          "playerX":   5000,
+          "timestamp": "2014-02-21",
+          "type":      "activity",
+          "data":      {
+            "message": "[Alexander Thiel] happily joins [Burning Man 2014]"
+          }
+        }
+      ]
+    }
+  }
 }

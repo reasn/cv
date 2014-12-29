@@ -9,6 +9,7 @@ module ACV.Data {
         id: string;
         topAligned: boolean;
         source: string;
+        fontSymbol?: ISpriteFontSymbol;
         color: string;
         blurred: boolean;
     }
