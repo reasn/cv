@@ -8,7 +8,7 @@ module ACV.Game {
         scene: ACV.Game.Scene = null;
         triggers: ACV.Game.Trigger[] = [];
 
-        constructor(triggers: Trigger[]) {
+        constructor( triggers: Trigger[] ) {
             super('ACV.Game.TriggerManager');
             this.triggers = triggers;
             /*  this.triggers.sort(function(a, b) {
@@ -21,7 +21,7 @@ module ACV.Game {
              this.debug(this.triggers);*/
         }
 
-        static createFromData(triggerData: ACV.Data.ITriggerData[], performanceSettings: ACV.Data.IPerformanceSettings) {
+        static createFromData( triggerData: ACV.Data.ITriggerData[], performanceSettings: ACV.Data.IPerformanceSettings ) {
             var triggerIndex: any,
                 triggers: Trigger[] = [];
 
@@ -31,7 +31,7 @@ module ACV.Game {
             return new TriggerManager(triggers);
         }
 
-        check(playerX: number, playerXBefore: number, targetPlayerX: number, sceneX: number) {
+        check( playerX: number, playerXBefore: number, targetPlayerX: number, sceneX: number ) {
             var triggerIndex: any,
                 trigger: Trigger,
                 action: ITriggerAction;
@@ -58,16 +58,20 @@ module ACV.Game {
          * @since 2013-11-24
          * @author Alexander Thiel
          */
-        private execute(action: ITriggerAction): void {
-
+        private execute( action: ITriggerAction ): void {
+            var sprite: JQuery;
             switch (action.action) {
                 case 'sprite.show':
-                    //TODO make clean:
-                    $('div[data-handle="' + action.args[0].replace(/\./g, '"] div[data-handle="') + '"]').show();
-                    return;
                 case 'sprite.hide':
-                    //TODO make clean:
-                    $('div[data-handle="' + action.args[0].replace(/\./g, '"] div[data-handle="') + '"]').hide();
+                    sprite = $('#sprite-' + action.args[0]);
+                    if (sprite.length === 0) {
+                        this.warn('Could not trigger "%s" action because no sprite with id "%s" was found.', action.action, 'sprite-' + action.args[0]);
+                    }
+                    if (action.action === 'sprite.show') {
+                        sprite.show();
+                    } else {
+                        sprite.hide();
+                    }
                     return;
                 case 'player.setAge':
                     this.scene.playerLayer.player.setAge(action.args[0]);

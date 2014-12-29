@@ -231,27 +231,31 @@ module ACV.Game {
                 layerIndex: any,
                 elementsToAlter: JQuery;
 
+            /*
+             elementsToAlter = this.playerLayer.element;
 
-            elementsToAlter = this.playerLayer.element;
+             for (levelIndex in this.levels) {
 
-            for (levelIndex in this.levels) {
+             for (layerIndex in this.levels[levelIndex].backgroundLayers) {
+             elementsToAlter = elementsToAlter.add(this.levels[levelIndex].backgroundLayers[layerIndex].element);
+             }
+             for (layerIndex in this.levels[levelIndex].foregroundLayers) {
+             elementsToAlter = elementsToAlter.add(this.levels[levelIndex].foregroundLayers[layerIndex].element);
+             }
+             }
 
-                for (layerIndex in this.levels[levelIndex].backgroundLayers) {
-                    elementsToAlter = elementsToAlter.add(this.levels[levelIndex].backgroundLayers[layerIndex].element);
-                }
-                for (layerIndex in this.levels[levelIndex].foregroundLayers) {
-                    elementsToAlter = elementsToAlter.add(this.levels[levelIndex].foregroundLayers[layerIndex].element);
-                }
-            }
+             if (this.sceneViewportDimensions.height < this.prefs.dynamicViewport.minHeight) {
+             this.dynamicTopViewportTranslation = Math.round(-.5 * (this.prefs.dynamicViewport.minHeight - this.sceneViewportDimensions.height));
+             //  elementsToAlter.css('y', this.dynamicTopViewportTranslation + 'px');
 
-            if (this.sceneViewportDimensions.height < this.prefs.dynamicViewport.minHeight) {
-                this.dynamicTopViewportTranslation = Math.round(-.5 * (this.prefs.dynamicViewport.minHeight - this.sceneViewportDimensions.height));
-              //  elementsToAlter.css('y', this.dynamicTopViewportTranslation + 'px');
+             } else {
+             this.dynamicTopViewportTranslation = 0;
+             }
+             //elementsToAlter.css('top', this.dynamicTopViewportTranslation);
+             */
+            //TODO retest on small screens - seemed more beautiful when off
+            this.dynamicTopViewportTranslation = 0;
 
-            } else {
-                this.dynamicTopViewportTranslation = 0;
-            }
-          //  elementsToAlter.css('y', this.dynamicTopViewportTranslation);
         }
 
         private dynamicTopViewportTranslation: number = 0;

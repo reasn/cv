@@ -22,7 +22,8 @@
     "gulp-sourcemaps": "1.2.x",
     "gulp-typescript": "2.3.x",
     "gulp-uglify": "1.0.x",
-    "main-bower-files": "^2.4.1"
+    "main-bower-files": "^2.4.1",
+    "strip-ansi": "^2.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

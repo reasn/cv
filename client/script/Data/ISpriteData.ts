@@ -1,15 +1,15 @@
 module ACV.Data {
 
     export interface ISpriteData {
-        y:string;//or number
-        handle:string;
-        height:string;//or number
-        id:string;
-        x:number;
-        width:number;
-        topAligned:boolean;
-        source:string;
-        color:string;
-        blurred:boolean;
+        handle: string;
+        x: number;
+        y: string;//or number
+        height: string;//or number
+        width: number;
+        id: string;
+        topAligned: boolean;
+        source: string;
+        color: string;
+        blurred: boolean;
     }
 }

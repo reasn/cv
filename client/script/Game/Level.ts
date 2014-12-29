@@ -22,12 +22,12 @@ module ACV.Game {
         private foregroundElement: JQuery = null;
         private backgroundElement: JQuery = null;
 
-        constructor(appContext: ACV.AppContext,
-                    handle: string,
-                    prefs: ACV.Data.ILevelPrefs,
-                    animations: Animation[],
-                    backgroundLayers: ACV.Game.Layer[],
-                    foregroundLayers: ACV.Game.Layer[]) {
+        constructor( appContext: ACV.AppContext,
+                     handle: string,
+                     prefs: ACV.Data.ILevelPrefs,
+                     animations: Animation[],
+                     backgroundLayers: ACV.Game.Layer[],
+                     foregroundLayers: ACV.Game.Layer[] ) {
 
             super('ACV.Game.Level');
 
@@ -39,7 +39,7 @@ module ACV.Game {
             this.foregroundLayers = foregroundLayers;
         }
 
-        static createFromPrefs(appContext: ACV.AppContext, data: ACV.Data.ILevelData): Level {
+        static createFromPrefs( appContext: ACV.AppContext, data: ACV.Data.ILevelData ): Level {
 
             var backgroundLayers: Layer[] = [],
                 foregroundLayers: Layer[] = [],
@@ -66,31 +66,31 @@ module ACV.Game {
         }
 
 
-        init(scene: ACV.Game.Scene,
-             backgroundWrapper: JQuery,
-             foregroundWrapper: JQuery,
-             minHeight: number,
-             lookAroundDistortion: ILookAroundDistortion,
-             viewportDimensions: ACV.View.IViewportDimensions): void {
+        init( scene: ACV.Game.Scene,
+              backgroundWrapper: JQuery,
+              foregroundWrapper: JQuery,
+              minHeight: number,
+              lookAroundDistortion: ILookAroundDistortion,
+              viewportDimensions: ACV.View.IViewportDimensions ): void {
 
             var layerIndex: any,
                 animationIndex: any;
 
             this.lookAroundDistortion = lookAroundDistortion;
 
-            this.backgroundElement = $('<div class="level background level-' + this.handle.substr(0, this.handle.indexOf('-')) + '"data-handle="' + this.handle + '" />');
+            this.backgroundElement = $('<div id="level-bg-' + this.handle + '" class="level background" />');
             this.backgroundElement.css('max-width', this.prefs.clip.x2);
 
-            this.foregroundElement = $('<div class="level foreground level-' + this.handle.substr(0, this.handle.indexOf('-')) + '" data-handle="' + this.handle + '" />');
+            this.foregroundElement = $('<div id="level-fg-' + this.handle + '" class="level foreground" />');
             this.foregroundElement.css('max-width', this.prefs.clip.x2);
 
             for (layerIndex in this.backgroundLayers) {
                 //TODO remove children() from loop
-                this.backgroundLayers[layerIndex].init(this.backgroundElement, minHeight, viewportDimensions, this.flySprites);
+                this.backgroundLayers[layerIndex].init(this.handle, this.backgroundElement, minHeight, viewportDimensions, this.flySprites);
             }
             for (layerIndex in this.foregroundLayers) {
                 //TODO remove children() from loop
-                this.foregroundLayers[layerIndex].init(this.foregroundElement, minHeight, viewportDimensions, this.flySprites);
+                this.foregroundLayers[layerIndex].init(this.handle, this.foregroundElement, minHeight, viewportDimensions, this.flySprites);
             }
 
             for (animationIndex in this.animations) {
@@ -111,7 +111,7 @@ module ACV.Game {
             return this.prefs.clip.x2 - this.prefs.clip.x1;
         }
 
-        getHitSprites(levelRelativeX: number, y: number, viewportDimensions: ACV.View.IViewportDimensions): Sprite[] {
+        getHitSprites( levelRelativeX: number, y: number, viewportDimensions: ACV.View.IViewportDimensions ): Sprite[] {
             var sprites: Sprite[] = [],
                 layerIndex: any,
                 layer: Layer;
@@ -179,7 +179,7 @@ module ACV.Game {
          * @param {IViewportDimensions} viewportDimensions
          * @returns void
          */
-        updatePositions(sceneX: number, sceneXBefore: number, viewportDimensions: ACV.View.IViewportDimensions) {
+        updatePositions( sceneX: number, sceneXBefore: number, viewportDimensions: ACV.View.IViewportDimensions ) {
 
             this.x = sceneX - this.prefs.offset;
             //TODO before the refactoring XBefore was set:
@@ -206,7 +206,7 @@ module ACV.Game {
          * @since 2014-03-05
          * @author Alexander Thiel
          */
-        private updateVisibility(sceneX: number, sceneXBefore: number, viewportDimensions: ACV.View.IViewportDimensions) {
+        private updateVisibility( sceneX: number, sceneXBefore: number, viewportDimensions: ACV.View.IViewportDimensions ) {
             var showLevelSceneX = this.prefs.offset + this.prefs.visibility.x1;
             var hideLevelSceneX = this.prefs.offset + this.prefs.visibility.x2;
 
@@ -237,8 +237,8 @@ module ACV.Game {
          * @since 2014-03-05
          * @author Alexander Thiel
          */
-        private applyClippingAndUpdateLayerPositions(sceneX: number,
-                                                     viewportDimensions: ACV.View.IViewportDimensions) {
+        private applyClippingAndUpdateLayerPositions( sceneX: number,
+                                                      viewportDimensions: ACV.View.IViewportDimensions ) {
             var layerIndex: any,
                 distanceBetweenLeftViewportMarginAndLevelBegin: number;
 
@@ -274,10 +274,10 @@ module ACV.Game {
          * @since 2014-03-05
          * @author Alexander Thiel
          */
-        private handleAnimations(sceneX: number,
-                                 sceneXBefore: number,
-                                 viewportDimensions: ACV.View.IViewportDimensions,
-                                 executeOutOfRangeAnimation: boolean) {
+        private handleAnimations( sceneX: number,
+                                  sceneXBefore: number,
+                                  viewportDimensions: ACV.View.IViewportDimensions,
+                                  executeOutOfRangeAnimation: boolean ) {
             var animationIndex: any,
                 animation: Animation,
                 coarseLevelX: number;

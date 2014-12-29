@@ -29,17 +29,17 @@ module ACV.Game {
         private blurred = false;
 
 
-        constructor(appContext: ACV.AppContext,
-                    id: string,
-                    handle: string,
-                    x: number,
-                    y: any,
-                    width: number,
-                    height: number,
-                    topAligned: boolean,
-                    source: string,
-                    color: string,
-                    blurred: boolean) {
+        constructor( appContext: ACV.AppContext,
+                     id: string,
+                     handle: string,
+                     x: number,
+                     y: any,
+                     width: number,
+                     height: number,
+                     topAligned: boolean,
+                     source: string,
+                     color: string,
+                     blurred: boolean ) {
 
             super('ACV.Game.Sprite');
 
@@ -60,7 +60,7 @@ module ACV.Game {
             this.blurred = blurred;
         }
 
-        static createFromPrefs(appContext: ACV.AppContext, data: ACV.Data.ISpriteData) {
+        static createFromPrefs( appContext: ACV.AppContext, data: ACV.Data.ISpriteData ) {
             var y: any,
                 height: any;
 
@@ -73,10 +73,10 @@ module ACV.Game {
         /**
          * @returns {string|number|ISpriteCallback}
          */
-        private static unpackDynamicExpression(appContext: ACV.AppContext,
-                                               expression: string,
-                                               spriteHandle: string,
-                                               propertyName: string): any {
+        private static unpackDynamicExpression( appContext: ACV.AppContext,
+                                                expression: string,
+                                                spriteHandle: string,
+                                                propertyName: string ): any {
             var code: string,
                 callback: Function;
 
@@ -106,39 +106,34 @@ module ACV.Game {
             return new Function('maxLookAroundDistortion', 'viewportHeight', 'sprites', code);
         }
 
-        init(layerElement: JQuery) {
-            this.element = $('<div class="sprite" data-handle="' + this.handle + '" />');
-            if (this.id) {
-                this.element.attr('id', this.id);
-            }
+        init( levelHandle: string, layerHandle: string, layerElement: JQuery ) {
 
-          //  this.element.on('click', (event: JQueryMouseEventObject)=> {
-          //      this.element.toggleClass('selected');
-          //      event.stopPropagation();
-          //      event.preventDefault();
-          //  });
+            var id = 'sprite-' + levelHandle + '-' + layerHandle + '-' + this.handle;
+
+            this.element = $('<div class="sprite" id="' + id + '" />');
 
             var cssProps: any = {
-                //left:   this.x,
                 transform: 'translateX(' + this.x + 'px)',
                 width:     this.width + 'px'
             };
+
             if (this.topAligned) {
                 cssProps.top = 0;
             } else {
                 cssProps.bottom = 0;
             }
-            this.element.css(cssProps);
 
             //TODO implement combined asset files
             if (typeof (this.source) === 'string') {
-                this.element.css('backgroundImage', 'url("' + this.appContext.prefs.assetPath + '/' + this.source + '")');
+                cssProps.backgroundImage = 'url("' + this.appContext.prefs.assetPath + '/' + this.source + '")';
                 this.element.addClass('image-background')
             } else if (typeof(this.color) === 'string') {
                 this.element.addClass('colored').addClass(this.color);
             } else {
-                this.element.css('backgroundColor', ACV.Game.Sprite.mockColors[ACV.Game.Sprite.mockColorIndex++]);
+                cssProps.backgroundColor = ACV.Game.Sprite.mockColors[ACV.Game.Sprite.mockColorIndex++];
             }
+
+            this.element.css(cssProps);
 
             if (this.blurred) {
                 this.element.addClass('blurred');

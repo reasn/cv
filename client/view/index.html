@@ -4,27 +4,6 @@
     <meta charset="UTF-8">
     <title>CV Test</title>
     <link href="css/style.css" type="text/css" rel="stylesheet">
-    <script src="js/vendor.js"></script>
-    <script defer="defer" src="assets/unmanaged-scripts/jquery-ui-1.10.3.custom.min.js"></script>
-    <script defer="defer" src="js/cv.js"></script>
-    <script defer="defer" type="text/javascript">
-        (function () {
-            $(function load() {
-                if (typeof ACV.App === 'undefined') {
-                    window.setTimeout(load, 100);
-                    return;
-                }
-                var app = new ACV.App();
-                (new ACV.Core.PrefLoader()).load(function (gameData) {
-                    app.init(gameData, $('.game-container'));
-                });
-
-                //TODO remove the next line
-                window.testableApp = app;
-            });
-        })();
-
-    </script>
 </head>
 <body>
 <div class="welcome-container">
@@ -84,5 +63,27 @@
     <a id="github-ribbon" href="https://github.com/reasn/cv"><img src="assets/graphics/github-ribbon.png"
                                                                   alt="Fork me on GitHub"></a>
 </p>
+
+<script src="js/vendor.js"></script>
+<script src="assets/unmanaged-scripts/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="js/cv.js"></script>
+<script type="text/javascript">
+    (function () {
+        $(function () {
+            if (typeof ACV.App === 'undefined') {
+                window.setTimeout(load, 100);
+                return;
+            }
+            var app = new ACV.App();
+            (new ACV.Core.PrefLoader()).load(function (gameData) {
+                app.init(gameData, $('.game-container'));
+            });
+
+            //TODO remove the next line
+            window.testableApp = app;
+        });
+    })();
+
+</script>
 </body>
 </html>

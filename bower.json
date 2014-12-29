@@ -7,9 +7,9 @@
   ],
   "license":      "proprietary",
   "private":      true,
+  "plugin-comment": "tried jquery.transit and jquery.transform2d - the first works but makes things unbelievably slow, the second doesn't at all -.- ",
   "dependencies": {
-    "jquery":         "2.1.x",
-    "jquery.transit": "0.9.x",
-    "angular":        "1.3.x"
+    "jquery":  "2.1.x",
+    "angular": "1.3.x"
   }
 }

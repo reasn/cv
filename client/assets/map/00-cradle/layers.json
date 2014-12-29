@@ -1,0 +1,296 @@
+{
+  "background": [
+    {
+      "handle":  "backgroundOutside",
+      "prefs":   {
+        "offset": 760,
+        "speed":  0.4
+      },
+      "sprites": [
+        {
+          "handle":     "skyAndMountains",
+          "x":          0,
+          "y":          ".5 * (viewportHeight - 535) + 100",
+          "topAligned": true,
+          "width":      740,
+          "height":     "300px",
+          "source":     "graphics/scene/world/01-cradle/background.jpg"
+        }
+      ]
+    },
+    {
+      "handle":  "backgroundWall",
+      "prefs":   {
+        "offset": 0,
+        "speed":  0.5
+      },
+      "sprites": [
+        {
+          "handle":     "rearWindow",
+          "x":          1100,
+          "y":          ".5 * (viewportHeight - 535)",
+          "topAligned": true,
+          "width":      535,
+          "height":     "500px",
+          "source":     "graphics/scene/world/01-cradle/window.png"
+        },
+        {
+          "handle":     "topWall",
+          "x":          1100,
+          "y":          "-maxLookAroundDistortion",
+          "topAligned": true,
+          "width":      535,
+          "height":     "maxLookAroundDistortion + sprites.backgroundWall.rearWindow.y",
+          "color":      "orange"
+        },
+        {
+          "handle":     "rightWall",
+          "x":          1635,
+          "y":          "-maxLookAroundDistortion",
+          "topAligned": true,
+          "width":      1800,
+          "height":     "viewportHeight + 2 * maxLookAroundDistortion",
+          "color":      "orange"
+        },
+        {
+          "handle":     "bottomWall",
+          "x":          1100,
+          "y":          "sprites.backgroundWall.rearWindow.y + sprites.backgroundWall.rearWindow.height",
+          "topAligned": true,
+          "width":      535,
+          "height":     "viewportHeight - this.y + maxLookAroundDistortion",
+          "color":      "orange"
+        },
+        {
+          "handle":     "leftWall",
+          "x":          -50,
+          "y":          "-maxLookAroundDistortion",
+          "topAligned": true,
+          "width":      1150,
+          "height":     "viewportHeight",
+          "color":      "orange"
+        }
+      ]
+    },
+    {
+      "handle":  "bookshelf",
+      "prefs":   {
+        "offset": 0,
+        "speed":  0.8
+      },
+      "sprites": [
+        {
+          "handle":     "bookshelf",
+          "x":          400,
+          "y":          190,
+          "topAligned": false,
+          "width":      800,
+          "height":     "Math.max(400, Math.min(1200, .4 * viewportHeight))",
+          "color":      "pink"
+        }
+      ]
+    },
+    {
+      "handle":  "floorAndStuff",
+      "prefs":   {
+        "offset": 0,
+        "speed":  1
+      },
+      "sprites": [
+        {
+          "handle":     "floor",
+          "x":          -50,
+          "y":          "-maxLookAroundDistortion",
+          "topAligned": false,
+          "width":      4000,
+          "height":     "250px",
+          "color":      "blue"
+        },
+        {
+          "handle":     "greenBall",
+          "x":          800,
+          "y":          "120px",
+          "topAligned": false,
+          "width":      150,
+          "height":     "149px",
+          "source":     "graphics/scene/world/01-cradle/ball01.png"
+        },
+        {
+          "handle":     "blueBall",
+          "x":          800,
+          "y":          "100px",
+          "topAligned": false,
+          "width":      120,
+          "height":     "118px",
+          "source":     "graphics/scene/world/01-cradle/ball02.png"
+        },
+        {
+          "handle":     "yellowBox",
+          "x":          1900,
+          "y":          "180px",
+          "topAligned": false,
+          "width":      100,
+          "height":     "88px",
+          "source":     "graphics/scene/world/01-cradle/box01.png"
+        }
+      ]
+    },
+    {
+      "handle":  "cradleBackground",
+      "prefs":   {
+        "offset": 0,
+        "speed":  1.05
+      },
+      "sprites": [
+        {
+          "handle":     "yellowBall",
+          "x":          750,
+          "y":          "90px",
+          "topAligned": false,
+          "width":      100,
+          "height":     "100px",
+          "source":     "graphics/scene/world/01-cradle/ball03.png"
+        },
+        {
+          "handle":     "sleepingBaby",
+          "x":          1156,
+          "y":          "270px",
+          "topAligned": false,
+          "width":      48,
+          "height":     "80px",
+          "source":     "graphics/scene/player/child/stand.gif"
+        },
+        {
+          "handle":     "cradleBackground",
+          "x":          1100,
+          "y":          "140px",
+          "topAligned": false,
+          "width":      416,
+          "height":     "130px",
+          "color":      "green"
+        },
+        {
+          "handle":     "greenBox",
+          "x":          2400,
+          "y":          "160px",
+          "topAligned": false,
+          "width":      200,
+          "height":     "204px",
+          "source":     "graphics/scene/world/01-cradle/box02.png"
+        }
+      ]
+    },
+    {
+      "handle":  "foregroundWall",
+      "prefs":   {
+        "offset": 0,
+        "speed":  1
+      },
+      "sprites": [
+        {
+          "handle":     "rightWall",
+          "x":          3250,
+          "y":          "-80 - maxLookAroundDistortion",
+          "topAligned": true,
+          "width":      100,
+          "height":     "viewportHeight - this.y",
+          "color":      "pink",
+          "blurred":    true
+        }
+      ]
+    }
+  ],
+  "foreground": [
+    {
+      "handle":  "cradleBars",
+      "prefs":   {
+        "offset": 1100,
+        "speed":  1.05
+      },
+      "sprites": [
+        {
+          "handle":     "cradleBars",
+          "x":          0,
+          "y":          "140px",
+          "topAligned": false,
+          "width":      416,
+          "height":     "266px",
+          "source":     "graphics/scene/world/01-cradle/cradle-front.gif"
+        }
+      ]
+    },
+    {
+      "handle":  "ballsAndBoxesInFrontOfCradle",
+      "prefs":   {
+        "offset": 0,
+        "speed":  1.1
+      },
+      "sprites": [
+        {
+          "handle":     "pinkBox",
+          "x":          1000,
+          "y":          "20px",
+          "topAligned": false,
+          "width":      74,
+          "height":     "75px",
+          "source":     "graphics/scene/world/01-cradle/box04.png"
+        },
+        {
+          "handle":     "blueBox",
+          "x":          2650,
+          "y":          "68px",
+          "topAligned": false,
+          "width":      154,
+          "height":     "150px",
+          "source":     "graphics/scene/world/01-cradle/box03.png"
+        }
+      ]
+    },
+    {
+      "handle":  "foregroundLamp",
+      "prefs":   {
+        "offset": 2200,
+        "speed":  0.8
+      },
+      "sprites": [
+        {
+          "handle":     "lamp",
+          "x":          0,
+          "y":          "-maxLookAroundDistortion",
+          "topAligned": true,
+          "width":      329,
+          "height":     "363px",
+          "source":     "graphics/scene/world/01-cradle/lamp.png"
+        }
+      ]
+    },
+    {
+      "handle":  "foregroundWardrobe",
+      "prefs":   {
+        "offset": 0,
+        "speed":  1.5
+      },
+      "sprites": [
+        {
+          "handle":     "wardrobe",
+          "x":          1600,
+          "y":          "-80px",
+          "topAligned": false,
+          "width":      1000,
+          "height":     "50px",
+          "color":      "yellow",
+          "blurred":    true
+        },
+        {
+          "handle":     "bottle",
+          "x":          2300,
+          "y":          "0px",
+          "topAligned": false,
+          "width":      157,
+          "height":     "297px",
+          "source":     "graphics/scene/world/01-cradle/bottle.png"
+        }
+      ]
+    }
+  ]
+}

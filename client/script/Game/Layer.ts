@@ -47,16 +47,18 @@ module ACV.Game {
         }
 
 
-        init( sceneElement: JQuery,
+        init( levelHandle: string,
+              sceneElement: JQuery,
               minHeight: number,
               viewportDimensions: ACV.View.IViewportDimensions,
               flySprites: {[handle:string]:IFlySprite} ) {
 
-            var spriteIndex: any,
+            var id = 'layer-' + levelHandle + '-' + this.handle,
+                spriteIndex: any,
                 spriteWrapper: JQuery;
 
             //TODO remove handles in productive environment
-            this.element = $('<div class="layer" data-handle="' + this.handle + '"><div class="sprite-wrapper" /></div>');
+            this.element = $('<div class="layer" id="' + id + '"><div class="sprite-wrapper" /></div>');
             this.element.css({
                 minHeight: minHeight
             });
@@ -64,7 +66,7 @@ module ACV.Game {
             spriteWrapper = this.element.children('.sprite-wrapper');
 
             for (spriteIndex in this.sprites) {
-                this.sprites[spriteIndex].init(spriteWrapper);
+                this.sprites[spriteIndex].init(levelHandle, this.handle, spriteWrapper);
                 this.positionSprite(this.sprites[spriteIndex], viewportDimensions, flySprites);
             }
 
@@ -231,9 +233,7 @@ module ACV.Game {
 
             this.element.css({
                 //   top:       this.lookAroundDistortion.y + 'px',
-                transform: 'translate(' +
-                           (this.x + this.lookAroundDistortion.x) + 'px, ' +
-                           this.lookAroundDistortion.y + 'px)'
+                transform: 'translate(' + (this.x + this.lookAroundDistortion.x) + 'px, ' + this.lookAroundDistortion.y + 'px)'
                 //left: (this.x + this.lookAroundDistortion.x) + 'px'
             });
         }

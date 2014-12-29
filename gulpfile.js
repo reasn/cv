@@ -1,5 +1,7 @@
 var gulp            = require('gulp'),
     del             = require('del'),
+    fs              = require('fs'),
+    stripAnsi       = require('strip-ansi'),
     gulpLoadPlugins = require('gulp-load-plugins'),
     plugins         = gulpLoadPlugins({
         lazy:    false,
@@ -33,11 +35,21 @@ var tsProject = plugins.typescript.createProject({
 });
 
 gulp.task('script', function () {
-    var tsResult = gulp.src([
-        './client/script/**/*.ts',
-        './typings/**/*.d.ts'
-    ]).
-        pipe(plugins.typescript(tsProject));
+
+    //var r = plugins.typescript.reporter.defaultReporter();
+
+    var tsResult = gulp.src(['./client/script/**/*.ts', './typings/**/*.d.ts'])
+        .pipe(plugins.typescript(tsProject));
+
+    var errorDisplayed = false;
+
+    tsResult.on("error", plugins.notify.onError(function (error) {
+        if (errorDisplayed) {
+            return null;
+        }
+        errorDisplayed = true;
+        return 'Typescript compilation failed.';
+    }));
 
     return tsResult.js
         .pipe(plugins.concatSourcemap('cv.js')) // You can use other plugins that also support gulp-sourcemaps
@@ -75,5 +87,5 @@ gulp.task('watch', ['default'], function () {
     gulp.watch('client/script/**/*.ts', ['script']);
     gulp.watch('client/style/**/*.less', ['style']);
     gulp.watch('client/view/**/*.*', ['view']);
-    gulp.watch('client/assets/**/*.*', ['assets']);
+    gulp.watch('client/assets/**/*', ['assets']);
 });

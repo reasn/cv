@@ -20,9 +20,9 @@ module ACV.Core {
          * @since 2014-02-28
          * @author Alexander Thiel
          */
-        load(qFx: ()=>void) {
+        load( qFx: ()=>void ) {
 
-            $.getJSON(this.createUrl('game.json'), (gameData: ACV.Data.IAppData) => {
+            $.getJSON(this.createUrl('game.json'), ( gameData: ACV.Data.IAppData ) => {
                 this.gameData = gameData;
 
                 this.loadLevels(gameData.scene.levels, () => {
@@ -42,7 +42,7 @@ module ACV.Core {
          * @since 2014-02-28
          * @author Alexander Thiel
          */
-        private createUrl(url: string) {
+        private createUrl( url: string ) {
             url = 'assets/' + url;
             if (PrefLoader.FORCE_UNCACHED_DATA)
                 url += '?timestamp=' + (new Date()).getTime();
@@ -60,7 +60,7 @@ module ACV.Core {
          * @since 2014-02-28
          * @author Alexander Thiel
          */
-        private loadLevels(levels: ACV.Data.ILevelData[], qFx: ()=>void) {
+        private loadLevels( levels: ACV.Data.ILevelData[], qFx: ()=>void ) {
             var loadNextLevel: ()=>void,
                 levelIndex = 0;
 
@@ -68,7 +68,7 @@ module ACV.Core {
 
             loadNextLevel = () => {
 
-                this.loadLevel(levels[levelIndex], () => {
+                this.loadLevel(levels[levelIndex], levelIndex, () => {
 
                     if (++levelIndex < levels.length) {
                         loadNextLevel();
@@ -83,24 +83,21 @@ module ACV.Core {
         /**
          * Loads dependent resources for a given level
          *
-         * @param {object} level
-         * @param {function(this:ACV.Core.PrefLoader)} qFx
-         * @returns void
-         * @private
          * @version 2014-02-28
          * @since 2014-02-28
          * @author Alexander Thiel
          */
-        private loadLevel(level: ACV.Data.ILevelData, qFx: ()=>void) {
-            var filesToLoad = 4;
+        private loadLevel( levelData: ACV.Data.ILevelData, levelIndex: number, qFx: ()=>void ) {
+            var filesToLoad = 4,
+                path = 'map/' + ('00' + levelIndex).substr(-2, 2) + '-' + levelData.handle;
 
-            if (!level.enabled) {
-                this.info('Loading level ' + level.handle + ' because it is disabled.', 'i');
+            if (!levelData.enabled) {
+                this.info('Loading level ' + levelData.handle + ' because it is disabled.', 'i');
                 qFx.apply(this);
                 return;
             }
 
-            this.info('Loading level ' + level.handle, 'i');
+            this.info('Loading level %s (from "%s")', levelData.handle, path);
 
             var wrappedQfx = ()=> {
                 if (--filesToLoad === 0) {
@@ -108,19 +105,19 @@ module ACV.Core {
                 }
             };
 
-            $.getJSON(this.createUrl('map/' + level.handle + '/layers.json'), (layers) => {
-                level.layers = layers;
+            $.getJSON(this.createUrl(path + '/layers.json'), ( layers ) => {
+                levelData.layers = layers;
                 wrappedQfx.apply(this);
             });
 
-            $.getJSON(this.createUrl('map/' + level.handle + '/triggers.json'), (triggers) => {
-                this.loadTriggers(level.prefs.offset, triggers, wrappedQfx);
+            $.getJSON(this.createUrl(path + '/triggers.json'), ( triggers ) => {
+                this.loadTriggers(levelData.prefs.offset, triggers, wrappedQfx);
             });
-            $.getJSON(this.createUrl('map/' + level.handle + '/powerUps.json'), (powerUps) => {
-                this.loadPowerUps(level.prefs.offset, powerUps, wrappedQfx);
+            $.getJSON(this.createUrl(path + '/powerUps.json'), ( powerUps ) => {
+                this.loadPowerUps(levelData.prefs.offset, powerUps, wrappedQfx);
             });
-            $.get(this.createUrl('map/' + level.handle + '/animations.js'), (animationSource) => {
-                this.loadAnimations(level, animationSource, wrappedQfx);
+            $.get(this.createUrl(path + '/animations.js'), ( animationSource ) => {
+                this.loadAnimations(levelData, animationSource, wrappedQfx);
             });
         }
 
@@ -133,7 +130,7 @@ module ACV.Core {
          * @since 2014-02-28
          * @author Alexander Thiel
          */
-        private loadTriggers(levelOffset: number, triggers: ACV.Data.ITriggerData[], qFx: ()=>void) {
+        private loadTriggers( levelOffset: number, triggers: ACV.Data.ITriggerData[], qFx: ()=>void ) {
             var triggerIndex: any;
             for (triggerIndex in triggers) {
                 this.gameData.scene.triggers.push(triggers[triggerIndex]);
@@ -148,7 +145,7 @@ module ACV.Core {
          * @since 2014-02-28
          * @author Alexander Thiel
          */
-        private loadPowerUps(levelOffset: number, powerUps: ACV.Data.IPowerUpData[], qFx: ()=>void) {
+        private loadPowerUps( levelOffset: number, powerUps: ACV.Data.IPowerUpData[], qFx: ()=>void ) {
             var powerUpIndex: any;
             for (powerUpIndex in powerUps) {
                 this.gameData.scene.playerLayer.powerUps.push(powerUps[powerUpIndex]);
@@ -166,7 +163,7 @@ module ACV.Core {
          * @since 2014-03-05
          * @author Alexander Thiel
          */
-        private loadAnimations(level: ACV.Data.ILevelData, animationSource: string, qFx: ()=>void) {
+        private loadAnimations( level: ACV.Data.ILevelData, animationSource: string, qFx: ()=>void ) {
             var customScope: Function,
                 animations: ACV.Game.Animation[];
 
