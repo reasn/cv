@@ -16,6 +16,6 @@ exports.register = function () {
 };
 exports.tasksForDefault = [name];
 exports.watchers = {
-    files: ['.bowerrec', 'bower.json'],
+    files: ['./.bowerrec', './bower.json'],
     tasks: [name]
 };

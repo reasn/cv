@@ -39,7 +39,7 @@ gulp.task('clean', function (cb) {
 
 gulp.task('watch', ['default'], function () {
 
-    gulp.watch(['./gulpfile.js', './build/**/*.js'], ['watch']);
+    //gulp.watch(['./gulpfile.js', './build/**/*.js'], ['watch']);
 
     watchers.forEach(function (watcher) {
         gulp.watch(watcher.files, watcher.tasks);

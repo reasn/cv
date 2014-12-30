@@ -119,7 +119,7 @@
   },
   "hud":   {
     "prefs":         {
-      "height": 200
+      "height": 160
     },
     "skillBasket":   {
       "skills": [
