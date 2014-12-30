@@ -8,3 +8,6 @@ typings
 
 /client/style/generated/*
 !/client/style/generated/.gitkeep
+
+
+Thumbs.db

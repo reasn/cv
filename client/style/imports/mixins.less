@@ -1,4 +1,5 @@
 @import "../generated/colors";
+@import "../imports/values";
 
 .powerUp() {
     position:            absolute;
@@ -10,5 +11,7 @@
     //    background-color:    @cYellow;
     background-position: center;
     background-size:     contain;
+    filter:              drop-shadow(@sSpriteShadow);
+
     //    border:              10px solid @cYellow;
 }
