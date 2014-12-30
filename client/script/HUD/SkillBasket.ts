@@ -13,23 +13,26 @@ module ACV.HUD {
         hud: ACV.HUD.HeadsUpDisplay = null;
         element: JQuery = null;
         skills: Skill[];
+        private appContext: ACV.AppContext;
+        private anySkillsImproved = false;
 
-        constructor(skills: Skill[]) {
+        constructor( skills: Skill[], appContext: ACV.AppContext ) {
             super('ACV.HUD.SkillBasket');
             this.skills = skills;
+            this.appContext = appContext;
         }
 
-        static createFromData(data: ACV.Data.ISkillBasketData, performanceSettings: ACV.Data.IPerformanceSettings) {
+        static createFromData( data: ACV.Data.ISkillBasketData, appContext: ACV.AppContext ) {
 
             var skills: Skill[] = [];
-            for (var i in data.skills) {
-                skills.push(new Skill(data.skills[i]));
+            for (var type in data.skills) {
+                skills.push(new Skill(appContext, data.skills[type]));
             }
-            return new SkillBasket(skills);
+            return new SkillBasket(skills, appContext);
         }
 
 
-        init(hudElement: JQuery) {
+        init( hudElement: JQuery ) {
             this.element = $('<ul class="skill-basket" />');
 
             for (var i in this.skills) {
@@ -41,7 +44,7 @@ module ACV.HUD {
         }
 
 
-        collectPowerUp(powerUp: ACV.Game.PowerUp, sceneX: number, viewportDimensions: ACV.View.IViewportDimensions) {
+        collectPowerUp( powerUp: ACV.Game.PowerUp, sceneX: number, viewportDimensions: ACV.View.IViewportDimensions ) {
 
             //   var position = powerUp.element.position();
 
@@ -75,13 +78,18 @@ module ACV.HUD {
             });
         }
 
-        private improve(skillType: string) {
+        private improve( skillType: string ) {
             for (var i in this.skills) {
                 if (this.skills[i].type === skillType) {
                     this.skills[i].improve();
+                    if (!this.anySkillsImproved) {
+                        this.appContext.playerSpeechBubble.show('firstSkill');
+                        this.anySkillsImproved = true;
+                    }
                     return;
                 }
             }
+            this.warn('Tried to improve unregistered skill "%s".', skillType);
         }
 
         getPowerUpAnimationTarget(): {left: number; bottom: number} {

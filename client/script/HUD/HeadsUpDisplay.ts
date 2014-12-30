@@ -46,7 +46,8 @@ module ACV.HUD {
                 sceneDebugger: SceneDebugger,
                 timeline: Timeline;
 
-            skillBasket = ACV.HUD.SkillBasket.createFromData(data.skillBasket, appContext.performanceSettings);
+            skillBasket = ACV.HUD.SkillBasket.createFromData(data.skillBasket, appContext);
+
             if (appContext.performanceSettings.yearDisplay) {
                 yearDisplay = YearDisplay.createFromData(data.yearDisplay);
             }

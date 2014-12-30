@@ -33,14 +33,18 @@
                     height:   100%;
 
                     .sprite {
-                        position: absolute;
+                        position:  absolute;
+                        font-size: 1px;
+                        padding:   0;
+                        margin:    0;
                         //outline:  5px dashed rgba(0, 0, 255, .5);
                         &.selected { outline: 5px dashed rgba(0, 0, 255, .9) }
 
                         &.image-background {
                             background-size: contain
                         }
-                        &.font-symbol {
+                        &.font-symbol,
+                        &.font-symbol span {
                             &:before, &:after {
                                 font-family: Flaticon;
                                 font-size:   inherit;
@@ -48,9 +52,15 @@
                             }
                             background:  none;
                             text-shadow: @sSpriteShadow;
+                            //                            &.no-shadow {
+                            //                                text-shadow: none
+                            //                            }
+                        }
+                        &.font-symbol span {
+                            text-shadow: inherit;
                         }
                         &.blurred {
-                            color:            transparent;
+                            color: transparent;
                             //background-color: transparent;
                         }
                     }
@@ -92,5 +102,51 @@
 
         }
         .power-up { .powerUp() }
+
+        .speech-bubble {
+            position:            absolute;
+            left:                50px;
+            bottom:              250px;
+            width:               100px;
+            height:              100px;
+            opacity:             0;
+            &.visible {
+                opacity: 1
+            }
+            transition:          1500ms @fxEaseOutCirc;
+            transition-property: transform, opacity;
+            .message,
+            .background {
+                position:   absolute;
+                left:       50px;
+                top:        -50px;
+                width:      350px;
+                height:     350px;
+                box-sizing: border-box;
+            }
+            .background {
+                font-family: Flaticon;
+                font-size:   350px;
+                color:       @cWhite;
+                text-shadow: 0 0 10px @sSpriteShadow;
+            }
+            .message {
+                padding: 100px 50px 50px 70px;
+                color:   @cBlack;
+                h3, p {
+                    font-family: Gloria-Hallelujah;
+                    text-align:  center;
+                    font-size:   20px;
+                }
+                h3 {
+                    margin:    0 0 10px 0;
+                    font-size: 25px;
+                }
+                p {
+                    margin:      0;
+                    line-height: 25px;
+                }
+            }
+        }
     }
 }

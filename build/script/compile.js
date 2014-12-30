@@ -42,7 +42,7 @@ exports.register = function () {
 };
 exports.tasksForDefault = [name];
 exports.watchers = {
-    files: ['./client/script/**/*.ts'],
+    files: ['client/script/**/*.ts'],
     tasks: [name]
 };
 

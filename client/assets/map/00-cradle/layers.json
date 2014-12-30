@@ -9,7 +9,7 @@
       },
       "sprites": [
         {
-          "handle":     "mountain-pointed",
+          "handle":     "pointedMountain",
           "x":          360,
           "y":          ".5 * (viewportHeight - 535) + 80",
           "topAligned": true,
@@ -22,7 +22,7 @@
           "color":      "gray"
         },
         {
-          "handle":     "mountain-round",
+          "handle":     "roundMountain",
           "x":          250,
           "y":          ".5 * (viewportHeight - 535) + 160",
           "topAligned": true,
@@ -35,7 +35,7 @@
           "color":      "gray"
         },
         {
-          "handle":     "cloud-00",
+          "handle":     "cloud00",
           "x":          220,
           "y":          ".5 * (viewportHeight - 535) + 130",
           "topAligned": true,
@@ -48,7 +48,7 @@
           "color":      "blue-gray-50"
         },
         {
-          "handle":     "cloud-01",
+          "handle":     "cloud01",
           "x":          320,
           "y":          ".5 * (viewportHeight - 535) + 70",
           "topAligned": true,
@@ -61,7 +61,7 @@
           "color":      "blue-gray-50"
         },
         {
-          "handle":     "cloud-02",
+          "handle":     "cloud02",
           "x":          420,
           "y":          ".5 * (viewportHeight - 535) + 150",
           "topAligned": true,
@@ -135,7 +135,7 @@
           "x":          1430,
           "y":          "-maxLookAroundDistortion",
           "topAligned": true,
-          "width":      300,
+          "width":      1000,
           "height":     "viewportHeight + 2 * maxLookAroundDistortion",
           "color":      "orange"
         },
@@ -158,7 +158,7 @@
           "color":      "orange"
         },
         {
-          "handle":     "world-map",
+          "handle":     "worldMap",
           "x":          750,
           "y":          "",
           "y":          ".5 * (viewportHeight - 635) +50",
@@ -176,7 +176,7 @@
           "x":          -50,
           "y":          "-maxLookAroundDistortion",
           "topAligned": false,
-          "width":      1800,
+          "width":      2500,
           "height":     "250px",
           "color":      "blue"
         }
@@ -216,7 +216,7 @@
           "color":      "yellow"
         },
         {
-          "handle":     "toy-box",
+          "handle":     "toyBox",
           "x":          1700,
           "y":          "380px",
           "topAligned": false,
@@ -227,7 +227,7 @@
             "size": 300
           },
           "color":      "purple",
-          "blur": 2
+          "blur":       2
         }
       ]
     },
@@ -248,7 +248,7 @@
           "color":      "green"
         },
         {
-          "handle":     "cradle-bars",
+          "handle":     "cradleBars",
           "x":          500,
           "y":          "420px",
           "topAligned": false,
@@ -261,29 +261,11 @@
           "color":      "yellow"
         }
       ]
-    },
-    {
-      "handle":  "foregroundWall",
-      "prefs":   {
-        "offset": 0,
-        "speed":  1
-      },
-      "sprites": [
-        {
-          "handle":     "rightWall",
-          "x":          3250,
-          "y":          "-80 - maxLookAroundDistortion",
-          "topAligned": true,
-          "width":      100,
-          "height":     "viewportHeight - this.y",
-          "color":      "pink"
-        }
-      ]
     }
   ],
   "foreground": [
     {
-      "handle":  "cradle-and-toys",
+      "handle":  "cradleAndToys",
       "prefs":   {
         "offset": 2000,
         "speed":  1.1
@@ -314,19 +296,19 @@
             "size": 100
           },
           "color":      "orange",
-          "blur": 2
+          "blur":       2
         }
       ]
     },
     {
-      "handle":  "foreground-items",
+      "handle":  "foregroundItems",
       "prefs":   {
         "offset": 0,
         "speed":  1.3
       },
       "sprites": [
         {
-          "handle":     "ginger-man",
+          "handle":     "gingerMan",
           "x":          150,
           "y":          "50px",
           "topAligned": false,
@@ -337,10 +319,10 @@
             "size": 160
           },
           "color":      "green",
-          "blur": 2
+          "blur":       2
         },
         {
-          "handle":     "number-blocks",
+          "handle":     "numberBlocks",
           "x":          400,
           "y":          "80px",
           "topAligned": false,
@@ -351,10 +333,10 @@
             "size": 250
           },
           "color":      "orange",
-          "blur": 2
+          "blur":       2
         },
         {
-          "handle":     "baby-bike",
+          "handle":     "babyBike",
           "x":          1000,
           "y":          "130px",
           "topAligned": false,
@@ -365,7 +347,7 @@
             "size": 200
           },
           "color":      "purple",
-          "blur": 2
+          "blur":       2
         }
       ]
     },
@@ -388,12 +370,12 @@
             "size": 420
           },
           "color":      "purple",
-          "blur": 10
+          "blur":       10
         }
       ]
     },
     {
-      "handle":  "blurred-stuff",
+      "handle":  "blurredStuff",
       "prefs":   {
         "offset": 1400,
         "speed":  1.5
@@ -407,7 +389,7 @@
           "width":      600,
           "height":     "120px",
           "color":      "orange",
-          "blur": 10
+          "blur":       10
         },
         {
           "handle":     "bottle",
@@ -421,10 +403,10 @@
             "size": 200
           },
           "color":      "purple",
-          "blur": 10
+          "blur":       10
         },
         {
-          "handle":     "desk-lamp",
+          "handle":     "deskLamp",
           "x":          500,
           "y":          "-20px",
           "topAligned": false,
@@ -435,7 +417,25 @@
             "size": 200
           },
           "color":      "yellow",
-          "blur": 10
+          "blur":       10
+        }
+      ]
+    },
+    {
+      "handle":  "rightSceneWall",
+      "prefs":   {
+        "offset": 2420,
+        "speed":  1
+      },
+      "sprites": [
+        {
+          "handle":     "rightWall",
+          "x":          0,
+          "y":          "-80 - maxLookAroundDistortion",
+          "topAligned": true,
+          "width":      200,
+          "height":     "viewportHeight - this.y + maxLookAroundDistortion",
+          "color":      "purple"
         }
       ]
     }

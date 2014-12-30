@@ -11,16 +11,35 @@ module ACV.HUD {
         type: string;
         private level = 'unknown';
         private element: JQuery;
+        private appContext: ACV.AppContext;
+        private isSoftSkill: boolean;
 
-        constructor( type: string ) {
+        constructor( appContext: ACV.AppContext, type: string ) {
             super('ACV.HUD.Skill');
+            this.appContext = appContext;
+            if (type.substr(0, 1) === '§') {
+                this.isSoftSkill = true;
+                type = type.substr(1);
+            }
             this.type = type;
         }
 
         init( basketElement: JQuery ) {
-            var className = Skill.mapType(this.type);
+            var mappedType = Skill.mapType(this.type),
+                className = this.isSoftSkill ? 'soft' : mappedType;
             this.element = $('<li class="skill-' + className + ' ' + this.level + '">&nbsp;</li>');
             basketElement.append(this.element);
+
+            this.element.on('click', ()=> {
+                if (this.element.hasClass('selected')) {
+                    this.element.removeClass('selected');
+                    this.appContext.playerSpeechBubble.hide();
+                } else {
+                    this.element.parent().children('.selected').removeClass('selected');
+                    this.element.addClass('selected');
+                    this.appContext.playerSpeechBubble.show('skill.' + mappedType);
+                }
+            });
 
             this.debug('Skill initialized');
         }

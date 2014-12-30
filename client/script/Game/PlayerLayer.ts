@@ -9,6 +9,7 @@ module ACV.Game {
         skillBasket: ACV.HUD.SkillBasket;
         player: Player;
         powerUps: PowerUp[];
+        speechBubble: SpeechBubble;
 
         private appContext: ACV.AppContext = null;
         private prefs: ACV.Data.IPlayerLayerPrefs;
@@ -20,28 +21,33 @@ module ACV.Game {
         private x = 0;
 
 
-        constructor( appContext: ACV.AppContext, prefs: ACV.Data.IPlayerLayerPrefs, player: Player, powerUps: PowerUp[] ) {
+        constructor( appContext: ACV.AppContext, prefs: ACV.Data.IPlayerLayerPrefs, player: Player, speechBubble: SpeechBubble, powerUps: PowerUp[] ) {
 
             super('ACV.Game.PlayerLayer');
 
             appContext.player = player;
+            appContext.playerSpeechBubble = speechBubble;
 
             this.appContext = appContext;
             this.prefs = prefs;
             this.player = player;
+            this.speechBubble = speechBubble;
             this.powerUps = powerUps;
         }
 
         static createFromData( appContext: ACV.AppContext, data: ACV.Data.IPlayerLayerData ) {
             var player: Player,
                 powerUpIndex: any,
+                speechBubble: SpeechBubble,
                 powerUps: PowerUp[] = [];
 
             player = new ACV.Game.Player(data.player);
+            speechBubble = new ACV.Game.SpeechBubble(data.speechBubble.prefs, data.speechBubble.messages);
+
             for (powerUpIndex in data.powerUps) {
                 powerUps.push(new PowerUp(data.powerUps[powerUpIndex].x, data.powerUps[powerUpIndex].y, data.powerUps[powerUpIndex].type));
             }
-            return new ACV.Game.PlayerLayer(appContext, data.prefs, player, powerUps);
+            return new ACV.Game.PlayerLayer(appContext, data.prefs, player, speechBubble, powerUps);
         }
 
         init( wrapperElement: JQuery, width: number, minHeight: number, lookAroundDistortion: ILookAroundDistortion ) {
@@ -67,10 +73,16 @@ module ACV.Game {
             this.player.addMovementListener(( playerX: number,
                                               playerXBefore: number,
                                               targetPlayerX: number,
+                                              playerY: number,
                                               sceneX: number,
                                               viewportDimensions: ACV.View.IViewportDimensions ) => {
                 this.detectCollisions(playerX, playerXBefore, sceneX, viewportDimensions);
+                //if (this.speechBubble.visible) {
+                this.speechBubble.updatePosition(playerX, playerY);
+                //}
             });
+
+            this.speechBubble.init(this.element);
 
             //Add to DOM at last to reduce draw calls
             wrapperElement.append(this.element);

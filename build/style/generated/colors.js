@@ -1,6 +1,6 @@
-var gulp = require('gulp'),
-    fs   = require('fs'),
-    name = 'style.generated.colors';
+var gulp            = require('gulp'),
+    fs              = require('fs'),
+    name            = 'style.generated.colors';
 
 exports.register = function () {
 
@@ -28,6 +28,6 @@ exports.register = function () {
 
 };
 exports.watchers = {
-    files: ['./client/assets/games.json'],
+    files: ['./client/assets/game.json'],
     tasks: [name]
 };

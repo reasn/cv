@@ -105,7 +105,7 @@ module ACV.Game {
             this.element.append(this.backgroundElement);
             this.playerLayer.init(this.element, this.width, this.prefs.dynamicViewport.minHeight, this.lookAroundDistortion);
 
-            this.appContext.player.addMovementListener(( playerX, playerXBefore, targetPlayerX, sceneX )=> {
+            this.appContext.player.addMovementListener(( playerX, playerXBefore, targetPlayerX, playerY, sceneX )=> {
                 $('#playerX').text(Math.round(playerX));
                 this.handleTriggers(playerX, playerXBefore, targetPlayerX, sceneX);
             });
@@ -117,7 +117,9 @@ module ACV.Game {
             }
 
             this.appContext.viewportManager.listenToMouseClick(( clientX, clientY, viewportDimensions )=> {
-                this.handleMouseClick(clientX, clientY, viewportDimensions);
+                if (clientY <= this.sceneViewportDimensions.height) {
+                    this.handleMouseClick(clientX, clientY, viewportDimensions);
+                }
             });
 
             //Sink events
@@ -175,10 +177,10 @@ module ACV.Game {
 
         handleMouseClick( clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions ) {
             var targetX = this.x + clientX;
-
             this.info('User clicked, player will walk to %s', targetX);
             this.playerLayer.player.moveTo(targetX, this.x, 0.5, this.sceneViewportDimensions);
             //this.selectSprites(clientX, clientY, viewportDimensions);
+
         }
 
         /**

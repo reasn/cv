@@ -1,1 +1,7 @@
-[]
+[
+  {
+    "playerX": 0,
+    "before":  "player.jumpAndStay(110)",
+    "after":   "player.jumpAndStay(150)"
+  }
+]

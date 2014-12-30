@@ -37,7 +37,7 @@ module ACV.View {
 
         private lastRatio: number;
 
-        constructor(staticContainer: JQuery, scrollableDistance: number, moveMethod: number) {
+        constructor( staticContainer: JQuery, scrollableDistance: number, moveMethod: number ) {
             super('ACV.ViewportManager');
             this.staticContainer = staticContainer;
             this.scrollableDistance = scrollableDistance;
@@ -70,14 +70,14 @@ module ACV.View {
                 this.fire();
             });
 
-            w.on('mousemove', (event: JQueryEventObject) => {
+            w.on('mousemove', ( event: JQueryEventObject ) => {
                 var listenerIndex: any;
                 for (listenerIndex in this.moveListeners) {
                     this.moveListeners[listenerIndex](event.clientX, event.clientY, this.dimensions);
                 }
             });
 
-            w.on('click', (event: JQueryEventObject)=> {
+            w.on('click', ( event: JQueryEventObject )=> {
                 var listenerIndex: any;
                 for (listenerIndex in this.clickListeners) {
                     this.clickListeners[listenerIndex](event.clientX, event.clientY, this.dimensions);
@@ -97,7 +97,7 @@ module ACV.View {
             this.fire();
         }
 
-        handleScroll(newOffset: number) {
+        handleScroll( newOffset: number ) {
             this.currentScrollOffset = Math.min(this.scrollableDistance, newOffset);
             this.dimensions.widthChanged = false;
             this.dimensions.heightChanged = false;
@@ -137,6 +137,8 @@ module ACV.View {
 
             this.lastViewportDimensions.width = this.dimensions.width;
             this.lastViewportDimensions.height = this.dimensions.height;
+
+            $('#viewportDimensions').text(this.lastViewportDimensions.width + ' x ' + this.lastViewportDimensions.height);
         }
 
         private fire() {
@@ -151,15 +153,15 @@ module ACV.View {
         }
 
 
-        listenToScroll(callback: IViewportScrollListener) {
+        listenToScroll( callback: IViewportScrollListener ) {
             this.scrollListeners.push(callback);
         }
 
-        listenToMouseClick(callback: IViewportMouseClickListener) {
+        listenToMouseClick( callback: IViewportMouseClickListener ) {
             this.clickListeners.push(callback);
         }
 
-        listenToMouseMove(callback: IViewportMouseMoveListener) {
+        listenToMouseMove( callback: IViewportMouseMoveListener ) {
             this.moveListeners.push(callback);
         }
 

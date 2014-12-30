@@ -1,6 +1,8 @@
 var gulp            = require('gulp'),
     del             = require('del'),
     fs              = require('fs'),
+    gulpLoadPlugins = require('gulp-load-plugins'),
+    plugins         = gulpLoadPlugins({lazy: false, pattern: '*'}),
     tasksForDefault = [],
     watchers        = [];
 

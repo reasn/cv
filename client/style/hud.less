@@ -25,7 +25,6 @@
 
     .skill-basket {
         @padding: 2px;
-        display:          block;
         position:         absolute;
         bottom:           0;
         background-color: #000000;
@@ -34,44 +33,57 @@
         width:            60%;
         margin:           0;
         padding:          @padding 0 0 @padding;
-        vertical-align:   top;
-
+        display:          flex;
+        flex-direction:   column;
+        flex-wrap:        wrap;
+        justify-content:  flex-start;
+        align-items:      flex-start;
+        align-content:    flex-start;
         li {
-            @tileSize: (@height - 3*@padding) / 2 / 2;
-            @borderSize: @tileSize / 4;
+            @tileSize: ((@height - 5*@padding) / 2 / 2);
+            @borderSize: (@tileSize / 5);
             margin:              0 @padding @padding 0;
-            display:             inline-block;
-            line-height:         @tileSize;
+            display:             block;
+            float:               left;
             text-align:          center;
             transition-duration: 500ms;
             transition-property: height, width, font-size;
             background-repeat:   no-repeat;
-            background-color:    @cYellow;
+            background-color:    @cBlue-gray-50;
             background-position: center;
             background-size:     contain;
-            border:              @borderSize solid @cYellow;
+            border:              (.5* @borderSize) solid @cBlue-gray-50;
             overflow:            hidden;
             font-size:           10px;
+            box-sizing:          border-box;
+            cursor:              pointer;
             &.unknown {
                 display: none;
                 width:   0;
                 height:  0;
             }
             &.beginner {
-                width:  @tileSize - @borderSize;
-                height: @tileSize - @borderSize;
-                color:  @cMainGreen;
+                width:  @tileSize;
+                height: @tileSize;
             }
             &.intermediate {
-                width:       @tileSize - @borderSize;
-                height:      @tileSize*2 - @borderSize;
-                line-height: @tileSize*2 - @borderSize;
+                width:            @tileSize;
+                height:           @tileSize * 2 + @padding;
+                background-color: @cYellow;
+                border-color:     @cYellow
             }
             &.expert {
-                font-size:   20px;
-                width:       @tileSize*2-@borderSize;
-                height:      @tileSize*2-@borderSize;
-                line-height: @tileSize*2-@borderSize;
+                background-color: @cPurple;
+                border-color:     @cPurple
+            }
+            &.expert, &.selected {
+                font-size: 20px;
+                width:     @tileSize * 2+@padding;
+                height:    @tileSize * 2+@padding;
+            }
+            &.selected {
+                background-color: @cGreen;
+                border-color:     @cGreen
             }
         }
     }

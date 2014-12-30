@@ -23,8 +23,9 @@ module ACV.Game {
         private id: string;
         private source: string;
         private color: string;
-        private patterned;
+        private patterned: boolean;
         private blur: number;
+        private shadow: boolean;
         private fontSymbol: ACV.Data.ISpriteFontSymbol;
 
 
@@ -40,7 +41,8 @@ module ACV.Game {
                      color: string,
                      fontSymbol: ACV.Data.ISpriteFontSymbol,
                      patterned: boolean,
-                     blur: number ) {
+                     blur: number,
+                     shadow: boolean ) {
 
             super('ACV.Game.Sprite');
 
@@ -61,6 +63,7 @@ module ACV.Game {
             this.fontSymbol = fontSymbol;
             this.patterned = patterned;
             this.blur = blur;
+            this.shadow = shadow;
         }
 
         static createFromPrefs( appContext: ACV.AppContext, data: ACV.Data.ISpriteData ) {
@@ -70,7 +73,7 @@ module ACV.Game {
             y = Sprite.unpackDynamicExpression(appContext, data.y, data.handle, 'y');
             height = Sprite.unpackDynamicExpression(appContext, data.height, data.handle, 'height');
 
-            return new Sprite(appContext, data.id, data.handle, data.x, y, data.width, height, data.topAligned, data.source, data.color, data.fontSymbol, data.patterned, data.blur);
+            return new Sprite(appContext, data.id, data.handle, data.x, y, data.width, height, data.topAligned, data.source, data.color, data.fontSymbol, data.patterned, data.blur, data.shadow);
         }
 
         /**
@@ -125,23 +128,32 @@ module ACV.Game {
                 cssProps.bottom = 0;
             }
 
+            this.element = $('<div id="' + id + '" />');
+
             //TODO implement combined asset files
             if (typeof (this.source) === 'string') {
                 cssProps.backgroundImage = 'url("' + this.appContext.prefs.assetPath + '/' + this.source + '")';
                 classes.push('image-background')
             } else if (this.fontSymbol) {
                 classes.push('font-symbol');
-                classes.push('flaticon-' + this.fontSymbol.name);
+                if (!this.fontSymbol.count || this.fontSymbol.count === 1) {
+                    classes.push('flaticon-' + this.fontSymbol.name);
+                } else {
+                    for (var i = this.fontSymbol.count; i > 0; i--) {
+                        this.element.append('<span class="flaticon-' + this.fontSymbol.name + '"/></span>');
+                    }
+                }
                 cssProps.fontSize = this.fontSymbol.size;
+                cssProps.letterSpacing = -.062 * this.fontSymbol.size;
+
                 if (this.blur) {
                     classes.push('blurred');
                     cssProps.textShadow = '0 0 ' + this.blur + 'px ' + this.appContext.prefs.colors[this.color];
                 }
             } else {
-                classes.push(this.color);
                 if (this.blur) {
                     classes.push('blurred');
-                    cssProps.boxShadow = '0 0 ' + this.blur + 'px ' + 2* this.blur + 'px ' + this.appContext.prefs.colors[this.color];
+                    cssProps.boxShadow = '0 0 ' + this.blur + 'px ' + 2 * this.blur + 'px ' + this.appContext.prefs.colors[this.color];
                     cssProps.outline = '2px solid ' + this.appContext.prefs.colors[this.color];
                     cssProps.border = '2px solid ' + this.appContext.prefs.colors[this.color];
                 } else if (this.patterned) {
@@ -151,8 +163,11 @@ module ACV.Game {
             if (this.color) {
                 classes.push(this.color);
             }
+            if (this.shadow === false) {
+                classes.push('no-shadow');
+            }
 
-            this.element = $('<div class="' + classes.join(' ') + '" id="' + id + '" />');
+            this.element.addClass(classes.join(' '));
 
             this.element.css(cssProps);
 

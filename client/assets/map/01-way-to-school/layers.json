@@ -1,354 +1,485 @@
 {
-    "background": [
+  "background": [
+    {
+      "handle":  "sky",
+      "prefs":   {
+        "offset": 0,
+        "speed":  0.6
+      },
+      "sprites": [
         {
-            "handle": "sky",
-            "prefs": {
-                "offset": 0,
-                "speed": 0.6
-            },
-            "sprites": [
-                {
-                    "id": "02-sky",
-                    "handle": "sky",
-                    "x": 0,
-                    "y": "-maxLookAroundDistortion",
-                    "topAligned": true,
-                    "width": 5000,
-                    "height": "viewportHeight + 2 * maxLookAroundDistortion",
-                    "color": "blue"
-                }
-            ]
-        },
-        {
-            "handle": "celestialBodies",
-            "prefs": {
-                "offset": 0,
-                "speed": 0.6
-            },
-            "sprites": [
-                {
-                    "handle": "moon",
-                    "x": 500,
-                    "y": ".2 * viewportHeight",
-                    "topAligned": true,
-                    "width": 91,
-                    "height": "180px",
-                    "source": "graphics/scene/world/02-way-to-school/moon.png"
-                },
-                {
-                    "handle": "star 01",
-                    "x": 700,
-                    "y": "sprites.celestialBodies.moon.y",
-                    "topAligned": true,
-                    "width": 34,
-                    "height": "30px",
-                    "source": "graphics/scene/world/02-way-to-school/star-01.png"
-                },
-                {
-                    "handle": "star 01",
-                    "x": 800,
-                    "y": "sprites.celestialBodies.moon.y + .1 * viewportHeight",
-                    "topAligned": true,
-                    "width": 34,
-                    "height": "30px",
-                    "source": "graphics/scene/world/02-way-to-school/star-01.png"
-                },
-                {
-                    "handle": "star 02",
-                    "x": 880,
-                    "y": "sprites.celestialBodies.moon.y + .15 * viewportHeight",
-                    "topAligned": true,
-                    "width": 22,
-                    "height": "20px",
-                    "source": "graphics/scene/world/02-way-to-school/star-02.png"
-                },
-                {
-                    "handle": "star 02",
-                    "x": 750,
-                    "y": "sprites.celestialBodies.moon.y + .25 * viewportHeight",
-                    "topAligned": true,
-                    "width": 22,
-                    "height": "20px",
-                    "source": "graphics/scene/world/02-way-to-school/star-02.png"
-                },
-                {
-                    "id": "02-sun",
-                    "handle": "sun",
-                    "x": 2400,
-                    "y": "70%",
-                    "topAligned": true,
-                    "width": 300,
-                    "height": "300px",
-                    "source": "graphics/scene/world/02-way-to-school/sun.png"
-                }
-            ]
-        },
-        {
-            "handle": "houses",
-            "prefs": {
-                "offset": 0,
-                "speed": 0.7
-            },
-            "sprites": [
-                {
-                    "handle": "house 1 A",
-                    "x": 300,
-                    "y": "400px",
-                    "topAligned": false,
-                    "width": 304,
-                    "height": "400px",
-                    "source": "graphics/scene/world/02-way-to-school/house-01.png"
-                },
-                {
-                    "handle": "house 1 B",
-                    "x": 1200,
-                    "y": "400px",
-                    "topAligned": false,
-                    "width": 304,
-                    "height": "400px",
-                    "source": "graphics/scene/world/02-way-to-school/house-01.png"
-                },
-                {
-                    "handle": "house 2",
-                    "x": 2100,
-                    "y": "360px",
-                    "topAligned": false,
-                    "width": 433,
-                    "height": "400px",
-                    "source": "graphics/scene/world/02-way-to-school/house-02.png"
-                }
-            ]
-        },
-        {
-            "handle": "sidewalk",
-            "prefs": {
-                "offset": 0,
-                "speed": 0.8
-            },
-            "sprites": [
-                {
-                    "handle": "street",
-                    "x": 0,
-                    "y": 250,
-                    "topAligned": false,
-                    "width": 8000,
-                    "height": "100px",
-                    "color": "yellow"
-                }
-            ]
-        },
-        {
-            "handle": "hedges, tree and lantern",
-            "prefs": {
-                "offset": -150,
-                "speed": 0.8
-            },
-            "sprites": [
-                {
-                    "handle": "hedge 1",
-                    "x": 0,
-                    "y": "340px",
-                    "topAligned": false,
-                    "width": 4000,
-                    "height": "100px",
-                    "source": "graphics/scene/world/common/hedge-03.png"
-                },
-                {
-                    "handle": "tree",
-                    "x": 1100,
-                    "y": "330px",
-                    "topAligned": false,
-                    "width": 290,
-                    "height": "501px",
-                    "source": "graphics/scene/world/common/tree-01.png"
-                },
-                {
-                    "handle": "lantern",
-                    "x": 3100,
-                    "y": 335,
-                    "topAligned": false,
-                    "width": 84,
-                    "height": "390px",
-                    "source": "graphics/scene/world/02-way-to-school/lantern.png"
-                }
-            ]
-        },
-        {
-            "handle": "hedges on sidewalk",
-            "prefs": {
-                "offset": -100,
-                "speed": 0.9
-            },
-            "sprites": [
-                {
-                    "handle": "hedge 3",
-                    "x": 0,
-                    "y": "330px",
-                    "topAligned": false,
-                    "width": 5000,
-                    "height": "80px",
-                    "source": "graphics/scene/world/common/hedge-01.png"
-                }
-            ]
-        },
-        {
-            "handle": "street",
-            "prefs": {
-                "offset": 0,
-                "speed": 1
-            },
-            "sprites": [
-                {
-                    "handle": "street",
-                    "x": 0,
-                    "y": "0px",
-                    "topAligned": false,
-                    "width": 8000,
-                    "height": "300px",
-                    "color": "yellow"
-                }
-            ]
-        },
-        {
-            "handle": "backgroundLeftWall",
-            "prefs": {
-                "offset": -150,
-                "speed": 1
-            },
-            "sprites": [
-                {
-                    "handle": "leftWallBackground",
-                    "x": 0,
-                    "y": "-maxLookAroundDistortion - 80",
-                    "topAligned": true,
-                    "width": 300,
-                    "height": "viewportHeight - this.y",
-                    "color": "pink",
-                    "blurred": true
-                }
-            ]
+          "id":         "02-sky",
+          "handle":     "sky",
+          "x":          0,
+          "y":          "-maxLookAroundDistortion",
+          "topAligned": true,
+          "width":      5000,
+          "height":     "viewportHeight + 2 * maxLookAroundDistortion",
+          "color":      "blue"
         }
-    ],
-    "foreground": [
+      ]
+    },
+    {
+      "handle":  "celestialBodies",
+      "prefs":   {
+        "offset": 0,
+        "speed":  0.6
+      },
+      "sprites": [
         {
-            "handle": "foreground - blurred - lanterns",
-            "prefs": {
-                "offset": 500,
-                "speed": 1.8
-            },
-            "sprites": [
-                {
-                    "handle": "lantern 1",
-                    "x": 0,
-                    "y": "-25%",
-                    "topAligned": false,
-                    "width": 222,
-                    "height": "1006px",
-                    "color": "pink",
-                    "source": "graphics/scene/world/02-way-to-school/lantern-blurred.png"
-                },
-                {
-                    "handle": "lantern 2",
-                    "x": 2500,
-                    "y": "-25%",
-                    "topAligned": false,
-                    "width": 222,
-                    "height": "1006px",
-                    "color": "pink",
-                    "source": "graphics/scene/world/02-way-to-school/lantern-blurred.png"
-                }
-            ]
+          "handle":     "moon",
+          "x":          500,
+          "y":          ".2 * viewportHeight",
+          "topAligned": true,
+          "width":      91,
+          "height":     "180px",
+          "source":     "graphics/scene/world/02-way-to-school/moon.png"
         },
         {
-            "handle": "foregroundHedgeBackground",
-            "prefs": {
-                "offset": 500,
-                "speed": 2
-            },
-            "sprites": [
-                {
-                    "handle": "lantern 1",
-                    "x": -3000,
-                    "y": -100,
-                    "topAligned": false,
-                    "width": 11000,
-                    "height": 200,
-                    "color": "green"
-                }
-            ]
+          "handle":     "star 01",
+          "x":          700,
+          "y":          "sprites.celestialBodies.moon.y",
+          "topAligned": true,
+          "width":      34,
+          "height":     "30px",
+          "source":     "graphics/scene/world/02-way-to-school/star-01.png"
         },
         {
-            "handle": "foreground - blurred hedges and tree",
-            "prefs": {
-                "offset": 0,
-                "speed": 2
-            },
-            "sprites": [
-                {
-                    "handle": "hedge 1",
-                    "x": -3000,
-                    "y": "-100px",
-                    "topAligned": false,
-                    "width": 11000,
-                    "height": "269px",
-                    "source": "graphics/scene/world/common/hedge-blurred-01.png"
-                },
-                {
-                    "handle": "hedge 2",
-                    "x": -2800,
-                    "y": "-100px",
-                    "topAligned": false,
-                    "width": 11000,
-                    "height": "274px",
-                    "source": "graphics/scene/world/common/hedge-blurred-01.png"
-                },
-                {
-                    "handle": "tree",
-                    "x": 2200,
-                    "y": "-100px",
-                    "topAligned": false,
-                    "width": 581,
-                    "height": "1001px",
-                    "source": "graphics/scene/world/common/tree-blurred-01.png"
-                }
-            ]
+          "handle":     "star 01",
+          "x":          800,
+          "y":          "sprites.celestialBodies.moon.y + .1 * viewportHeight",
+          "topAligned": true,
+          "width":      34,
+          "height":     "30px",
+          "source":     "graphics/scene/world/02-way-to-school/star-01.png"
         },
         {
-            "handle": "foreground - left wall",
-            "prefs": {
-                "offset": -150,
-                "speed": 1
-            },
-            "sprites": [
-                {
-                    "handle": "right wall of house from level 1",
-                    "x": 0,
-                    "y": "-80-maxLookAroundDistortion",
-                    "topAligned": false,
-                    "width": 300,
-                    "height": 220,
-                    "color": "pink",
-                    "blurred": true
-                },
-                {
-                    "handle": "hedge 1",
-                    "x": 180,
-                    "y": "-60px",
-                    "topAligned": false,
-                    "width": 550,
-                    "height": "269px",
-                    "source": "graphics/scene/world/common/hedge-blurred-01.png"
-                },
-                {
-                    "handle": "hedge 1",
-                    "x": 180,
-                    "y": "-150px",
-                    "topAligned": false,
-                    "width": 550,
-                    "height": "269px",
-                    "source": "graphics/scene/world/common/hedge-blurred-01.png"
-                }
-            ]
+          "handle":     "star 02",
+          "x":          880,
+          "y":          "sprites.celestialBodies.moon.y + .15 * viewportHeight",
+          "topAligned": true,
+          "width":      22,
+          "height":     "20px",
+          "source":     "graphics/scene/world/02-way-to-school/star-02.png"
+        },
+        {
+          "handle":     "star 02",
+          "x":          750,
+          "y":          "sprites.celestialBodies.moon.y + .25 * viewportHeight",
+          "topAligned": true,
+          "width":      22,
+          "height":     "20px",
+          "source":     "graphics/scene/world/02-way-to-school/star-02.png"
+        },
+        {
+          "id":         "02-sun",
+          "handle":     "sun",
+          "x":          2400,
+          "y":          "70%",
+          "topAligned": true,
+          "width":      300,
+          "height":     "300px",
+          "source":     "graphics/scene/world/02-way-to-school/sun.png"
         }
-    ]
+      ]
+    },
+    {
+      "handle":  "houses",
+      "prefs":   {
+        "offset": 0,
+        "speed":  0.7
+      },
+      "sprites": [
+        {
+          "handle":     "tree",
+          "x":          200,
+          "y":          "130px",
+          "topAligned": false,
+          "width":      290,
+          "height":     "501px",
+          "fontSymbol": {
+            "name": "small164",
+            "size": 400
+          },
+          "color":      "green"
+        },
+        {
+          "handle":     "business",
+          "x":          600,
+          "y":          "190px",
+          "topAligned": false,
+          "width":      304,
+          "height":     "400px",
+          "fontSymbol": {
+            "name":  "hotel68",
+            "size":  300,
+            "count": 2
+          },
+          "color":      "yellow"
+        },
+        {
+          "handle":     "university01",
+          "x":          1150,
+          "y":          "190px",
+          "topAligned": false,
+          "width":      433,
+          "height":     "400px",
+          "fontSymbol": {
+            "name": "school47",
+            "size": 300
+          },
+          "color":      "orange"
+        },
+        {
+          "handle":     "university02bg01",
+          "x":          1480,
+          "y":          "230px",
+          "topAligned": false,
+          "width":      110,
+          "height":     "300px",
+          "color":      "purple"
+        },
+        {
+          "handle":     "university02bg02",
+          "x":          1610,
+          "y":          "230px",
+          "topAligned": false,
+          "width":      120,
+          "height":     "180px",
+          "color":      "yellow"
+        },
+        {
+          "handle":     "university02",
+          "x":          1450,
+          "y":          "190px",
+          "topAligned": false,
+          "width":      433,
+          "height":     "400px",
+          "fontSymbol": {
+            "name": "buildings5",
+            "size": 300
+          },
+          "color":      "orange"
+        },
+        {
+          "handle":     "university03bg",
+          "x":          1760,
+          "y":          "230px",
+          "topAligned": false,
+          "width":      130,
+          "height":     "300px",
+          "color":      "purple"
+        },
+        {
+          "handle":     "university03",
+          "x":          1750,
+          "y":          "190px",
+          "topAligned": false,
+          "width":      433,
+          "height":     "400px",
+          "fontSymbol": {
+            "name": "office17",
+            "size": 300
+          },
+          "color":      "orange"
+        }
+      ]
+    },
+    {
+      "handle":  "street",
+      "prefs":   {
+        "offset": 0,
+        "speed":  0.8
+      },
+      "sprites": [
+        {
+          "handle":     "street",
+          "x":          0,
+          "y":          0,
+          "topAligned": false,
+          "width":      8000,
+          "height":     "240px",
+          "color":      "yellow"
+        },
+        {
+          "handle":     "hedge01",
+          "x":          -150,
+          "y":          "180px",
+          "topAligned": false,
+          "width":      4000,
+          "height":     "200px",
+          "fontSymbol": {
+            "name":  "grass",
+            "size":  150,
+            "count": 25
+          },
+          "color":      "green"
+        }
+      ]
+    },
+    {
+      "handle":  "sidewalk",
+      "prefs":   {
+        "offset": -100,
+        "speed":  0.9
+      },
+      "sprites": [
+        {
+          "handle":     "hedge02",
+          "x":          0,
+          "y":          "290px",
+          "topAligned": false,
+          "width":      5000,
+          "height":     "80px",
+          "fontSymbol": {
+            "name":  "grass",
+            "size":  150,
+            "count": 20
+          },
+          "color":      "green"
+        }
+      ]
+    },
+    {
+      "handle":  "bavarians",
+      "prefs":   {
+        "offset": 1900,
+        "speed":  0.9
+      },
+      "sprites": [
+        {
+          "handle":     "beer01",
+          "x":          0,
+          "y":          "190px",
+          "topAligned": false,
+          "width":      304,
+          "height":     "50px",
+          "fontSymbol": {
+            "name": "beer17",
+            "size": 50
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "table01",
+          "x":          100,
+          "y":          "150px",
+          "topAligned": false,
+          "width":      304,
+          "height":     "200px",
+          "fontSymbol": {
+            "name": "men16",
+            "size": 150
+          },
+          "color":      "light-blue"
+        },
+        {
+          "handle":     "barrel",
+          "x":          250,
+          "y":          "180px",
+          "topAligned": false,
+          "width":      304,
+          "height":     "80px",
+          "fontSymbol": {
+            "name": "wine30",
+            "size": 80
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "table02",
+          "x":          380,
+          "y":          "200px",
+          "topAligned": false,
+          "width":      304,
+          "height":     "130px",
+          "fontSymbol": {
+            "name": "men16",
+            "size": 130
+          },
+          "color":      "light-blue"
+        },{
+          "handle":     "beer02",
+          "x":          510,
+          "y":          "190px",
+          "topAligned": false,
+          "width":      304,
+          "height":     "50px",
+          "fontSymbol": {
+            "name": "drink24",
+            "size": 50
+          },
+          "color":      "white"
+        }
+      ]
+    }
+  ],
+  "foreground": [
+    {
+      "handle":  "home",
+      "prefs":   {
+        "offset": 0,
+        "speed":  1
+      },
+      "sprites": [
+        {
+          "handle":     "home",
+          "x":          -600,
+          "y":          "600px",
+          "topAligned": false,
+          "width":      304,
+          "height":     "400px",
+          "//y":        "-80 - maxLookAroundDistortion",
+          "//height":   "viewportHeight - this.y + maxLookAroundDistortion",
+          "fontSymbol": {
+            "name": "house58",
+            "size": 800
+          },
+          "color":      "purple"
+        }
+      ]
+    },
+    {
+      "handle":  "foreground - blurred - lanterns",
+      "prefs":   {
+        "offset": 0,
+        "speed":  1.5
+      },
+      "sprites": [
+        {
+          "handle":     "lanternShaft01",
+          "x":          660,
+          "y":          "-25%",
+          "topAligned": false,
+          "width":      0,
+          "height":     "680px",
+          "color":      "purple",
+          "blur":       4
+        },
+        {
+          "handle":     "lanternHead01",
+          "x":          500,
+          "y":          "-25%",
+          "topAligned": false,
+          "width":      222,
+          "height":     "900px",
+          "fontSymbol": {
+            "name": "street9",
+            "size": 250
+          },
+          "color":      "purple",
+          "blur":       10
+        },
+        {
+          "handle":     "lanternShaft02",
+          "x":          2160,
+          "y":          "-25%",
+          "topAligned": false,
+          "width":      0,
+          "height":     "680px",
+          "color":      "purple",
+          "blur":       4
+        },
+        {
+          "handle":     "lanternHead02",
+          "x":          2000,
+          "y":          "-25%",
+          "topAligned": false,
+          "width":      222,
+          "height":     "900px",
+          "fontSymbol": {
+            "name": "street9",
+            "size": 250
+          },
+          "color":      "purple",
+          "blur":       10
+        },
+        {
+          "handle":     "hedgeBackground",
+          "x":          -450,
+          "y":          "-80 - maxLookAroundDistortion",
+          "topAligned": false,
+          "width":      11000,
+          "height":     "50 + maxLookAroundDistortion",
+          "blur":       10,
+          "color":      "green"
+        },
+        {
+          "handle":     "hedge",
+          "x":          -650,
+          "y":          "30px",
+          "topAligned": false,
+          "width":      11000,
+          "height":     "369px",
+          "fontSymbol": {
+            "name":  "grass",
+            "size":  500,
+            "count": 10
+          },
+          "blur":       5,
+          "color":      "green"
+        }
+      ]
+    },
+    {
+      "handle":  "foregroundHedgeBackground",
+      "prefs":   {
+        "offset": 500,
+        "speed":  2
+      },
+      "sprites": [
+        {
+          "handle":     "lantern 1",
+          "x":          -3000,
+          "y":          -100,
+          "topAligned": false,
+          "width":      11000,
+          "height":     200,
+          "color":      "green"
+        }
+      ]
+    },
+    {
+      "handle":  "foreground - blurred hedges and tree",
+      "prefs":   {
+        "offset": 0,
+        "speed":  2
+      },
+      "sprites": [
+        {
+          "handle":     "hedge",
+          "x":          -400,
+          "y":          "30px",
+          "topAligned": false,
+          "width":      11000,
+          "height":     "369px",
+          "fontSymbol": {
+            "name":  "grass",
+            "size":  500,
+            "count": 10
+          },
+          "blur":       10,
+          "color":      "green"
+        }
+      ]
+    },
+    {
+      "handle":  "leftSceneWall",
+      "prefs":   {
+        "offset": 0,
+        "speed":  1
+      },
+      "sprites": [
+        {
+          "handle":     "wall",
+          "x":          -50,
+          "y":          "-80 - maxLookAroundDistortion",
+          "topAligned": true,
+          "width":      100,
+          "height":     "viewportHeight - this.y + maxLookAroundDistortion",
+          "color":      "purple"
+        }
+      ]
+    }
+  ]
 }

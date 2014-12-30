@@ -105,7 +105,7 @@ module ACV.Core {
                 }
             };
 
-            $.getJSON(this.createUrl(path + '/layers.json'), ( layers ) => {
+            $.getJSON(this.createUrl(path + '/layers.json'), ( layers: {background:ACV.Data.ILayerData[]; foreground: ACV.Data.ILayerData[]} ) => {
                 levelData.layers = layers;
                 wrappedQfx.apply(this);
             });

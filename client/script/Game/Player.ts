@@ -222,7 +222,7 @@ module ACV.Game {
                 this.lastCoarseX = coarseX;
                 //  this.debug('Triggering movement listeners at %s (before %s):', Math.round(this.x), Math.round(this.lastTriggeredX));
                 for (listenerIndex in this.movementListeners) {
-                    this.movementListeners[listenerIndex](this.x, this.lastTriggeredX, targetX, sceneX, viewportDimensions);
+                    this.movementListeners[listenerIndex](this.x, this.lastTriggeredX, targetX, this.y, sceneX, viewportDimensions);
                 }
                 this.lastTriggeredX = this.x;
             }

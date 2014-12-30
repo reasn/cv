@@ -30,10 +30,5 @@
     "before":      "player.jumpAndStay(270)",
     "after":       "player.jumpAndStay(150)",
     "fireOnEnter": true
-  },
-  {
-    "playerX": 3300,
-    "before":  "player.jumpAndStay(110)",
-    "after":   "player.jumpAndStay(130)"
   }
 ]

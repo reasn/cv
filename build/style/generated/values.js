@@ -21,6 +21,6 @@ exports.register = function () {
     });
 };
 exports.watchers = {
-    files: ['./client/assets/games.json'],
+    files: ['./client/assets/game.json'],
     tasks: [name]
 };
