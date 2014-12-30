@@ -223,13 +223,8 @@ module ACV.Game {
          */
         applyLookAroundDistortion( lookAroundDistortion: ILookAroundDistortion ) {
 
-            /*
-             * We use Math.floor() instead of Math.round() to obtain a
-             * continuous distribution of the results and therefore
-             * reduce (probably invisible) micro-flickering.
-             */
-            this.lookAroundDistortion.x = Math.floor(lookAroundDistortion.x * this.prefs.speed);
-            this.lookAroundDistortion.y = Math.floor(lookAroundDistortion.y * this.prefs.speed);
+            this.lookAroundDistortion.x = lookAroundDistortion.x * this.prefs.speed;
+            this.lookAroundDistortion.y = lookAroundDistortion.y * this.prefs.speed;
 
             this.element.css({
                 //   top:       this.lookAroundDistortion.y + 'px',

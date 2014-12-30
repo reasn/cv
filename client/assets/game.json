@@ -16,6 +16,7 @@
       "blue":         "#2196f3",
       "purple":       "#ab47bc",
       "blue-gray-50": "#eceff1",
+      "green":        "#4caf50",
       "green-800":    "#2e7d32",
       "gray":         "#9e9e9e"
     }
@@ -37,7 +38,7 @@
         },
         "fastWalkMultiplicator":      1.5,
         "movementTriggerGranularity": 40,
-        "initialAge":                 "baby",
+        "initialAge":                 "child",
         "ages":                       {
           "baby":  {
             "width":  1,

@@ -21,11 +21,13 @@ function registerDir(directory) {
                 tasksForDefault = tasksForDefault.concat(module.tasksForDefault);
             }
             if (module.watchers) {
+                module.watchers.files.push(fullPath);
                 watchers = watchers.concat(module.watchers);
             }
         }
     });
 }
+
 
 registerDir('./build');
 

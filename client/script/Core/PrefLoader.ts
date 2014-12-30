@@ -131,9 +131,23 @@ module ACV.Core {
          * @author Alexander Thiel
          */
         private loadTriggers( levelOffset: number, triggers: ACV.Data.ITriggerData[], qFx: ()=>void ) {
-            var triggerIndex: any;
+            var triggerIndex: any,
+                trigger: ACV.Data.ITriggerData,
+                i: any;
             for (triggerIndex in triggers) {
+                trigger = triggers[triggerIndex]
+                if (trigger.enabled === false) {
+                    continue;
+                }
+                if (typeof trigger.playerX === 'number') {
+                    trigger.playerX += levelOffset;
+                } else {
+                    for (i in trigger.playerX) {
+                        trigger.playerX[i] += levelOffset;
+                    }
+                }
                 this.gameData.scene.triggers.push(triggers[triggerIndex]);
+
             }
             qFx.apply(this);
         }

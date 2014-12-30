@@ -1,27 +1,39 @@
 [
-    {
-        "playerX": 100,
-        "after": "player.jumpAndStay(270)"
-    },
-    {
-        "playerX": 1156,
-        "before": "sprite.show(cradle-cradleBackground-sleepingBaby)",
-        "after": "sprite.hide(cradle-cradleBackground-sleepingBaby)"
-    },
-    {
-        "playerX": 1156,
-        "before": "player.setAge(baby)",
-        "after": "player.setAge(child)"
-    },
-    {
-        "playerX": [1400, 1480, 1600],
-        "before": "player.jumpAndStay(270)",
-        "after": "player.jumpAndStay(150)",
-        "fireOnEnter": true
-    },
-    {
-        "playerX": 3300,
-        "before": "player.jumpAndStay(150)",
-        "after": "player.jumpAndStay(250)"
-    }
+  {
+    "playerX": 100,
+    "after":   "player.jumpAndStay(90)"
+  },
+  {
+    "playerX": 1156,
+    "enabled": false,
+    "before":  "sprite.show(cradle-cradleBackground-sleepingBaby)",
+    "after":   "sprite.hide(cradle-cradleBackground-sleepingBaby)"
+  },
+  {
+    "playerX": 1156,
+    "enabled": false,
+    "before":  "player.setAge(baby)",
+    "after":   "player.setAge(child)"
+  },
+  {
+    "playerX": 1000,
+    "before":  "player.jumpAndStay(90)",
+    "after":   "player.jumpAndStay(110)"
+  },
+  {
+    "playerX":     [
+      1400,
+      1480,
+      1600
+    ],
+    "enabled":     false,
+    "before":      "player.jumpAndStay(270)",
+    "after":       "player.jumpAndStay(150)",
+    "fireOnEnter": true
+  },
+  {
+    "playerX": 3300,
+    "before":  "player.jumpAndStay(110)",
+    "after":   "player.jumpAndStay(130)"
+  }
 ]

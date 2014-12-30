@@ -14,16 +14,6 @@ module ACV.Game {
         static mockColors = ['#9932CC', '#8B0000', '#E9967A', '#8FBC8F', '#483D8B', '#2F4F4F', '#00CED1', '#9400D3', '#FF1493', '#00BFFF', '#696969', '#1E90FF', '#B22222', '#FFFAF0', '#228B22', '#FF00FF', '#DCDCDC', '#F8F8FF', '#FFD700', '#DAA520', '#808080', '#008000', '#ADFF2F', '#F0FFF0', '#FF69B4'];
         static mockColorIndex = 0;
 
-        static COLORS: {[name:string]:string} = {
-            'green-800':    '#2e7d32',
-            'blue-gray-50': '#eceff1',
-            'blue':         '#2196f3',
-            'gray':         '#9e9e9e',
-            'yellow':       '#ffeb3b',
-            'orange':       '#ff9800',
-            'purple':       '#ab47bc'
-        };
-
         y: any = 0;
         topAligned: boolean;
         handle: string;
@@ -36,7 +26,7 @@ module ACV.Game {
         width: number;
         private source: string;
         private color: string;
-        private blurred = false;
+        private patterned = false;
         private fontSymbol: ACV.Data.ISpriteFontSymbol;
 
 
@@ -51,7 +41,7 @@ module ACV.Game {
                      source: string,
                      color: string,
                      fontSymbol: ACV.Data.ISpriteFontSymbol,
-                     blurred: boolean ) {
+                     patterned: boolean ) {
 
             super('ACV.Game.Sprite');
 
@@ -70,7 +60,7 @@ module ACV.Game {
             this.source = source;
             this.color = color;
             this.fontSymbol = fontSymbol;
-            this.blurred = blurred;
+            this.patterned = patterned;
         }
 
         static createFromPrefs( appContext: ACV.AppContext, data: ACV.Data.ISpriteData ) {
@@ -80,7 +70,7 @@ module ACV.Game {
             y = Sprite.unpackDynamicExpression(appContext, data.y, data.handle, 'y');
             height = Sprite.unpackDynamicExpression(appContext, data.height, data.handle, 'height');
 
-            return new Sprite(appContext, data.id, data.handle, data.x, y, data.width, height, data.topAligned, data.source, data.color, data.fontSymbol, data.blurred);
+            return new Sprite(appContext, data.id, data.handle, data.x, y, data.width, height, data.topAligned, data.source, data.color, data.fontSymbol, data.patterned);
         }
 
         /**
@@ -141,23 +131,20 @@ module ACV.Game {
                 classes.push('image-background')
             } else if (this.fontSymbol) {
                 classes.push('font-symbol');
-                classes.push(this.color);
                 classes.push('flaticon-' + this.fontSymbol.name);
                 cssProps.fontSize = this.fontSymbol.size;
                 if (this.fontSymbol.blur) {
                     classes.push('blurred');
-                    cssProps.textShadow = '0 0 ' + this.fontSymbol.blur + 'px ' + Sprite.COLORS[this.color];
+                    cssProps.textShadow = '0 0 ' + this.fontSymbol.blur + 'px ' + this.appContext.prefs.colors[this.color];
                 }
             } else {
-                classes.push('colored');
                 classes.push(this.color);
+                if (this.patterned) {
+                    classes.push('patterned');
+                }
             }
             if (this.color) {
                 classes.push(this.color);
-            }
-
-            if (this.blurred) {
-                classes.push('blurred');
             }
 
             this.element = $('<div class="' + classes.join(' ') + '" id="' + id + '" />');

@@ -8,6 +8,7 @@
 	font-weight: normal;
 	font-style: normal;
 }
+
 .flaticon-baby91:before {
 	content: "\e000";
 }
@@ -221,6 +222,9 @@
 .flaticon-tree79:before {
 	content: "\e046";
 }
-.flaticon-work3:before {
+.flaticon-wall3:before {
 	content: "\e047";
+}
+.flaticon-work3:before {
+	content: "\e048";
 }
