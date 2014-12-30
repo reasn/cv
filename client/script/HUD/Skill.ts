@@ -9,10 +9,10 @@ module ACV.HUD {
         static levels: string[] = ['unknown', 'beginner', 'intermediate', 'expert'];
 
         type: string;
+        isSoftSkill: boolean;
         private level = 'unknown';
         private element: JQuery;
         private appContext: ACV.AppContext;
-        private isSoftSkill: boolean;
 
         constructor( appContext: ACV.AppContext, type: string ) {
             super('ACV.HUD.Skill');
@@ -26,8 +26,11 @@ module ACV.HUD {
 
         init( basketElement: JQuery ) {
             var mappedType = Skill.mapType(this.type),
-                className = this.isSoftSkill ? 'soft' : mappedType;
-            this.element = $('<li class="skill-' + className + ' ' + this.level + '">&nbsp;</li>');
+                classes = ['skill-' + mappedType, this.level];
+            if (this.isSoftSkill) {
+                classes.push('soft');
+            }
+            this.element = $('<li class="' + classes.join(' ') + '" title="' + this.type + '">&nbsp;</li>');
             basketElement.append(this.element);
 
             this.element.on('click', ()=> {

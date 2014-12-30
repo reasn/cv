@@ -55,11 +55,6 @@
     "type": "Eclipse"
   },
   {
-    "x":    800,
-    "y":    350,
-    "type": "§Filming"
-  },
-  {
     "x":    850,
     "y":    150,
     "type": "SVN"
@@ -134,5 +129,41 @@
     "x":    3000,
     "y":    160,
     "type": "HTML"
+  },
+  {
+    "//TODO": "remove all after including this",
+    "x":      800,
+    "y":      250,
+    "type":   "§Filming"
+  },
+  {
+    "x":    850,
+    "y":    250,
+    "type": "§English"
+  },
+  {
+    "x":    900,
+    "y":    250,
+    "type": "§Team Lead"
+  },
+  {
+    "x":    950,
+    "y":    250,
+    "type": "§Explain Tech"
+  },
+  {
+    "x":    1000,
+    "y":    250,
+    "type": "§Customer Relations"
+  },
+  {
+    "x":    1050,
+    "y":    250,
+    "type": "§Customer Relations"
+  },
+  {
+    "x":    1100,
+    "y":    250,
+    "type": "§Software Architecture"
   }
 ]

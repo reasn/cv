@@ -5,7 +5,7 @@ var gulp            = require('gulp'),
 
 exports.register = function () {
     var tsProject = plugins.typescript.createProject({
-        declarationFiles:  true,
+        //declarationFiles:  true,
         noExternalResolve: true,
         sortOutput:        true,
         noImplicitAny:     true,
@@ -29,7 +29,7 @@ exports.register = function () {
 
         return tsResult.js
             .pipe(plugins.concatSourcemap('cv.js')) // You can use other plugins that also support gulp-sourcemaps
-            .pipe(plugins.sourcemaps.write()) // Now the sourcemaps are added to the .js file
+            //.pipe(plugins.sourcemaps.write()) // Now the sourcemaps are added to the .js file
             .pipe(plugins.jshint.reporter('default'))
             .pipe(gulp.dest('./dist/js'))
             .pipe(plugins.rename({suffix: '.min'}))

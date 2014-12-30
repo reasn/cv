@@ -49,10 +49,10 @@
             transition-duration: 500ms;
             transition-property: height, width, font-size;
             background-repeat:   no-repeat;
-            background-color:    @cBlue-gray-50;
+            background-color:    @cLight-blue;
             background-position: center;
             background-size:     contain;
-            border:              (.5* @borderSize) solid @cBlue-gray-50;
+            border:              (.5* @borderSize) solid @cLight-blue;
             overflow:            hidden;
             font-size:           10px;
             box-sizing:          border-box;
@@ -69,8 +69,8 @@
             &.intermediate {
                 width:            @tileSize;
                 height:           @tileSize * 2 + @padding;
-                background-color: @cYellow;
-                border-color:     @cYellow
+                background-color: @cBlue;
+                border-color:     @cBlue
             }
             &.expert {
                 background-color: @cPurple;
@@ -84,6 +84,10 @@
             &.selected {
                 background-color: @cGreen;
                 border-color:     @cGreen
+            }
+            &.soft {
+                background-color: @cYellow;
+                border-color:     @cYellow
             }
         }
     }

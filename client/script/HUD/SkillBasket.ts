@@ -15,6 +15,7 @@ module ACV.HUD {
         skills: Skill[];
         private appContext: ACV.AppContext;
         private anySkillsImproved = false;
+        private anySoftSkillImproved = false;
 
         constructor( skills: Skill[], appContext: ACV.AppContext ) {
             super('ACV.HUD.SkillBasket');
@@ -43,7 +44,6 @@ module ACV.HUD {
             this.info('Skill basket initialized', 'd');
         }
 
-
         collectPowerUp( powerUp: ACV.Game.PowerUp, sceneX: number, viewportDimensions: ACV.View.IViewportDimensions ) {
 
             //   var position = powerUp.element.position();
@@ -70,7 +70,7 @@ module ACV.HUD {
                         {
                             duration: 800,
                             complete: ()=> {
-                                this.improve(powerUp.skillType);
+                                this.improve(powerUp.type);
                                 powerUp.element.remove();
                             }
                         });
@@ -82,7 +82,10 @@ module ACV.HUD {
             for (var i in this.skills) {
                 if (this.skills[i].type === skillType) {
                     this.skills[i].improve();
-                    if (!this.anySkillsImproved) {
+                    if (!this.anySoftSkillImproved && this.skills[i].isSoftSkill) {
+                        this.appContext.playerSpeechBubble.show('firstSoftSkill');
+                        this.anySoftSkillImproved = true;
+                    } else if (!this.anySkillsImproved) {
                         this.appContext.playerSpeechBubble.show('firstSkill');
                         this.anySkillsImproved = true;
                     }

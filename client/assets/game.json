@@ -70,15 +70,22 @@
           "defaultDuration": 10000
         },
         "messages": {
-          "firstSkill": {
+          "firstSkill":     {
             "html":     "<h3>&nbsp;</h3><p>You can click on all skills on the lower left of the screen to get a description!</p>",
             "duration": 5000
           },
-          "skill.html": {
+          "firstSoftSkill": {
+            "html":     "<h3>&nbsp;</h3><p>I've just gained my first soft skill. They appear as monochrome icons on the lower left!</p>",
+            "duration": 5000
+          },
+          "skill.html":     {
             "html": "<h3>HTML</h3><p>After 14 years of practice I know virtually everything about HTML :)</p>"
           },
-          "skill.css":  {
+          "skill.css":      {
             "html": "<h3>CSS</h3><p>Hopefully this page shows my CSS skills</p>"
+          },
+          "skill.explaintech":      {
+            "html": "<h3>Explain Tech</h3><p>For one years I taught students in a free webdesign class. I enjoy explaining technical issues to non-techies. </p>"
           }
         }
       }
@@ -169,7 +176,13 @@
         "UML",
         "OCaml",
         "Lego Mindstorms",
-        "Filming"
+        "§Filming",
+        "§English",
+        "§Customer Relations",
+        "§Team Lead",
+        "§Explain Tech",
+        "§Bachelor",
+        "§Software Architecture"
       ]
     },
     "yearDisplay":   {
