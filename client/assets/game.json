@@ -11,17 +11,18 @@
       "lookAroundDistortion": true
     },
     "colors":                  {
-      "yellow":       "#ffeb3b",
-      "orange":       "#ff9800",
-      "blue":         "#2196f3",
-      "light-blue":   "#03a9f4",
-      "purple":       "#ab47bc",
-      "blue-gray-50": "#eceff1",
-      "green":        "#4caf50",
-      "green-800":    "#2e7d32",
-      "gray":         "#9e9e9e",
-      "white":        "#ffffff",
-      "black":        "#000000"
+      "yellow":         "#ffeb3b",
+      "orange":         "#ff9800",
+      "blue":           "#2196f3",
+      "light-blue":     "#03a9f4",
+      "light-blue-300": "#4fc3f7",
+      "purple":         "#ab47bc",
+      "blue-gray-50":   "#eceff1",
+      "green":          "#4caf50",
+      "green-800":      "#2e7d32",
+      "gray":           "#9e9e9e",
+      "white":          "#ffffff",
+      "black":          "#000000"
     }
   },
   "scene": {
@@ -70,21 +71,21 @@
           "defaultDuration": 10000
         },
         "messages": {
-          "firstSkill":     {
+          "firstSkill":        {
             "html":     "<h3>&nbsp;</h3><p>You can click on all skills on the lower left of the screen to get a description!</p>",
             "duration": 5000
           },
-          "firstSoftSkill": {
+          "firstSoftSkill":    {
             "html":     "<h3>&nbsp;</h3><p>I've just gained my first soft skill. They appear as monochrome icons on the lower left!</p>",
             "duration": 5000
           },
-          "skill.html":     {
+          "skill.html":        {
             "html": "<h3>HTML</h3><p>After 14 years of practice I know virtually everything about HTML :)</p>"
           },
-          "skill.css":      {
+          "skill.css":         {
             "html": "<h3>CSS</h3><p>Hopefully this page shows my CSS skills</p>"
           },
-          "skill.explaintech":      {
+          "skill.explaintech": {
             "html": "<h3>Explain Tech</h3><p>For one years I taught students in a free webdesign class. I enjoy explaining technical issues to non-techies. </p>"
           }
         }
@@ -93,7 +94,7 @@
     "levels":      [
       {
         "handle":  "cradle",
-        "enabled": false,
+        "enabled": true,
         "prefs":   {
           "offset":     0,
           "clip":       {
@@ -110,8 +111,8 @@
         "handle":  "way-to-school",
         "enabled": true,
         "prefs":   {
-          "offset":     0,
-          "_offset":    2500,
+          "_offset":     0,
+          "offset":    2500,
           "clip":       {
             "x1": 0,
             "x2": 4000

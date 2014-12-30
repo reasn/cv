@@ -36,7 +36,12 @@ module ACV.Game {
 
         show( handle: string ) {
             var message = this.messages[handle],
-                duration: number = message.duration ? message.duration : this.prefs.defaultDuration;
+                duration: number;
+            if (!message) {
+                this.warn('No speech bubble message found with handle "%s"', handle);
+                return;
+            }
+            duration = message.duration ? message.duration : this.prefs.defaultDuration;
 
             this.debug('Showing speech bubble for %sms', duration);
             this.element.children('.message').html(message.html);

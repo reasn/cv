@@ -42,21 +42,22 @@
         li {
             @tileSize: ((@height - 5*@padding) / 2 / 2);
             @borderSize: (@tileSize / 5);
-            margin:              0 @padding @padding 0;
-            display:             block;
-            float:               left;
-            text-align:          center;
-            transition-duration: 500ms;
-            transition-property: height, width, font-size;
-            background-repeat:   no-repeat;
-            background-color:    @cLight-blue;
-            background-position: center;
-            background-size:     contain;
-            border:              (.5* @borderSize) solid @cLight-blue;
-            overflow:            hidden;
-            font-size:           10px;
-            box-sizing:          border-box;
-            cursor:              pointer;
+            margin:                     0 @padding @padding 0;
+            display:                    block;
+            float:                      left;
+            text-align:                 center;
+            transition-duration:        200ms;
+            transition-timing-function: @fxEaseOutCirc;
+            transition-property:        height, width, font-size;
+            background-repeat:          no-repeat;
+            background-color:           @cLight-blue-300;
+            background-position:        center;
+            background-size:            contain;
+            border:                     (.5* @borderSize) solid @cLight-blue-300;
+            overflow:                   hidden;
+            font-size:                  10px;
+            box-sizing:                 border-box;
+            cursor:                     pointer;
             &.unknown {
                 display: none;
                 width:   0;
@@ -77,17 +78,18 @@
                 border-color:     @cPurple
             }
             &.expert, &.selected {
-                font-size: 20px;
                 width:     @tileSize * 2+@padding;
                 height:    @tileSize * 2+@padding;
-            }
-            &.selected {
-                background-color: @cGreen;
-                border-color:     @cGreen
             }
             &.soft {
                 background-color: @cYellow;
                 border-color:     @cYellow
+            }
+            &.selected {
+//                width:     @tileSize * 4+2*@padding;
+//                height:    @tileSize * 4+2*@padding;
+                background-color: @cGreen;
+                border-color:     @cGreen
             }
         }
     }
