@@ -12,5 +12,6 @@ module ACV.Data {
         fontSymbol?: ISpriteFontSymbol;
         color: string;
         patterned: boolean;
+        blur: number;
     }
 }

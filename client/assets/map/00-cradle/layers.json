@@ -224,10 +224,10 @@
           "height":     "75px",
           "fontSymbol": {
             "name": "children1",
-            "size": 300,
-            "blur": 2
+            "size": 300
           },
-          "color":      "purple"
+          "color":      "purple",
+          "blur": 2
         }
       ]
     },
@@ -276,8 +276,7 @@
           "topAligned": true,
           "width":      100,
           "height":     "viewportHeight - this.y",
-          "color":      "pink",
-          "blurred":    true
+          "color":      "pink"
         }
       ]
     }
@@ -312,10 +311,10 @@
           "height":     "88px",
           "fontSymbol": {
             "name": "ball23",
-            "size": 100,
-            "blur": 2
+            "size": 100
           },
-          "color":      "orange"
+          "color":      "orange",
+          "blur": 2
         }
       ]
     },
@@ -335,10 +334,10 @@
           "height":     "100px",
           "fontSymbol": {
             "name": "gingerbread3",
-            "size": 160,
-            "blur": 2
+            "size": 160
           },
-          "color":      "green"
+          "color":      "green",
+          "blur": 2
         },
         {
           "handle":     "number-blocks",
@@ -349,10 +348,10 @@
           "height":     "118px",
           "fontSymbol": {
             "name": "number19",
-            "size": 250,
-            "blur": 2
+            "size": 250
           },
-          "color":      "orange"
+          "color":      "orange",
+          "blur": 2
         },
         {
           "handle":     "baby-bike",
@@ -363,17 +362,17 @@
           "height":     "125px",
           "fontSymbol": {
             "name": "baby91",
-            "size": 200,
-            "blur": 2
+            "size": 200
           },
-          "color":      "purple"
+          "color":      "purple",
+          "blur": 2
         }
       ]
     },
     {
       "handle":  "foregroundLamp",
       "prefs":   {
-        "offset": 2300,
+        "offset": 2000,
         "speed":  1.2
       },
       "sprites": [
@@ -386,10 +385,10 @@
           "height":     "363px",
           "fontSymbol": {
             "name": "livingroom12",
-            "size": 420,
-            "blur": 30
+            "size": 420
           },
-          "color":      "purple"
+          "color":      "purple",
+          "blur": 10
         }
       ]
     },
@@ -402,17 +401,13 @@
       "sprites": [
         {
           "handle":     "desk",
-          "x":          0,
-          "y":          "280px",
+          "x":          150,
+          "y":          "-60px",
           "topAligned": false,
-          "width":      1000,
-          "height":     "150px",
-          "fontSymbol": {
-            "name": "media26",
-            "size": 1000,
-            "blur": 10
-          },
-          "color":      "orange"
+          "width":      600,
+          "height":     "120px",
+          "color":      "orange",
+          "blur": 10
         },
         {
           "handle":     "bottle",
@@ -423,10 +418,10 @@
           "height":     "297px",
           "fontSymbol": {
             "name": "softdrinks1",
-            "size": 200,
-            "blur": 10
+            "size": 200
           },
-          "color":      "purple"
+          "color":      "purple",
+          "blur": 10
         },
         {
           "handle":     "desk-lamp",
@@ -437,10 +432,10 @@
           "height":     "297px",
           "fontSymbol": {
             "name": "table6",
-            "size": 200,
-            "blur": 10
+            "size": 200
           },
-          "color":      "yellow"
+          "color":      "yellow",
+          "blur": 10
         }
       ]
     }
