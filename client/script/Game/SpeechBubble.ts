@@ -11,6 +11,8 @@ module ACV.Game {
         private prefs: ACV.Data.ISpeechBubblePrefs;
         private messages: {[handle:string]:ACV.Data.ISpeechBubbleMessage};
 
+        private bubbleHeight: number;
+
         constructor( prefs: ACV.Data.ISpeechBubblePrefs, messages: {[handle:string]:ACV.Data.ISpeechBubbleMessage} ) {
             super('ACV.Game.SpeechBubble');
             this.prefs = prefs;
@@ -27,11 +29,16 @@ module ACV.Game {
 
             this.element = $('<div class="speech-bubble"><div class="background flaticon-speech141"></div><div class="message"></div></div>');
             playerLayerElement.append(this.element);
+            this.bubbleHeight = parseInt(this.element.css('bottom'));
             this.debug('Speech bubble initialized');
         }
 
-        updatePosition( playerX: number, playerY: number ) {
-            this.element.css('transform', 'translate(' + playerX + 'px, ' + -playerY + 'px)');
+        updatePosition( playerX: number, playerY: number, playerWidth: number, playerHeight: number ) {
+            this.element.css({
+                transform: 'translate(' + playerX + 'px, ' + -playerY + 'px)',
+                bottom:    this.bubbleHeight + playerHeight,
+                left:      playerWidth
+            });
         }
 
         show( handle: string ) {
@@ -47,8 +54,9 @@ module ACV.Game {
             this.element.children('.message').html(message.html);
 
             clearTimeout(this.hideTimeout);
-            this.element.addClass('visible');
             this.visible = true;
+            this.element.addClass('visible');
+
             if (duration !== -1) {
                 this.hideTimeout = setTimeout(()=> {
                     this.hide();

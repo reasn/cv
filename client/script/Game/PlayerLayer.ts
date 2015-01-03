@@ -76,9 +76,7 @@ module ACV.Game {
                                               sceneX: number,
                                               viewportDimensions: ACV.View.IViewportDimensions ) => {
                 this.detectCollisions(playerX, playerXBefore, sceneX, viewportDimensions);
-                if (this.speechBubble.visible) {
-                    this.speechBubble.updatePosition(playerX, playerY);
-                }
+                this.speechBubble.updatePosition(playerX, playerY, this.player.width, this.player.height);
             });
 
             this.speechBubble.init(this.element);

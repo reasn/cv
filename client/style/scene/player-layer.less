@@ -11,10 +11,10 @@
         .age(@name) {
             .statefulAge(@name, "stand");
             &.walking {
-                .statefulAge(@name, "walk-forward");
+                .statefulAge(@name, "forward");
             }
             &.walking.backwards {
-                .statefulAge(@name, "walk-backwards");
+                .statefulAge(@name, "backwards");
             }
         }
         &.baby {
@@ -28,6 +28,9 @@
         }
         &.adult {
             .age("adult");
+        }
+        &.driver {
+            .age("driver");
         }
 
     }
@@ -48,8 +51,8 @@
         .message,
         .background {
             position:   absolute;
-            left:       50px;
-            top:        -50px;
+            left:       0;
+            top:        0;
             width:      350px;
             height:     350px;
             box-sizing: border-box;

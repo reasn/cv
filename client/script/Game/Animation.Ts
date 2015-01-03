@@ -15,7 +15,7 @@ module ACV.Game {
 
         lastCoarseLevelX: number = -1;
 
-        private name = '';
+        name = '';
         private level: ACV.Game.Level = null;
         private scene: ACV.Game.Scene = null;
 

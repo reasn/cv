@@ -13,6 +13,7 @@
     "colors":                  {
       "yellow":         "#ffeb3b",
       "orange":         "#ff9800",
+      "deepOrange":     "#ff5722",
       "blue":           "#2196f3",
       "light-blue":     "#03a9f4",
       "light-blue-300": "#4fc3f7",
@@ -59,6 +60,10 @@
           "adult": {
             "width":  108,
             "height": 180
+          },
+          "driver": {
+            "width":  390,
+            "height": 209
           }
         }
       },
@@ -71,25 +76,29 @@
           "defaultDuration": 10000
         },
         "messages": {
-          "welcome":           {
+          "welcome":                     {
             "html":     "<h3>I'm Alexander,</h3><p>Keep scrolling down this page to see me grow up and earn my skills.</p><p>Enjoy :)</p>",
             "duration": -1
           },
-          "firstSkill":        {
+          "content.enterTruckToHamburg": {
+            "html":     "<h3>&nbsp;<h3><p>Off to Hamburg!</p>",
+            "duration": 5000
+          },
+          "firstSkill":                  {
             "html":     "<h3>&nbsp;</h3><p>You can click on all skills on the lower left of the screen to get a description!</p>",
             "duration": 5000
           },
-          "firstSoftSkill":    {
+          "firstSoftSkill":              {
             "html":     "<h3>&nbsp;</h3><p>I've just gained my first soft skill. They appear as monochrome icons on the lower left!</p>",
             "duration": 5000
           },
-          "skill.html":        {
+          "skill.html":                  {
             "html": "<h3>HTML</h3><p>After 14 years of practice I know virtually everything about HTML :)</p>"
           },
-          "skill.css":         {
+          "skill.css":                   {
             "html": "<h3>CSS</h3><p>Hopefully this page shows my CSS skills</p>"
           },
-          "skill.explaintech": {
+          "skill.explaintech":           {
             "html": "<h3>Explain Tech</h3><p>For one years I taught students in a free webdesign class. I enjoy explaining technical issues to non-techies. </p>"
           }
         }
@@ -98,7 +107,7 @@
     "levels":      [
       {
         "handle":  "cradle",
-        "enabled": true,
+        "enabled": false,
         "prefs":   {
           "offset":     0,
           "clip":       {
@@ -112,11 +121,11 @@
         }
       },
       {
-        "handle":  "way-to-school",
+        "handle":  "university",
         "enabled": true,
         "prefs":   {
-          "_offset":    0,
-          "offset":     2500,
+          "offset":     0,
+          "_offset":    2500,
           "clip":       {
             "x1": 0,
             "x2": 4000
@@ -128,11 +137,12 @@
         }
       },
       {
-        "handle":  "heidelberg",
+        "handle":  "move-to-hamburg",
         "enabled": true,
         "prefs":   {
-          "_offset":    0,
-          "offset":     7400,
+          "__offset":     0,
+          "offset":     3500,
+          "_offset":    7400,
           "clip":       {
             "x1": 0,
             "x2": 10000

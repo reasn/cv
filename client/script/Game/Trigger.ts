@@ -9,8 +9,8 @@ module ACV.Game {
         static PATTERN = /([a-zA-Z\.]+)\(([^\)]*)\)/;
 
         private range: number[] = [0, 0];
-        private before: string;
-        private after: string;
+        private before: string[];
+        private after: string[];
         referenceFrame: TriggerReferenceFrame;
         private currentlyInsideRange = false;
         private fireOnEnter = false;
@@ -18,7 +18,7 @@ module ACV.Game {
         private in = false;
         private wasIn = false;
 
-        constructor( range: number[], before: string, after: string, relativeTo: TriggerReferenceFrame, fireOnEnter: boolean ) {
+        constructor( range: number[], before: string[], after: string[], relativeTo: TriggerReferenceFrame, fireOnEnter: boolean ) {
 
             super('ACV.Game.Trigger');
 
@@ -50,9 +50,9 @@ module ACV.Game {
          * @param {number} value E.g. playerX
          * @param {number} lastValue
          * @param {number} targetValue This value is required for ranged trigger animations (e.g. jumps).
-         * @returns {?ITriggerAction}
+         * @returns {ITriggerAction[]}
          */
-        determineActionToBeExecuted( value: number, lastValue: number, targetValue: number ): ITriggerAction {
+        determineActionsToBeExecuted( value: number, lastValue: number, targetValue: number ): ITriggerAction[] {
             var a = this.range[0];
             var b = this.range[this.range.length - 1];
             var m = this.range.length === 3 ? this.range[1] : null;
@@ -93,17 +93,24 @@ module ACV.Game {
             return null;
         }
 
-        private unpack( action: string ): ITriggerAction {
+        private unpack( actions: string[] ): ITriggerAction[] {
 
-            var matches = Trigger.PATTERN.exec(action);
-            if (matches.length < 2) {
-                this.warn('Invalid trigger "%s".', action);
-                return null;
+            var index: any,
+                unpackedActions: ITriggerAction[] = [],
+                matches: string[];
+            for (index in actions) {
+
+                matches = Trigger.PATTERN.exec(actions[index]);
+                if (matches.length < 2) {
+                    this.warn('Invalid trigger "%s".', actions);
+                    return null;
+                }
+                unpackedActions.push({
+                    action: matches[1],
+                    args:   matches[2].split(',')
+                });
             }
-            return {
-                action: matches[1],
-                args:   matches[2].split(',')
-            }
+            return unpackedActions
 
         }
     }

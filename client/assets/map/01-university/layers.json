@@ -8,12 +8,11 @@
       },
       "sprites": [
         {
-          "id":         "02-sky",
           "handle":     "sky",
           "x":          0,
           "y":          "-maxLookAroundDistortion",
           "topAligned": true,
-          "width":      5000,
+          "width":      3500,
           "height":     "viewportHeight + 2 * maxLookAroundDistortion",
           "color":      "blue"
         }
@@ -33,10 +32,14 @@
           "topAligned": true,
           "width":      91,
           "height":     "180px",
-          "source":     "graphics/scene/world/02-way-to-school/moon.png"
+          "fontSymbol": {
+            "name": "last",
+            "size": "200"
+          },
+          "color":      "yellow"
         },
         {
-          "handle":     "star 01",
+          "handle":     "star01",
           "x":          700,
           "y":          "sprites.celestialBodies.moon.y",
           "topAligned": true,
@@ -45,7 +48,7 @@
           "source":     "graphics/scene/world/02-way-to-school/star-01.png"
         },
         {
-          "handle":     "star 01",
+          "handle":     "star01",
           "x":          800,
           "y":          "sprites.celestialBodies.moon.y + .1 * viewportHeight",
           "topAligned": true,
@@ -54,7 +57,7 @@
           "source":     "graphics/scene/world/02-way-to-school/star-01.png"
         },
         {
-          "handle":     "star 02",
+          "handle":     "star02",
           "x":          880,
           "y":          "sprites.celestialBodies.moon.y + .15 * viewportHeight",
           "topAligned": true,
@@ -63,7 +66,7 @@
           "source":     "graphics/scene/world/02-way-to-school/star-02.png"
         },
         {
-          "handle":     "star 02",
+          "handle":     "star02",
           "x":          750,
           "y":          "sprites.celestialBodies.moon.y + .25 * viewportHeight",
           "topAligned": true,
@@ -72,14 +75,59 @@
           "source":     "graphics/scene/world/02-way-to-school/star-02.png"
         },
         {
-          "id":         "02-sun",
           "handle":     "sun",
-          "x":          2400,
+          "x":          1800,
           "y":          "70%",
           "topAligned": true,
           "width":      300,
           "height":     "300px",
-          "source":     "graphics/scene/world/02-way-to-school/sun.png"
+          "fontSymbol": {
+            "name": "dark26",
+            "size": 300
+          },
+          "color":      "yellow"
+        },
+        {
+          "handle":     "cloud01",
+          "x":          500,
+          "y":          "10%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloud316",
+            "size": 100
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "cloud02",
+          "x":          1500,
+          "y":          "7%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloudstorage",
+            "size": 80
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "cloud03",
+          "x":          1900,
+          "y":          "10%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloud316",
+            "size": 250
+          },
+          "color":      "white"
         }
       ]
     },
@@ -193,13 +241,22 @@
       },
       "sprites": [
         {
-          "handle":     "street",
+          "handle":     "yellowStreet",
           "x":          0,
           "y":          0,
           "topAligned": false,
-          "width":      8000,
+          "width":      2600,
           "height":     "240px",
           "color":      "yellow"
+        },
+        {
+          "handle":     "grayStreet",
+          "x":          2600,
+          "y":          0,
+          "topAligned": false,
+          "width":      2000,
+          "height":     "260px",
+          "color":      "blue-gray-50"
         },
         {
           "handle":     "hedge01",
@@ -211,7 +268,7 @@
           "fontSymbol": {
             "name":  "grass",
             "size":  150,
-            "count": 25
+            "count": 21
           },
           "color":      "green"
         }
@@ -234,14 +291,14 @@
           "fontSymbol": {
             "name":  "grass",
             "size":  150,
-            "count": 20
+            "count": 22
           },
           "color":      "green"
         }
       ]
     },
     {
-      "handle":  "bavarians",
+      "handle":  "bavariansAndTruck",
       "prefs":   {
         "offset": 1900,
         "speed":  0.9
@@ -298,7 +355,8 @@
             "size": 130
           },
           "color":      "light-blue"
-        },{
+        },
+        {
           "handle":     "beer02",
           "x":          510,
           "y":          "190px",
@@ -310,6 +368,19 @@
             "size": 50
           },
           "color":      "white"
+        },
+        {
+          "handle":     "truck",
+          "x":          1050,
+          "y":          "330px",
+          "topAligned": false,
+          "width":      304,
+          "height":     "50px",
+          "fontSymbol": {
+            "name": "black331",
+            "size": 320
+          },
+          "color":      "orange"
         }
       ]
     }

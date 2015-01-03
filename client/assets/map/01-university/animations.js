@@ -6,8 +6,7 @@ var animations = [
         granularity: 500,
         /** @type {function(this:ACV.Game.Animation)} */
         action: function () {
-
-            var target, duration, sky = $('#02-sky');
+            var target, duration, sky = $('#layer-university-sky');
 
             if (this.levelX < 0) {
                 sky.stop('sunrise', true).css('opacity', 0);
@@ -24,8 +23,8 @@ var animations = [
                 duration: duration
             }).dequeue('sunrise');
 
-            $('#02-sun').stop('sunrise', true).animate({
-                top: Math.round(70 - target * 90) + '%'
+            $('#sprite-university-celestialBodies-sun').stop('sunrise', true).animate({
+                top: Math.round(70 - target * 190) + '%'
             }, {
                 queue: 'sunrise',
                 easing: 'easeInOutQuad',

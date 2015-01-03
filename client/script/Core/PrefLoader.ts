@@ -146,6 +146,13 @@ module ACV.Core {
                         trigger.playerX[i] += levelOffset;
                     }
                 }
+                if (typeof trigger.before === 'string') {
+                    trigger.before = ['' + trigger.before];
+                }
+                if (typeof trigger.after === 'string') {
+                    trigger.after = ['' + trigger.after];
+                }
+
                 this.gameData.scene.triggers.push(triggers[triggerIndex]);
 
             }

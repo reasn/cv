@@ -1,0 +1,175 @@
+{
+  "background": [
+    {
+      "handle":  "sky",
+      "prefs":   {
+        "offset": -1000,
+        "speed":  0.5
+      },
+      "sprites": [
+        {
+          "handle":     "sky",
+          "x":          0,
+          "y":          "-maxLookAroundDistortion",
+          "topAligned": true,
+          "width":      5000,
+          "height":     "viewportHeight + 2 * maxLookAroundDistortion",
+          "color":      "blue"
+        },
+        {
+          "handle":     "sun",
+          "x":          2600,
+          "y":          "10%",
+          "topAligned": true,
+          "width":      300,
+          "height":     "300px",
+          "fontSymbol": {
+            "name": "dark26",
+            "size": 300
+          },
+          "color":      "yellow"
+        }
+      ]
+    },
+    {
+      "handle":  "mountain",
+      "prefs":   {
+        "offset": 0,
+        "speed":  0.6
+      },
+      "sprites": [
+        {
+          "handle":     "mountain",
+          "x":          1000,
+          "y":          -230,
+          "topAligned": false,
+          "width":      700,
+          "height":     700,
+          "fontSymbol": {
+            "name": "mountain13",
+            "size": 900
+          },
+          "color":      "gray"
+        }
+      ]
+    },
+    {
+      "handle":  "street",
+      "prefs":   {
+        "offset": 0,
+        "speed":  0.8
+      },
+      "sprites": [
+        {
+          "handle":     "street",
+          "x":          -300,
+          "y":          0,
+          "topAligned": false,
+          "width":      5000,
+          "height":     "260px",
+          "color":      "blue-gray-50"
+        }
+      ]
+    },
+    {
+      "handle":  "fastMovingItems",
+      "prefs":   {
+        "offset": 0,
+        "speed":  1.1
+      },
+      "sprites": [
+        {
+          "handle":     "cloud01",
+          "x":          500,
+          "y":          "10%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloud316",
+            "size": 100
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "cloud02",
+          "x":          1500,
+          "y":          "7%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloudstorage",
+            "size": 80
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "cloud03",
+          "x":          1900,
+          "y":          "10%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloud316",
+            "size": 250
+          },
+          "color":      "white"
+        }
+      ]
+    },
+    {
+      "handle":  "extraFastMovingSprites",
+      "prefs":   {
+        "offset": -900,
+        "speed":  1.5
+      },
+      "sprites": [
+        {
+          "handle":     "cloud04",
+          "x":          2000,
+          "y":          "10%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloud34",
+            "size": 200
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "cloud05",
+          "x":          3000,
+          "y":          "25%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloudstorage",
+            "size": 200
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "hedge",
+          "x":          0,
+          "y":          "-80 - maxLookAroundDistortion",
+          "topAligned": false,
+          "width":      11000,
+          "height":     "50 + maxLookAroundDistortion",
+          "blur":       10,
+          "color":      "green"
+        }
+      ]
+    }
+  ],
+  "foreground": [
+  ]
+}

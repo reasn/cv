@@ -20,7 +20,6 @@ module ACV.Game {
         element: JQuery;
 
         private appContext: ACV.AppContext;
-        private id: string;
         private source: string;
         private color: string;
         private patterned: boolean;
@@ -30,7 +29,6 @@ module ACV.Game {
 
 
         constructor( appContext: ACV.AppContext,
-                     id: string,
                      handle: string,
                      x: number,
                      y: any,
@@ -51,7 +49,6 @@ module ACV.Game {
             }
 
             this.appContext = appContext;
-            this.id = id;
             this.handle = handle;
             this.x = x;
             this.y = y;
@@ -73,7 +70,7 @@ module ACV.Game {
             y = Sprite.unpackDynamicExpression(appContext, data.y, data.handle, 'y');
             height = Sprite.unpackDynamicExpression(appContext, data.height, data.handle, 'height');
 
-            return new Sprite(appContext, data.id, data.handle, data.x, y, data.width, height, data.topAligned, data.source, data.color, data.fontSymbol, data.patterned, data.blur, data.shadow);
+            return new Sprite(appContext, data.handle, data.x, y, data.width, height, data.topAligned, data.source, data.color, data.fontSymbol, data.patterned, data.blur, data.shadow);
         }
 
         /**

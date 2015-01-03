@@ -1,0 +1,31 @@
+[
+  {
+    "playerX": 0,
+    "before":  "player.jumpAndStay(110)",
+    "after":   [
+      "player.jumpAndStay(150)"
+    ]
+  },
+  {
+    "playerX": [
+      2300,
+      2500,
+      2700
+    ],
+    "before":   "player.jumpAndStay(150)",
+    "after":   "player.jumpAndStay(30)"
+  },
+  {
+    "playerX": 3000,
+    "before":  [
+      "speechBubble.hide()",
+      "player.setAge(teen)",
+      "sprite.show(university-bavariansAndTruck-truck)"
+    ],
+    "after":   [
+      "speechBubble.show(content.enterTruckToHamburg)",
+      "player.setAge(driver)",
+      "sprite.hide(university-bavariansAndTruck-truck)"
+    ]
+  }
+]

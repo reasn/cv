@@ -11,11 +11,11 @@ module ACV.Game {
 
         prefs: ACV.Data.IPlayerPrefs;
         width: number = 0;
+        height: number = 0;
 
         private element: JQuery = null;
         private x: number = 0;
         private y: number;
-        private height: number = 0;
         private lastCoarseX: number;
         private movementListeners: IPlayerMovementListener[] = [];
         private lastTriggeredX: number = 0;
@@ -61,6 +61,14 @@ module ACV.Game {
             this.element.removeClass(Object.keys(this.prefs.ages).join(' '));
             this.element.addClass('' + ageHandle);
             this.debug('Player\'s age set to %s.', ageHandle);
+        }
+
+        show() {
+            this.element.show();
+        }
+
+        hide() {
+            this.element.hide();
         }
 
         setPosition( x: number ) {
@@ -219,7 +227,7 @@ module ACV.Game {
             coarseX = Math.floor(now / this.prefs.movementTriggerGranularity);
             this.x = now;
 
-            if (coarseX !== this.lastCoarseX && (this.lastCoarseX !== -1 ||lastX !== this.x)) {
+            if (coarseX !== this.lastCoarseX && (this.lastCoarseX !== -1 || lastX !== this.x)) {
                 this.lastCoarseX = coarseX;
                 //  this.debug('Triggering movement listeners at %s (before %s):', Math.round(this.x), Math.round(this.lastTriggeredX));
                 for (listenerIndex in this.movementListeners) {

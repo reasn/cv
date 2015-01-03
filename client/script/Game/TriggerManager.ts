@@ -34,17 +34,18 @@ module ACV.Game {
         check( playerX: number, playerXBefore: number, targetPlayerX: number, sceneX: number ) {
             var triggerIndex: any,
                 trigger: Trigger,
-                action: ITriggerAction;
+                actions: ITriggerAction[],
+                actionIndex: any;
 
             //this.debug('PlayerX always: %s    %s', playerX, playerXBefore);
             for (triggerIndex in this.triggers) {
                 trigger = this.triggers[triggerIndex];
 
                 if (trigger.referenceFrame === TriggerReferenceFrame.PLAYER) {
-                    action = trigger.determineActionToBeExecuted(playerX, playerXBefore, targetPlayerX);
+                    actions = trigger.determineActionsToBeExecuted(playerX, playerXBefore, targetPlayerX);
                 }
-                if (action !== null) {
-                    this.execute(action);
+                for (actionIndex in actions) {
+                    this.execute(actions[actionIndex]);
                 }
             }
         }
@@ -81,6 +82,12 @@ module ACV.Game {
                     return;
                 case 'player.jumpAndStay':
                     this.scene.playerLayer.player.jumpAndStay(parseInt(action.args[0]));
+                    return;
+                case 'player.show':
+                    this.scene.playerLayer.player.show();
+                    return;
+                case 'player.hide':
+                    this.scene.playerLayer.player.hide();
                     return;
                 case 'speechBubble.show':
                     this.scene.playerLayer.speechBubble.show(action.args[0]);

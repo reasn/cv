@@ -1,11 +1,10 @@
 [
   {
     "playerX": 0,
-    "after":   "speechBubble.show(welcome)"
-  },
-  {
-    "playerX": 0,
-    "after":   "player.jumpAndStay(90)"
+    "after":   [
+      "speechBubble.show(welcome)",
+      "player.jumpAndStay(90)"
+    ]
   },
   {
     "playerX": 1300,
@@ -20,9 +19,8 @@
   },
   {
     "playerX": 1156,
-    "enabled": false,
-    "before":  "player.setAge(baby)",
-    "after":   "player.setAge(child)"
+    "before":  "player.setAge(child)",
+    "after":   "player.setAge(teen)"
   },
   {
     "playerX": 1000,

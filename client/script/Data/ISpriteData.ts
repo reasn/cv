@@ -6,7 +6,6 @@ module ACV.Data {
         y: string;//or number
         height: string;//or number
         width: number;
-        id: string;
         topAligned: boolean;
         source: string;
         fontSymbol?: ISpriteFontSymbol;
