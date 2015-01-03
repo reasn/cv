@@ -45,19 +45,19 @@
         "movementTriggerGranularity": 40,
         "initialAge":                 "child",
         "ages":                       {
-          "baby":  {
+          "baby":   {
             "width":  1,
             "height": 1
           },
-          "child": {
+          "child":  {
             "width":  48,
             "height": 80
           },
-          "teen":  {
+          "teen":   {
             "width":  84,
             "height": 140
           },
-          "adult": {
+          "adult":  {
             "width":  108,
             "height": 180
           },
@@ -107,8 +107,9 @@
     "levels":      [
       {
         "handle":  "cradle",
-        "enabled": false,
+        "enabled": true,
         "prefs":   {
+          "background": "patterned blue",
           "offset":     0,
           "clip":       {
             "x1": 0,
@@ -122,10 +123,11 @@
       },
       {
         "handle":  "university",
-        "enabled": false,
+        "enabled": true,
         "prefs":   {
-          "offset":     0,
-          "_offset":    2500,
+          "background": "black",
+          "_offset":     0,
+          "offset":    2500,
           "clip":       {
             "x1": 0,
             "x2": 4200
@@ -140,9 +142,10 @@
         "handle":  "move-to-hamburg",
         "enabled": true,
         "prefs":   {
-          "offset":     0,
-          "__offset":     3500,
-          "_offset":    7400,
+          "background": "blue-gray-50",
+          "_offset":     0,
+          "__offset":   3500,
+          "offset":    6400,
           "clip":       {
             "x1": 0,
             "x2": 10000

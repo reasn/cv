@@ -1,7 +1,8 @@
 module ACV.Data {
 
     export interface ILevelPrefs {
-        offset:number;
+        offset: number;
+        background: string;
         clip: {
             x1: number;
             x2: number;

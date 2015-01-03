@@ -78,7 +78,7 @@ module ACV.Game {
 
             this.lookAroundDistortion = lookAroundDistortion;
 
-            this.backgroundElement = $('<div id="level-bg-' + this.handle + '" class="level background" />');
+            this.backgroundElement = $('<div id="level-bg-' + this.handle + '" class="level background ' + this.prefs.background + '" />');
             this.backgroundElement.css('max-width', this.prefs.clip.x2);
 
             this.foregroundElement = $('<div id="level-fg-' + this.handle + '" class="level foreground" />');
@@ -190,7 +190,7 @@ module ACV.Game {
          * @since 2014-03-05
          * @author Alexander Thiel
          */
-        private updateVisibility( sceneX: number, sceneXBefore: number, viewportDimensions: ACV.View.IViewportDimensions ) {
+        private updateVisibility( sceneX: number, sceneXBefore: number, viewportDimensions: ACV.View.IViewportDimensions) {
             var showLevelSceneX = this.prefs.offset + this.prefs.visibility.x1;
             var hideLevelSceneX = this.prefs.offset + this.prefs.visibility.x2;
 
@@ -205,6 +205,7 @@ module ACV.Game {
                 this.visible = true;
                 this.foregroundElement.addClass('visible');
                 this.backgroundElement.addClass('visible');
+                this.applyLookAroundDistortion();
                 //Makes sure that all animations are in the right state right after the level is added to the DOM
                 this.handleAnimations(sceneX, sceneXBefore, viewportDimensions, true)
             }
@@ -286,22 +287,5 @@ module ACV.Game {
                 }
             }
         }
-
-
-        //getHitSprites( levelRelativeX: number, y: number, viewportDimensions: ACV.View.IViewportDimensions ): Sprite[] {
-        //    var sprites: Sprite[] = [],
-        //        layerIndex: any,
-        //        layer: Layer;
-        //
-        //    for (layerIndex in this.backgroundLayers) {
-        //        layer = this.backgroundLayers[layerIndex];
-        //        sprites = sprites.concat(layer.getHitSprites(levelRelativeX, y, this.flySprites, viewportDimensions));
-        //    }
-        //    for (layerIndex in this.foregroundLayers) {
-        //        layer = this.foregroundLayers[layerIndex];
-        //        sprites = sprites.concat(layer.getHitSprites(levelRelativeX, y, this.flySprites, viewportDimensions));
-        //    }
-        //    return sprites;
-        //}
     }
 }

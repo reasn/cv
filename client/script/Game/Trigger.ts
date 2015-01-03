@@ -12,7 +12,6 @@ module ACV.Game {
         private before: string[];
         private after: string[];
         referenceFrame: TriggerReferenceFrame;
-        private currentlyInsideRange = false;
         private fireOnEnter = false;
         private stateBefore = true;
         private in = false;
@@ -31,17 +30,30 @@ module ACV.Game {
 
         static createFromData( data: ACV.Data.ITriggerData, performanceSettings: ACV.Data.IPerformanceSettings ): Trigger {
 
-            if (typeof data.playerX === 'number') {
-                return new Trigger([data.playerX, data.playerX], data.before, data.after, TriggerReferenceFrame.PLAYER, false);
+            var referenceValue: any,
+                referenceFrame: TriggerReferenceFrame;
 
-            } else if (typeof data.playerX === 'object') {
-                if (data.playerX.length !== 2 && data.playerX.length !== 3) {
-                    throw 'A trigger\'s value declaration must be a number or an array consisting of two or three numbers. But is ' + JSON.stringify(data.playerX);
-                }
-                return new Trigger(data.playerX, data.before, data.after, TriggerReferenceFrame.PLAYER, data.fireOnEnter);
+            if (data.playerX !== undefined) {
+                referenceValue = data.playerX;
+                referenceFrame = TriggerReferenceFrame.PLAYER;
+
+            } else if (data.levelX !== undefined) {
+                referenceValue = data.levelX;
+                referenceFrame = TriggerReferenceFrame.LEVEL;
+
             } else {
                 throw 'Not implemented yet';
                 //  return new ACV.Game.Trigger(data.playerX, data.before, data.after, 'level');
+            }
+
+            if (typeof referenceValue === 'number') {
+                return new Trigger([referenceValue, referenceValue], data.before, data.after, referenceFrame, false);
+
+            } else if (typeof referenceValue === 'object') {
+                if (referenceValue.length !== 2 && referenceValue.length !== 3) {
+                    throw 'A trigger\'s reference value declaration (e.g. playerX) must be a number or an array consisting of two or three numbers. But is ' + JSON.stringify(referenceValue);
+                }
+                return new Trigger(referenceValue, data.before, data.after, referenceFrame, data.fireOnEnter);
             }
         }
 
@@ -63,6 +75,9 @@ module ACV.Game {
             var outToRight = value > b && lastValue <= b;
 
             if (this.fireOnEnter) {
+                if (!targetValue) {
+                    this.warn('Trigger can only use fireOnEnter if a targetValue is present');
+                }
                 /*
                  * These triggers can take into account targetValue to decide whether and which action
                  * should be taken. For that variable m is required. It allows to check in which state
@@ -97,7 +112,9 @@ module ACV.Game {
 
             var index: any,
                 unpackedActions: ITriggerAction[] = [],
-                matches: string[];
+                matches: string[],
+                args: string[],
+                argIndex: any;
             for (index in actions) {
 
                 matches = Trigger.PATTERN.exec(actions[index]);
@@ -105,9 +122,13 @@ module ACV.Game {
                     this.warn('Invalid trigger "%s".', actions);
                     return null;
                 }
+                args = matches[2].split(',');
+                for (argIndex in args) {
+                    args[argIndex] = args[argIndex].trim();
+                }
                 unpackedActions.push({
                     action: matches[1],
-                    args:   matches[2].split(',')
+                    args:   args
                 });
             }
             return unpackedActions

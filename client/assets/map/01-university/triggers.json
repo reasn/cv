@@ -12,7 +12,7 @@
       2500,
       2700
     ],
-    "before":   "player.jumpAndStay(150)",
+    "before":  "player.jumpAndStay(150)",
     "after":   "player.jumpAndStay(30)"
   },
   {
@@ -27,5 +27,10 @@
       "player.setAge(driver)",
       "sprite.hide(university-bavariansAndTruck-truck)"
     ]
+  },
+  {
+    "levelX": 100,
+    "before": "sprite.transition(university-celestialBodies-sun,none)",
+    "after": "sprite.transition(university-celestialBodies-sun,visible)"
   }
 ]

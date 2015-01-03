@@ -13,19 +13,14 @@
   },
   {
     "playerX": 1156,
-    "enabled": false,
-    "before":  "sprite.show(cradle-cradleBackground-sleepingBaby)",
-    "after":   "sprite.hide(cradle-cradleBackground-sleepingBaby)"
-  },
-  {
-    "playerX": 1156,
-    "before":  "player.setAge(child)",
-    "after":   "player.setAge(teen)"
-  },
-  {
-    "playerX": 1000,
-    "before":  "player.jumpAndStay(90)",
-    "after":   "player.jumpAndStay(110)"
+    "before":  [
+      "player.setAge(child)",
+      "player.jumpAndStay(90)"
+    ],
+    "after":   [
+      "player.setAge(teen)",
+      "player.jumpAndStay(110)"
+    ]
   },
   {
     "playerX":     [

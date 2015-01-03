@@ -6,11 +6,13 @@ module ACV.Game {
     export class TriggerManager extends ACV.Core.AbstractObject {
 
         scene: ACV.Game.Scene = null;
-        triggers: ACV.Game.Trigger[] = [];
+        private playerRelativeTriggers: ACV.Game.Trigger[] = [];
+        private levelRelativeTriggers: ACV.Game.Trigger[] = [];
 
-        constructor( triggers: Trigger[] ) {
+        constructor( playerRelativeTriggers: Trigger[], levelRelativeTriggers: Trigger[] ) {
             super('ACV.Game.TriggerManager');
-            this.triggers = triggers;
+            this.playerRelativeTriggers = playerRelativeTriggers;
+            this.levelRelativeTriggers = levelRelativeTriggers;
             /*  this.triggers.sort(function(a, b) {
              if(a.comparison === '<' && b.comparison === '>')
              return -1;
@@ -23,27 +25,45 @@ module ACV.Game {
 
         static createFromData( triggerData: ACV.Data.ITriggerData[], performanceSettings: ACV.Data.IPerformanceSettings ) {
             var triggerIndex: any,
-                triggers: Trigger[] = [];
+                trigger: Trigger,
+                playerRelativeTriggers: Trigger[] = [],
+                levelRelativeTriggers: Trigger[] = [];
 
             for (triggerIndex in triggerData) {
-                triggers.push(Trigger.createFromData(triggerData[triggerIndex], performanceSettings));
+                trigger = Trigger.createFromData(triggerData[triggerIndex], performanceSettings);
+                if (trigger.referenceFrame === TriggerReferenceFrame.PLAYER) {
+                    playerRelativeTriggers.push(trigger);
+                } else if (trigger.referenceFrame === TriggerReferenceFrame.LEVEL) {
+                    levelRelativeTriggers.push(trigger);
+                }
             }
-            return new TriggerManager(triggers);
+            return new TriggerManager(playerRelativeTriggers, levelRelativeTriggers);
         }
 
-        check( playerX: number, playerXBefore: number, targetPlayerX: number, sceneX: number ) {
-            var triggerIndex: any,
+        checkPlayerRelativeTriggers( playerX: number, playerXBefore: number, targetPlayerX: number ) {
+            var i: any,
                 trigger: Trigger,
                 actions: ITriggerAction[],
                 actionIndex: any;
 
-            //this.debug('PlayerX always: %s    %s', playerX, playerXBefore);
-            for (triggerIndex in this.triggers) {
-                trigger = this.triggers[triggerIndex];
-
-                if (trigger.referenceFrame === TriggerReferenceFrame.PLAYER) {
-                    actions = trigger.determineActionsToBeExecuted(playerX, playerXBefore, targetPlayerX);
+            for (i in this.playerRelativeTriggers) {
+                trigger = this.playerRelativeTriggers[i];
+                actions = trigger.determineActionsToBeExecuted(playerX, playerXBefore, targetPlayerX);
+                for (actionIndex in actions) {
+                    this.execute(actions[actionIndex]);
                 }
+            }
+        }
+
+        checkLevelRelativeTriggers( sceneX: number, sceneXBefore: number ) {
+            var i: any,
+                trigger: Trigger,
+                actions: ITriggerAction[],
+                actionIndex: any;
+
+            for (i in this.levelRelativeTriggers) {
+                trigger = this.levelRelativeTriggers[i];
+                actions = trigger.determineActionsToBeExecuted(sceneX, sceneXBefore, null);
                 for (actionIndex in actions) {
                     this.execute(actions[actionIndex]);
                 }
@@ -99,9 +119,13 @@ module ACV.Game {
         }
 
         private executeSpriteTrigger( action: ITriggerAction ): void {
-            var sprite = $('#sprite-' + action.args[0]);
+            var sprite = $('#sprite-' + action.args[0]),
+                classNameIndex: any,
+                classNames: string[],
+                argIndex: any;
             if (sprite.length === 0) {
                 this.warn('Could not trigger "%s" action because no sprite with id "%s" was found.', action.action, 'sprite-' + action.args[0]);
+                return;
             }
             switch (action.action) {
                 case 'sprite.show':
@@ -113,6 +137,18 @@ module ACV.Game {
 
                 case 'sprite.startAnimation':
                     sprite.addClass('animation-active');
+                    return;
+
+                case 'sprite.transition':
+                    classNames = sprite.attr('class').split(' ');
+                    for (classNameIndex in classNames) {
+                        if (classNames[classNameIndex].indexOf('fx-') === 0) {
+                            sprite.removeClass(classNames[classNameIndex]);
+                        }
+                    }
+                    for (argIndex = 1; argIndex < action.args.length; argIndex++) {
+                        sprite.addClass('fx-' + action.args[argIndex]);
+                    }
                     return;
 
                 default:

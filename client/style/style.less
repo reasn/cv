@@ -54,6 +54,29 @@ body {
 
 .animation-active {
     animation-play-state: running !important;
+    animation-fill-mode:  forwards;
+}
+
+#sprite-move-to-hamburg-skyAndDistantShipsAndSeaGulls-sky {
+    transition: opacity @fxEaseInOutQuad 3s;
+}
+
+#sprite-move-to-hamburg-skyAndDistantShipsAndSeaGulls-sun {
+    transition:          @fxEaseInOutQuad 5s;
+    transition-property: opacity, top;
+}
+
+.fx-hidden {
+    opacity: 0
+}
+
+.fx-to-top--300 {
+    top: -300px !important;
+}
+
+#sprite-university-celestialBodies-sun {
+    transition: top @fxEaseInOutQuad 3s;
+    &.fx-visible { top: -500px!important }
 }
 
 #sprite-move-to-hamburg-mountainAndShips-sailShip { animation: move-to-hamburg-ship-ltr 120s @fxEaseInOutQuad paused; }
@@ -63,7 +86,9 @@ body {
 #sprite-move-to-hamburg-mountainAndShips-cargoShip02 { animation: move-to-hamburg-ship-rtl 60s @fxEaseInOutQuad paused; }
 
 #sprite-move-to-hamburg-skyAndDistantShipsAndSeaGulls-seagull01 { animation: move-to-hamburg-seagull-ltr 120s @fxEaseInOutQuad paused; }
+
 #sprite-move-to-hamburg-skyAndDistantShipsAndSeaGulls-seagull02 { animation: move-to-hamburg-seagull-ltr 90s @fxEaseInOutQuad paused; }
+
 #sprite-move-to-hamburg-skyAndDistantShipsAndSeaGulls-seagull03 { animation: move-to-hamburg-seagull-ltr 60s @fxEaseInOutQuad paused; }
 
 @keyframes move-to-hamburg-ship-ltr {
@@ -75,7 +100,6 @@ body {
     from { left: 300px }
     to { left: 0 }
 }
-
 
 @keyframes move-to-hamburg-seagull-ltr {
     from { left: 0 }

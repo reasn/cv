@@ -1,7 +1,8 @@
 module ACV.Data {
 
     export interface ITriggerData {
-        playerX: any;
+        playerX?: any;
+        levelX?: any;
         enabled?: boolean;
         before: string[];
         after: string[];

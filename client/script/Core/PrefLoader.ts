@@ -139,12 +139,28 @@ module ACV.Core {
                 if (trigger.enabled === false) {
                     continue;
                 }
-                if (typeof trigger.playerX === 'number') {
-                    trigger.playerX += levelOffset;
-                } else {
-                    for (i in trigger.playerX) {
-                        trigger.playerX[i] += levelOffset;
+
+                if (trigger.playerX !== undefined) {
+                    if (typeof trigger.playerX === 'number') {
+                        trigger.playerX += levelOffset;
+                    } else {
+                        for (i in trigger.playerX) {
+                            trigger.playerX[i] += levelOffset;
+                        }
                     }
+                } else if (trigger.levelX !== undefined) {
+                    if (typeof trigger.levelX === 'number') {
+                        trigger.levelX += levelOffset;
+                    } else {
+                        for (i in trigger.levelX) {
+                            trigger.levelX[i] += levelOffset;
+                        }
+                    }
+                    console.log(trigger);
+
+                } else {
+                    console.log(trigger);
+                    throw new Error('Trigger is missing both playerX and levelX properties');
                 }
                 if (typeof trigger.before === 'string') {
                     trigger.before = ['' + trigger.before];

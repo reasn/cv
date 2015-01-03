@@ -109,7 +109,7 @@ module ACV.Game {
 
             this.appContext.player.addMovementListener(( playerX, playerXBefore, targetPlayerX, playerY, sceneX )=> {
                 $('#playerX').text(Math.round(playerX));
-                this.handleTriggers(playerX, playerXBefore, targetPlayerX, sceneX);
+                this.handleTriggers(playerX, playerXBefore, targetPlayerX, sceneX, this.xBefore);
             });
 
             if (this.appContext.performanceSettings.lookAroundDistortion) {
@@ -187,7 +187,6 @@ module ACV.Game {
 
             //this.x must be at least 0. Therefore Math.max() is required to avoid unexpected behaviour if the screen is larger than the entire scene
             this.x = Math.max(0, ratio * (this.width - this.sceneViewportDimensions.width));
-            this.xBefore = Math.max(0, ratio * (this.width - this.sceneViewportDimensions.width));
 
             if (this.sceneViewportDimensions.heightChanged) {
                 this.element.css('height', this.sceneViewportDimensions.height);
@@ -197,6 +196,7 @@ module ACV.Game {
             for (levelIndex in this.levels) {
                 this.levels[levelIndex].updatePositions(this.x, this.xBefore, this.sceneViewportDimensions);
             }
+            this.triggerManager.checkLevelRelativeTriggers(this.x, this.xBefore);
 
             if (this.sceneViewportDimensions.widthChanged || this.sceneViewportDimensions.heightChanged) {
                 this.handleViewportChange();
@@ -205,10 +205,11 @@ module ACV.Game {
 
             //TODO remove:
             $('#sceneX').text(Math.round(this.x));
+            this.xBefore = this.x;
         }
 
-        handleTriggers( playerX: number, playerXBefore: number, targetPlayerX: number, sceneX: number ) {
-            this.triggerManager.check(playerX, playerXBefore, targetPlayerX, sceneX);
+        handleTriggers( playerX: number, playerXBefore: number, targetPlayerX: number, sceneX: number, sceneXBefore: number ) {
+            this.triggerManager.checkPlayerRelativeTriggers(playerX, playerXBefore, targetPlayerX);
         }
 
         private handleViewportChange() {
