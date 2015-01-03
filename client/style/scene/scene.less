@@ -1,0 +1,40 @@
+@import "../imports";
+@import "player-layer";
+@import "sprite";
+
+#scene {
+    top:      0;
+    // right    : 0;
+    bottom:   0;
+    left:     0;
+    position: absolute;
+
+    .level-wrapper {
+
+        .level {
+            top:      0;
+            right:    0;
+            bottom:   0;
+            left:     0;
+            position: absolute;
+            display:  none;
+            /* Levels need overflow:hidden and automatically adjusted boundaries so they don't overlap each other */
+            overflow: hidden;
+
+            &.visible {
+                display: block
+            }
+
+            .layer {
+                position: absolute;
+                height:   100%;
+                //top: 0px !important;
+
+                .sprite-wrapper {
+                    position: relative;
+                    height:   100%;
+                }
+            }
+        }
+    }
+}

@@ -10,18 +10,6 @@
 
     .power-up { .powerUp() }
 
-    .dev-info {
-        color:            @cWhite;
-        cursor:           pointer;
-        position:         absolute;
-        right:            0;
-        width:            130px;
-        bottom:           40%;
-        background-color: #000000;
-        font-family:      monospace, sans-serif;
-        padding:          20px 0 20px 30px;
-    }
-
     .skill-basket {
         @padding: 2px;
         position:         absolute;
@@ -144,9 +132,38 @@
 }
 
 #hud-year-display {
-    position:    absolute;
-    top:         10px;
-    left:        10px;
-    font-size:   100px;
-    font-weight: bold;
+    position:         absolute;
+    top:              10px;
+    left:             10px;
+    font-size:        100px;
+    font-weight:      bold;
+    width:            200px;
+    background-color: @cBlack;
+
+    .labels {
+        font-size:   20px;
+        line-height: 20px;
+        padding:     5px;
+        margin:      0;
+        color:       @cWhite;
+        text-align:  center;
+        .start { float: left }
+        .end { float: right }
+        .start, .end { font-size: 12px }
+    }
+
+    .progress-bar {
+        position:   relative;
+        width:      200px;
+        height:     22px;
+        background: url('../assets/graphics/hud/year-display/progress-background.gif') no-repeat 0 0;
+        .progress {
+            position:   absolute;
+            width:      0;
+            left:       0;
+            top:        0;
+            bottom:     0;
+            background: url('../assets/graphics/hud/year-display/progress.gif') no-repeat 0 0;
+        }
+    }
 }

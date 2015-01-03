@@ -13,7 +13,6 @@ module ACV.Game {
 
         private appContext: ACV.AppContext = null;
         private prefs: ACV.Data.IPlayerLayerPrefs;
-        private lastCollisionDetection: number = 0;
         private lookAroundDistortion: ILookAroundDistortion = {
             x: 0,
             y: 0
@@ -55,7 +54,7 @@ module ACV.Game {
 
             this.lookAroundDistortion = lookAroundDistortion;
 
-            this.element = $('<div class="player-layer" />');
+            this.element = $('<div id="player-layer" />');
             this.element.css(
                 {
                     width:     width,
@@ -77,9 +76,9 @@ module ACV.Game {
                                               sceneX: number,
                                               viewportDimensions: ACV.View.IViewportDimensions ) => {
                 this.detectCollisions(playerX, playerXBefore, sceneX, viewportDimensions);
-                //if (this.speechBubble.visible) {
-                this.speechBubble.updatePosition(playerX, playerY);
-                //}
+                if (this.speechBubble.visible) {
+                    this.speechBubble.updatePosition(playerX, playerY);
+                }
             });
 
             this.speechBubble.init(this.element);

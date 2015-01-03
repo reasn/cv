@@ -40,7 +40,7 @@ module ACV.Game {
             for (triggerIndex in this.triggers) {
                 trigger = this.triggers[triggerIndex];
 
-                if (trigger.relativeTo === 'player') {
+                if (trigger.referenceFrame === TriggerReferenceFrame.PLAYER) {
                     action = trigger.determineActionToBeExecuted(playerX, playerXBefore, targetPlayerX);
                 }
                 if (action !== null) {
@@ -81,6 +81,12 @@ module ACV.Game {
                     return;
                 case 'player.jumpAndStay':
                     this.scene.playerLayer.player.jumpAndStay(parseInt(action.args[0]));
+                    return;
+                case 'speechBubble.show':
+                    this.scene.playerLayer.speechBubble.show(action.args[0]);
+                    return;
+                case 'speechBubble.hide':
+                    this.scene.playerLayer.speechBubble.hide();
                     return;
                 default:
                     this.warn('Unknown trigger action:');

@@ -75,6 +75,7 @@ module ACV.View {
                 for (listenerIndex in this.moveListeners) {
                     this.moveListeners[listenerIndex](event.clientX, event.clientY, this.dimensions);
                 }
+                event.stopPropagation();
             });
 
             w.on('click', ( event: JQueryEventObject )=> {
@@ -82,6 +83,7 @@ module ACV.View {
                 for (listenerIndex in this.clickListeners) {
                     this.clickListeners[listenerIndex](event.clientX, event.clientY, this.dimensions);
                 }
+                event.stopPropagation();
             });
 
             this.dimensions.width = w.width();

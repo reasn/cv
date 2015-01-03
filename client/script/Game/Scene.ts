@@ -158,25 +158,6 @@ module ACV.Game {
              */
         }
 
-        private selectSprites( clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions ) {
-            var selectedSprites: Sprite[] = [],
-                levelRelativeX: number,
-                adjustedY = clientY + this.dynamicTopViewportTranslation;
-            for (var i in this.levels) {
-                levelRelativeX = clientX + this.x - this.levels[i].prefs.offset;
-                if (levelRelativeX > 0 && levelRelativeX < this.levels[i].prefs.clip.x2) {
-                    //console.log(i, levelRelativeX);
-                    selectedSprites = selectedSprites.concat(this.levels[i].getHitSprites(levelRelativeX, adjustedY, viewportDimensions));
-                }
-            }
-            $('.sprite').removeClass('selected');
-            this.info('Player selected %s sprites via click', selectedSprites.length);
-            for (var j in selectedSprites) {
-                //console.log(selectedSprites[j].element);
-                selectedSprites[j].element.addClass('selected');
-            }
-        }
-
         handleMouseClick( clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions ) {
             var targetX = this.x + clientX;
             this.info('User clicked, player will walk to %s', targetX);
@@ -263,5 +244,25 @@ module ACV.Game {
         }
 
         private dynamicTopViewportTranslation: number = 0;
+
+
+        //private selectSprites( clientX: number, clientY: number, viewportDimensions: ACV.View.IViewportDimensions ) {
+        //    var selectedSprites: Sprite[] = [],
+        //        levelRelativeX: number,
+        //        adjustedY = clientY + this.dynamicTopViewportTranslation;
+        //    for (var i in this.levels) {
+        //        levelRelativeX = clientX + this.x - this.levels[i].prefs.offset;
+        //        if (levelRelativeX > 0 && levelRelativeX < this.levels[i].prefs.clip.x2) {
+        //            //console.log(i, levelRelativeX);
+        //            selectedSprites = selectedSprites.concat(this.levels[i].getHitSprites(levelRelativeX, adjustedY, viewportDimensions));
+        //        }
+        //    }
+        //    $('.sprite').removeClass('selected');
+        //    this.info('Player selected %s sprites via click', selectedSprites.length);
+        //    for (var j in selectedSprites) {
+        //        //console.log(selectedSprites[j].element);
+        //        selectedSprites[j].element.addClass('selected');
+        //    }
+        //}
     }
 }

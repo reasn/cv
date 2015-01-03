@@ -213,12 +213,13 @@ module ACV.Game {
             //console.log(Math.round(completedRatio * 100) + '%');
 
             var coarseX: number,
-                listenerIndex: any;
+                listenerIndex: any,
+                lastX = this.x;
 
             coarseX = Math.floor(now / this.prefs.movementTriggerGranularity);
             this.x = now;
 
-            if (coarseX !== this.lastCoarseX) {
+            if (coarseX !== this.lastCoarseX && (this.lastCoarseX !== -1 ||lastX !== this.x)) {
                 this.lastCoarseX = coarseX;
                 //  this.debug('Triggering movement listeners at %s (before %s):', Math.round(this.x), Math.round(this.lastTriggeredX));
                 for (listenerIndex in this.movementListeners) {

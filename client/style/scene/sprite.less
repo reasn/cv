@@ -1,0 +1,35 @@
+@import "../imports";
+
+.sprite {
+    position:  absolute;
+    font-size: 1px;
+    padding:   0;
+    margin:    0;
+    cursor: pointer;
+    //                        &:hover { outline:  5px dashed rgba(0, 0, 255, .5) }
+    &.selected { outline: 5px dashed rgba(0, 0, 255, .9) }
+
+    &.image-background {
+        background-size: contain
+    }
+    &.font-symbol,
+    &.font-symbol span {
+        &:before, &:after {
+            font-family: Flaticon;
+            font-size:   inherit;
+            font-style:  normal;
+        }
+        background:  none;
+        text-shadow: @sSpriteShadow;
+        //                            &.no-shadow {
+        //                                text-shadow: none
+        //                            }
+    }
+    &.font-symbol span {
+        text-shadow: inherit;
+    }
+    &.blurred {
+        color: transparent;
+        //background-color: transparent;
+    }
+}

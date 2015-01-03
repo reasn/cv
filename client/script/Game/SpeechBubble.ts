@@ -49,9 +49,11 @@ module ACV.Game {
             clearTimeout(this.hideTimeout);
             this.element.addClass('visible');
             this.visible = true;
-            this.hideTimeout = setTimeout(()=> {
-                this.hide();
-            }, duration);
+            if (duration !== -1) {
+                this.hideTimeout = setTimeout(()=> {
+                    this.hide();
+                }, duration);
+            }
         }
 
         hide() {

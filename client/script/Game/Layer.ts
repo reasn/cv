@@ -100,46 +100,20 @@ module ACV.Game {
             }
             this.x = -1 * (levelOffset + levelClipOffset + this.prefs.speed * levelX - this.prefs.offset);
             this.element.css('transform', 'translate(' + (this.x + this.lookAroundDistortion.x) + 'px, ' + this.lookAroundDistortion.y + 'px)');
-            //this.element.css('left', (this.x + this.lookAroundDistortion.x) + 'px');
         }
 
-        getHitSprites( levelRelativeX: number,
-                       y: number,
-                       flySprites: {[layerHandle:string]:{[spriteHandle:string]:IFlySprite}},
-                       viewportDimensions: ACV.View.IViewportDimensions ): Sprite[] {
 
-            var sprites: Sprite[] = [],
-                spriteIndex: any,
-                sprite: Sprite,
-                flySprite: IFlySprite,
-                testX: number,
-                adjustedY: number;
-
+        private recalculateSpritePositions( viewportDimensions: ACV.View.IViewportDimensions, flySprites: {[handle:string]:IFlySprite} ) {
+            var spriteIndex: any,
+                sprite: Sprite;
+            this.info('Recalculating y positions of all sprites');
             for (spriteIndex in this.sprites) {
                 sprite = this.sprites[spriteIndex];
-                testX = this.prefs.offset + this.x + sprite.x + this.lookAroundDistortion.x;
-                if (levelRelativeX >= testX && levelRelativeX <= testX + sprite.width) {
-
-                    //  sprite.element.css('background', '#ff0000');
-                    flySprite = flySprites[this.handle][sprite.handle];
-                    if (flySprite === null) {
-                        this.positionSprite(sprite, viewportDimensions, flySprites);
-                        flySprite = flySprites[this.handle][sprite.handle];
-                    }
-                    if (sprite.topAligned) {
-                        adjustedY = y;
-                    } else {
-                        adjustedY = this.element.height() - y;
-                    }
-                    adjustedY += this.lookAroundDistortion.y;
-
-                    // console.log(adjustedY, flySprite, flySprite.height, sprite.handle, sprite.element);
-                    if (adjustedY >= flySprite.y && adjustedY <= flySprite.y + flySprite.height) {
-                        sprites.push(sprite);
-                    }
+                //Recalculate sprites y-positions if necessary
+                if (typeof sprite.y === 'function' || typeof sprite.height === 'function') {
+                    this.positionSprite(sprite, viewportDimensions, flySprites);
                 }
             }
-            return sprites;
         }
 
         /**
@@ -174,10 +148,8 @@ module ACV.Game {
             }
 
             if (sprite.topAligned) {
-                //cssProps.top = flySprite.y;
                 cssProps.transform = 'translate(' + sprite.x + 'px, ' + flySprite.y + 'px)';
             } else {
-                //cssProps.bottom = flySprite.y;
                 cssProps.transform = 'translate(' + sprite.x + 'px, ' + -1 * flySprite.y + 'px)';
             }
 
@@ -205,19 +177,6 @@ module ACV.Game {
             sprite.element.css(cssProps);
         }
 
-        private recalculateSpritePositions( viewportDimensions: ACV.View.IViewportDimensions, flySprites: {[handle:string]:IFlySprite} ) {
-            var spriteIndex: any,
-                sprite: Sprite;
-            this.info('Recalculating y positions of all sprites');
-            for (spriteIndex in this.sprites) {
-                sprite = this.sprites[spriteIndex];
-                //Recalculate sprites y-positions if necessary
-                if (typeof sprite.y === 'function' || typeof sprite.height === 'function') {
-                    this.positionSprite(sprite, viewportDimensions, flySprites);
-                }
-            }
-        }
-
         /**
          * @since 2014-03-18
          */
@@ -227,10 +186,47 @@ module ACV.Game {
             this.lookAroundDistortion.y = lookAroundDistortion.y * this.prefs.speed;
 
             this.element.css({
-                //   top:       this.lookAroundDistortion.y + 'px',
                 transform: 'translate(' + (this.x + this.lookAroundDistortion.x) + 'px, ' + this.lookAroundDistortion.y + 'px)'
-                //left: (this.x + this.lookAroundDistortion.x) + 'px'
             });
         }
+
+        //getHitSprites( levelRelativeX: number,
+        //               y: number,
+        //               flySprites: {[layerHandle:string]:{[spriteHandle:string]:IFlySprite}},
+        //               viewportDimensions: ACV.View.IViewportDimensions ): Sprite[] {
+        //
+        //    var sprites: Sprite[] = [],
+        //        spriteIndex: any,
+        //        sprite: Sprite,
+        //        flySprite: IFlySprite,
+        //        testX: number,
+        //        adjustedY: number;
+        //
+        //    for (spriteIndex in this.sprites) {
+        //        sprite = this.sprites[spriteIndex];
+        //        testX = this.prefs.offset + this.x + sprite.x + this.lookAroundDistortion.x;
+        //        if (levelRelativeX >= testX && levelRelativeX <= testX + sprite.width) {
+        //
+        //            //  sprite.element.css('background', '#ff0000');
+        //            flySprite = flySprites[this.handle][sprite.handle];
+        //            if (flySprite === null) {
+        //                this.positionSprite(sprite, viewportDimensions, flySprites);
+        //                flySprite = flySprites[this.handle][sprite.handle];
+        //            }
+        //            if (sprite.topAligned) {
+        //                adjustedY = y;
+        //            } else {
+        //                adjustedY = this.element.height() - y;
+        //            }
+        //            adjustedY += this.lookAroundDistortion.y;
+        //
+        //            // console.log(adjustedY, flySprite, flySprite.height, sprite.handle, sprite.element);
+        //            if (adjustedY >= flySprite.y && adjustedY <= flySprite.y + flySprite.height) {
+        //                sprites.push(sprite);
+        //            }
+        //        }
+        //    }
+        //    return sprites;
+        //}
     }
 }

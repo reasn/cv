@@ -5,41 +5,49 @@ module ACV.HUD {
      */
     export class YearDisplay extends ACV.Core.AbstractObject {
 
-        triggers: {[key:string]:number};
+        triggers: {[playerXValue:string]:number};
         year: number;
         private element: JQuery;
+        private captionElements: JQuery;
+        private progressElement: JQuery;
+        private appContext: ACV.AppContext;
 
-        constructor(triggers: {[key:string]:number}) {
+        constructor( appContext: ACV.AppContext, triggers: {[key:string]:number} ) {
             super('ACV.HUD.YearDisplay');
             this.triggers = triggers;
             this.year = this.triggers[Object.keys(this.triggers)[0]];
+            this.appContext = appContext;
         }
 
-        static createFromData(data: ACV.Data.IYearDisplayData): YearDisplay {
-            return new YearDisplay(data.triggers);
+        static createFromData( appContext: ACV.AppContext, data: ACV.Data.IYearDisplayData ): YearDisplay {
+            return new YearDisplay(appContext, data.playerXTriggers);
         }
 
-        init(gameContainer: JQuery) {
-            this.element = $('<div id="hud-year-display">' + this.year + '</div>');
-            gameContainer.append(this.element);
+        init( gameContainer: JQuery ) {
+            this.element = gameContainer.children('#hud-year-display');
+            this.captionElements = this.element.find('.now');
+            this.progressElement = this.element.find('.progress');
+            if (!this.appContext.player) {
+                throw ('appContext.player must be set before initializing YearDisplay');
+            }
+            this.appContext.player.addMovementListener(( playerX ) => {
+                this.updateYear(playerX);
+            });
 
             this.info('Year display initialized', 'd');
         }
 
-        update(ratio: number) {
-
-            for (var triggerRatio in this.triggers) {
-                if (parseFloat(triggerRatio) >= ratio) {
-                    this.setYear(this.triggers[triggerRatio]);
-                    return;
-                }
-            }
+        updateRatio( ratio: number ) {
+            this.progressElement.css('width', (ratio * 100 ) + '%');
         }
 
-        setYear(year: number) {
-            if (this.year !== year) {
-                this.year = year;
-                this.element.text(this.year);
+        updateYear( playerX: number ) {
+            for (var playerXValue in this.triggers) {
+                if (parseFloat(playerXValue) >= playerX && this.year !== this.triggers[playerXValue]) {
+                    this.year = this.triggers[playerXValue];
+                    this.captionElements.text(this.year);
+                    return;
+                }
             }
         }
     }

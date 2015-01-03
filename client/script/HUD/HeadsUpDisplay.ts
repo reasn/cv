@@ -41,15 +41,15 @@ module ACV.HUD {
 
         static createFromData( appContext: ACV.AppContext, data: ACV.Data.IHudData ): HeadsUpDisplay {
             var skillBasket: SkillBasket,
-                yearDisplay: YearDisplay,
-                heightDisplay: HeightDisplay,
+                yearDisplay: YearDisplay = null,
+                heightDisplay: HeightDisplay = null,
                 sceneDebugger: SceneDebugger,
                 timeline: Timeline;
 
             skillBasket = ACV.HUD.SkillBasket.createFromData(data.skillBasket, appContext);
 
             if (appContext.performanceSettings.yearDisplay) {
-                yearDisplay = YearDisplay.createFromData(data.yearDisplay);
+                yearDisplay = YearDisplay.createFromData(appContext, data.yearDisplay);
             }
             if (appContext.performanceSettings.heightDisplay) {
                 heightDisplay = HeightDisplay.createFromData(data.heightDisplay);
@@ -62,13 +62,9 @@ module ACV.HUD {
             return new HeadsUpDisplay(appContext, data.prefs, skillBasket, yearDisplay, heightDisplay, sceneDebugger, timeline);
         }
 
-        init(gameContainer:JQuery, scene: ACV.Game.Scene ) {
+        init( gameContainer: JQuery, scene: ACV.Game.Scene ) {
 
             this.element = gameContainer.children('#hud');
-            /* TODO remove height-property or use for responsiveness
-             this.element.css({
-             height: this.height
-             });*/
 
             this.skillBasket.init(this.element);
 
@@ -91,7 +87,7 @@ module ACV.HUD {
 
         updateGameRatio( ratio: number, ratioBefore: number ) {
             if (this.yearDisplay !== null) {
-                this.yearDisplay.update(ratio);
+                this.yearDisplay.updateRatio(ratio);
             }
             if (this.heightDisplay !== null) {
                 this.heightDisplay.update(ratio);

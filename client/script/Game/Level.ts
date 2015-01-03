@@ -111,22 +111,6 @@ module ACV.Game {
             return this.prefs.clip.x2 - this.prefs.clip.x1;
         }
 
-        getHitSprites( levelRelativeX: number, y: number, viewportDimensions: ACV.View.IViewportDimensions ): Sprite[] {
-            var sprites: Sprite[] = [],
-                layerIndex: any,
-                layer: Layer;
-
-            for (layerIndex in this.backgroundLayers) {
-                layer = this.backgroundLayers[layerIndex];
-                sprites = sprites.concat(layer.getHitSprites(levelRelativeX, y, this.flySprites, viewportDimensions));
-            }
-            for (layerIndex in this.foregroundLayers) {
-                layer = this.foregroundLayers[layerIndex];
-                sprites = sprites.concat(layer.getHitSprites(levelRelativeX, y, this.flySprites, viewportDimensions));
-            }
-            return sprites;
-        }
-
         /**
          * Filter out dynamic fly sprites to reduce memory usage.
          *
@@ -302,5 +286,22 @@ module ACV.Game {
                 }
             }
         }
+
+
+        //getHitSprites( levelRelativeX: number, y: number, viewportDimensions: ACV.View.IViewportDimensions ): Sprite[] {
+        //    var sprites: Sprite[] = [],
+        //        layerIndex: any,
+        //        layer: Layer;
+        //
+        //    for (layerIndex in this.backgroundLayers) {
+        //        layer = this.backgroundLayers[layerIndex];
+        //        sprites = sprites.concat(layer.getHitSprites(levelRelativeX, y, this.flySprites, viewportDimensions));
+        //    }
+        //    for (layerIndex in this.foregroundLayers) {
+        //        layer = this.foregroundLayers[layerIndex];
+        //        sprites = sprites.concat(layer.getHitSprites(levelRelativeX, y, this.flySprites, viewportDimensions));
+        //    }
+        //    return sprites;
+        //}
     }
 }

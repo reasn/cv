@@ -7,7 +7,7 @@
     "ieFactor":                2,
     "performanceSettings":     {
       "yearDisplay":          true,
-      "heightDisplay":        true,
+      "heightDisplay":        false,
       "lookAroundDistortion": true
     },
     "colors":                  {
@@ -71,6 +71,10 @@
           "defaultDuration": 10000
         },
         "messages": {
+          "welcome":           {
+            "html":     "<h3>I'm Alexander,</h3><p>Keep scrolling down this page to see me grow up and earn my skills.</p><p>Enjoy :)</p>",
+            "duration": -1
+          },
           "firstSkill":        {
             "html":     "<h3>&nbsp;</h3><p>You can click on all skills on the lower left of the screen to get a description!</p>",
             "duration": 5000
@@ -111,8 +115,8 @@
         "handle":  "way-to-school",
         "enabled": true,
         "prefs":   {
-          "_offset":     0,
-          "offset":    2500,
+          "_offset":    0,
+          "offset":     2500,
           "clip":       {
             "x1": 0,
             "x2": 4000
@@ -187,35 +191,35 @@
       ]
     },
     "yearDisplay":   {
-      "triggers": {
-        "0.00": 1987,
-        "0.01": 1988,
-        "0.02": 1989,
-        "0.03": 1990,
-        "0.04": 1991,
-        "0.05": 1992,
-        "0.06": 1993,
-        "0.08": 1994,
-        "0.10": 1995,
-        "0.12": 1996,
-        "0.15": 1997,
-        "0.18": 1998,
-        "0.21": 1999,
-        "0.25": 2000,
-        "0.28": 2001,
-        "0.31": 2002,
-        "0.35": 2003,
-        "0.38": 2004,
-        "0.42": 2005,
-        "0.46": 2006,
-        "0.53": 2007,
-        "0.60": 2008,
-        "0.65": 2009,
-        "0.70": 2010,
-        "0.75": 2011,
-        "0.80": 2012,
-        "0.90": 2013,
-        "1.00": 2014
+      "playerXTriggers": {
+        "100":  1987,
+        "200":  1988,
+        "300":  1989,
+        "400":  1990,
+        "500":  1991,
+        "600":  1992,
+        "700":  1993,
+        "800":  1994,
+        "900":  1995,
+        "1000": 1996,
+        "1100": 1997,
+        "1200": 1998,
+        "1300": 1999,
+        "1400": 2000,
+        "1500": 2001,
+        "1600": 2002,
+        "1700": 2003,
+        "1800": 2004,
+        "1900": 2005,
+        "2000": 2006,
+        "2100": 2007,
+        "2200": 2008,
+        "2300": 2009,
+        "2400": 2010,
+        "2500": 2011,
+        "2700": 2012,
+        "2900": 2013,
+        "3100": 2014
       }
     },
     "heightDisplay": {

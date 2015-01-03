@@ -14,6 +14,6 @@ exports.register = function () {
 
 exports.tasksForDefault = [name];
 exports.watchers = {
-    files: ['./client/assets/**/*.*'],
+    files: ['client/assets/**/*'],
     tasks: [name]
 };

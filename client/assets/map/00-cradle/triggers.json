@@ -1,7 +1,16 @@
 [
   {
-    "playerX": 100,
+    "playerX": 0,
+    "after":   "speechBubble.show(welcome)"
+  },
+  {
+    "playerX": 0,
     "after":   "player.jumpAndStay(90)"
+  },
+  {
+    "playerX": 1300,
+    "before":  "speechBubble.show(welcome)",
+    "after":   "speechBubble.hide()"
   },
   {
     "playerX": 1156,

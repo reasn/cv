@@ -6,38 +6,39 @@ module ACV.Game {
     export class Trigger extends ACV.Core.AbstractObject {
 
 
-        static PATTERN = /([a-zA-Z\.]+)\(([^\)]+)\)/;
+        static PATTERN = /([a-zA-Z\.]+)\(([^\)]*)\)/;
 
         private range: number[] = [0, 0];
         private before: string;
         private after: string;
-        relativeTo: string = 'player';
+        referenceFrame: TriggerReferenceFrame;
         private currentlyInsideRange = false;
         private fireOnEnter = false;
         private stateBefore = true;
         private in = false;
         private wasIn = false;
 
-        constructor(range: number[], before: string, after: string, relativeTo: string, fireOnEnter: boolean) {
+        constructor( range: number[], before: string, after: string, relativeTo: TriggerReferenceFrame, fireOnEnter: boolean ) {
 
             super('ACV.Game.Trigger');
 
             this.range = range;
             this.before = before ? before : null;
             this.after = after ? after : null;
-            this.relativeTo = relativeTo;
+            this.referenceFrame = relativeTo;
             this.fireOnEnter = !!fireOnEnter;
         }
 
-        static createFromData(data: ACV.Data.ITriggerData, performanceSettings: ACV.Data.IPerformanceSettings): Trigger {
+        static createFromData( data: ACV.Data.ITriggerData, performanceSettings: ACV.Data.IPerformanceSettings ): Trigger {
 
             if (typeof data.playerX === 'number') {
-                return new ACV.Game.Trigger([data.playerX, data.playerX], data.before, data.after, 'player', false);
+                return new Trigger([data.playerX, data.playerX], data.before, data.after, TriggerReferenceFrame.PLAYER, false);
+
             } else if (typeof data.playerX === 'object') {
                 if (data.playerX.length !== 2 && data.playerX.length !== 3) {
                     throw 'A trigger\'s value declaration must be a number or an array consisting of two or three numbers. But is ' + JSON.stringify(data.playerX);
                 }
-                return new ACV.Game.Trigger(data.playerX, data.before, data.after, 'player', data.fireOnEnter);
+                return new Trigger(data.playerX, data.before, data.after, TriggerReferenceFrame.PLAYER, data.fireOnEnter);
             } else {
                 throw 'Not implemented yet';
                 //  return new ACV.Game.Trigger(data.playerX, data.before, data.after, 'level');
@@ -46,20 +47,20 @@ module ACV.Game {
 
         /**
          *
-         * @param {number} value
+         * @param {number} value E.g. playerX
          * @param {number} lastValue
          * @param {number} targetValue This value is required for ranged trigger animations (e.g. jumps).
          * @returns {?ITriggerAction}
          */
-        determineActionToBeExecuted(value: number, lastValue: number, targetValue: number): ITriggerAction {
+        determineActionToBeExecuted( value: number, lastValue: number, targetValue: number ): ITriggerAction {
             var a = this.range[0];
             var b = this.range[this.range.length - 1];
             var m = this.range.length === 3 ? this.range[1] : null;
 
-            var inFromLeft = value > a && lastValue < a;
-            var inFromRight = value < b && lastValue > b;
-            var outToLeft = value < a && lastValue > a;
-            var outToRight = value > b && lastValue < b;
+            var inFromLeft = value >= a && lastValue < a;
+            var inFromRight = value <= b && lastValue > b;
+            var outToLeft = value < a && lastValue >= a;
+            var outToRight = value > b && lastValue <= b;
 
             if (this.fireOnEnter) {
                 /*
@@ -92,9 +93,9 @@ module ACV.Game {
             return null;
         }
 
-        private unpack(action: string): ITriggerAction {
+        private unpack( action: string ): ITriggerAction {
 
-            var matches = ACV.Game.Trigger.PATTERN.exec(action);
+            var matches = Trigger.PATTERN.exec(action);
             if (matches.length < 2) {
                 this.warn('Invalid trigger "%s".', action);
                 return null;
