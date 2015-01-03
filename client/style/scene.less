@@ -16,6 +16,7 @@
             left:     0;
             position: absolute;
             display:  none;
+            /* Levels need overflow:hidden and automatically adjusted boundaries so they don't overlap each other */
             overflow: hidden;
 
             &.visible {
@@ -29,7 +30,6 @@
 
                 .sprite-wrapper {
                     position: relative;
-                    width:    100%;
                     height:   100%;
 
                     .sprite {
@@ -37,7 +37,7 @@
                         font-size: 1px;
                         padding:   0;
                         margin:    0;
-                        //outline:  5px dashed rgba(0, 0, 255, .5);
+                        &:hover { outline:  5px dashed rgba(0, 0, 255, .5) }
                         &.selected { outline: 5px dashed rgba(0, 0, 255, .9) }
 
                         &.image-background {

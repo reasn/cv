@@ -3,7 +3,6 @@
 #hud {
     @height: @dHudHeight;
     z-index:  @zHud;
-    top:      0;
     right:    0;
     bottom:   0;
     left:     0;
@@ -12,7 +11,7 @@
     .power-up { .powerUp() }
 
     .dev-info {
-        color:            @cMatteWhite;
+        color:            @cWhite;
         cursor:           pointer;
         position:         absolute;
         right:            0;
@@ -78,30 +77,22 @@
                 border-color:     @cPurple
             }
             &.expert, &.selected {
-                width:     @tileSize * 2+@padding;
-                height:    @tileSize * 2+@padding;
+                width:  @tileSize * 2+@padding;
+                height: @tileSize * 2+@padding;
             }
             &.soft {
                 background-color: @cYellow;
                 border-color:     @cYellow
             }
-            &.selected {
-//                width:     @tileSize * 4+2*@padding;
-//                height:    @tileSize * 4+2*@padding;
+            &.selected, &:hover {
+                //                width:     @tileSize * 4+2*@padding;
+                //                height:    @tileSize * 4+2*@padding;
                 background-color: @cGreen;
                 border-color:     @cGreen
             }
         }
     }
 
-    .scene-debugger {
-        position:         fixed;
-        right:            0;
-        top:              0;
-        width:            200px;
-        height:           200px;
-        background-color: #000000;
-    }
     .timeline {
         right:            0;
         width:            40%;
@@ -138,21 +129,24 @@
             }
         }
     }
-    .year-display {
-        position:    absolute;
-        top:         10px;
-        left:        10px;
-        font-size:   100px;
-        font-weight: bold;
+
+}
+
+#hud-height-display {
+    position:    absolute;
+    top:         150px;
+    left:        10px;
+    font-size:   100px;
+    font-weight: bold;
+    &:after {
+        content: 'cm'
     }
-    .height-display {
-        position:    absolute;
-        top:         150px;
-        left:        10px;
-        font-size:   100px;
-        font-weight: bold;
-        &:after {
-            content: 'cm'
-        }
-    }
+}
+
+#hud-year-display {
+    position:    absolute;
+    top:         10px;
+    left:        10px;
+    font-size:   100px;
+    font-weight: bold;
 }

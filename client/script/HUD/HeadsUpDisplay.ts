@@ -62,9 +62,9 @@ module ACV.HUD {
             return new HeadsUpDisplay(appContext, data.prefs, skillBasket, yearDisplay, heightDisplay, sceneDebugger, timeline);
         }
 
-        init( element: JQuery, scene: ACV.Game.Scene ) {
+        init(gameContainer:JQuery, scene: ACV.Game.Scene ) {
 
-            this.element = element;
+            this.element = gameContainer.children('#hud');
             /* TODO remove height-property or use for responsiveness
              this.element.css({
              height: this.height
@@ -73,17 +73,17 @@ module ACV.HUD {
             this.skillBasket.init(this.element);
 
             if (this.yearDisplay !== null) {
-                this.yearDisplay.init(this.element);
+                this.yearDisplay.init(gameContainer);
             }
             if (this.heightDisplay !== null) {
-                this.heightDisplay.init(this.element);
+                this.heightDisplay.init(gameContainer);
             }
 
             this.appContext.viewportManager.listenToScroll(( ratio, ratioBefore, viewportDimensions )=> {
                 this.updateGameRatio(ratio, ratioBefore);
             });
 
-            this.sceneDebugger.init(this.element, scene);
+            this.sceneDebugger.init(gameContainer, scene);
             this.timeline.init(this.element);
 
             this.debug('HUD initialized');

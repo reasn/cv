@@ -6,7 +6,7 @@
     <link href="css/style.css" type="text/css" rel="stylesheet">
 </head>
 <body>
-<div class="welcome-container" style="display: none">
+<div class="welcome-container">
     <h1>Hello World</h1>
 
     <p>This will be a short introductory text.</p>
@@ -28,7 +28,7 @@
         </li>
     </ul>
 </div>
-<div class="game-container">
+<div class="game-container patterned blue">
     <div id="scene"></div>
     <div id="hud">
         <ul class="dev-info">
@@ -44,6 +44,20 @@
             <li>mouseX: <span id="mouseX">N/A</span></li>
             <li>screen: <span id="viewportDimensions">N/A</span></li>
         </ul>
+    </div>
+    <div id="hud-scene-debugger">
+        <p>Foreground:
+            <button class="fg-on">ON</button>
+            <button class="fg-off">OFF</button>
+        </p>
+        <p>Player layer:
+            <button class="pl-on">ON</button>
+            <button class="pl-off">OFF</button>
+        </p>
+        <p>Background:
+            <button class="bg-on">ON</button>
+            <button class="bg-off">OFF</button>
+        </p>
     </div>
 </div>
 <p>

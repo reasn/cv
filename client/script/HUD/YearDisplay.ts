@@ -19,9 +19,9 @@ module ACV.HUD {
             return new YearDisplay(data.triggers);
         }
 
-        init(hudElement: JQuery) {
-            this.element = $('<div class="year-display">' + this.year + '</div>');
-            hudElement.append(this.element);
+        init(gameContainer: JQuery) {
+            this.element = $('<div id="hud-year-display">' + this.year + '</div>');
+            gameContainer.append(this.element);
 
             this.info('Year display initialized', 'd');
         }

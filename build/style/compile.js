@@ -19,7 +19,8 @@ exports.register = function () {
             .pipe(gulp.dest('./dist/css'))
             .pipe(plugins.rename({suffix: '.min'}))
             .pipe(plugins.minifyCss())
-            .pipe(gulp.dest('./dist/css'));
+            .pipe(gulp.dest('./dist/css'))
+            .pipe(plugins.notify({message: 'Style task complete'}));
     });
 };
 

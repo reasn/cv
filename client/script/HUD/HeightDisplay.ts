@@ -9,23 +9,23 @@ module ACV.HUD {
         private element: JQuery;
         private elementVisible: boolean;
 
-        constructor(keyFrames: {[key:string]:number}) {
+        constructor( keyFrames: {[key:string]:number} ) {
             super('ACV.HUD.HeightDisplay');
             this.keyFrames = keyFrames;
         }
 
-        static createFromData(data: ACV.Data.IHeightDisplayData): HeightDisplay {
+        static createFromData( data: ACV.Data.IHeightDisplayData ): HeightDisplay {
             return new HeightDisplay(data.keyFrames);
         }
 
-        init(hudElement: JQuery) {
-            this.element = $('<div class="height-display" />');
-            hudElement.append(this.element);
+        init( gameContainer: JQuery ) {
+            this.element = $('<div id="hud-height-display" />');
+            gameContainer.append(this.element);
 
             this.debug('HeightDisplay initialized');
         }
 
-        update(ratio: number) {
+        update( ratio: number ) {
             var frameIndex: number,
                 factor: number,
                 height: number,

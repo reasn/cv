@@ -101,6 +101,8 @@ module ACV.Game {
                 this.width += this.levels[levelIndex].getWidth();
             }
 
+            this.element.css('width', this.width);
+
             // Reduce draw calls by adding everything to the DOM at last
             this.element.append(this.backgroundElement);
             this.playerLayer.init(this.element, this.width, this.prefs.dynamicViewport.minHeight, this.lookAroundDistortion);

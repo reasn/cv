@@ -265,7 +265,7 @@
   ],
   "foreground": [
     {
-      "handle":  "cradleAndToys",
+      "handle":  "toys",
       "prefs":   {
         "offset": 2000,
         "speed":  1.1
