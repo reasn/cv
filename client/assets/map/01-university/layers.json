@@ -48,7 +48,7 @@
           "source":     "graphics/scene/world/02-way-to-school/star-01.png"
         },
         {
-          "handle":     "star01",
+          "handle":     "star02",
           "x":          800,
           "y":          "sprites.celestialBodies.moon.y + .1 * viewportHeight",
           "topAligned": true,
@@ -57,7 +57,7 @@
           "source":     "graphics/scene/world/02-way-to-school/star-01.png"
         },
         {
-          "handle":     "star02",
+          "handle":     "star03",
           "x":          880,
           "y":          "sprites.celestialBodies.moon.y + .15 * viewportHeight",
           "topAligned": true,
@@ -66,7 +66,7 @@
           "source":     "graphics/scene/world/02-way-to-school/star-02.png"
         },
         {
-          "handle":     "star02",
+          "handle":     "star04",
           "x":          750,
           "y":          "sprites.celestialBodies.moon.y + .25 * viewportHeight",
           "topAligned": true,

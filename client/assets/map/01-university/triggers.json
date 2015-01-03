@@ -30,7 +30,21 @@
   },
   {
     "levelX": 100,
-    "before": "sprite.transition(university-celestialBodies-sun,none)",
-    "after": "sprite.transition(university-celestialBodies-sun,visible)"
+    "before": [
+      "sprite.transition(university-sky-sky,none)",
+      "sprite.transition(university-celestialBodies-star01,none)",
+      "sprite.transition(university-celestialBodies-star02,none)",
+      "sprite.transition(university-celestialBodies-star03,none)",
+      "sprite.transition(university-celestialBodies-star04,none)",
+      "sprite.transition(university-celestialBodies-sun,none)"
+    ],
+    "after":  [
+      "sprite.transition(university-sky-sky,visible)",
+      "sprite.transition(university-celestialBodies-star01,hidden)",
+      "sprite.transition(university-celestialBodies-star02,hidden)",
+      "sprite.transition(university-celestialBodies-star03,hidden)",
+      "sprite.transition(university-celestialBodies-star04,hidden)",
+      "sprite.transition(university-celestialBodies-sun,visible)"
+    ]
   }
 ]
