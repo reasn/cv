@@ -4,7 +4,6 @@
 @import "fonts";
 @import "debug";
 
-
 .backgroundPattern(@colorName) {
     background-image: url("../assets/graphics/scene/world/matte/patterns/@{colorName}.jpg");
 }
@@ -30,9 +29,9 @@ body {
 }
 
 .game-container {
-    position:          relative;
-    width:             100%;
-    overflow:          hidden;
+    position: relative;
+    width:    100%;
+    overflow: hidden;
 
     &.fixed {
         position: fixed;
@@ -51,4 +50,34 @@ body {
 
 #level-bg-way-to-school {
     background-color: #000000;
+}
+
+.animation-active {
+    animation-play-state: running !important;
+}
+
+#sprite-move-to-hamburg-mountainAndShips-sailShip { animation: move-to-hamburg-ship-ltr 120s @fxEaseInOutQuad paused; }
+
+#sprite-move-to-hamburg-mountainAndShips-cargoShip01 { animation: move-to-hamburg-ship-ltr 60s @fxEaseInOutQuad paused; }
+
+#sprite-move-to-hamburg-mountainAndShips-cargoShip02 { animation: move-to-hamburg-ship-rtl 60s @fxEaseInOutQuad paused; }
+
+#sprite-move-to-hamburg-skyAndDistantShipsAndSeaGulls-seagull01 { animation: move-to-hamburg-seagull-ltr 120s @fxEaseInOutQuad paused; }
+#sprite-move-to-hamburg-skyAndDistantShipsAndSeaGulls-seagull02 { animation: move-to-hamburg-seagull-ltr 90s @fxEaseInOutQuad paused; }
+#sprite-move-to-hamburg-skyAndDistantShipsAndSeaGulls-seagull03 { animation: move-to-hamburg-seagull-ltr 60s @fxEaseInOutQuad paused; }
+
+@keyframes move-to-hamburg-ship-ltr {
+    from { left: 0 }
+    to { left: 500px }
+}
+
+@keyframes move-to-hamburg-ship-rtl {
+    from { left: 300px }
+    to { left: 0 }
+}
+
+
+@keyframes move-to-hamburg-seagull-ltr {
+    from { left: 0 }
+    to { left: 2500px }
 }

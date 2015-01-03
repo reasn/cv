@@ -122,13 +122,13 @@
       },
       {
         "handle":  "university",
-        "enabled": true,
+        "enabled": false,
         "prefs":   {
           "offset":     0,
           "_offset":    2500,
           "clip":       {
             "x1": 0,
-            "x2": 4000
+            "x2": 4200
           },
           "visibility": {
             "x1": -3500,
@@ -140,8 +140,8 @@
         "handle":  "move-to-hamburg",
         "enabled": true,
         "prefs":   {
-          "__offset":     0,
-          "offset":     3500,
+          "offset":     0,
+          "__offset":     3500,
           "_offset":    7400,
           "clip":       {
             "x1": 0,

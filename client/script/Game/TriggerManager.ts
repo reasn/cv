@@ -60,20 +60,15 @@ module ACV.Game {
          * @author Alexander Thiel
          */
         private execute( action: ITriggerAction ): void {
-            var sprite: JQuery;
+
+            this.debug('Executing "%s"', action.action);
+
+            if (action.action.indexOf('sprite.') === 0) {
+                this.executeSpriteTrigger(action);
+                return;
+            }
             switch (action.action) {
-                case 'sprite.show':
-                case 'sprite.hide':
-                    sprite = $('#sprite-' + action.args[0]);
-                    if (sprite.length === 0) {
-                        this.warn('Could not trigger "%s" action because no sprite with id "%s" was found.', action.action, 'sprite-' + action.args[0]);
-                    }
-                    if (action.action === 'sprite.show') {
-                        sprite.show();
-                    } else {
-                        sprite.hide();
-                    }
-                    return;
+
                 case 'player.setAge':
                     this.scene.playerLayer.player.setAge(action.args[0]);
                     return;
@@ -95,6 +90,31 @@ module ACV.Game {
                 case 'speechBubble.hide':
                     this.scene.playerLayer.speechBubble.hide();
                     return;
+
+                default:
+                    this.warn('Unknown trigger action:');
+                    this.warn(action);
+                    return;
+            }
+        }
+
+        private executeSpriteTrigger( action: ITriggerAction ): void {
+            var sprite = $('#sprite-' + action.args[0]);
+            if (sprite.length === 0) {
+                this.warn('Could not trigger "%s" action because no sprite with id "%s" was found.', action.action, 'sprite-' + action.args[0]);
+            }
+            switch (action.action) {
+                case 'sprite.show':
+                    sprite.show();
+                    return;
+                case 'sprite.hide':
+                    sprite.hide();
+                    return;
+
+                case 'sprite.startAnimation':
+                    sprite.addClass('animation-active');
+                    return;
+
                 default:
                     this.warn('Unknown trigger action:');
                     this.warn(action);

@@ -1,2 +1,20 @@
 [
+  {
+    "playerX": 0,
+    "after":   [
+      "player.jumpAndStay(30)",
+      "player.setAge(driver)"
+    ]
+  },
+  {
+    "playerX": 2000,
+    "after":   [
+      "sprite.startAnimation(move-to-hamburg-skyAndDistantShipsAndSeaGulls-sailShip)",
+      "sprite.startAnimation(move-to-hamburg-mountainAndShips-cargoShip01)",
+      "sprite.startAnimation(move-to-hamburg-mountainAndShips-cargoShip02)",
+      "sprite.startAnimation(move-to-hamburg-skyAndDistantShipsAndSeaGulls-seagull01)",
+      "sprite.startAnimation(move-to-hamburg-skyAndDistantShipsAndSeaGulls-seagull02)",
+      "sprite.startAnimation(move-to-hamburg-skyAndDistantShipsAndSeaGulls-seagull03)"
+    ]
+  }
 ]
