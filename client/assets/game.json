@@ -155,6 +155,22 @@
             "x2": 12000
           }
         }
+      }, {
+        "handle":  "hamburg",
+        "enabled": false,
+        "prefs":   {
+          "background": "black",
+          "offset":     0,
+          "_offset":    16400,
+          "clip":       {
+            "x1": 0,
+            "x2": 4000
+          },
+          "visibility": {
+            "x1": -3500,
+            "x2": 6000
+          }
+        }
       }
     ],
     "layers":      {

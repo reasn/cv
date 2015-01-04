@@ -8,15 +8,15 @@
   },
   {
     "playerX": [
+      2100,
       2300,
-      2500,
-      2700
+      2500
     ],
     "before":  "player.jumpAndStay(150)",
     "after":   "player.jumpAndStay(30)"
   },
   {
-    "playerX": 3000,
+    "playerX": 3200,
     "before":  [
       "speechBubble.hide()",
       "player.setAge(teen)",

@@ -1,0 +1,201 @@
+{
+  "background": [
+    {
+      "handle":  "sky",
+      "prefs":   {
+        "offset": -1000,
+        "speed":  0.5
+      },
+      "sprites": [
+        {
+          "handle":     "sky",
+          "x":          0,
+          "y":          "-maxLookAroundDistortion",
+          "topAligned": true,
+          "width":      5000,
+          "height":     "200 + 2 * maxLookAroundDistortion",
+          "color":      "blue"
+        }
+      ]
+    },
+    {
+      "handle":  "buildings",
+      "prefs":   {
+        "offset": 0,
+        "speed":  0.6
+      },
+      "sprites": [
+        {
+          "handle":     "buildings01",
+          "x":          1000,
+          "y":          330,
+          "topAligned": false,
+          "width":      700,
+          "height":     "700px",
+          "fontSymbol": {
+            "name": "buildings2",
+            "size": 900
+          },
+          "color":      "gray"
+        },
+        {
+          "handle":     "cargoShip01",
+          "x":          3000,
+          "y":          "25%",
+          "topAligned": true,
+          "width":      100,
+          "height":     "100px",
+          "fontSymbol": {
+            "name": "cargo13",
+            "size": 50
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "cargoShip02",
+          "x":          3500,
+          "y":          "30%",
+          "topAligned": true,
+          "width":      100,
+          "height":     "100px",
+          "fontSymbol": {
+            "name": "cargoship",
+            "size": 70
+          },
+          "color":      "white"
+        }
+      ]
+    },
+    {
+      "handle":  "street",
+      "prefs":   {
+        "offset": 0,
+        "speed":  0.8
+      },
+      "sprites": [
+        {
+          "handle":     "street",
+          "x":          -300,
+          "y":          0,
+          "topAligned": false,
+          "width":      5000,
+          "height":     "260px",
+          "color":      "blue-gray-50"
+        },
+        {
+          "handle":     "cruiseShip01",
+          "x":          3000,
+          "y":          "40%",
+          "topAligned": true,
+          "width":      100,
+          "height":     "100px",
+          "fontSymbol": {
+            "name": "cruise1",
+            "size": 90
+          },
+          "color":      "white"
+        }
+      ]
+    },
+    {
+      "handle":  "fastMovingItems",
+      "prefs":   {
+        "offset": 0,
+        "speed":  1.1
+      },
+      "sprites": [
+        {
+          "handle":     "cloud01",
+          "x":          500,
+          "y":          "10%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloud316",
+            "size": 100
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "cloud02",
+          "x":          1500,
+          "y":          "7%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloudstorage",
+            "size": 80
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "cloud03",
+          "x":          1900,
+          "y":          "10%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloud316",
+            "size": 250
+          },
+          "color":      "white"
+        }
+      ]
+    },
+    {
+      "handle":  "extraFastMovingSprites",
+      "prefs":   {
+        "offset": -900,
+        "speed":  1.5
+      },
+      "sprites": [
+        {
+          "handle":     "cloud04",
+          "x":          2000,
+          "y":          "10%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloud34",
+            "size": 200
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "cloud05",
+          "x":          3000,
+          "y":          "25%",
+          "topAligned": true,
+          "width":      11000,
+          "height":     "100",
+          "blur":       10,
+          "fontSymbol": {
+            "name": "cloudstorage",
+            "size": 200
+          },
+          "color":      "white"
+        },
+        {
+          "handle":     "hedge",
+          "x":          0,
+          "y":          "-80 - maxLookAroundDistortion",
+          "topAligned": false,
+          "width":      11000,
+          "height":     "50 + maxLookAroundDistortion",
+          "blur":       10,
+          "color":      "green"
+        }
+      ]
+    }
+  ],
+  "foreground": [
+  ]
+}

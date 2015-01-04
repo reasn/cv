@@ -8,7 +8,13 @@
 	font-weight: normal;
 	font-style: normal;
 }
-.flaticon-baby91:before {
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+	font-family: Flaticon;
+        font-size: 20px;
+font-style: normal;
+margin-left: 20px;
+}.flaticon-baby91:before {
 	content: "\e000";
 }
 .flaticon-bald34:before {
@@ -44,103 +50,103 @@
 .flaticon-blank32:before {
 	content: "\e00b";
 }
-.flaticon-building78:before {
+.flaticon-bookmark50:before {
 	content: "\e00c";
 }
-.flaticon-building80:before {
+.flaticon-building78:before {
 	content: "\e00d";
 }
-.flaticon-buildings2:before {
+.flaticon-building80:before {
 	content: "\e00e";
 }
-.flaticon-buildings5:before {
+.flaticon-buildings2:before {
 	content: "\e00f";
 }
-.flaticon-businessmen18:before {
+.flaticon-buildings5:before {
 	content: "\e010";
 }
-.flaticon-businessmen26:before {
+.flaticon-businessmen18:before {
 	content: "\e011";
 }
-.flaticon-cargoship:before {
+.flaticon-businessmen26:before {
 	content: "\e012";
 }
-.flaticon-cargo13:before {
+.flaticon-cargoship:before {
 	content: "\e013";
 }
-.flaticon-children1:before {
+.flaticon-cargo13:before {
 	content: "\e014";
 }
-.flaticon-christmas128:before {
+.flaticon-children1:before {
 	content: "\e015";
 }
-.flaticon-classical:before {
+.flaticon-christmas128:before {
 	content: "\e016";
 }
-.flaticon-cloudstorage:before {
+.flaticon-classical:before {
 	content: "\e017";
 }
-.flaticon-cloud316:before {
+.flaticon-cloudstorage:before {
 	content: "\e018";
 }
-.flaticon-cloud34:before {
+.flaticon-cloud316:before {
 	content: "\e019";
 }
-.flaticon-cloud46:before {
+.flaticon-cloud34:before {
 	content: "\e01a";
 }
-.flaticon-connections1:before {
+.flaticon-cloud46:before {
 	content: "\e01b";
 }
-.flaticon-couple17:before {
+.flaticon-connections1:before {
 	content: "\e01c";
 }
-.flaticon-cradle1:before {
+.flaticon-couple17:before {
 	content: "\e01d";
 }
-.flaticon-cruise1:before {
+.flaticon-cradle1:before {
 	content: "\e01e";
 }
-.flaticon-dark26:before {
+.flaticon-cruise1:before {
 	content: "\e01f";
 }
-.flaticon-desk1:before {
+.flaticon-dark26:before {
 	content: "\e020";
 }
-.flaticon-dinosaur16:before {
+.flaticon-desk1:before {
 	content: "\e021";
 }
-.flaticon-drink24:before {
+.flaticon-dinosaur16:before {
 	content: "\e022";
 }
-.flaticon-milk2:before {
+.flaticon-drink24:before {
 	content: "\e023";
 }
-.flaticon-dwelling1:before {
+.flaticon-milk2:before {
 	content: "\e024";
 }
-.flaticon-flowers12:before {
+.flaticon-dwelling1:before {
 	content: "\e025";
 }
-.flaticon-gingerbread3:before {
+.flaticon-flowers12:before {
 	content: "\e026";
 }
-.flaticon-grass:before {
+.flaticon-gingerbread3:before {
 	content: "\e027";
 }
-.flaticon-home18:before {
+.flaticon-grass:before {
 	content: "\e028";
 }
-.flaticon-home60:before {
+.flaticon-home18:before {
 	content: "\e029";
 }
-.flaticon-home63:before {
+.flaticon-home60:before {
 	content: "\e02a";
 }
-.flaticon-home78:before {
+.flaticon-home63:before {
 	content: "\e02b";
 }
-.flaticon-home87:before {
+.flaticon-home78:before {
 	content: "\e02c";
 }
 .flaticon-hotel68:before {
@@ -251,48 +257,54 @@
 .flaticon-speech141:before {
 	content: "\e050";
 }
-.flaticon-street1:before {
+.flaticon-star182:before {
 	content: "\e051";
 }
-.flaticon-street9:before {
+.flaticon-stars4:before {
 	content: "\e052";
 }
-.flaticon-summer:before {
+.flaticon-street1:before {
 	content: "\e053";
 }
-.flaticon-table6:before {
+.flaticon-street9:before {
 	content: "\e054";
 }
-.flaticon-teddy:before {
+.flaticon-summer:before {
 	content: "\e055";
 }
-.flaticon-three100:before {
+.flaticon-table6:before {
 	content: "\e056";
 }
-.flaticon-transport11:before {
+.flaticon-teddy:before {
 	content: "\e057";
 }
-.flaticon-tree101:before {
+.flaticon-three100:before {
 	content: "\e058";
 }
-.flaticon-tree65:before {
+.flaticon-transport11:before {
 	content: "\e059";
 }
-.flaticon-tree79:before {
+.flaticon-tree101:before {
 	content: "\e05a";
 }
-.flaticon-two174:before {
+.flaticon-tree65:before {
 	content: "\e05b";
 }
-.flaticon-university2:before {
+.flaticon-tree79:before {
 	content: "\e05c";
 }
-.flaticon-wall3:before {
+.flaticon-two174:before {
 	content: "\e05d";
 }
-.flaticon-wine30:before {
+.flaticon-university2:before {
 	content: "\e05e";
 }
-.flaticon-work3:before {
+.flaticon-wall3:before {
 	content: "\e05f";
+}
+.flaticon-wine30:before {
+	content: "\e060";
+}
+.flaticon-work3:before {
+	content: "\e061";
 }

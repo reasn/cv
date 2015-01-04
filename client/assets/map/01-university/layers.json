@@ -4,7 +4,7 @@
       "handle":  "sky",
       "prefs":   {
         "offset": 0,
-        "speed":  0.6
+        "speed":  1
       },
       "sprites": [
         {
@@ -12,7 +12,7 @@
           "x":          0,
           "y":          "-maxLookAroundDistortion",
           "topAligned": true,
-          "width":      3500,
+          "width":      4000,
           "height":     "viewportHeight + 2 * maxLookAroundDistortion",
           "color":      "blue"
         }
@@ -45,7 +45,11 @@
           "topAligned": true,
           "width":      34,
           "height":     "30px",
-          "source":     "graphics/scene/world/02-way-to-school/star-01.png"
+          "fontSymbol": {
+            "name": "bookmark50",
+            "size": 50
+          },
+          "color":      "yellow"
         },
         {
           "handle":     "star02",
@@ -54,25 +58,37 @@
           "topAligned": true,
           "width":      34,
           "height":     "30px",
-          "source":     "graphics/scene/world/02-way-to-school/star-01.png"
+          "fontSymbol": {
+            "name": "bookmark50",
+            "size": 50
+          },
+          "color":      "yellow"
         },
         {
           "handle":     "star03",
-          "x":          880,
+          "x":          1280,
           "y":          "sprites.celestialBodies.moon.y + .15 * viewportHeight",
           "topAligned": true,
           "width":      22,
           "height":     "20px",
-          "source":     "graphics/scene/world/02-way-to-school/star-02.png"
+          "fontSymbol": {
+            "name": "bookmark50",
+            "size": 50
+          },
+          "color":      "yellow"
         },
         {
           "handle":     "star04",
-          "x":          750,
-          "y":          "sprites.celestialBodies.moon.y + .25 * viewportHeight",
+          "x":          250,
+          "y":          "sprites.celestialBodies.moon.y + .15 * viewportHeight",
           "topAligned": true,
           "width":      22,
           "height":     "20px",
-          "source":     "graphics/scene/world/02-way-to-school/star-02.png"
+          "fontSymbol": {
+            "name": "star182",
+            "size": 100
+          },
+          "color":      "yellow"
         },
         {
           "handle":     "sun",

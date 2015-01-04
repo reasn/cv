@@ -57,27 +57,11 @@ body {
     animation-fill-mode:  forwards;
 }
 
-#sprite-move-to-hamburg-skyAndDistantShipsAndSeaGulls-sky {
-    transition: opacity @fxEaseInOutQuad 3s;
-}
-
-#sprite-move-to-hamburg-skyAndDistantShipsAndSeaGulls-sun {
-    transition:          @fxEaseInOutQuad 5s;
-    transition-property: opacity, top;
-}
-
-.fx-hidden {
-    opacity: 0
-}
-
-.fx-to-top--300 {
-    top: -300px !important;
-}
-
 #sprite-university-sky-sky {
     transition: opacity @fxEaseInOutQuad 3s;
     opacity:    0;
     &.fx-visible { opacity: 1 }
+    &.fx-instantly-hidden { transition-duration: 0ms; opacity: 0 }
 }
 
 #sprite-university-celestialBodies-sun {
@@ -91,6 +75,17 @@ body {
 #sprite-university-celestialBodies-star04 {
     transition: opacity @fxEaseInOutQuad 3s;
     &.fx-hidden { opacity: 0 }
+}
+
+#sprite-move-to-hamburg-skyAndDistantShipsAndSeaGulls-sky {
+    transition: opacity @fxEaseInOutQuad 3s;
+    &.fx-hidden { opacity: 0 }
+}
+
+#sprite-move-to-hamburg-skyAndDistantShipsAndSeaGulls-sun {
+    transition:          @fxEaseInOutQuad 5s;
+    transition-property: opacity, top;
+    .fx-to-top { top: -300px }
 }
 
 #sprite-move-to-hamburg-mountainAndShips-sailShip { animation: move-to-hamburg-ship-ltr 120s @fxEaseInOutQuad paused; }

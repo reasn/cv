@@ -7,13 +7,8 @@
     ]
   },
   {
-    "levelX": 400,
-    "before": "sprite.transition(move-to-hamburg-skyAndDistantShipsAndSeaGulls-sky,instantly-hidden)",
-    "after":  "sprite.transition(move-to-hamburg-skyAndDistantShipsAndSeaGulls-sky,none)"
-  },
-  {
     "playerX": 2000,
-    "before":  [
+    "before": [
       "sprite.transition(move-to-hamburg-skyAndDistantShipsAndSeaGulls-sky,none)",
       "sprite.transition(move-to-hamburg-skyAndDistantShipsAndSeaGulls-sun,none)"
     ],
@@ -25,7 +20,7 @@
       "sprite.startAnimation(move-to-hamburg-skyAndDistantShipsAndSeaGulls-seagull02)",
       "sprite.startAnimation(move-to-hamburg-skyAndDistantShipsAndSeaGulls-seagull03)",
       "sprite.transition(move-to-hamburg-skyAndDistantShipsAndSeaGulls-sky, hidden)",
-      "sprite.transition(move-to-hamburg-skyAndDistantShipsAndSeaGulls-sun, to-top)"
+      "sprite.transition(move-to-hamburg-skyAndDistantShipsAndSeaGulls-sun, to-top--300)"
     ]
   }
 ]
