@@ -8,8 +8,8 @@
     "jquery/jquery.d.ts": {
       "commit": "0b6a5fb4e0c10177255606034dcfc3ccbc981001"
     },
-    "jquery.transit/jquery.transit.d.ts": {
-      "commit": "a12472597c94a159811c61d41419d55400e6055a"
+    "angularjs/angular.d.ts": {
+      "commit": "6ee44e03b86604f1188020a365281890140e4b9b"
     }
   }
 }
