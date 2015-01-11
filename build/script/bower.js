@@ -6,7 +6,12 @@ var gulp            = require('gulp'),
 exports.register = function () {
 
     gulp.task(name, function () {
-        gulp.src(plugins.mainBowerFiles())
+        gulp.src([
+            'bower_components/jquery/dist/jquery.js',
+            'bower_components/angular/angular.js'
+        ])
+            //Plugin does not work on Alex' local deployment vm (works on windows though - wtf?!^^)
+        //gulp.src(plugins.mainBowerFiles())
             .pipe(plugins.concat('vendor.js'))
             .pipe(gulp.dest("./dist/js"))
             .pipe(plugins.rename({suffix: '.min'}))
